@@ -7,5 +7,27 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "website-e2e": {
+      "tags": []
+    },
+    "website": {
+      "tags": ["app:website"]
+    },
+    "admin": {
+      "tags": ["app:admin"]
+    },
+    "admin-e2e": {
+      "tags": []
+    },
+    "backend-server": {
+      "tags": ["app:server"]
+    },
+    "features-api": {
+      "tags": ["features:api"]
+    },
+    "util": {
+      "tags": ["lib:util"]
+    }
+  }
 }
