@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input, FormText, FormFeedback } from 'reactstrap'
 import { UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap'
-// import * as R from 'reactstrap'
+
+import * as M from '@material-ui/core'
 
 import '../styles/Create.scss'
 
@@ -29,7 +30,7 @@ export class Create extends Component {
             <span className="form-title">Create New Event</span>
             <Button color="primary" size="lg" className="float-right">Publish</Button>
             <span className="float-right spacer"></span>
-            <Button outline color="primary" size="lg" className="float-right">Save</Button>
+            <Button outline color="secondary" size="lg" className="float-right">Save</Button>
           </div>
 
           <section className="create-section">
@@ -96,7 +97,10 @@ export class Create extends Component {
               
               <FormGroup>  
                 <Label>Custom Venue</Label>
-                <Input type="checkbox"/>
+                <M.Switch
+                  value="checkedB"
+                  color="primary"
+                />
               </FormGroup>
 
             <FormGroup>
