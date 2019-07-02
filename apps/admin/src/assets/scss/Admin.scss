@@ -1,5 +1,64 @@
-$sidebar-bg: #f0f0f0;
-$sidebar-hover-bg: #afd2ff;
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+
+$font: 'Poppins';
+
+$color-primary: #0077ff;
+
+* {
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+body {
+  font-family: $font, sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 100;
+}
+
+.spacer {
+  padding: 0.25em;
+}
+
+.hamburger {
+  display: block;
+  margin: auto 0 auto auto;
+  height: 100%;
+  padding: 1em;
+  padding-right: 0.5em; 
+  justify-self: center;
+  align-self: flex-end;
+  z-index: 11000;
+}
+.hamburger span,
+.hamburger span::before,
+.hamburger span::after {
+  display: block;
+  position: relative;
+  background: #fff;
+  height: 2px;
+  width: 25px;
+  transition: all 0.25s ease;
+}
+.hamburger span::before,
+.hamburger span::after {
+  content: '';
+  position: absolute;
+}
+.hamburger span::before {
+  bottom: 7px;
+}
+.hamburger span::after {
+  top: 7px;
+}
+
+// ================================================================
+// ================================================================
+
+$sidebar-bg: #d3d3d3;
+$sidebar-hover-bg: #0e74fa;
+$section-root-bg: #f3f3f380;
 
 #admin-panel-root {
   #panel {
@@ -42,10 +101,13 @@ $sidebar-hover-bg: #afd2ff;
         text-decoration: none;
 
         width: 100%;
+        // margin-left: 0;
+        // margin-right: -3em;
         padding: 0.75em 1em;
         transition: all 0.25s ease-in-out;
       } a:hover {
         transition: all 0.25s ease-in-out;
+        color: #fff;
         background-color: $sidebar-hover-bg;
       }
     }
@@ -65,6 +127,7 @@ $sidebar-hover-bg: #afd2ff;
       box-shadow: 0 0 10px #1c1c1c40;
       overflow: scroll;
       overflow-x: hidden;
+      background-color: $section-root-bg;
 
       #content {
         padding: 2em;

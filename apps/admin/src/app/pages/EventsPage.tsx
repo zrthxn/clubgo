@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Nav, NavItem, NavLink } from 'reactstrap'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 
-import { Create } from './components/Create'
-import { Listing } from './components/Listing'
+import { CreateEvent } from '../components/CreateEvent/CreateEvent'
+import { EventListing } from '../components/EventListing/EventListing'
 
 export class Events extends Component {
   render() {
@@ -30,8 +30,8 @@ export class Events extends Component {
 
             <section className="tab-content">
               <Switch>
-                <Route path="/create" component={ Create }/>
-                <Route path="/list" component={ Listing }/>
+                <Route path="/create" component={ CreateEvent }/>
+                <Route path="/list" component={ EventListing }/>
                 
                 <Route>
                   <article>

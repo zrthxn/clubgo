@@ -5,7 +5,10 @@
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "paths": {
+      "@clubgo/admin/assets": ["apps/admin/src/assets"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }
