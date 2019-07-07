@@ -12,7 +12,7 @@ export class VenueDetails extends Component {
 
         <Grid container xs={12} spacing={3}>
           <Grid item xs={12}>
-            <TextField required fullWidth label="Event Name" variant="outlined"/>
+            <TextField required fullWidth label="Venue Name" variant="outlined"/>
             <TextField required multiline fullWidth label="Description" variant="outlined" margin="dense"/>
             <TextField required fullWidth label="Category (chips)" variant="outlined" margin="dense"/>
           </Grid>

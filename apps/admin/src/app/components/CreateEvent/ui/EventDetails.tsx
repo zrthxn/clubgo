@@ -68,6 +68,11 @@ export class EventDetails extends Component {
             <Label>Tags</Label>
             <TextField fullWidth label="Tags (chips)" variant="outlined" margin="dense"/>
           </Grid>
+
+          <Grid item xs={12}>
+            <hr/>
+            <Label>Custom Details</Label>
+          </Grid>
         </Grid>
       </Paper>
     )

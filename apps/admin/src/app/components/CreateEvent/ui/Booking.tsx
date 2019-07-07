@@ -8,8 +8,8 @@ import { Link } from '@material-ui/icons'
 
 export class Booking extends Component {
   state = {
-    takeBookings: true,
-    takePayments: true,
+    takeBookings: false,
+    takePayments: false,
     breakpoint: 25
   }
 
@@ -20,7 +20,7 @@ export class Booking extends Component {
           Booking
           <div className="float-right">
             <span className="inline-text-label">Bookings</span>
-            <Switch defaultChecked color="primary"
+            <Switch color="primary"
               onChange={()=>{
                 this.setState(()=>({
                   takeBookings: !this.state.takeBookings
@@ -36,7 +36,7 @@ export class Booking extends Component {
               <Grid item xs={12}>
                 <Grid item xs={6}>
                   <span className="inline-text-label">PAYMENTS</span>
-                  <Switch defaultChecked color="primary"
+                  <Switch color="primary"
                     onChange={()=>{
                       this.setState(()=>({
                         takePayments: !this.state.takePayments

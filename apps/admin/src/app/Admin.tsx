@@ -8,7 +8,7 @@ import blue from '@material-ui/core/colors/blue';
 import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
 import { AccountCircle, MenuRounded, MessageRounded, Notifications } from '@material-ui/icons'
 
-const version = '0.1.0'
+const version = '2.1.0'
 
 import '../assets/scss/Admin.scss'
 
@@ -34,7 +34,7 @@ const theme = createMuiTheme({
 
 export class Admin extends Component {
   state = {
-    authenticated: true,
+    authenticated: false,
     userAccountMenuOpen: false
   }
 

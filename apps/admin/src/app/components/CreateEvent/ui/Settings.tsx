@@ -42,11 +42,6 @@ export class Settings extends Component {
 
           <Grid item xs={12}>
             <hr/>
-            <Rs.Label>Custom Details</Rs.Label>
-          </Grid>
-
-          <Grid item xs={12}>
-            <hr/>
             <Rs.Label>Published</Rs.Label>
             <Switch defaultChecked color="primary"/>
           </Grid>

@@ -82,7 +82,6 @@ export class Venue extends Component {
             <Grid container xs={12} spacing={3}>
               <Grid item xs={12}>
                 <TextField required fullWidth label="Select City (select)" variant="outlined" margin="dense"/>
-                <TextField fullWidth label="Venue Category (select)" variant="outlined" margin="dense"/>
                 <TextField fullWidth label="Select Locality (select)" variant="outlined" margin="dense"/>
               </Grid>
 
