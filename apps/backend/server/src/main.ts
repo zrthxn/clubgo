@@ -1,18 +1,8 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- **/
+import { clubgoServer as server } from './app/Server'
+const port = process.env.port || 3333
 
-import * as express from 'express';
+server.listen(port, () => {
+  console.log(`Listening at ${port}`)
+})
 
-const app = express();
-
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to server!' });
-});
-
-const port = process.env.port || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+server.on('error', console.error)

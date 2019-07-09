@@ -20,7 +20,7 @@
     "admin-e2e": {
       "tags": []
     },
-    "backend-server": {
+    "server": {
       "tags": ["app:server"]
     },
     "features-api": {
@@ -28,6 +28,9 @@
     },
     "util": {
       "tags": ["util"]
+    },
+    "database": {
+      "tags": ["lib:db"]
     }
   }
 }

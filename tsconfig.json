@@ -17,7 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@clubgo/features/api": ["libs/features/api/src/index.ts"],
-      "@clubgo/util": ["libs/util/src/index.ts"]
+      "@clubgo/util": ["libs/util/src/index.ts"],
+      "@clubgo/database": ["libs/database/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
