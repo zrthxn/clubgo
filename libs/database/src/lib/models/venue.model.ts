@@ -59,10 +59,13 @@ export const venueSchema = new mongoose.Schema(
     ],
     images: [
       {
-        imgId: {
-          type: String, required: true
+        resourceType: {
+          type: String, enum: ['cdn', 'ext', 'url', 'base64'], required: true
         },
-        tag: String
+        resource: {
+          type: String || Buffer, required: true
+        },
+        tags: [String]
       }
     ]
   },
