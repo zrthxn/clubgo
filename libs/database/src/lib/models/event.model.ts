@@ -1,78 +1,103 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 
 export const eventSchema = new mongoose.Schema(
   {
-    name: { 
+    title: { 
       type: String, required: true 
     },
+    categories: [String],
     description: {
       type: String, required: true
     },
     tagline: String,
     flashText: String,
-    category: {
-      type: [String], required: true
-    },
     artists: [Object],
     music: [String],
     dressCode: {
-      type: Object, required: true
+      id: String,
+      title: String,
     },
     tags: [String],
-    // Custom Details
-    hasCutomDetails: Boolean,
-    customDetails: [
-      {
-        detailName: String,
-        detailData: String
-      }
-    ],
-    // Settings
-    eventPriority: Number,
-    isFeatured: Boolean,
-    featured: {
-      featuredText: String,
-      featuredPriority: Number
+    custom: {
+      hasCutomDetails: Boolean,
+      customDetails: [
+        {
+          detailName: String,
+          detailData: String
+        }
+      ],
     },
-    isPublished: Boolean,
-    
-    // Event Venue Details
+    settings: {
+      isPublished: Boolean,
+      eventPriority: Number,
+      isFeatured: Boolean,
+      featured: {
+        featuredText: String,
+        featuredPriority: Number
+      }
+    },
     venue: {
+      venueType: {
+        type: String, enum: ['regular', 'custom'], required: true
+      },
       city: {
         type: String, required: true
       },
-      venueType: 'regular' || 'custom',
-      isCustomVenue: Boolean,
       venueId: String,
+      title: String,
+      address: String, 
+      isCustomVenue: Boolean,
       customVenueDetails: {
-        location: [Number]
-        // add these
+        locality: String,
+        coordinates: {
+          _lat: {
+            type: Number, required: true, min: -180, max: 180
+          },
+          _lon: {
+            type: Number, required: true, min: -180, max: 180
+          }
+        }        
       }
-      // .... redo venue id
     },
-
-    // Event Scheduling
     scheduling: {
-      start: {
+      startTime: {
         type: Date, required: true
       },
-      end: {
+      endTime: {
         type: Date, required: true
       },
-      //
       isRecurring: Boolean,
-      recurringType: 'daily' || 'weekly' || 'monthly' || 'custom',
+      recurringType: {
+        type: String, enum: ['daily', 'weekly', 'monthly', 'custom'], required: true
+      },
       isCustomRecurring: Boolean,
       customRecurring: {
+        type: String // temp
         // what will this be
       }
     },
-
-    // Bookings
     bookings: {
       isTakingOnsiteBookings: Boolean,
-      // 
-    }
+      isTakingOnsitePayments: Boolean,
+      tickets: [
+        {
+          ticketId: String,
+          price: Number,
+          activateTime: Date || Number,
+          deactivateTime: Date || Number
+        }
+      ],
+      registrationURL: String,
+      registrationPhone: String
+    },
+    images: [
+      {
+        imgId: {
+          type: String, required: true
+        },
+        tag: String
+      }
+    ]
   },
   {
     collection: 'Events'
@@ -80,7 +105,7 @@ export const eventSchema = new mongoose.Schema(
 );
 
 import eventController from '../controllers/event.controller'
-eventSchema.actions = eventController
+eventSchema['actions'] = eventController
 
 export const Event = mongoose.model('Event', eventSchema)
 export default Event

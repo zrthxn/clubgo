@@ -5,7 +5,7 @@ import * as bodyParser from 'body-parser'
 export const ClubgoServer = express()
 export default ClubgoServer
 
-import { AdminRouter } from './routes/AdminRouter'
+import AdminRouter from './routes/AdminRouter/AdminRouter'
 
 ClubgoServer.use( bodyParser() )
 

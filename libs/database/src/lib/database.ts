@@ -2,29 +2,44 @@ import mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 
 const config = require('./config.json').database
-const url = `${config.protocol}://${config.username}:${config.password}@${config.url}/${config.db}`
 
-var state = null
+let options = ''
+for(const key in config.options)
+  if(config.options.hasOwnProperty(key))
+    options += (key + '=' + config.options[key] + '&')
+
+const url = 
+  `${config.protocol}://${config.username}:${config.password}@${config.url}/` +
+  `${config.db}?` +
+  `${ options }`
 
 export const database = {
+  state: {
+    db: null,
+    mode: 'DISCONNECTED'
+  },
   connect: async () => {
-    if (state!==null || state==='CONNECTED') return state
+    if (database.state.mode==='CONNECTED') return database.state
 
     await mongoose.connect(
       url, 
       { 
         userMongoClient: true,
-        createIndexes: true
+        createIndexes: true,
+        useFindAndModify: true,
       }
     )
     
-    state = 'CONNECTED'
-    return Promise.resolve(state)
+    database.state = {
+      db: mongoose.connection,
+      mode: 'CONNECTED'
+    }
+    return database.state
   },
   get: () => {
-    return state
+    return database.state.mode
   },  
-  close: (callback) => {
+  close: async () => {
     // if (state) {
     //   state.close(function(err, result) {
     //     state.db = null

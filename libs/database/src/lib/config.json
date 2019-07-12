@@ -4,6 +4,9 @@
     "protocol": "mongodb+srv",
     "url": "sandboxdb-oitfz.mongodb.net", 
     "username": "admin",
-    "password": "admin"
+    "password": "admin",
+    "options": {
+      
+    }
   }
 }
