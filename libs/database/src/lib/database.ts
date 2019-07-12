@@ -1,30 +1,36 @@
-import { MongoClient } from 'mongodb'
+import mongoose from 'mongoose'
+import { conf } from '@clubgo/util'
 
-let state = {
-  db: null,
-  mode: null
-}
+const config = require('./config.json').database
+const url = `${config.protocol}://${config.username}:${config.password}@${config.url}/${config.db}`
 
-export function connect(url, callback) {
-  if (state.db) return callback()
+var state = null
 
-  MongoClient.connect(url, function(err, db) {
-    if (err) return callback(err)
-    state.db = db
-    callback()
-  })
-}
+export const database = {
+  connect: async () => {
+    if (state!==null || state==='CONNECTED') return state
 
-export function get() {
-  return state.db
-}
-
-export function close(callback) {
-  if (state.db) {
-    state.db.close(function(err, result) {
-      state.db = null
-      state.mode = null
-      callback(err)
-    })
+    await mongoose.connect(
+      url, 
+      { 
+        userMongoClient: true,
+        createIndexes: true
+      }
+    )
+    
+    state = 'CONNECTED'
+    return Promise.resolve(state)
+  },
+  get: () => {
+    return state
+  },  
+  close: (callback) => {
+    // if (state) {
+    //   state.close(function(err, result) {
+    //     state.db = null
+    //     state.mode = null
+    //     callback(err)
+    //   })
+    // }
   }
 }

@@ -1,11 +1,16 @@
 import express from 'express'
-export const clubgoServer = express()
+import mongoose from 'mongoose'
+import * as bodyParser from 'body-parser'
 
-export default clubgoServer
+export const ClubgoServer = express()
+export default ClubgoServer
 
-import { get, User, userController, userSchema } from '@clubgo/database'
+import { AdminRouter } from './routes/AdminRouter'
 
-clubgoServer.get('/', (req,res)=>{
-  User.actions.get()
+ClubgoServer.use( bodyParser() )
+
+ClubgoServer.get('/', (req, res)=>{
   res.send({ message: 'clubgo' })
 })
+
+ClubgoServer.use('/admin', AdminRouter)
