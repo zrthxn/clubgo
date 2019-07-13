@@ -1,19 +1,38 @@
 import * as mongoose from 'mongoose'
 
-export const artistSchema = new mongoose.Schema({
-  title: {
-    type: String, required: true
-  },
+/**
+ * @module
+ * Artist Model
+ * * Update the interface changing schema *
+ */
+
+export const artistSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String, required: true
+    },
+    images: [
+      {
+        url: {
+          type: String, required: true
+        },
+        tags: [String]
+      }
+    ]
+  }, {
+    collection: 'Artists'
+  }
+)
+
+export interface IArtistModel extends mongoose.Document {
+  title: string,
   images: [
     {
-      imgId: {
-        type: String, required: true
-      },
-      tag: String
+      url: string,
+      tags?: [string]
     }
-  ],
-  tags: [String]
-})
+  ]
+}
 
-export const Artist = mongoose.model('Artist', artistSchema)
+export const Artist = mongoose.model<IArtistModel>('Artist', artistSchema)
 export default Artist

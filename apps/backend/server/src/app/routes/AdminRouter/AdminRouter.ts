@@ -7,7 +7,7 @@ import UserAdminRouter from './routes/UserAdminRouter'
 import VenueAdminRouter from './routes/VenueAdminRouter'
 
 Database.connect()
-  .then((connection) => console.log(conf.Green('Mongoose Connected'), conf.Magenta(connection.mode)))
+  .then((connection) => console.log(conf.Magenta(connection.mode)))
   .catch((e) => console.log(conf.Red(e)) )
 
 

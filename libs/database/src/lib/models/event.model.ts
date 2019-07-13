@@ -1,34 +1,54 @@
-import * as mongoose from 'mongoose';
+import * as mongoose from 'mongoose'
+import EventController from '../controllers/event.controller'
 
-export const eventSchema = new mongoose.Schema(
+import { artistSchema, IArtistModel } from './artist.model'
+
+/**
+ * @module
+ * User Model Integrated with Controller
+ * * Update the interface changing schema *
+ */
+
+ export const eventSchema = new mongoose.Schema(
   {
+    ref: { 
+      type: String, required: true, unique: true // first 8 charecters (4 bytes) of ObjectID
+    },
     title: { 
+      type: String, required: true
+    },
+    description: { 
       type: String, required: true 
     },
     categories: [String],
-    description: {
-      type: String, required: true
-    },
     tagline: String,
     flashText: String,
-    artists: [Object],
+    artists: [ artistSchema ],
     music: [String],
     dressCode: {
-      id: String,
-      title: String,
+      title: {
+        type: String, required: true
+      },
+      images: [String]
     },
     tags: [String],
     custom: {
       hasCutomDetails: Boolean,
       customDetails: [
         {
-          detailName: String,
-          detailData: String
+          detailName: {
+            type: String, required: true
+          },
+          detailData: {
+            type: String, required: true
+          }
         }
       ],
     },
     settings: {
-      isPublished: Boolean,
+      isPublished: {
+        type: Boolean, required: true
+      },
       eventPriority: Number,
       isFeatured: Boolean,
       featured: {
@@ -37,43 +57,60 @@ export const eventSchema = new mongoose.Schema(
       }
     },
     venue: {
-      venueType: {
-        type: String, enum: ['regular', 'custom'], required: true
+      venueType: { 
+        type: String, enum: ['regular', 'custom'], required: true 
       },
-      city: {
-        type: String, required: true
+      city: { 
+        type: String, required: true 
       },
       venueId: String,
-      title: String,
+      title: {
+        type: String, required: true
+      },
       address: String, 
       isCustomVenue: Boolean,
       customVenueDetails: {
         locality: String,
         coordinates: {
-          _lat: {
-            type: Number, required: true, min: -180, max: 180
+          _lat: { 
+            type: Number, required: true, min: -180, max: 180 
           },
-          _lon: {
-            type: Number, required: true, min: -180, max: 180
+          _lon: { 
+            type: Number, required: true, min: -180, max: 180 
           }
         }        
       }
     },
     scheduling: {
-      startTime: {
-        type: Date, required: true
+      startTime: { 
+        type: Date, required: true 
       },
-      endTime: {
-        type: Date, required: true
+      endTime: { 
+        type: Date, required: true 
       },
       isRecurring: Boolean,
-      recurringType: {
-        type: String, enum: ['daily', 'weekly', 'monthly', 'custom'], required: true
+      recurringType: { 
+        type: String, enum: ['daily', 'weekly', 'monthly', 'custom']
       },
       isCustomRecurring: Boolean,
       customRecurring: {
-        type: String // temp
-        // what will this be
+        initial: {
+          type: Date, required: true
+        },
+        final: Date || Infinity,
+        dates: [
+          {
+            date: { 
+              type: Date, required: true 
+            },
+            startTime: { 
+              type: Date, required: true 
+            },
+            endTime: { 
+              type: Date, required: true
+            }
+          }
+        ]
       }
     },
     bookings: {
@@ -92,11 +129,8 @@ export const eventSchema = new mongoose.Schema(
     },
     images: [
       {
-        resourceType: {
-          type: String, enum: ['cdn', 'ext', 'url', 'base64'], required: true
-        },
-        resource: {
-          type: String || Buffer, required: true
+        url: {
+          type: String, required: true
         },
         tags: [String]
       }
@@ -107,8 +141,94 @@ export const eventSchema = new mongoose.Schema(
   }
 );
 
-import eventController from '../controllers/event.controller'
-eventSchema['actions'] = eventController
+eventSchema.loadClass(EventController)
 
-export const Event = mongoose.model('Event', eventSchema)
+export interface IEventModel extends mongoose.Document {
+  ref: string,
+  title: string,
+  description: string,
+  categories?: [string],
+  tagline?: string,
+  flashText?: string,
+  artists?: [ IArtistModel ],
+  music?: [string],
+  dressCode?: {
+    title: string,
+    images?: [string],
+  },
+  tags?: [string],
+  custom?: {
+    hasCutomDetails?: boolean,
+    customDetails?: [
+      {
+        detailName: string,
+        detailData: string
+      }
+    ]
+  },
+  settings: {
+    isPublished: boolean,
+    eventPriority?: number,
+    isFeatured?: boolean,
+    featured?: {
+      featuredText?: string,
+      featuredPriority?: number
+    }
+  },
+  venue: {
+    venueType: 'regular' | 'custom',
+    city: string,
+    venueId?: string,
+    title: string,
+    address?: string, 
+    isCustomVenue?: boolean,
+    customVenueDetails?: {
+      locality?: string,
+      coordinates?: {
+        _lat: number,
+        _lon: number
+      }
+    }
+  },
+  scheduling: {
+    startTime: Date,
+    endTime: Date,
+    isRecurring?: boolean,
+    recurringType?: 'daily' | 'weekly' | 'monthly' | 'custom',
+    isCustomRecurring?: boolean,
+    customRecurring: {
+      initial: Date,
+      final?: Date | number,
+      dates: [
+        {
+          date: Date,
+          startTime: Date,
+          endTime: Date
+        }
+      ]
+    }
+  },
+  bookings: {
+    isTakingOnsiteBookings?: boolean,
+    isTakingOnsitePayments?: boolean,
+    tickets?: [
+      {
+        ticketId: string,
+        price: number,
+        activateTime?: Date | number,
+        deactivateTime?: Date | number
+      }
+    ],
+    registrationURL?: string,
+    registrationPhone?: string
+  },
+  images: [
+    {
+      url: string,
+      tags?: [string]
+    }
+  ]
+}
+
+export const Event = mongoose.model<IEventModel>('Event', eventSchema)
 export default Event

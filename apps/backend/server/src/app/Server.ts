@@ -13,4 +13,16 @@ ClubgoServer.get('/', (req, res)=>{
   res.send({ message: 'clubgo' })
 })
 
+ClubgoServer.get('/:filter/:query', (req, res)=>{
+  res.send('A')
+})
+
+ClubgoServer.get('/:city/events/:eventRef', (req, res)=>{
+  res.send('B')
+})
+
+ClubgoServer.get('/:city/venues/:venueRef', (req, res)=>{
+  res.send('C')
+})
+
 ClubgoServer.use('/admin', AdminRouter)

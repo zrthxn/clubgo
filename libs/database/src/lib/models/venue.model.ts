@@ -1,16 +1,28 @@
 import * as mongoose from 'mongoose'
+import VenueController from '../controllers/venue.controller'
+
+/**
+ * @module
+ * Venue Model Integrated with Controller
+ * * Update the interface changing schema *
+ */
 
 export const venueSchema = new mongoose.Schema(
   {
+    ref: {
+      type: String, required: true, unique: true // first 8 charecters (4 bytes) of ObjectID
+    }, 
     title: {
       type: String, required: true
     },
-    categories: [String],
     description: {
       type: String, required: true
     },
+    categories: [String],
     locality: String,
-    address: String,
+    address: {
+      type:String, required: true
+    },
     altAddress: String,
     nearestMetroStation: String,
     coordinates: {
@@ -28,7 +40,9 @@ export const venueSchema = new mongoose.Schema(
       type: Number, min: 0
     },
     settings: {
-      isPublished: Boolean,
+      isPublished: {
+        type: Boolean, required: true
+      },
       venuePriority: Number,
       isFeatured: Boolean,
       featured: {
@@ -38,32 +52,37 @@ export const venueSchema = new mongoose.Schema(
     },
     timings: [
       {
-        day: String,
-        isOpen: Boolean,
-        openTime: {
+        day: { 
+          type: String, enum: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'], required: true
+        },
+        isOpen: { 
+          type: Boolean, required: true
+        },
+        dayOpenTime: {
           type: Number, required: true, min: 0, max: 47
         },
-        closeTime: {
+        dayCloseTime: {
           type: Number, required: true, min: 0, max: 47
         },
-        busy: Number 
+        busy: Number
       }
     ],
     offers: [
       {
-        isActive: Boolean,
-        offerName: String,
+        isActive: {
+          type: Boolean, required: true
+        },
+        offerName: {
+          type: String, required: true
+        },
         offerDescription: String,
-        action: RegExp // something like -15% or 1+1 or similar
+        action: String, // RegExp // something like -15% or 1+1 or similar
       }
     ],
     images: [
       {
-        resourceType: {
-          type: String, enum: ['cdn', 'ext', 'url', 'base64'], required: true
-        },
-        resource: {
-          type: String || Buffer, required: true
+        url: {
+          type: String, required: true
         },
         tags: [String]
       }
@@ -74,8 +93,58 @@ export const venueSchema = new mongoose.Schema(
   }
 )
 
-import venueController from '../controllers/venue.controller'
-venueSchema['actions'] = venueController
+venueSchema.loadClass(VenueController)
 
-export const Venue = mongoose.model('Venue', venueSchema)
+export interface IVenueModel extends mongoose.Document {
+  ref: string,
+  title: string,
+  description: string,
+  categories?: [string],
+  locality?: string,
+  address: string,
+  altAddress?: string,
+  nearestMetroStation?: string,
+  coordinates?: {
+    _lat: number,
+    _lon: number
+  },
+  knownFor?: [string],
+  cuisines?: [string],
+  facilities?: [string],
+  costForTwo?: number,
+  settings: {
+    isPublished: boolean,
+    venuePriority?: number,
+    isFeatured?: boolean,
+    featured?: {
+      featuredText?: string,
+      featuredPriority?: number
+    }
+  },
+  timings: [
+    {
+      day: string,
+      isOpen: boolean,
+      dayOpenTime: number,
+      dayCloseTime: number,
+      busy?: number,
+    }
+  ],
+  offers: [
+    {
+      isActive: boolean,
+      offerName?: string,
+      offerDescription?: string,
+      action?: string, // RegExp // something like -15% or 1+1 or similar
+    }
+  ],
+  images: [
+    {
+      url: string,
+      tags?: [string],
+    }
+  ]
+}
+
+export const Venue = mongoose.model<IVenueModel>('Venue', venueSchema)
 export default Venue

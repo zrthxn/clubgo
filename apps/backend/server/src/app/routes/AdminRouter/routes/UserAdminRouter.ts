@@ -1,4 +1,5 @@
 import express from 'express'
+import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 import { User } from '@clubgo/database'
 
@@ -24,7 +25,7 @@ UserAdminRouter.post('/_create', async (req, res)=>{
     res.status(201)
       .send({ 
         result: 'created',
-        _id: result._id
+        id: result._id
       })
   } catch (err) {
     res.status(500).send({ error: err })
@@ -36,6 +37,23 @@ UserAdminRouter.get('/:userid', async (req, res)=>{
   const searchUser = await User.findOne({ _id: req.params.userid })
   res.send({ 
     result: searchUser
+  })
+})
+
+// Read a group of users by ID
+UserAdminRouter.post('/group', async (req, res)=>{
+  const { searchIds } = req.body
+  for (let id of searchIds)
+    id = mongoose.Types.ObjectId(id)
+  
+  const searchResult = await User.find({
+    _id: { 
+      $in: searchIds
+    }
+  })
+
+  res.send({ 
+    result: searchResult
   })
 })
 
@@ -61,7 +79,10 @@ UserAdminRouter.delete('/_delete/:userid', async (req, res)=>{
       _id: req.params.userid 
     }
   )
-  res.status(204).send(result)
+  res.send({ 
+    result:'deleted', 
+    message: result
+  })
 })
 
 export default UserAdminRouter

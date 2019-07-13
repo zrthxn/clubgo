@@ -29,25 +29,23 @@ export class CreateEvent extends Component {
           </div>
 
           <Grid container xs={12}>
-            <Grid item xs={1}/>
-            
-            <Grid item xs={10}>
+            <Grid item xs={12}>
               <Grid container xs={12} spacing={3}>
-                <Grid item xs={12}><EventDetails/></Grid>
+                <Grid item xs={7}><EventDetails/></Grid>
+
+                <Grid item xs={5}><Settings/></Grid>
+
+                <Grid item xs={12}><hr/></Grid>
 
                 <Grid item xs={6}><Venue/></Grid>
 
                 <Grid item xs={6}><Images/></Grid>
-
-                <Grid item xs={12}><Scheduling/></Grid>
-
+                
                 <Grid item xs={6}><Booking/></Grid>
 
-                <Grid item xs={6}><Settings/></Grid>
+                <Grid item xs={6}><Scheduling/></Grid>                
               </Grid>              
             </Grid>
-
-            <Grid item xs={1}/>
           </Grid>
         </Form>
       </div>

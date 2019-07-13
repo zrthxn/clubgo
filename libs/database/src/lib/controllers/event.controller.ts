@@ -1,3 +1,5 @@
-export const eventController = {}
-
-export default eventController
+export default class EventController {
+  async get() {
+    return this
+  }
+}
