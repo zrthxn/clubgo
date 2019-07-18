@@ -1,0 +1,23 @@
+.listings {
+  padding: 2em;
+  
+  .table-title {
+    padding: 1em;
+
+    width: fit-content;
+    font-weight: 600;
+    font-size: 1.5em;
+  }
+
+  .listing-table {
+    margin: 2em 0;
+    padding: 1em;
+    // background-color: #fff;
+
+    .list-item {
+      display: inline;
+      margin: 0.5em;
+      padding: 1em;
+    }
+  }
+}

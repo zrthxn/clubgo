@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Nav, Navbar, NavItem } from 'reactstrap'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
+import { version } from '@clubgo/util'
 import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
 import blue from '@material-ui/core/colors/blue';
@@ -8,15 +9,13 @@ import blue from '@material-ui/core/colors/blue';
 import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
 import { AccountCircle, MenuRounded, MessageRounded, Notifications } from '@material-ui/icons'
 
-const version = '2.1.0'
-
 import '../assets/scss/Admin.scss'
 
 import { LoginPage } from './pages/LoginPage'
 import { Dashboard } from './pages/Dashboard'
-import { Events } from './pages/EventsPage'
-import { Venues } from './pages/VenuesPage'
-import { Tickets } from './pages/TicketsPage'
+import { EventsPage } from './pages/EventsPage'
+import { VenuesPage } from './pages/VenuesPage'
+import { TicketsPage } from './pages/TicketsPage'
 
 const theme = createMuiTheme({
   palette: {
@@ -115,13 +114,13 @@ export class Admin extends Component {
                 </Toolbar>
               </AppBar>
 
-              <section id="content" className="container">
+              <section id="content">
                 <Switch>
                   <Route exact path="/" component={ Dashboard } />
                   <Route path="/dashboard" component={ Dashboard } />
-                  <Route path="/events" component={ Events } />
-                  <Route path="/venues" component={ Venues } />
-                  <Route path="/tickets" component={ Tickets } />
+                  <Route path="/events" component={ EventsPage } />
+                  <Route path="/venues" component={ VenuesPage } />
+                  <Route path="/tickets" component={ TicketsPage } />
                 </Switch>
               </section>
             </div>

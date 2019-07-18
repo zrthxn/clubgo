@@ -1,10 +1,18 @@
 import React, { Component } from 'react'
 
+import '../../assets/scss/Pages.scss'
+
 export class Dashboard extends Component {
   render() {
     return (
-      <div>
-        <h2>Dashboard</h2>
+      <div className="page">
+        <article className="page-header">
+          <h2 className="title">Dashboard</h2>
+        </article>
+
+        <article className="main-content">
+          
+        </article>
       </div>
     )
   }

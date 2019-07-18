@@ -58,7 +58,6 @@ h1, h2, h3, h4 {
 
 $sidebar-bg: #d3d3d3;
 $sidebar-hover-bg: #0e74fa;
-$section-root-bg: #f3f3f380;
 
 #admin-panel-root {
   #panel {
@@ -127,14 +126,10 @@ $section-root-bg: #f3f3f380;
       box-shadow: 0 0 10px #1c1c1c40;
       overflow: scroll;
       overflow-x: hidden;
-      background-color: $section-root-bg;
+      background-color: #fff;
 
       #content {
-        padding: 2em;
-      }
-
-      .title {
-        margin-bottom: 1em;
+        // padding: 2em;
       }
 
       .nav-item {

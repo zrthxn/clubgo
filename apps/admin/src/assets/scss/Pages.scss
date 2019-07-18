@@ -1,0 +1,22 @@
+.page {
+  .page-header {
+    padding: 2em;
+  }
+
+  .title {
+    margin-bottom: 1em;
+  }
+
+  .section-nav {
+    padding: 0 2em;
+
+    .nav-item {
+      margin: auto 0.25em;
+    }
+  }
+
+  .section-content {
+    background: #e9e9e980;
+    padding: 2em;
+  }
+}

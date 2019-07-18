@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Stream</title>
+</head>
+<body>
+  <button onclick="startStream()">Start</button>
+
+  <div id="cont">
+
+  </div>
+
+  <script>
+    function startStream() {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', '/admin/user/_all', false);
+      xhr.send();
+      xhr.seenBytes = 0;
+
+      xhr.onreadystatechange = function() {
+        console.log("state change... "+ xhr.readyState);
+        if(xhr.readyState == 3) {
+          var newData = xhr.response.substr(xhr.seenBytes);
+          console.log("newData: <<" +newData+ ">>");
+
+          // document.body.innerHTML += "New data: <<" +newData+ ">><br />";
+          
+          xhr.seenBytes = xhr.responseText.length;
+          console.log("seenBytes: " + xhr.seenBytes);
+        }
+      }
+
+      xhr.addEventListener("error", function(e) {
+        console.log("error: " +e);
+      });
+    }
+  </script>
+</body>
+</html>

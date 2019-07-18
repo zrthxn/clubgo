@@ -14,7 +14,7 @@ import { artistSchema, IArtistModel } from './artist.model'
     ref: { 
       type: String, required: true, unique: true // first 8 charecters (4 bytes) of ObjectID
     },
-    title: { 
+    eventTitle: { 
       type: String, required: true
     },
     description: { 
@@ -145,7 +145,7 @@ eventSchema.loadClass(EventController)
 
 export interface IEventModel extends mongoose.Document {
   ref: string,
-  title: string,
+  eventTitle: string,
   description: string,
   categories?: [string],
   tagline?: string,

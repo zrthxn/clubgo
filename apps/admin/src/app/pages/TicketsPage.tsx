@@ -1,13 +1,21 @@
 import React, { Component } from 'react'
 
-export class Tickets extends Component {
+import '../../assets/scss/Pages.scss'
+
+export class TicketsPage extends Component {
   render() {
     return (
-      <div>
-        <h2 className="title">Tickets</h2>
+      <div className="page">
+        <article className="page-header">
+          <h2 className="title">Tickets</h2>
+        </article>
+
+        <article className="main-content">
+          
+        </article>
       </div>
     )
   }
 }
 
-export default Tickets
+export default TicketsPage

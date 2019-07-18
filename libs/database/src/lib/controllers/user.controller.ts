@@ -1,5 +1,15 @@
+import { User as UserModel } from '../models/user.model'
+
 export default class UserController {
-  async get() {
-    return this
-  }  
+  // User = new UserModel({
+  //   name: '',
+  // })
+
+  // constructor() {
+  //   this.User.name = ''
+  // }
+
+  // async get() {
+  //   return this
+  // }  
 }

@@ -12,7 +12,7 @@ export const venueSchema = new mongoose.Schema(
     ref: {
       type: String, required: true, unique: true // first 8 charecters (4 bytes) of ObjectID
     }, 
-    title: {
+    venueTitle: {
       type: String, required: true
     },
     description: {
@@ -97,7 +97,7 @@ venueSchema.loadClass(VenueController)
 
 export interface IVenueModel extends mongoose.Document {
   ref: string,
-  title: string,
+  venueTitle: string,
   description: string,
   categories?: [string],
   locality?: string,

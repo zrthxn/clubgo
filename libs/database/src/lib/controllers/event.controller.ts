@@ -1,5 +1,5 @@
 export default class EventController {
-  async get() {
-    return this
-  }
+  // async get() {
+  //   return this
+  // }
 }

@@ -1,5 +1,5 @@
 export default class VenueController {
-  async get() {
-    return this
-  }
+  // async get() {
+  //   return this
+  // }
 }

@@ -3,12 +3,12 @@ import { conf } from '@clubgo/util'
 
 const config = require('./config.json').database
 
-let options = ''
+let dbConnOptions = ''
 for(const key in config.options)
   if(config.options.hasOwnProperty(key))
-    options += (key + '=' + config.options[key].toString() + '&')
+    dbConnOptions += (key + '=' + config.options[key].toString() + '&')
 
-const url = `${config.protocol}://${config.username}:${config.password}@${config.url}/${config.db}?${options}`
+const url = (db) => `${config.protocol}://${config.username}:${config.password}@${config.url}/${db}?${dbConnOptions}`
 
 export const database = {
   state: {
@@ -16,12 +16,13 @@ export const database = {
     mode: 'UNINITIALIZED'
   },
 
-  connect: async () => {
+  connect: async (options) => {
     if (database.state.mode==='CONNECTED') return database.state
-
+    
     await mongoose.connect(
-      url, 
+      url(options.db), 
       {
+        useNewUrlParser: true,
         useCreateIndex: true,
         useFindAndModify: true,
       }
@@ -30,7 +31,7 @@ export const database = {
       db: mongoose.connection,
       mode: 'CONNECTED'
     }
-    console.log(conf.Green('Mongoose Connected'))
+    console.log(conf.Green(`Mongoose Connected to ${config.url}/${options.db}`))
     return database.state
   },
 

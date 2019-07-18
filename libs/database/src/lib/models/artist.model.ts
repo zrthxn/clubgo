@@ -8,7 +8,7 @@ import * as mongoose from 'mongoose'
 
 export const artistSchema = new mongoose.Schema(
   {
-    title: {
+    artistTitle: {
       type: String, required: true
     },
     images: [
@@ -25,7 +25,7 @@ export const artistSchema = new mongoose.Schema(
 )
 
 export interface IArtistModel extends mongoose.Document {
-  title: string,
+  artistTitle: string,
   images: [
     {
       url: string,
