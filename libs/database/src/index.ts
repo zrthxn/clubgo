@@ -1,4 +1,5 @@
 export * from './lib/database'
+export * from './lib/firebase'
 
 // Models
 export * from './lib/models/user.model'

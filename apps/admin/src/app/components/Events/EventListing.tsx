@@ -46,8 +46,8 @@ export class EventListing extends Component {
             {
               this.state.listing.map((item, index)=>{
                 return (
-                  <div>
-                    <EventListItem key={ item._id }
+                  <div key={ `listing_${index}` }>
+                    <EventListItem
                       data={ item }
                     />
 

@@ -48,7 +48,7 @@ export class EventEditor extends Component<EventEditorProps> {
             <Button outline color="secondary" size="lg" className="float-right">Save</Button>
           </div>
 
-          <Grid container xs={12} spacing={3}>
+          <Grid item container spacing={3}>
             <Grid item xs={7}>
               <EventDetails/>
             </Grid>

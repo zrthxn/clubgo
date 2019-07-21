@@ -3,9 +3,18 @@ import axios from 'axios'
 export class ApiFeatures {
   requests = axios
 
+  auth = {
+    csrf: {
+
+    },
+    headers: {
+
+    }
+  }
+
   constructor() {
     this.requests.create({
-      baseURL: 'http://localhost:3333',
+      baseURL: '/api',
       timeout: 5000,
       headers: {
         'X-Custom-Header': 'foobar',

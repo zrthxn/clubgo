@@ -1,50 +1,79 @@
-import React, { Component } from 'react'
-import * as Rs from 'reactstrap'
-
-import { Grid, Paper, InputAdornment } from '@material-ui/core'
+import React, { Component, CSSProperties, HTMLAttributes } from 'react'
+import { Grid, Paper, InputAdornment, MenuItem } from '@material-ui/core'
 import { TextField, Button, Switch, Checkbox, Chip } from '@material-ui/core'
+import Select from 'react-select';
+
+import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export class Venue extends Component {
   state = {
-    selectedArtist: null,
-    loadedArtists: [
-      1, 2
+    suggestions:{
+      city: [ ],
+      venueCategory: [ ],
+      venue: [ ],
+      locality: [ ]
+    },
+    selectCity: null,
+    selectVenueCategory: null,
+    selectCustomLocality: null,
+    filters: [
+      'selectCity', 'selectVenueCategory'
     ],
-    isCustom: false
+    data: {
+      city: String,
+      venueId: String,
+      title: String,
+      address: String,
+      isCustomVenue: false,
+      customVenueDetails: {
+        locality: String,
+        coordinates: {
+          _lat: Number,
+          _lon: Number
+        }
+      }
+    },
+    requiredFulfilled: false,
+    required: [
+      'city'
+    ],
+    iteratableMembers: [ ]
   }
 
-  artistMenuBuilder() {
-    return this.state.loadedArtists.map((ar, i)=>{
-      return (
-        <Rs.DropdownItem key={`artist-${i}`}>Action</Rs.DropdownItem>
-      )
-    })
-  }
+  constructor(props) {
+    super(props)
+    let { suggestions } = this.state
 
-  handleDelete(i) {
-    // console.log(this.state.loadedArtists.filter(
-    //   item => item !== i
-    // ))
-    this.setState((pS, pr)=>({
-      loadedArtists: this.state.loadedArtists.filter(
-        item => item !== i
-      )
+    suggestions.city = [
+      { label: 'Delhi' },
+      { label: 'Mumbai' },
+      { label: 'Bangalore' },
+      { label: 'Gurgaon' },
+    ].map(item=>({
+      value: item.label, label: item.label,
     }))
+
+    suggestions.venueCategory = [
+      { label: 'Nightclubs' },
+      { label: 'Clubs and Bars' }
+    ].map(item=>({
+      value: item.label, label: item.label,
+    }))
+
+    suggestions.venue = [
+      // 
+    ].map(item=>({
+      value: item.label, label: item.label,
+    }))
+
+    this.state.suggestions = suggestions
   }
 
-  renderChips(arr, deleter) {
-    return arr.map((a,i)=>{
-      return (
-        <span key={i} className="chips-container">
-          <Chip
-            label={'data ' + a}
-            onDelete={
-              () => deleter(a)
-            }
-          />
-        </span>
-      )
-    })
+  handleChangeById = (event) => {
+    const result = inputHandler(event, this.state)
+    this.setState((prevState)=>(
+      result
+    ))
   }
 
   render() {
@@ -56,39 +85,98 @@ export class Venue extends Component {
           Venue
           <div className="float-right">
             <span className="inline-text-label">Custom</span>
-            <Switch color="primary"
-              onChange={()=>{
-                this.setState(()=>({
-                  isCustom: !this.state.isCustom
-                }))
-              }}
-            />
+            <Switch id="isCustomVenue" color="primary" onChange={this.handleChangeById}/>
           </div>
         </h3>
-        
+
         {
-          !this.state.isCustom ? (
-            <Grid container xs={12} spacing={3}>
-              <Grid item xs={12}>
-                <TextField required fullWidth label="Select City (select)" variant="outlined" margin="dense"/>
-                <TextField fullWidth label="Venue Category (select)" variant="outlined" margin="dense"/>
+          !this.state.data.isCustomVenue ? (
+            <Grid item container xs={12} spacing={3}>
+              <Grid item xs={6}>
+                <Select
+                  inputId="city"
+                  placeholder="Select City"
+                  value={this.state.selectCity}
+                  options={this.state.suggestions.city}
+                  onChange={ selected => {
+                    let { data } = this.state
+                    data.city = selected.value
+                    this.setState((prevState, props)=>({ 
+                      data: data,
+                      selectCity: selected
+                    }))
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <Select
+                  inputId="venueCategory"
+                  placeholder="Venue Catgory"
+                  value={this.state.selectVenueCategory}
+                  options={this.state.suggestions.venueCategory}
+                  onChange={ selected => {
+                    this.setState((prevState, props)=>({
+                      selectVenueCategory: selected
+                    }))
+                  }}
+                />
               </Grid>
 
               <Grid item xs={12}>
-                <TextField required fullWidth label="Venue Name" variant="outlined"/>
+                <TextField id="title" fullWidth label={(()=>{
+                  try {
+                    try {
+                      return `${this.state.selectVenueCategory.label} in ${this.state.selectCity.label}`
+                    } catch(e) {
+                      return `Venues in ${this.state.selectCity.label}`
+                    }
+                  } catch(e) {
+                    return 'Venue Name'
+                  }
+                })()} variant="outlined"/>
               </Grid>
-            </Grid>              
+            </Grid>
           ) : (
-            <Grid container xs={12} spacing={3}>
-              <Grid item xs={12}>
-                <TextField required fullWidth label="Select City (select)" variant="outlined" margin="dense"/>
-                <TextField fullWidth label="Select Locality (select)" variant="outlined" margin="dense"/>
+            <Grid item container xs={12} spacing={3}>
+              <Grid item xs={6}>
+                <Select
+                  inputId="city"
+                  placeholder="Select City"
+                  value={this.state.selectCity}
+                  options={this.state.suggestions.city}
+                  onChange={ selected => {
+                    let { data } = this.state
+                    data.city = selected.value
+                    this.setState((prevState, props)=>({ 
+                      data: data,
+                      selectCity: selected
+                    }))
+                  }}
+                />
+              </Grid>
+              
+              <Grid item xs={6}>
+                <Select
+                  inputId="customVenueDetails/locality"
+                  placeholder="Select Locality"
+                  value={this.state.selectCustomLocality}
+                  options={this.state.suggestions.locality}
+                  onChange={ selected => {
+                    let { data } = this.state
+                    data.customVenueDetails.locality = selected.value
+                    this.setState((prevState, props)=>({ 
+                      data: data,
+                      selectCustomLocality: selected
+                    }))
+                  }}
+                />
               </Grid>
 
               <Grid item xs={12}>
-                <TextField required fullWidth label="Venue Name" variant="outlined"/>
-                <TextField multiline fullWidth label="Address" variant="outlined" margin="dense"/>
-                <TextField multiline fullWidth label="Coordinates (map)" variant="outlined" margin="dense"/>
+                <TextField id="title" fullWidth label="Venue Name" variant="outlined"/>
+                <TextField id="address" fullWidth label="Address" variant="outlined" multiline margin="dense"/>
+                <TextField id="" fullWidth label="Coordinates (map)" variant="outlined" multiline margin="dense"/>
               </Grid>
             </Grid>
           )

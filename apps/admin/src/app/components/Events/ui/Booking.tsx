@@ -30,7 +30,7 @@ export class Booking extends Component {
           </div>
         </h3>
 
-        <Grid container xs={12} spacing={3}>
+        <Grid item container xs={12} spacing={3}>
           {
             this.state.takeBookings ? (
               <Grid item xs={12}>

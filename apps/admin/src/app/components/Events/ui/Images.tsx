@@ -12,7 +12,7 @@ export class Images extends Component {
       <Paper className="create-block">
         <h3 className="title">Images</h3>
 
-        <Grid container xs={12} spacing={3}>
+        <Grid item container xs={12} spacing={3}>
           <Grid item xs={12}>
             <div><Button variant="outlined" color="primary">Upload Image</Button></div>
           </Grid>

@@ -32,19 +32,17 @@ import { artistSchema, IArtistModel } from './artist.model'
       images: [String]
     },
     tags: [String],
-    custom: {
-      hasCutomDetails: Boolean,
-      customDetails: [
-        {
-          detailName: {
-            type: String, required: true
-          },
-          detailData: {
-            type: String, required: true
-          }
+    hasCutomDetails: Boolean,
+    customDetails: [
+      {
+        detailName: {
+          type: String, required: true
+        },
+        detailData: {
+          type: String, required: true
         }
-      ],
-    },
+      }
+    ],
     settings: {
       isPublished: {
         type: Boolean, required: true
@@ -57,9 +55,6 @@ import { artistSchema, IArtistModel } from './artist.model'
       }
     },
     venue: {
-      venueType: { 
-        type: String, enum: ['regular', 'custom'], required: true 
-      },
       city: { 
         type: String, required: true 
       },
@@ -157,15 +152,13 @@ export interface IEventModel extends mongoose.Document {
     images?: [string],
   },
   tags?: [string],
-  custom?: {
-    hasCutomDetails?: boolean,
-    customDetails?: [
-      {
-        detailName: string,
-        detailData: string
-      }
-    ]
-  },
+  hasCutomDetails?: boolean,
+  customDetails?: [
+    {
+      detailName: string,
+      detailData: string
+    }
+  ]
   settings: {
     isPublished: boolean,
     eventPriority?: number,

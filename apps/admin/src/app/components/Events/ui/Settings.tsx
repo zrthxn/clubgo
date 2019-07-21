@@ -21,11 +21,11 @@ export class Settings extends Component {
       'isPublished', 'isFeatured', 'eventPriority'
     ],
     itratableMembers: [
-      // Add all state data arrays here 
+      
     ]
   }
   
-  handleChange = (event) => {
+  handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
     this.setState((prevState, props)=>(
       result
@@ -34,36 +34,33 @@ export class Settings extends Component {
 
   render() {
     return (
-      <Grid container xs={12}>
+      <Grid item container xs={12}>
         <Grid item xs={12}>
           <Paper className="create-block">
             <h3 className="title">Settings</h3>
 
-            <Grid container xs={12} spacing={3}>
+            <Grid item container xs={12} spacing={3}>
               <Grid item xs={6}>
-                <Switch id="isPublished" defaultChecked color="primary" onChange={this.handleChange}/>  
+                <Switch id="isPublished" defaultChecked color="primary" onChange={this.handleChangeById}/>  
                 <Label>Published</Label>
               </Grid>
 
               <Grid item xs={6}>
-                <Switch id="isFeatured" color="primary" onChange={this.handleChange}/>
+                <Switch id="isFeatured" color="primary" onChange={this.handleChangeById}/>
                 <Label>Featured</Label>
               </Grid>
 
-              {
-                !this.state.data.isFeatured ? (
-                  <div></div>
-                ) : (
-                  <Grid item xs={12}>
+              <Grid item xs={12}>
+                {
+                  !this.state.data.isFeatured ? (
+                    <div></div>
+                  ) : (
                     <TextField id="featured/featuredText" fullWidth label="Featured Text" 
-                      variant="outlined" margin="dense" onChange={this.handleChange}
+                      variant="outlined" margin="dense" onChange={this.handleChangeById}
                     />
-                    <TextField id="featured/featuredPriority" fullWidth label="Priority (num)" 
-                      variant="outlined" margin="dense" onChange={this.handleChange}
-                    />
-                  </Grid>
-                )
-              }
+                  )
+                }
+              </Grid>
             </Grid>
           </Paper>
         </Grid>
@@ -72,11 +69,21 @@ export class Settings extends Component {
           <Paper className="create-block">
             <h3 className="title">Priority</h3>
 
-            <Grid container xs={12} spacing={3}>
+            <Grid item container xs={12} spacing={3}>
               <Grid item xs={12}>
                 <TextField id="eventPriority" fullWidth label="Event Priority (num)" 
-                  variant="outlined" margin="dense" onChange={this.handleChange}
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}
                 />
+
+                {
+                  !this.state.data.isFeatured ? (
+                    <div></div>
+                  ) : (
+                    <TextField id="featured/featuredPriority" fullWidth label="Featured Priority (num)" 
+                      variant="outlined" margin="dense" onChange={this.handleChangeById}
+                    />
+                  )
+                }
               </Grid>
             </Grid>
           </Paper>
