@@ -6,7 +6,10 @@ import { TextField, Button, Switch, Checkbox, InputAdornment, Tooltip} from '@ma
 import { Slider } from '@material-ui/lab'
 import { Link } from '@material-ui/icons'
 
-export class Booking extends Component {
+export interface BookingProps {
+  syncParentData: Function
+}
+export class Booking extends Component<BookingProps> {
   state = {
     takeBookings: false,
     takePayments: false,

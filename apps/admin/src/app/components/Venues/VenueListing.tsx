@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Paper } from '@material-ui/core'
-import { ListingProvider } from '@clubgo/features/api'
 
 import '../scss/Listing.scss'
 
@@ -29,9 +28,9 @@ export class VenueListing extends Component {
   }
 
   componentDidMount() {
-    const provider = new ListingProvider
-    const x = provider.fetch('venues').toString()
-    console.log(x)
+    // const provider = new ListingProvider
+    // const x = provider.fetch('venues').toString()
+    // console.log(x)
 
     // provider.fetch().subscribe()
   }

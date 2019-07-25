@@ -45,13 +45,13 @@ export class EventController extends Component {
               <div className="section-nav">
                 <Nav tabs>
                   <NavItem>
-                    <button className="nav-link" onClick={() => eventContext.actions.createEvent()}>
+                    <button className="nav-link" onClick={eventContext.actions.createEvent}>
                       Create
                     </button>
                   </NavItem>
                   
                   <NavItem>
-                    <button className="nav-link" onClick={() => eventContext.actions.listEvents()}>
+                    <button className="nav-link" onClick={eventContext.actions.listEvents}>
                       List
                     </button>
                   </NavItem>

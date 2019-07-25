@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-export class ApiFeatures {
-  requests = axios
+export class InterfaceAPI {
+  request = axios
 
-  auth = {
+  protected auth = {
     csrf: {
 
     },
@@ -12,26 +12,37 @@ export class ApiFeatures {
     }
   }
 
-  constructor() {
-    this.requests.create({
-      baseURL: '/api',
+  protected endpoint = 'http://localhost:3333'
+
+  constructor(api: 'api'|'admin') {
+    this.addPathRoute(`/${api}`)
+    this.request.create({
+      baseURL: this.endpoint,
       timeout: 5000,
       headers: {
-        'X-Custom-Header': 'foobar',
         'X-Basic-Auth': 'key'
       }
     })
   }
 
-  async authenticate() {
-
+  async authenticate(headers?:Object) {
+    // let csrf = {}
+    // return csrf
   }
 
-  async createStream() {
-
+  addPathRoute(setPath:string) {
+    this.endpoint += setPath
   }
 
-  async createSocket() {
-    
+  setEndpoint(setUrl:string) {
+    this.endpoint += setUrl
   }
+
+  getEndpoint() { 
+    return this.endpoint
+  }
+}
+
+export interface AuthInitializationTypes {
+  headers:Object
 }

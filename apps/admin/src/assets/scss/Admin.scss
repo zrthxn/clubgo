@@ -56,7 +56,7 @@ h1, h2, h3, h4 {
 // ================================================================
 // ================================================================
 
-$sidebar-bg: #d3d3d3;
+$sidebar-bg: #383838;
 $sidebar-hover-bg: #0e74fa;
 
 #admin-panel-root {
@@ -71,6 +71,7 @@ $sidebar-hover-bg: #0e74fa;
 
       width: 25%;
       opacity: 1;
+      z-index: 10;
       height: 100vh;
       padding: 2em 0;
       transition: all 0.5s ease-in-out;
@@ -79,6 +80,7 @@ $sidebar-hover-bg: #0e74fa;
       .title {
         padding: 0.5em 1em;
         margin: 1em 0;
+        color: #fff;
 
         h3 {
           font-size: 2em;
@@ -86,27 +88,24 @@ $sidebar-hover-bg: #0e74fa;
         }
         h4 {
           font-size: 1.5em;
-          margin: 0;        
+          margin: 0;
         }
 
         #version {
-          color: #1c1c1c80;
+          color: #ffffff80;
           margin: 0.5em 0;
         }
       }
 
       a {
-        color: #1c1c1c;
+        color: #fff;
         text-decoration: none;
 
         width: 100%;
-        // margin-left: 0;
-        // margin-right: -3em;
         padding: 0.75em 1em;
         transition: all 0.25s ease-in-out;
       } a:hover {
         transition: all 0.25s ease-in-out;
-        color: #fff;
         background-color: $sidebar-hover-bg;
       }
     }
@@ -115,6 +114,24 @@ $sidebar-hover-bg: #0e74fa;
       width: 0;
       opacity: 0;
       transition: all 0.5s ease-in-out;
+    }
+
+    @media (max-width: 600px) {
+      #sidebar {
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        width: 0;
+        opacity: 0;
+        transition: all 0.5s ease-in-out;
+      }
+  
+      #sidebar-toggle:checked ~ #sidebar {
+        width: 75%;
+        opacity: 1;
+        transition: all 0.5s ease-in-out;
+      }
     }
 
     // ================================================================
@@ -127,10 +144,6 @@ $sidebar-hover-bg: #0e74fa;
       overflow: scroll;
       overflow-x: hidden;
       background-color: #fff;
-
-      #content {
-        // padding: 2em;
-      }
 
       .nav-item {
         color: #fff;

@@ -6,9 +6,11 @@ import Select from 'react-select'
 import { Add, Delete } from '@material-ui/icons'
 
 import { handleChangeById as inputHandler } from '@clubgo/util'
-import { stat } from 'fs';
 
-export class EventDetails extends Component {
+export interface EventDetailsProps {
+  syncParentData: Function
+}
+export class EventDetails extends Component<EventDetailsProps> {
   state = {
     openArtistModal: false,
     openMusicModal: false,
@@ -56,9 +58,14 @@ export class EventDetails extends Component {
 
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
+    this.props.syncParentData(this.state.data, 'root')
     this.setState((prevState, props)=>(
       result
     ))
+  }
+
+  syncState = () => {
+
   }
 
   render() {
@@ -69,7 +76,7 @@ export class EventDetails extends Component {
         <Paper className="create-block">
           <h3 className="title">Event</h3>
           
-          <Grid item container xs={12} spacing={3}>                
+          <Grid item container spacing={3}>                
             <Grid item xs={12}>
               <Label>Details</Label>
               <TextField id="eventTitle" required fullWidth label="Event Name" 
@@ -86,17 +93,22 @@ export class EventDetails extends Component {
                 onChange={ selected => {
                   let { data } = this.state
                   data.categories = []
+                  // if(typeof selected==='[object Object]')
                   for(let item of selected)
                     data.categories.push(item.value)
-                  this.setState((prevState, props)=>({
-                    data,
-                    selectCategory: selected
-                  }))
+                  
+                  this.setState((prevState, props)=>{
+                    this.props.syncParentData(data, 'root')
+                    return {
+                      data,
+                      selectCategory: selected
+                    }
+                  })
                 }}
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <Label>Tagline</Label>
               <TextField id="tagline" fullWidth label="Tagline" 
                 variant="outlined" margin="dense" onChange={this.handleChangeById}/>
@@ -104,14 +116,14 @@ export class EventDetails extends Component {
                 variant="outlined" margin="dense" onChange={this.handleChangeById}/>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <Label>Performers</Label>
               <div style={{padding: '0.5em'}}>
                 <Button variant="contained" color="primary"
                   onClick={()=>{
-                    this.setState(()=>({
+                    this.setState({
                       openArtistModal: true
-                    }))
+                    })
                   }}
                 >
                   Select Artist
@@ -120,9 +132,9 @@ export class EventDetails extends Component {
               <div style={{padding: '0.5em'}}>
                 <Button variant="contained" color="primary"
                   onClick={()=>{
-                    this.setState(()=>({
+                    this.setState({
                       openMusicModal: true
-                    }))
+                    })
                   }}
                 >
                   Select Music
@@ -130,7 +142,7 @@ export class EventDetails extends Component {
               </div>
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item md={4} xs={12}>
               <Label>Dress Code</Label>
               <div style={{ margin: '0.5em' }}>
                 <Select
@@ -141,21 +153,22 @@ export class EventDetails extends Component {
                   onChange={ selected => {
                     let { data } = this.state
                     data.dressCode.title = selected.value
-                    this.setState((prevState, props)=>({
-                      data,
-                      selectDressCode: selected
-                    }))
+                    this.setState((prevState, props)=>{
+                      this.props.syncParentData(data, 'root')
+                      return {
+                        data,
+                        selectDressCode: selected
+                      }
+                    })
                   }}
                 />
               </div>              
             </Grid>
 
-            <Grid item xs={8}>
+            <Grid item md={8} xs={12}>
               <Label>Tags</Label>
               <TextField id="tags" fullWidth label="Tags (chips)" 
-                variant="outlined" margin="dense" onChange={(e)=>{
-                  console.log(e.target.value)
-                }}/>
+                variant="outlined" margin="dense" onChange={this.handleChangeById}/>
             </Grid>
           </Grid>
         </Paper>
@@ -171,9 +184,10 @@ export class EventDetails extends Component {
                   detailName: String,
                   detailData: String
                 })
-                this.setState(()=>({
-                  data
-                }))
+                this.setState((prevState, props)=>{
+                  this.props.syncParentData(data, 'root')
+                  return { data }
+                })
               }}
             >
               <Add/>
@@ -196,9 +210,11 @@ export class EventDetails extends Component {
                               data.customDetails.splice(index, 1)
                               if(data.customDetails.length===0)
                                 data.hasCutomDetails = false
-                              this.setState(()=>({
-                                data
-                              }))
+                              
+                              this.setState((prevState, props)=>{
+                                this.props.syncParentData(data, 'root')
+                                return { data }
+                              })
                             }}
                           >
                             <Delete/>
@@ -221,13 +237,25 @@ export class EventDetails extends Component {
           </Grid>
         </div>
 
-        <Modal open={this.state.openArtistModal}>
+        <Modal 
+          style={{
+            width: '50%',
+            margin: 'auto',
+            padding: '2em'
+          }}
+          open={this.state.openArtistModal}>
           <Paper>
             <h1>Artist</h1>
           </Paper>
         </Modal>
 
-        <Modal open={this.state.openMusicModal}>
+        <Modal
+          style={{
+            width: '50%',
+            margin: 'auto',
+            padding: '2em'
+          }}
+          open={this.state.openMusicModal}>
           <Paper>
             <h1>Music</h1>
           </Paper>

@@ -59,25 +59,24 @@ export class Admin extends Component {
               </div>
 
               <Link to="/dashboard"> Dashboard </Link>
-              <Link to="/dashboard"> Users </Link>
+              <Link to="/users"> Users </Link>
               <Link to="/events"> Events </Link>
               <Link to="/venues"> Venues </Link>
               <Link to="/tickets"> Tickets </Link>
-              <Link to="/dashboard"> Artists </Link>
-              <Link to="/dashboard"> Locations </Link>
-              <Link to="/dashboard"> Coupons </Link>
-              <Link to="/dashboard"> Settings </Link>
+              <Link to="/artists"> Artists </Link>
+              <Link to="/locations"> Locations </Link>
+              <Link to="/coupons"> Coupons </Link>
+              <Link to="/settings"> Settings </Link>
             </div>
 
             <div id="section-root">
               <AppBar position="static">
                 <Toolbar>
-                  <IconButton edge="start" color="inherit" aria-label="Menu"
-                    onClick={
-                      ()=>{
-                        document.getElementById("sidebar-toggle")['checked'] = !document.getElementById("sidebar-toggle")['checked']
-                      }
-                  }>
+                  <IconButton edge="start" color="inherit" aria-label="Menu" style={{ zIndex: 11 }}
+                    onClick={()=>{
+                      document.getElementById("sidebar-toggle")['checked'] = !document.getElementById("sidebar-toggle")['checked']
+                    }}
+                  >
                     <MenuRounded />
                   </IconButton>
 

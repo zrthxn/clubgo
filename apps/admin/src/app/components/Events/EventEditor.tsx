@@ -3,6 +3,7 @@ import { Form, Button } from 'reactstrap'
 import { Grid } from '@material-ui/core'
 
 import { IEventModel } from '@clubgo/database'
+import { handleChangeById as inputHandler } from '@clubgo/util'
 
 import EventDetails from './ui/EventDetails'
 import Venue from './ui/Venue'
@@ -18,12 +19,28 @@ export interface EventEditorProps {
 }
 export class EventEditor extends Component<EventEditorProps> {
   state = {
-    
+    data: null
   }
 
   componentDidMount() {
     if(this.props.intent==='update')
       console.log('Updating event with props', this.props.focusEventId, this.props.populateData)
+  }
+  
+  syncChanges = (childData, key) => {
+    let { data } = this.state
+    if(key==='root')
+      data = { ...childData }
+    else
+      data[key] = { ...childData }
+
+    this.setState({
+      data
+    })
+  }
+
+  onFinalize = () => {
+    // TODO
   }
 
   render() {
@@ -33,7 +50,7 @@ export class EventEditor extends Component<EventEditorProps> {
           <div className="clearfix" style={{ padding: '1em' }}>            
             {
               this.props.intent==='create' ? (
-                <span className="form-title">Create New Event</span>
+                <span className="form-title">Create Event</span>
               ) : (
                 this.props.intent==='update' ? (
                   <span className="form-title">Update Event</span>
@@ -49,29 +66,29 @@ export class EventEditor extends Component<EventEditorProps> {
           </div>
 
           <Grid item container spacing={3}>
-            <Grid item xs={7}>
-              <EventDetails/>
+            <Grid item md={7} xs={12}>
+              <EventDetails syncParentData={this.syncChanges}/>
             </Grid>
 
-            <Grid item xs={5}>
+            <Grid item md={5} xs={12}>
               <Settings/>
             </Grid>
 
-            <Grid item xs={12}><hr/></Grid>
+            <Grid item md={12} xs={12}><hr/></Grid>
 
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <Venue/>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <Images/>
             </Grid>
             
-            <Grid item xs={6}>
-              <Booking/>
+            <Grid item md={6} xs={12}>
+              <Booking syncParentData={this.syncChanges}/>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <Scheduling/>
             </Grid>                
           </Grid>

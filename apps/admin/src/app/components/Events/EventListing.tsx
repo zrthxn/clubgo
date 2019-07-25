@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Paper } from '@material-ui/core'
-import { ListingProvider } from '@clubgo/features/api'
+import { Grid, Paper } from '@material-ui/core'
 
 import '../scss/Listing.scss'
 
@@ -25,13 +24,13 @@ export class EventListing extends Component {
         _id: 'def123',
         eventTitle: 'Editing 4'
       }
-    ]  
+    ]
   }
 
   componentDidMount() {
-    const provider = new ListingProvider
-    const x = provider.fetch('events').toString()
-    console.log(x)
+    // const provider = new ListingProvider
+    // const x = provider.fetch('events').toString()
+    // console.log(x)
 
     // provider.fetch().subscribe()
   }
@@ -47,9 +46,7 @@ export class EventListing extends Component {
               this.state.listing.map((item, index)=>{
                 return (
                   <div key={ `listing_${index}` }>
-                    <EventListItem
-                      data={ item }
-                    />
+                    <EventListItem data={ item } />
 
                     {
                       index!==(this.state.listing.length-1) ? <hr/> : <span/>
