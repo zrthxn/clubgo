@@ -396,6 +396,60 @@
           }
         }
       }
+    },
+    "cdn": {
+      "root": "apps/backend/cdn",
+      "sourceRoot": "apps/backend/cdn/src",
+      "projectType": "application",
+      "prefix": "cdn",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/backend/cdn",
+            "main": "apps/backend/cdn/src/main.ts",
+            "tsConfig": "apps/backend/cdn/tsconfig.app.json",
+            "assets": ["apps/backend/cdn/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/backend/cdn/src/environments/environment.ts",
+                  "with": "apps/backend/cdn/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "cdn:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/backend/cdn/tsconfig.app.json",
+              "apps/backend/cdn/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/backend/cdn/jest.config.js",
+            "tsConfig": "apps/backend/cdn/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

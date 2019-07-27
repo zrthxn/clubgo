@@ -1,3 +1,4 @@
+export * from './lib/cdn'
 export * from './lib/console'
 export * from './lib/inputHandler'
 

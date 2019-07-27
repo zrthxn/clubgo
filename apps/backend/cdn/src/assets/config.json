@@ -1,0 +1,14 @@
+{
+  "__storagedir": "C:\\Users\\User\\Desktop\\storage",
+  "localSectorName": "i",
+  "sectors": {
+    "i": {
+      "ip": "127.0.0.1",
+      "port": "6666"
+    },
+    "j": {
+      "ip": "127.0.0.1",
+      "port": "6667"
+    }
+  }
+}

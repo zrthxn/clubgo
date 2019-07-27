@@ -31,6 +31,9 @@
     },
     "database": {
       "tags": ["lib:db"]
+    },
+    "backend-cdn": {
+      "tags": ["app:backend"]
     }
   }
 }
