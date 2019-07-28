@@ -8,13 +8,13 @@ export interface IFileItem {
   }
 }
 
-export function findItemIndexByRef(array, item:number, high:number=0, low=0){
+export function findItemIndexByRef(array, item:number, high=0, low=0){
   // Binary Search Algorithm
   if(high >= low) {
     var mid = Math.floor((low + high) / 2)
-    if(item === parseInt(array[mid].fileRef, 16))
+    if(item === parseInt(array[mid].ref, 36))
       return mid
-    else if(item > parseInt(array[mid].fileRef, 16))
+    else if(item > parseInt(array[mid].ref, 36))
       return findItemIndexByRef(array, item, high, mid + 1)
     
     return findItemIndexByRef(array, item, mid - 1, low)
@@ -22,35 +22,27 @@ export function findItemIndexByRef(array, item:number, high:number=0, low=0){
   return -1
 }
 
-export function sortItemArrayByRef(array, _right:number=0, _left=0) {
-  let index
-  if (array.length > 1) {
-    index = partition(array, _left, _right)
-    if (_left < index-1)
-      sortItemArrayByRef(array, _left, index-1)
+export function sortItemArrayByRef(files, high?:number, low?:number) {
+  // Quick Sort Algorithm with pivot at end
+  if (low < high) { 
+    var pivot = files[high].ref
+    var i = low - 1
+    for (var j=low; j<=high-1; j++)
+      if (files[j].ref <= pivot) { 
+        i++  
+        let temp = files[i]
+        files[i] = files[j]
+        files[j] = temp 
+      } 
+
+    let pi = i + 1
+    let temp = files[pi]
     
-    if (index < _right)
-      sortItemArrayByRef(array, index, _right)
+    files[pi] = files[high]
+    files[high] = temp
+
+    sortItemArrayByRef(files, low, pi - 1) 
+    sortItemArrayByRef(files, pi + 1, high)
   }
-  return array
-
-  function partition(items, left, right) {
-    let pivot = items[Math.floor((right + left) / 2)]
-
-    while (left <= right) {
-      while (items[left] < pivot)
-        left++
-      while (items[right] > pivot)
-        right--
-
-      if (left <= right) {
-        let temp = items[left]
-        items[left] = items[right]
-        items[right] = temp
-        left++
-        right--
-      }
-    }
-    return left
-  }
+  return files
 }

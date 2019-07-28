@@ -1,4 +1,5 @@
 import axios from 'axios'
+const config = require('./config.json')
 
 export class InterfaceAPI {
   request = axios
@@ -12,10 +13,27 @@ export class InterfaceAPI {
     }
   }
 
-  protected endpoint = 'http://localhost:3333'
+  protected endpoint = config.endpoints.backend
 
-  constructor(api: 'api'|'admin') {
-    this.addPathRoute(`/${api}`)
+  constructor(apiType:APITypes['api']) {
+    this.addPathRoute(`/${apiType}`)
+    this.setEndpoint(config.endpoints[apiType])
+    this.request.create({
+      baseURL: this.endpoint,
+      timeout: 5000,
+      headers: {
+        'X-Basic-Auth': 'key'
+      }
+    })
+  }
+
+  addPathRoute(setPath:string) {
+    this.endpoint += setPath
+  }
+
+  setEndpoint(setUrl:string) {
+    this.endpoint = setUrl
+
     this.request.create({
       baseURL: this.endpoint,
       timeout: 5000,
@@ -28,14 +46,7 @@ export class InterfaceAPI {
   async authenticate(headers?:Object) {
     // let csrf = {}
     // return csrf
-  }
-
-  addPathRoute(setPath:string) {
-    this.endpoint += setPath
-  }
-
-  setEndpoint(setUrl:string) {
-    this.endpoint += setUrl
+    return
   }
 
   getEndpoint() { 
@@ -43,6 +54,9 @@ export class InterfaceAPI {
   }
 }
 
+export interface APITypes {
+  api: 'api' | 'admin' | 'cdn'
+}
 export interface AuthInitializationTypes {
   headers:Object
 }

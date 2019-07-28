@@ -1,0 +1,75 @@
+.Uploader {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+}
+
+.Image {
+  width: 16em;
+  height: 16em;
+  margin: 1em;
+  border-radius: 1em;
+  overflow: hidden;
+
+  min-width: 12em;
+
+  .image-container {
+    position: relative;
+
+    img {
+      max-width: 16em;
+      border-radius: 1em;
+      position: absolute;
+    }
+
+    .image-delete {
+      top: 0;
+      width: 16em;
+      position: absolute;
+      
+      border-top-left-radius: 1em;
+      border-top-right-radius: 1em;
+      overflow: hidden;
+      background: linear-gradient(#ffffff80, transparent);
+      text-align: right;
+
+      button {
+        color: #fff;
+      }
+      button:focus, button:active {
+        outline: none;
+      }
+    }
+    img:hover ~ .image-delete {
+      background: linear-gradient(#fff, transparent);
+    }
+    .image-delete:hover {
+      background: linear-gradient(#fff, transparent);
+    }
+  }
+
+  .no-image-container {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+
+    .no-image-view {
+      width: 100%;
+      height: 100%;
+      border: #00000040 dashed 2px;
+      border-radius: 1em; 
+
+      label {
+        color: #00000080;
+        margin: auto;
+        padding: 5em 1em;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    input {
+      display: none;
+    }
+  }
+}

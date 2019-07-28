@@ -2,19 +2,25 @@ import * as express from 'express'
 import * as path from 'path'
 
 export const Content = express()
-export const ContentRouter = express.Router()
 
-import { SectorRouter } from './routes/SectorRouter'
+import { DeliveryRouter } from './routes/DeliveryRouter'
+import { APIRouter } from './routes/APIRouter'
 
 const config = require('../assets/config.json')
 const { __storagedir } = config
 
-Content.use( '/static/root', express.static( path.join(__storagedir, 'root', 'static') ) )
+Content.use(express.json())
+Content.use(express.urlencoded({ extended: true }))
+
+Content.use('/static/root', express.static( path.join(__storagedir, 'root', 'static') ))
 
 Content.use('/:sectorName', (req, res, next)=>{
   const { sectorName } = req.params
   if(sectorName===config.localSectorName) {
-    SectorRouter(req, res, next)
+    DeliveryRouter(req, res, next)
+  }
+  else if(sectorName==='api') {
+    APIRouter(req, res, next)
   }
   else {
     if(config.sectors.hasOwnProperty(sectorName)) {
