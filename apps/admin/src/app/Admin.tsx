@@ -33,7 +33,7 @@ const theme = createMuiTheme({
 
 export class Admin extends Component {
   state = {
-    authenticated: false,
+    authenticated: true,
     userAccountMenuOpen: false
   }
 

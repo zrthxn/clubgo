@@ -40,33 +40,59 @@ const storage = multer.diskStorage({
   }
 })
 
-APIRouter.post('/_upload/single/:collection',(req, res)=>{
-  let { collection } = req.body
+APIRouter.post('/_create/collection/:collection', (req, res)=>{
+  let { collection } = req.params
+  let lookupPath = path.join(__storagedir, 'root', 'lookup.json')
+  fs.readFile(lookupPath, (err, data)=>{
+    if(err) return res.status(500).send(err)
+    let lookupTable = JSON.parse(data.toString())
+    lookupTable[collection] = {
+      files: [
+
+      ]
+    }
+
+    fs.writeFileSync(lookupPath, JSON.stringify(lookupTable, null, 2))
+    fs.mkdir(path.join(__storagedir, 'root', collection), (e)=>{
+      if(e) return res.status(500).send(e)
+      res.sendStatus(200)
+    })
+  })
+
+})
+
+APIRouter.post('/_upload/single/:collection', (req, res)=>{
+  let { collection } = req.params
 
   const upload = multer({ storage }).single('upload')
   upload(req, res, (err)=>{
-    if(err) return res.sendStatus(500)
+    if(err) return res.status(500).send(err)
     
-    const file = req['files'][0]
+    const file = req['file']
 
     let genFileName = collection + parseInt((file.filename.split('upload_')[1])).toString(36)
     res.sendStatus(200)
 
     fs.readFile(file.path, (err, data)=>{
-      if (err) return res.sendStatus(500)
+      if (err) return res.status(500).send(err)
+      
+      // data = Buffer.from(data.toString())
+      // let raw = decodeBase64Image(data.toString('base64'))
       
       let raw = decodeBase64Image(data.toString())
       
       let writePath = path.join(__storagedir, 'root')
       if(collection!=='root')
         writePath = path.join(writePath, collection)
-      writePath =  path.join(writePath, genFileName)
-      
+
+      writePath = path.join(writePath, collection + genFileName + 
+        '.' + file.originalname.split('.')[file.originalname.split('.').length-1])
+        
       // Write new image to root
       fs.writeFile(writePath, raw.data, (err)=>{
-        if (err) res.sendStatus(500)
+        if (err) res.status(500).send(err)
 
-        createLookupEntry({
+        createLookupEntry(collection, {
           ref: genFileName,
           filename: genFileName + '.' + file.originalname.split('.')[1],
           originalname: file.originalname,
@@ -76,11 +102,11 @@ APIRouter.post('/_upload/single/:collection',(req, res)=>{
             encoding: file.encoding,
             mimetype: file.mimetype,
           }
-        }, collection)
+        })
 
         // Remove temp file
         fs.unlink(file.path, (err)=>{
-          if (err) res.sendStatus(500)
+          if (err) res.status(500).send(err)
         })
       })
     })
@@ -92,45 +118,55 @@ APIRouter.post('/_upload/multiple/:collection', (req, res)=>{
 
   const upload = multer({ storage }).array('uploads')
   upload(req, res, (err)=>{
-    if(err) return res.sendStatus(500)
+    if(err) return res.status(500).send(err)
     
-    const files = req['files']
+    const uploadedFiles = req['files']
     let refs = []
 
-    for (const fileData of files) {
-      let data = fs.readFileSync(fileData.path)
-      let raw = decodeBase64Image(data.toString())        
+    for (const file of uploadedFiles) {
+      let data = fs.readFileSync(file.path)
 
-      let genFileName = parseInt((fileData.filename.split('upload_')[1])).toString(36)
-      refs.push({
-        ref: parseInt((fileData.filename.split('upload_')[1])).toString(36),
-        ...fileData
-      })
+      // data = Buffer.from(data.toString('base64'))
+      // let raw = decodeBase64Image(data.toString('base64'))
       
+      let raw = decodeBase64Image(data.toString())
+
+      let genFileName = parseInt((file.filename.split('upload_')[1])).toString(36)
       let writePath = path.join(__storagedir, 'root')
-      if(collection!=='root') writePath = path.join(writePath, collection)
       
-      writePath = path.join(writePath, collection + genFileName + 
-        '.' + fileData.originalname.split('.')[fileData.originalname.split('.').length-1])
+      if(collection==='root') {
+        refs.push({
+          ref: parseInt((file.filename.split('upload_')[1])).toString(36),
+          ...file
+        })
+        writePath = path.join(writePath, genFileName + getFileExtension(file.originalname))
+      }
+      else {
+        refs.push({
+          ref: collection + '/' + parseInt((file.filename.split('upload_')[1])).toString(36),
+          ...file
+        })
+        writePath = path.join(writePath, collection, genFileName + getFileExtension(file.originalname))
+      }
       
       // Write new image to root
       fs.writeFileSync(writePath, raw.data)
 
-      createLookupEntry({
+      createLookupEntry(collection, {
         ref: genFileName,
-        filename: genFileName + '.' + fileData.originalname.split('.')[1],
-        originalname: fileData.originalname,
+        filename: genFileName + getFileExtension(file.originalname),
+        originalname: file.originalname,
         path: writePath,
         metadata: {
           size: raw.data.length,
-          encoding: fileData.encoding,
-          mimetype: fileData.mimetype,
+          encoding: file.encoding,
+          mimetype: file.mimetype,
         }
-      }, collection)      
+      })      
 
       // Remove temp files
-      fs.unlink(fileData.path, (err)=>{
-        if (err) res.sendStatus(500)
+      fs.unlink(file.path, (err)=>{
+        if (err) res.status(500).send(err)
       })  
     }
 
@@ -138,23 +174,23 @@ APIRouter.post('/_upload/multiple/:collection', (req, res)=>{
   })
 })
 
-function createLookupEntry(lookupEntry:object, collection:string) {
-  let lookupPath = path.join(__storagedir, 'root')
-  if(collection!=='root')
-    lookupPath = path.join(lookupPath, collection)
-  lookupPath = path.join(lookupPath, 'lookup.json')
-
+function createLookupEntry(collection:string, lookupEntry:object) {
+  let lookupPath = path.join(__storagedir, 'root', 'lookup.json')
   let cdndata = fs.readFileSync(lookupPath)
   let lookupTable = JSON.parse(cdndata.toString())
   let redundantTable = lookupTable
 
-  lookupTable = lookupTable.files
+  lookupTable = lookupTable[collection].files
   lookupTable.push(lookupEntry)
 
   lookupTable = sortItemArrayByRef(lookupTable)
 
-  redundantTable.files = lookupTable
+  redundantTable[collection].files = lookupTable
   redundantTable.lockfile = false
 
   fs.writeFileSync(lookupPath, JSON.stringify(redundantTable, null, 2))
+}
+
+function getFileExtension(originalname) {
+  return ('.' + originalname.split('.')[originalname.split('.').length-1])
 }

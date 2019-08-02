@@ -2,12 +2,9 @@ import React, { Component } from 'react'
 import { Form, Button } from 'reactstrap'
 import { Grid } from '@material-ui/core'
 
-import { IEventModel } from '@clubgo/database'
-import { handleChangeById as inputHandler } from '@clubgo/util'
-
 import EventDetails from './ui/EventDetails'
 import Venue from './ui/Venue'
-import Images from './ui/Images'
+import Media from './ui/Media'
 import Scheduling from './ui/Scheduling'
 import Booking from './ui/Booking'
 import Settings from './ui/Settings'
@@ -19,7 +16,7 @@ export interface EventEditorProps {
 }
 export class EventEditor extends Component<EventEditorProps> {
   state = {
-    data: null
+    data: {}
   }
 
   componentDidMount() {
@@ -81,7 +78,7 @@ export class EventEditor extends Component<EventEditorProps> {
             </Grid>
 
             <Grid item md={6} xs={12}>
-              <Images/>
+              <Media syncParentData={this.syncChanges}/>
             </Grid>
             
             <Grid item md={6} xs={12}>

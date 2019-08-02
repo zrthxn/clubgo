@@ -79,14 +79,20 @@ export function decodeBase64Image(data) {
     type: null,
     data: null
   }
+  
+  // const fs = require('fs')
+  // fs.writeFileSync('./test_data', data)
 
-  if (matches.length !== 3) {
-    console.error(Error('Invalid input string'))
-    return response
+  if(matches!==null) {
+    if (matches.length !== 3) {
+      console.error(Error('Invalid input string'))
+      return response
+    }
+    response.type = matches[1]
+    response.data = Buffer.from(matches[2], 'base64')
   }
-
-  response.type = matches[1];
-  response.data = Buffer.from(matches[2], 'base64')
-
+  else
+    response.data = Buffer.from(data, 'base64')
+  
   return response
 }

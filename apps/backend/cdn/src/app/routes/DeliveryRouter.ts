@@ -19,23 +19,47 @@ DeliveryRouter.get('/', (req, res)=>{
 })
 
 DeliveryRouter.get('/:fileId', (req, res)=>{
-  const { fileId } = req.params  
-  const collection = fileId.substring(0,4)
-  const designator = fileId.substring(4,12)
+  const { fileId } = req.params
 
-  let lookupPath = path.join(__storagedir, 'root')
-  if(collection!=='root') 
-    lookupPath = path.join(lookupPath, collection)
-  lookupPath = path.join(lookupPath, 'lookup.json')
+  let lookupPath = path.join(__storagedir, 'root', 'lookup.json')
 
   fs.readFile(lookupPath, {
     encoding: 'utf-8'
   }, (err, data)=>{
     if(err) return console.log(conf.Red(err.toString()))
 
-    let lookupTable = JSON.parse(data).files
+    let lookupTable = JSON.parse(data)['root'].files
 
-    let searchFileIndex = findItemIndexByRef(lookupTable, parseInt(designator, 36), lookupTable.length-1)
+    let searchFileIndex = findItemIndexByRef(lookupTable, parseInt(fileId, 36), lookupTable.length-1)
+    if(searchFileIndex===-1)
+      return res.status(404).send({
+        message: 'Resource Not Found'
+      })
+    else
+      try {
+        res.sendFile( lookupTable[searchFileIndex].path )
+      } catch(e) {
+        return res.status(404).send({
+          message: 'Resource Not Found',
+          errors: e
+        })
+      }
+  })
+})
+
+DeliveryRouter.get('/:collection/:fileId', (req, res)=>{
+  const { fileId, collection } = req.params
+
+  let lookupPath = path.join(__storagedir, 'root', 'lookup.json')
+
+  fs.readFile(lookupPath, {
+    encoding: 'utf-8'
+  }, (err, data)=>{
+    if(err) return console.log(conf.Red(err.toString()))
+
+    let lookupTable = JSON.parse(data)[collection].files
+
+    let searchFileIndex = findItemIndexByRef(lookupTable, parseInt(fileId, 36), lookupTable.length-1)
     if(searchFileIndex===-1)
       return res.status(404).send({
         message: 'Resource Not Found'

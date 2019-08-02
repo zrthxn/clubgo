@@ -1,19 +1,39 @@
 import React, { Component } from 'react'
-import * as Rs from 'reactstrap'
-
+import { Label } from 'reactstrap'
 import { Grid, Paper } from '@material-ui/core'
 import { TextField, Button, Switch, Checkbox, InputAdornment, Tooltip} from '@material-ui/core'
 import { Slider } from '@material-ui/lab'
-import { Link } from '@material-ui/icons'
+import { Link, Phone } from '@material-ui/icons'
 
 export interface BookingProps {
   syncParentData: Function
 }
 export class Booking extends Component<BookingProps> {
   state = {
-    takeBookings: false,
+    takeBookings: true,
     takePayments: false,
-    breakpoint: 25
+    breakpoint: 25,
+    data: {
+      isTakingOnsiteBookings: true,
+      isTakingOnsitePayments: false,
+      tickets: [
+        {
+          ticketId: String,
+          price: Number,
+          activateTime: Date,
+          deactivateTime: Date
+        }
+      ],
+      registrationURL: String,
+      registrationPhone: String
+    },
+    requiredFulfilled: true,
+    required: [
+      
+    ],
+    iteratableMembers: [
+      
+    ]
   }
 
   render() {
@@ -22,12 +42,16 @@ export class Booking extends Component<BookingProps> {
         <h3 className="title">
           Booking
           <div className="float-right">
-            <span className="inline-text-label">Bookings</span>
-            <Switch color="primary"
+            <span className="inline-text-label">On-Site</span>
+            <Switch color="primary" defaultChecked
               onChange={()=>{
-                this.setState(()=>({
-                  takeBookings: !this.state.takeBookings
-                }))
+                this.setState(()=>{
+                  let { data } = this.state
+                  data.isTakingOnsiteBookings = !data.isTakingOnsiteBookings
+                  return {
+                    data
+                  }
+                })
               }}
             />
           </div>
@@ -35,21 +59,25 @@ export class Booking extends Component<BookingProps> {
 
         <Grid item container xs={12} spacing={3}>
           {
-            this.state.takeBookings ? (
+            this.state.data.isTakingOnsiteBookings ? (
               <Grid item xs={12}>
                 <Grid item xs={6}>
                   <span className="inline-text-label">PAYMENTS</span>
                   <Switch color="primary"
                     onChange={()=>{
-                      this.setState(()=>({
-                        takePayments: !this.state.takePayments
-                      }))
+                      this.setState(()=>{
+                        let { data } = this.state
+                        data.isTakingOnsitePayments = !data.isTakingOnsitePayments
+                        return {
+                          data
+                        }
+                      })
                     }}
                   />
                 </Grid>
 
                 {
-                  this.state.takePayments ? (
+                  this.state.data.isTakingOnsitePayments ? (
                     <Grid item xs={12}>
                       <Slider
                         value={[0, this.state.breakpoint]} 
@@ -76,16 +104,29 @@ export class Booking extends Component<BookingProps> {
                 }             
               </Grid>
             ) : (
-              <Grid item xs={12}>
-                <Rs.Label>Registration URL</Rs.Label>
-                <TextField fullWidth variant="outlined" margin="dense" placeholder="https://example.com/register"
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">
-                      <Link/>
-                    </InputAdornment>,
-                  }}
-                />
-              </Grid>
+              <Grid item container xs={12} spacing={3}>
+                <Grid item xs={12}>
+                  <Label>Registration URL</Label>
+                  <TextField fullWidth variant="outlined" margin="dense" placeholder="https://example.com/register"
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">
+                        <Link/>
+                      </InputAdornment>,
+                    }}
+                  />
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <Label>Phone</Label>
+                  <TextField fullWidth variant="outlined" margin="dense" placeholder="+91-9988776655"
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">
+                        <Phone/>
+                      </InputAdornment>,
+                    }}
+                  />
+                </Grid>
+              </Grid>              
             )
           }
         </Grid>

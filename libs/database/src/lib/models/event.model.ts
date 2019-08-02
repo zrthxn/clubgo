@@ -122,14 +122,10 @@ import { artistSchema, IArtistModel } from './artist.model'
       registrationURL: String,
       registrationPhone: String
     },
-    images: [
-      {
-        url: {
-          type: String, required: true
-        },
-        tags: [String]
-      }
-    ]
+    media: {
+      images: [String],
+      videoURL: String
+    }
   },
   {
     collection: 'Events'
@@ -215,12 +211,10 @@ export interface IEventModel extends mongoose.Document {
     registrationURL?: string,
     registrationPhone?: string
   },
-  images: [
-    {
-      url: string,
-      tags?: [string]
-    }
-  ]
+  media: {
+    images: [string],
+    videoURL: string
+  }
 }
 
 export const Event = mongoose.model<IEventModel>('Event', eventSchema)
