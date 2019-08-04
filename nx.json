@@ -8,11 +8,11 @@
     "nx.json": "*"
   },
   "projects": {
-    "website-e2e": {
-      "tags": []
-    },
     "website": {
       "tags": ["app:website"]
+    },
+    "website-e2e": {
+      "tags": []
     },
     "admin": {
       "tags": ["app:admin"]

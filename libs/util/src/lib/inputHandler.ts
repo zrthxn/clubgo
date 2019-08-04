@@ -1,5 +1,5 @@
 export function handleChangeById(event, state) {
-  const { itratableMembers } = state
+  const { iterableMembers } = state
   let payload = null, truth = true, _data = state.data
 
   switch (event.target.type) {
@@ -18,7 +18,7 @@ export function handleChangeById(event, state) {
   }
 
   if(event.target.id.includes('/')) {
-    if(event.target.id.split('/')[0].includes('#') && itratableMembers.length!==0) {
+    if(event.target.id.split('/')[0].includes('#') && iterableMembers.length!==0) {
       let parentKey = event.target.id.split('/')[0].split('#')[0]
       let index = parseInt(event.target.id.split('/')[0].split('#')[1], 10)
       let childKey = event.target.id.split('/')[1]

@@ -6,13 +6,16 @@ import { TextField, Button, Switch, Checkbox } from '@material-ui/core'
 import { InputAdornment } from '@material-ui/core'
 import { Link, Delete } from '@material-ui/icons'
 
-import { ImageUploader } from '../../Images/ImageUploader'
+import { ImageUploader } from './ImageUploader'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
-export interface MediaProps {
-  syncParentData: Function
+export interface MediaCardProps {
+  syncParentData: Function,
+  includeVideoURL?: boolean,
+  name?: string,
+  tag?: string,
 }
-export class Media extends Component<MediaProps> {
+export class MediaCard extends Component<MediaCardProps> {
   state = {
     openImageUploadModal: false,
     data: {
@@ -39,7 +42,11 @@ export class Media extends Component<MediaProps> {
   render() {
     return (
       <Paper className="create-block">
-        <h3 className="title">Images</h3>
+        <h3 className="title">
+          {
+            this.props.name + ' Images'
+          }
+        </h3>
 
         <Grid item container spacing={3}>
           <Grid item xs={12}>
@@ -56,14 +63,15 @@ export class Media extends Component<MediaProps> {
               {
                 this.state.data.images.map((image, index)=>{
                   return (
-                    <Image key={image} src={image} onDelete={(src)=>{
+                    <Image key={index} src={image.url} onDelete={(src)=>{
                       let { images } = this.state.data
                       images = images.filter((img)=>{
-                        if(img===src) return false
+                        if(img.url===src) return false
                         return true
                       })
                       let { data } = this.state
                       data.images = images
+                      this.props.syncParentData(data, 'media')
                       this.setState({
                         data
                       })
@@ -96,21 +104,27 @@ export class Media extends Component<MediaProps> {
               open={this.state.openImageUploadModal}
             >
               <Paper style={{ width: '50em', padding: '2em' }}>
-                <ImageUploader num="multiple" onUploadComplete={(uploadData)=>{
-                  let { images } = this.state.data
-                  for (const img of uploadData)
-                    images.push(img.ref)
-                  
-                  let { data } = this.state
-                  data.images = images
-                  
-                  this.setState((prevState, props)=>{
-                    return {
-                      openImageUploadModal: false,
-                      data
-                    }
-                  })
-                }}/>
+                <ImageUploader type="multiple" env="dev"
+                  onUploadComplete={(uploadData)=>{
+                    let { images } = this.state.data
+                    for (const img of uploadData)
+                      images.push({
+                        url: img.ref,
+                        tags: [ this.props.tag ]
+                      })
+                    
+                    let { data } = this.state
+                    data.images = images
+                    
+                    this.setState((prevState, props)=>{
+                      this.props.syncParentData(data, 'media')
+                      return {
+                        openImageUploadModal: false,
+                        data
+                      }
+                    })
+                  }}
+                />
                 <Button color="secondary" variant="contained" 
                   onClick={()=>{
                     this.setState({
@@ -121,22 +135,25 @@ export class Media extends Component<MediaProps> {
                   Close
                 </Button>
               </Paper>
-              
             </Modal>
           </Grid>
 
-          <Grid item xs={12}>
-            <Rs.Label>Video URL</Rs.Label>
-            <TextField id="videoURL" fullWidth variant="outlined" 
-              margin="dense" placeholder="https://example.com/video"
-              InputProps={{
-                startAdornment: <InputAdornment position="start">
-                  <Link/>
-                </InputAdornment>,
-              }}
-              onChange={this.handleChangeById}
-            />
-          </Grid>
+          {
+            this.props.includeVideoURL!==null && this.props.includeVideoURL ? (
+              <Grid item xs={12}>
+                <Rs.Label>Video URL</Rs.Label>
+                <TextField id="videoURL" fullWidth variant="outlined" 
+                  margin="dense" placeholder="https://example.com/video"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">
+                      <Link/>
+                    </InputAdornment>,
+                  }}
+                  onChange={this.handleChangeById}
+                />
+              </Grid>
+            ) : null
+          }
         </Grid>
       </Paper>
     )
@@ -180,4 +197,4 @@ export class Image extends Component<ImageProps> {
   }
 }
 
-export default Media
+export default MediaCard

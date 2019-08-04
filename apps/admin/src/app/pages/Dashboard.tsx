@@ -3,9 +3,13 @@ import { Grid } from '@material-ui/core'
 
 import '../../assets/scss/Pages.scss'
 
-import { ImageUploader } from '../components/Images/ImageUploader'
+import CreateableSelect from 'react-select/creatable'
 
 export class Dashboard extends Component {
+  state = {
+    
+  }
+
   render() {
     return (
       <div className="page">
@@ -16,9 +20,7 @@ export class Dashboard extends Component {
         <article className="main-content">
           <Grid container spacing={3}>
             <Grid item xs={12} style={{ padding: '2em' }}>
-              <ImageUploader onUploadComplete={(fileRefs)=>{
-
-              }}/>
+              
             </Grid>
           </Grid>
         </article>

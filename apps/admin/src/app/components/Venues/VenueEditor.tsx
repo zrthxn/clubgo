@@ -1,16 +1,45 @@
 import React, { Component } from 'react'
 import { Form, Button } from 'reactstrap'
 import { Grid } from '@material-ui/core'
+import { IVenueModel } from '@clubgo/database'
 
-import { Images } from './ui/Images'
-import { VenueDetails } from './ui/VenueDetails'
-import { VenueHours } from './ui/VenueHours'
+import MediaCard from '../Images/MediaCard'
+import Settings from './ui/Settings'
+import VenueDetails from './ui/VenueDetails'
+import Hours from './ui/Hours'
+import Offers from './ui/Offers';
 
 export interface VenueEditorProps {
   intent: string,
-  populateData?: any
+  focusEventId?: string,
+  populateData?: IVenueModel
 }
 export class VenueEditor extends Component<VenueEditorProps> {
+  state = {
+    data: {}
+  }
+
+  componentDidMount() {
+    if(this.props.intent==='update')
+      console.log('Updating event with props', this.props.focusEventId, this.props.populateData)
+  }
+  
+  syncChanges = (childData, key) => {
+    let { data } = this.state
+    if(key==='root')
+      data = { ...childData }
+    else
+      data[key] = { ...childData }
+
+    this.setState({
+      data
+    })
+  }
+
+  onFinalize = () => {
+    // TODO
+  }
+
   render() {
     return (
       <div className="create-form">
@@ -18,7 +47,7 @@ export class VenueEditor extends Component<VenueEditorProps> {
           <div className="clearfix" style={{ padding: '1em' }}>
             {
               this.props.intent==='create' ? (
-                <span className="form-title">Create New Venue</span>
+                <span className="form-title">Create Venue</span>
               ) : (
                 this.props.intent==='update' ? (
                   <span className="form-title">Update Venue</span>
@@ -33,29 +62,30 @@ export class VenueEditor extends Component<VenueEditorProps> {
             <Button outline color="secondary" size="lg" className="float-right">Save</Button>
           </div>
 
-          <Grid container xs={12} spacing={3}>
-            <Grid item xs={6}>
-              <VenueDetails/>
+          <Grid item container spacing={3}>
+            <Grid item md={7} xs={12}>
+              <VenueDetails syncParentData={this.syncChanges}/>
             </Grid>
 
-            <Grid item xs={6}>
-              <Images/>
+            <Grid item md={5} xs={12}>
+              <Settings syncParentData={this.syncChanges}/>
+              <Offers/>
             </Grid>
 
-            <Grid item xs={4}>
-              <Images/>
+            <Grid item xs={12}><hr/></Grid>
+
+            <Grid item md={6} xs={12}>
+              <MediaCard tag="cover" name="cover" syncParentData={this.syncChanges}/>
+              <MediaCard tag="ambiance" name="ambiance" syncParentData={this.syncChanges}/>
             </Grid>
 
-            <Grid item xs={4}>
-              <Images/>
-            </Grid>
-
-            <Grid item xs={4}>
-              <Images/>
+            <Grid item md={6} xs={12}>
+              <MediaCard tag="food" name="food" syncParentData={this.syncChanges}/>
+              <MediaCard tag="bar" name="bar" syncParentData={this.syncChanges}/>
             </Grid>
 
             <Grid item xs={12}>
-              <VenueHours/>
+              <Hours syncParentData={this.syncChanges}/>
             </Grid>
           </Grid>
         </div>

@@ -1,0 +1,28 @@
+@import "../../Global.scss";
+
+.button {
+  margin: 0.5em;
+  // padding: 0.5em;
+  max-width: 10em;
+}
+
+button {
+  font-family: $fontFamily;
+  padding: 1em;
+  width: 100%;
+  box-shadow: 1px 2px 5px #1c1c1c60;
+  transition: all 0.25s ease;
+
+  border: none;
+  border-radius: 2em;
+  color: #fff;
+  background: linear-gradient(90deg, #a600c7, #c7007b);
+}
+button:active, button:focus {
+  outline: none;
+}
+button:active {
+  transition: all 0.25s ease;
+  transform: scale(0.98);
+  transform: translate(0.25em 0.25em 0);
+}

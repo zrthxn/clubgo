@@ -17,7 +17,7 @@ export class VenueContextProvider extends VenueController {
 
   componentDidMount() {
     this.setState((prevState, props)=>({
-      uiType: 'list'
+      uiType: 'create'
     }))
   }
 

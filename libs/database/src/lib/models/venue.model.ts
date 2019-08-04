@@ -34,7 +34,7 @@ export const venueSchema = new mongoose.Schema(
       }
     },
     knownFor: [String],
-    cuisines: [String],
+    cuisines: String,
     facilities: [String],
     costForTwo: {
       type: Number, min: 0
@@ -58,10 +58,10 @@ export const venueSchema = new mongoose.Schema(
         isOpen: { 
           type: Boolean, required: true
         },
-        dayOpenTime: {
+        openTime: {
           type: Number, required: true, min: 0, max: 47
         },
-        dayCloseTime: {
+        closeTime: {
           type: Number, required: true, min: 0, max: 47
         },
         busy: Number
@@ -79,14 +79,17 @@ export const venueSchema = new mongoose.Schema(
         action: String, // RegExp // something like -15% or 1+1 or similar
       }
     ],
-    images: [
-      {
-        url: {
-          type: String, required: true
-        },
-        tags: [String]
-      }
-    ]
+    media: {
+      images: [
+        {
+          url: {
+            type: String, required: true
+          },
+          tags: [String]
+        }
+      ],
+      videoURL: String
+    },
   },
   {
     collection: 'Venues'
@@ -109,7 +112,7 @@ export interface IVenueModel extends mongoose.Document {
     _lon: number
   },
   knownFor?: [string],
-  cuisines?: [string],
+  cuisines?: string,
   facilities?: [string],
   costForTwo?: number,
   settings: {
@@ -125,8 +128,8 @@ export interface IVenueModel extends mongoose.Document {
     {
       day: string,
       isOpen: boolean,
-      dayOpenTime: number,
-      dayCloseTime: number,
+      openTime: number,
+      closeTime: number,
       busy?: number,
     }
   ],
@@ -138,12 +141,15 @@ export interface IVenueModel extends mongoose.Document {
       action?: string, // RegExp // something like -15% or 1+1 or similar
     }
   ],
-  images: [
-    {
-      url: string,
-      tags?: [string],
-    }
-  ]
+  media: {
+    images: [
+      {
+        url: string,
+        tags?: [string],
+      }
+    ],
+    videoURL: string
+  }
 }
 
 export const Venue = mongoose.model<IVenueModel>('Venue', venueSchema)

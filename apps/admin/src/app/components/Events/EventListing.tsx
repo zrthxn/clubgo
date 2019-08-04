@@ -45,7 +45,7 @@ export class EventListing extends Component {
             {
               this.state.listing.map((item, index)=>{
                 return (
-                  <div key={ `listing_${index}` }>
+                  <div key={ `eventListing_${index}` }>
                     <EventListItem data={ item } />
 
                     {

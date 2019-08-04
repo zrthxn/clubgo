@@ -3,6 +3,7 @@ import { Label, DropdownItem } from 'reactstrap'
 import { Grid, Paper, TextField, Button, Fab, Modal } from '@material-ui/core'
 import { FormControl, MenuItem, InputLabel, OutlinedInput } from '@material-ui/core'
 import Select from 'react-select'
+import CreateableSelect from 'react-select/creatable'
 import { Add, Delete } from '@material-ui/icons'
 
 import { handleChangeById as inputHandler } from '@clubgo/util'
@@ -51,7 +52,7 @@ export class EventDetails extends Component<EventDetailsProps> {
     required: [
       'eventTitle', 'description', 'categories'
     ],
-    itratableMembers: [
+    iterableMembers: [
       'customDetails'
     ]
   }
@@ -118,7 +119,7 @@ export class EventDetails extends Component<EventDetailsProps> {
 
             <Grid item md={6} xs={12}>
               <Label>Performers</Label>
-              <div style={{padding: '0.5em'}}>
+              <div style={{ padding: '0.5em' }}>
                 <Button variant="contained" color="primary"
                   onClick={()=>{
                     this.setState({
@@ -129,7 +130,8 @@ export class EventDetails extends Component<EventDetailsProps> {
                   Select Artist
                 </Button>
               </div>
-              <div style={{padding: '0.5em'}}>
+
+              <div style={{ padding: '0.5em' }}>
                 <Button variant="contained" color="primary"
                   onClick={()=>{
                     this.setState({
@@ -162,13 +164,28 @@ export class EventDetails extends Component<EventDetailsProps> {
                     })
                   }}
                 />
-              </div>              
+              </div>
             </Grid>
 
             <Grid item md={8} xs={12}>
               <Label>Tags</Label>
-              <TextField id="tags" fullWidth label="Tags (chips)" 
-                variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+              <div style={{ padding: '0.5em' }}>
+                <CreateableSelect
+                  isMulti
+                  isClearable
+                  onChange={(value:any) => {
+                    let { tags } = this.state.data, { data } = this.state
+                    tags = [ ...value ]
+                    data.tags = tags
+                    this.setState((prevState, props)=>{
+                      this.props.syncParentData(data, 'root')
+                      return {
+                        data
+                      }
+                    })
+                  }}
+                />
+              </div>              
             </Grid>
           </Grid>
         </Paper>

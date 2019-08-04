@@ -4,22 +4,17 @@
   "newProjectRoot": "",
   "projects": {
     "website": {
-      "projectType": "application",
-      "schematics": {
-        "@nrwl/workspace:component": {
-          "style": "scss"
-        }
-      },
       "root": "apps/website",
       "sourceRoot": "apps/website/src",
-      "prefix": "clubgo",
+      "projectType": "application",
+      "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@nrwl/web:build",
           "options": {
             "outputPath": "dist/apps/website",
             "index": "apps/website/src/index.html",
-            "main": "apps/website/src/main.ts",
+            "main": "apps/website/src/main.tsx",
             "polyfills": "apps/website/src/polyfills.ts",
             "tsConfig": "apps/website/tsconfig.app.json",
             "assets": [
@@ -42,10 +37,8 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -57,20 +50,14 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@nrwl/web:dev-server",
           "options": {
-            "browserTarget": "website:build"
+            "buildTarget": "website:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "website:build:production"
+              "buildTarget": "website:build:production"
             }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "website:build"
           }
         },
         "lint": {
@@ -87,8 +74,7 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/website/jest.config.js",
-            "tsConfig": "apps/website/tsconfig.spec.json",
-            "setupFile": "apps/website/src/test-setup.ts"
+            "tsConfig": "apps/website/tsconfig.spec.json"
           }
         }
       }

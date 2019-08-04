@@ -3,53 +3,68 @@ import { Label } from 'reactstrap'
 import { Grid, Paper } from '@material-ui/core'
 import { TextField, Button, Switch, Checkbox } from '@material-ui/core'
 
-export class Settings extends Component {
+import { handleChangeById as inputHandler } from '@clubgo/util'
+
+export interface SettingsProps {
+  syncParentData: Function
+}
+export class Settings extends Component<SettingsProps> {
   state = {
-    isFeatured: false,
-    isPublished: true,
-    venuePriority: Number,
-    featured: {
-      featuredText: String,
-      featuredPriority: Number
-    }
+    data: {
+      isFeatured: false,
+      isPublished: true,
+      venuePriority: null,
+      featured: {
+        featuredText: null,
+        featuredPriority: null
+      }
+    },
+    requiredFulfilled: false,
+    required: [
+      'isPublished', 'isFeatured', 'eventPriority'
+    ],
+    iterableMembers: [
+      
+    ]
+  }
+  
+  handleChangeById = (event) => {
+    const result = inputHandler(event, this.state)
+    this.props.syncParentData(this.state.data, 'settings')
+    this.setState((prevState, props)=>(
+      result
+    ))
   }
 
   render() {
     return (
-      <Grid container xs={12}>
+      <Grid item container>
         <Grid item xs={12}>
           <Paper className="create-block">
             <h3 className="title">Settings</h3>
 
-            <Grid container xs={12} spacing={3}>
+            <Grid item container spacing={3}>
               <Grid item xs={6}>
-                <Switch defaultChecked color="primary" onChange={()=>{
-                  this.setState((prevState, props)=>({
-                    isPublished: !this.state.isPublished
-                  }))
-                }}/>                
+                <Switch id="isPublished" defaultChecked color="primary" onChange={this.handleChangeById}/>  
                 <Label>Published</Label>
               </Grid>
 
               <Grid item xs={6}>
-                <Switch color="primary" onChange={()=>{
-                  this.setState((prevState, props)=>({
-                    isFeatured: !this.state.isFeatured
-                  }))
-                }}/>
+                <Switch id="isFeatured" color="primary" onChange={this.handleChangeById}/>
                 <Label>Featured</Label>
               </Grid>
 
-              {
-                !this.state.isFeatured ? (
-                  <div></div>
-                ) : (
-                  <Grid item xs={12}>
-                    <TextField fullWidth label="Featured Text" variant="outlined" margin="dense"/>
-                    <TextField fullWidth label="Priority (num)" variant="outlined" margin="dense"/>
-                  </Grid>
-                )
-              }
+              <Grid item xs={12}>
+                {
+                  !this.state.data.isFeatured ? (
+                    <div></div>
+                  ) : (
+                    <TextField id="featured/featuredText" fullWidth label="Featured Text" 
+                      variant="outlined" margin="dense" onChange={this.handleChangeById}
+                    />
+                  )
+                }
+              </Grid>
             </Grid>
           </Paper>
         </Grid>
@@ -58,9 +73,19 @@ export class Settings extends Component {
           <Paper className="create-block">
             <h3 className="title">Priority</h3>
 
-            <Grid container xs={12} spacing={3}>
+            <Grid item container xs={12} spacing={3}>
               <Grid item xs={12}>
-                <TextField fullWidth label="Venue Priority (num)" variant="outlined" margin="dense"/>
+                <TextField id="venuePriority" fullWidth label="Venue Priority (num)" 
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+
+                {
+                  !this.state.data.isFeatured ? (
+                    <div></div>
+                  ) : (
+                    <TextField id="featured/featuredPriority" fullWidth label="Featured Priority (num)" 
+                      variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                  )
+                }
               </Grid>
             </Grid>
           </Paper>

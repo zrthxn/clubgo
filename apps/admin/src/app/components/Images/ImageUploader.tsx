@@ -7,11 +7,10 @@ import '../scss/ImageUploader.scss'
 import { Image } from './ui/Image'
 import { UploadService } from '@clubgo/features/api'
 
-const REAL_POST_REQUESTS = true
-
 export interface ImageUploaderProps{
-  num: 'single' | 'multiple',
-  onUploadComplete: Function
+  type: 'single' | 'multiple',
+  onUploadComplete: Function,
+  env?: 'dev' | 'prod'
 }
 export class ImageUploader extends Component<ImageUploaderProps> {
   state = {
@@ -27,18 +26,15 @@ export class ImageUploader extends Component<ImageUploaderProps> {
   }
 
   upload = async () => {
-    if(REAL_POST_REQUESTS) {
-      let results = await this.uploader.multiple([ 
-        ...this.state.files
-      ])
-      let { refs } = results.data
-      console.log( refs )
-  
+    if(this.props.env!=='dev') {
+      let result = await this.uploader.multiple(this.state.files)
+      let { refs } = result.data
       this.props.onUploadComplete(refs)
     }
     else {
       this.props.onUploadComplete([
-        'abcd', 'efgh'
+        { ref: 'abcd' },
+        { ref: 'efgh' }
       ])
     }
   }

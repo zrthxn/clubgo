@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Form, Button } from 'reactstrap'
 import { Grid } from '@material-ui/core'
+import { IEventModel } from '@clubgo/database'
 
 import EventDetails from './ui/EventDetails'
 import Venue from './ui/Venue'
-import Media from './ui/Media'
+import MediaCard from '../Images/MediaCard'
 import Scheduling from './ui/Scheduling'
 import Booking from './ui/Booking'
 import Settings from './ui/Settings'
@@ -12,7 +13,7 @@ import Settings from './ui/Settings'
 export interface EventEditorProps {
   intent: string,
   focusEventId?: string,
-  populateData?: any
+  populateData?: IEventModel
 }
 export class EventEditor extends Component<EventEditorProps> {
   state = {
@@ -68,7 +69,7 @@ export class EventEditor extends Component<EventEditorProps> {
             </Grid>
 
             <Grid item md={5} xs={12}>
-              <Settings/>
+              <Settings syncParentData={this.syncChanges}/>
             </Grid>
 
             <Grid item md={12} xs={12}><hr/></Grid>
@@ -78,7 +79,7 @@ export class EventEditor extends Component<EventEditorProps> {
             </Grid>
 
             <Grid item md={6} xs={12}>
-              <Media syncParentData={this.syncChanges}/>
+              <MediaCard tag="event" name="event" syncParentData={this.syncChanges} includeVideoURL={true}/>
             </Grid>
             
             <Grid item md={6} xs={12}>

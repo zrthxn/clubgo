@@ -37,7 +37,7 @@ export class Venue extends Component {
     required: [
       'city'
     ],
-    iteratableMembers: [ ]
+    iterableMembers: [ ]
   }
 
   constructor(props) {

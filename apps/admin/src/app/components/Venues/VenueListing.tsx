@@ -10,19 +10,19 @@ export class VenueListing extends Component {
     listing: [
       {
         _id: 'abcdef',
-        eventTitle: 'Editing 1'
+        venueTitle: 'Editing 1'
       },
       {
         _id: 'bcdef1',
-        eventTitle: 'Editing 2'
+        venueTitle: 'Editing 2'
       },
       {
         _id: 'cdef12',
-        eventTitle: 'Editing 3'
+        venueTitle: 'Editing 3'
       },
       {
         _id: 'def123',
-        eventTitle: 'Editing 4'
+        venueTitle: 'Editing 4'
       }
     ]
   }
@@ -45,10 +45,8 @@ export class VenueListing extends Component {
             {
               this.state.listing.map((item, index)=>{
                 return (
-                  <div>
-                    <VenueListItem key={ item._id }
-                      data={ item }
-                    />
+                  <div key={ `venueListing_${index}` }>
+                    <VenueListItem data={ item }/>
 
                     {
                       index!==(this.state.listing.length-1) ? <hr/> : <span/>
