@@ -3,22 +3,22 @@ import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 import { User } from '@clubgo/database'
 
-const UserAdminRouter = express.Router()
+const UserRouter = express.Router()
 
 // Read all users :: /admin/user/_all
-UserAdminRouter.get('/_list', async (req, res)=>{
+UserRouter.get('/_list', async (req, res)=>{
   const userStream = await User.find({}).cursor({transform: JSON.stringify})
   userStream.pipe(res.type('json'))
 })
 
 // Read a user by ID :: /admin/user/_get/:userid
-UserAdminRouter.get('/_get/:userid', async (req, res)=>{
+UserRouter.get('/_get/:userid', async (req, res)=>{
   const searchResult = await User.findOne({ _id: req.params.userid })
   res.send({ message: 'found', result: searchResult })
 })
 
 // Read a group of users by ID :: /admin/user/_group
-UserAdminRouter.post('/_group', async (req, res)=>{
+UserRouter.post('/_group', async (req, res)=>{
   const { searchIds } = req.body
   for (let id of searchIds)
     id = mongoose.Types.ObjectId(id)
@@ -36,7 +36,7 @@ UserAdminRouter.post('/_group', async (req, res)=>{
 })
 
 // Create a user :: /admin/user/_create
-UserAdminRouter.post('/_create', async (req, res)=>{
+UserRouter.post('/_create', async (req, res)=>{
   const { createBody } = req.body
   const createUser = new User(createBody)
 
@@ -54,7 +54,7 @@ UserAdminRouter.post('/_create', async (req, res)=>{
 })
 
 // Update a user by ID :: /admin/user/_update/:userid
-UserAdminRouter.put('/_update/:userid', async (req, res)=>{
+UserRouter.put('/_update/:userid', async (req, res)=>{
   const { updateBody } = req.body
   const result = await User.findOneAndUpdate(
     { 
@@ -69,7 +69,7 @@ UserAdminRouter.put('/_update/:userid', async (req, res)=>{
 })
 
 // Delete a user by ID :: /admin/user/_delete/:userid
-UserAdminRouter.delete('/_delete/:userid', async (req, res)=>{
+UserRouter.delete('/_delete/:userid', async (req, res)=>{
   const result = await User.findOneAndDelete(
     { 
       _id: req.params.userid 
@@ -81,4 +81,4 @@ UserAdminRouter.delete('/_delete/:userid', async (req, res)=>{
   })
 })
 
-export default UserAdminRouter
+export default UserRouter

@@ -1,7 +1,13 @@
 {
   "endpoints": {
-    "api": "http://localhost:3333",
-    "admin": "http://localhost:3333",
-    "cdn": "http://localhost:4444"
+    "api": {
+      "url": "http://localhost:3333/api"
+    },
+    "admin": {
+      "url": "http://localhost:3333/admin"
+    },
+    "cdn": {
+      "url": "http://localhost:4444/cdn"
+    }
   }
 }

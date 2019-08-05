@@ -1,7 +1,16 @@
 import axios from 'axios'
+
+// const { APIProps, AuthInitializationTypes } = require('./api.d.ts')
 const config = require('./config.json')
 
-export class InterfaceAPI {
+export interface APIProps {
+  apiTypes: 'api' | 'admin' | 'cdn'
+}
+export interface AuthInitializationTypes {
+  headers:Object
+}
+
+export default class InterfaceAPI {
   request = axios
 
   protected auth = {
@@ -15,16 +24,8 @@ export class InterfaceAPI {
 
   protected endpoint = config.endpoints.backend
 
-  constructor(apiType:APITypes['api']) {
-    this.addPathRoute(`/${apiType}`)
-    this.setEndpoint(config.endpoints[apiType])
-    this.request.create({
-      baseURL: this.endpoint,
-      timeout: 5000,
-      headers: {
-        'X-Basic-Auth': 'key'
-      }
-    })
+  constructor(apiType:APIProps['apiTypes']) {
+    this.setEndpoint(config.endpoints[apiType].url)
   }
 
   addPathRoute(setPath:string) {
@@ -41,6 +42,8 @@ export class InterfaceAPI {
         'X-Basic-Auth': 'key'
       }
     })
+
+    this.authenticate()
   }
 
   async authenticate(headers?:Object) {
@@ -52,11 +55,4 @@ export class InterfaceAPI {
   getEndpoint() { 
     return this.endpoint
   }
-}
-
-export interface APITypes {
-  api: 'api' | 'admin' | 'cdn'
-}
-export interface AuthInitializationTypes {
-  headers:Object
 }

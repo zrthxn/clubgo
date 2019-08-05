@@ -1,30 +1,65 @@
-import express from 'express'
+import express, { Router as ExpressRouter } from 'express'
 import mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 import * as bodyParser from 'body-parser'
 import * as cookieParser from 'cookie-parser'
 
-export const ClubgoServer = express()
-export default ClubgoServer
+/**
+ * @author
+ * * Alisamar Husain | zrthxn
+ * 
+ * @copyright
+ * Copyright Alisamar Husain
+ * 2019
+ * 
+ * @license
+ * MIT Licence
+ * This software is provided as-is with no
+ * warranties or guatantees.
+ */
 
-ClubgoServer.use(cookieParser())
-ClubgoServer.use(bodyParser.json())
-ClubgoServer.use(bodyParser.urlencoded({ extended: true }))
-ClubgoServer.use(express.json())
-ClubgoServer.use(express.urlencoded({ extended: true }))
+export const _Server = express()
+export default _Server
+// All Express instances starting with a underscore
+// like _Server are global routing objects.
 
-import AdminRouter from './AdminRouter/AdminRouter'
-import WebRouter from './WebsiteRouter/WebsiteRouter'
+_Server.use(cookieParser())
+_Server.use(bodyParser.json())
+_Server.use(bodyParser.urlencoded({ extended: true }))
+_Server.use(express.json())
+_Server.use(express.urlencoded({ extended: true }))
+
+import _Router from './Router/Router'
+
 import { database as Database } from '@clubgo/database'
+import { auth } from './Auth/Authentication'
 
+// MongoDB Connection
 Database.connect({ db: 'clubgo' })
   .then(() => console.log(conf.Magenta('Ready')))
   .catch((e) => console.log(conf.Red(e)) )
 
-ClubgoServer.get('/', (req, res)=>{
+// ==========================================================
+
+/**
+ * @description
+ * Welcome to the ClubGo Backend API Server
+ * This server routes and serves all the data in the website
+ * The API exposes all the available funcionality
+ */
+
+_Server.get('/', (req, res)=>{
   res.send({ message: 'clubgo' })
 })
 
-ClubgoServer.use('/api', WebRouter)
+_Server.use('/api', (req, res, next)=>{
+  console.log('api')
+  // auth
+  _Router(req, res, next)
+})
 
-ClubgoServer.use('/admin', AdminRouter)
+_Server.use('/admin', (req, res, next)=>{
+  console.log('admin')
+  // auth
+  _Router(req, res, next)
+})

@@ -7,7 +7,9 @@ import MediaCard from '../Images/MediaCard'
 import Settings from './ui/Settings'
 import VenueDetails from './ui/VenueDetails'
 import Hours from './ui/Hours'
-import Offers from './ui/Offers';
+import Offers from './ui/Offers'
+
+import {  } from '@clubgo/features/api'
 
 export interface VenueEditorProps {
   intent: string,

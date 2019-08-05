@@ -1,4 +1,4 @@
-import { ClubgoServer as server } from './app/Server'
+import { _Server as server } from './app/Server'
 import { conf } from '@clubgo/util'
 
 const port = process.env.port || 3333

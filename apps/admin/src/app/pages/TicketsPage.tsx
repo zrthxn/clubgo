@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import '../../assets/scss/Pages.scss'
+import './scss/Pages.scss'
 
 export class TicketsPage extends Component {
   render() {

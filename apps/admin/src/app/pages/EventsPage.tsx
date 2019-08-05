@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Nav, NavItem, NavLink } from 'reactstrap'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 
-import '../../assets/scss/Pages.scss'
+import './scss/Pages.scss'
 
 import { EventController } from '../components/Events/EventController'
 import { EventContextProvider } from '../components/Events/EventContextProvider'

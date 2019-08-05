@@ -44,8 +44,8 @@ export function handleChangeById(event, state) {
           parentKey = parentKey.split('#')[0]
           let requiredIndex = parseInt(parentKey.split('#')[1], 10)
 
-          if(itratableMembers.length!==0)
-            for(let itratedKey of itratableMembers)
+          if(iterableMembers.length!==0)
+            for(let itratedKey of iterableMembers)
               if(itratedKey===parentKey)
                 for(let [memberIndex, iteratedMember] of state.data[itratedKey].entries())
                   if(memberIndex===requiredIndex)

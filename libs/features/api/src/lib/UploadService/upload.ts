@@ -1,7 +1,7 @@
-import { InterfaceAPI } from '../features-api'
-import { Observable } from 'rxjs'
+import { InterfaceAPI } from '../api'
+import { Observable, ErrorObserver } from 'rxjs'
 import FormData from 'form-data'
-import Axios from 'axios';
+
 const config = require('../config.json')
 
 export class UploadService extends InterfaceAPI {

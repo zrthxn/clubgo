@@ -1,7 +1,5 @@
-import { InterfaceAPI } from '../features-api'
+import { InterfaceAPI } from '../api'
 
 export class LoginService extends InterfaceAPI {
-  // constructor() {
 
-  // }
 }

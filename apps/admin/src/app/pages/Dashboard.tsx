@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Grid } from '@material-ui/core'
 
-import '../../assets/scss/Pages.scss'
+import './scss/Pages.scss'
 
 import CreateableSelect from 'react-select/creatable'
 

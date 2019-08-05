@@ -11,7 +11,7 @@ export const venueSchema = new mongoose.Schema(
   {
     ref: {
       type: String, required: true, unique: true // first 8 charecters (4 bytes) of ObjectID
-    }, 
+    },
     venueTitle: {
       type: String, required: true
     },

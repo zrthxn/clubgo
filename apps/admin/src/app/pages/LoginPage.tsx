@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Input, InputGroup, InputGroupAddon, Button } from 'reactstrap'
 
-import '../../assets/scss/LoginPage.scss'
+import './scss/LoginPage.scss'
 
 // import { adminLogin } from '@clubgo/features/api'
 

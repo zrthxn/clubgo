@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import { Nav, NavItem } from 'reactstrap'
 
-import '../../assets/scss/Pages.scss'
+import './scss/Pages.scss'
 
 import { VenueController } from '../components/Venues/VenueController'
 import { VenueContextProvider } from '../components/Venues/VenueContextProvider'

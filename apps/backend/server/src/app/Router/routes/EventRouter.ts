@@ -3,22 +3,22 @@ import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 import { Event } from '@clubgo/database'
 
-const EventAdminRouter = express.Router()
+const EventRouter = express.Router()
 
 // Read all events :: /admin/event/_all
-EventAdminRouter.get('/_list', async (req, res)=>{
+EventRouter.get('/_list', async (req, res)=>{
   const eventStream = await Event.find({}).cursor({transform: JSON.stringify})
   eventStream.pipe(res.type('json'))
 })
 
 // Read a event by ID :: /admin/event/_get/:eventid
-EventAdminRouter.get('/_get/:eventid', async (req, res)=>{
+EventRouter.get('/_get/:eventid', async (req, res)=>{
   const searchResult = await Event.findOne({ _id: req.params.userid })
   res.send({ message: 'found', result: searchResult })
 })
 
 // Read a group of events by ID :: /admin/event/_group
-EventAdminRouter.post('/_group', async (req, res)=>{
+EventRouter.post('/_group', async (req, res)=>{
   const { searchIds } = req.body
   for (let id of searchIds)
     id = mongoose.Types.ObjectId(id)
@@ -36,7 +36,7 @@ EventAdminRouter.post('/_group', async (req, res)=>{
 })
 
 // Create a event :: /admin/event/_create
-EventAdminRouter.post('/_create', async (req, res)=>{
+EventRouter.post('/_create', async (req, res)=>{
   const { createBody } = req.body
   const createEvent = new Event(createBody)
 
@@ -54,7 +54,7 @@ EventAdminRouter.post('/_create', async (req, res)=>{
 })
 
 // Update a event by ID :: /admin/event/_update/:eventid
-EventAdminRouter.put('/_update/:eventid', async (req, res)=>{
+EventRouter.put('/_update/:eventid', async (req, res)=>{
   const { updateBody } = req.body
   const result = await Event.findOneAndUpdate(
     { 
@@ -69,7 +69,7 @@ EventAdminRouter.put('/_update/:eventid', async (req, res)=>{
 })
 
 // Delete a event by ID :: /admin/event/_delete/:eventid
-EventAdminRouter.delete('/_delete/:eventid', async (req, res)=>{
+EventRouter.delete('/_delete/:eventid', async (req, res)=>{
   const result = await Event.findOneAndDelete(
     { 
       _id: req.params.eventid 
@@ -81,4 +81,4 @@ EventAdminRouter.delete('/_delete/:eventid', async (req, res)=>{
   })
 })
 
-export default EventAdminRouter
+export default EventRouter
