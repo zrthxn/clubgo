@@ -1,50 +1,47 @@
-import InterfaceAPI, { APIProps } from './api'
+import InterfaceAPI, { APIProps } from '../api'
 import { Observable, ErrorObserver } from 'rxjs'
 
-import { IVenueModel } from '@clubgo/database'
+import { IUserModel } from '@clubgo/database'
 
-const config = require('./config.json')
+const config = require('../config.json')
 
-export class VenueService extends InterfaceAPI {
+export class UserService extends InterfaceAPI {
   constructor(apiType:APIProps['apiTypes']) {
     super(apiType)
-    this.addPathRoute('/venue')
+    this.addPathRoute('/user')
   }
 
-  async listVenues() {
+  async listUsers() {
     return await this.request.get(
       this.endpoint + '/_list'
     )
   }
 
-  async findVenueById(venueId:string) {
+  async findUserById(userId:string) {
     // cRud
     return await this.request.post(
-      this.endpoint + '/_get/' + venueId
+      this.endpoint + '/_get/' + userId
     )
   }
 
-  async findVenueBy(findBy:string) {
+  async findUserBy(findBy:string) {
     // cRud
-    // this.setEndpoint(config.api)
-    // this.addPathRoute('/api')
-
     // return await this.request.post(
     //   this.endpoint + '/_find'
     // )
     return
   }
 
-  async findVenueGroupById(venueIds:Array<string>) {
+  async findUserGroupById(UserIds:Array<string>) {
     // cRud
     return await this.request.post(
       this.endpoint + '/_group/', {
-        searchIds: venueIds
+        searchIds: UserIds
       }
     )
   }
 
-  async createVenue(createBody:IVenueModel) {
+  async createUser(createBody:IUserModel) {
     // Crud
     return await this.request.post(
       this.endpoint + '/_create', {
@@ -56,7 +53,7 @@ export class VenueService extends InterfaceAPI {
     )
   }
 
-  async updateVenue(updateBody) {
+  async updateUser(updateBody) {
     // crUd
     return await this.request.put(
       this.endpoint + '/_update', {
@@ -68,10 +65,10 @@ export class VenueService extends InterfaceAPI {
     )
   }
 
-  async deleteVenue(venueId) {
+  async deleteUser(UserId) {
     // cruD
     return await this.request.delete(
-      this.endpoint + '/_delete/' + venueId
+      this.endpoint + '/_delete/' + UserId
     )
   }
 }

@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose'
 /**
  * @module
  * Artist Model
- * * Update the interface changing schema *
+ * * Update the interface changing schema
  */
 
 export const artistSchema = new mongoose.Schema(

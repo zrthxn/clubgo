@@ -1,14 +1,10 @@
-import { InterfaceAPI } from '../api'
+import InterfaceAPI from '../api'
 import { Observable, ErrorObserver } from 'rxjs'
 import FormData from 'form-data'
-
-const config = require('../config.json')
 
 export class UploadService extends InterfaceAPI {
   constructor() {
     super('cdn')
-    this.setEndpoint(config.endpoints.cdn)
-    this.authenticate()
   }
 
   async single(file:IUploadFile) {
@@ -64,7 +60,7 @@ export class UploadService extends InterfaceAPI {
 }
 
 export interface IUploadFile {
-  data:string, 
+  data: string, 
   contentType: string,
   ext: string,
   filename: string

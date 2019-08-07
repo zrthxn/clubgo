@@ -5,7 +5,7 @@ import { ObjectID } from 'bson'
 /**
  * @module
  * User Model Integrated with Controller
- * * Update the interface changing schema *
+ * * Update the interface changing schema
  */
 
 export const userSchema = new mongoose.Schema(

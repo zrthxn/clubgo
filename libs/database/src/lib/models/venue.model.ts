@@ -4,7 +4,7 @@ import VenueController from '../controllers/venue.controller'
 /**
  * @module
  * Venue Model Integrated with Controller
- * * Update the interface changing schema *
+ * * Update the interface changing schema
  */
 
 export const venueSchema = new mongoose.Schema(

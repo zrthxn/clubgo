@@ -1,30 +1,30 @@
-import InterfaceAPI, { APIProps } from './api'
+import InterfaceAPI, { APIProps } from '../api'
 import { Observable, ErrorObserver } from 'rxjs'
 
-import { IUserModel } from '@clubgo/database'
+import { IEventModel } from '@clubgo/database'
 
-const config = require('./config.json')
+const config = require('../config.json')
 
-export class UserService extends InterfaceAPI {
+export class EventService extends InterfaceAPI {
   constructor(apiType:APIProps['apiTypes']) {
     super(apiType)
-    this.addPathRoute('/user')
+    this.addPathRoute('/event')
   }
 
-  async listUsers() {
+  async listEvents() {
     return await this.request.get(
       this.endpoint + '/_list'
     )
   }
 
-  async findUserById(userId:string) {
+  async findEventById(EventId:string) {
     // cRud
     return await this.request.post(
-      this.endpoint + '/_get/' + userId
+      this.endpoint + '/_get/' + EventId
     )
   }
 
-  async findUserBy(findBy:string) {
+  async findEventBy(findBy:string) {
     // cRud
     // return await this.request.post(
     //   this.endpoint + '/_find'
@@ -32,16 +32,16 @@ export class UserService extends InterfaceAPI {
     return
   }
 
-  async findUserGroupById(UserIds:Array<string>) {
+  async findEventGroupById(eventIds:Array<string>) {
     // cRud
     return await this.request.post(
       this.endpoint + '/_group/', {
-        searchIds: UserIds
+        searchIds: eventIds
       }
     )
   }
 
-  async createUser(createBody:IUserModel) {
+  async createEvent(createBody:IEventModel) {
     // Crud
     return await this.request.post(
       this.endpoint + '/_create', {
@@ -53,7 +53,7 @@ export class UserService extends InterfaceAPI {
     )
   }
 
-  async updateUser(updateBody) {
+  async updateEvent(updateBody) {
     // crUd
     return await this.request.put(
       this.endpoint + '/_update', {
@@ -65,10 +65,10 @@ export class UserService extends InterfaceAPI {
     )
   }
 
-  async deleteUser(UserId) {
+  async deleteEvent(eventId) {
     // cruD
     return await this.request.delete(
-      this.endpoint + '/_delete/' + UserId
+      this.endpoint + '/_delete/' + eventId
     )
   }
 }
