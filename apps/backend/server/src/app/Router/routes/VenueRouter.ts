@@ -3,8 +3,35 @@ import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 import { Venue } from '@clubgo/database'
 
-const VenueRouter = express.Router()
+/**
+ * @description
+ * * Venues Router
+ * This Express Router handles all CRUD functions
+ * related to Venues.
+ */
 
+export const VenueRouter = express.Router()
+export default VenueRouter
+// ========================================================
+
+// Security Functions
+// --------------------------------------------------------
+// Validate Venue Creation
+VenueRouter.use('/_create', (req, res, next)=>{
+  // If req has ADMIN level access token, allow and DEL token header
+  // Else, 403
+  next()
+})
+
+// Validate Venue Deletion
+VenueRouter.use('/_delete', (req, res, next)=>{
+  // If req has ADMIN level access token, allow and DEL token header
+  // Else, 403
+  next()
+})
+
+// CRUD Functions
+// --------------------------------------------------------
 // Read all venues :: /admin/venue/_all
 VenueRouter.get('/_list', async (req, res)=>{
   const venueStream = await Venue.find({}).cursor({transform: JSON.stringify})
@@ -80,5 +107,4 @@ VenueRouter.delete('/_delete/:venueid', async (req, res)=>{
     message: result
   })
 })
-
-export default VenueRouter
+// STOP ============================================== STOP

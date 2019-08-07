@@ -3,8 +3,35 @@ import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 import { Event } from '@clubgo/database'
 
-const EventRouter = express.Router()
+/**
+ * @description
+ * * Events Router
+ * This Express Router handles all CRUD functions
+ * related to Events.
+ */
 
+export const EventRouter = express.Router()
+export default EventRouter
+// ========================================================
+
+// Security Functions
+// --------------------------------------------------------
+// Validate Event Creation
+EventRouter.use('/_create', (req, res, next)=>{
+  // If req has ADMIN level access token, allow and DEL token header
+  // Else, 403
+  next()
+})
+
+// Validate Event Deletion
+EventRouter.use('/_delete', (req, res, next)=>{
+  // If req has ADMIN level access token, allow and DEL token header
+  // Else, 403
+  next()
+})
+
+// CRUD Functions
+// --------------------------------------------------------
 // Read all events :: /admin/event/_all
 EventRouter.get('/_list', async (req, res)=>{
   const eventStream = await Event.find({}).cursor({transform: JSON.stringify})
@@ -80,5 +107,4 @@ EventRouter.delete('/_delete/:eventid', async (req, res)=>{
     message: result
   })
 })
-
-export default EventRouter
+// STOP ============================================== STOP

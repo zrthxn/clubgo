@@ -3,12 +3,49 @@ import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 import { User } from '@clubgo/database'
 
-const UserRouter = express.Router()
+/**
+ * @description
+ * * Users Router
+ * This Express Router handles all CRUD functions
+ * related to Users.
+ */
 
-// Read all users :: /admin/user/_all
+export const UserRouter = express.Router()
+export default UserRouter
+// ========================================================
+
+// Security Functions
+// --------------------------------------------------------
+// Validate User Creation
+UserRouter.use('/_create', (req, res, next)=>{
+  // If req has ADMIN level access token, allow and DEL token header
+  // Else, 403
+  next()
+})
+
+// Validate User Deletion
+UserRouter.use('/_delete', (req, res, next)=>{
+  // If req has ADMIN level access token, allow and DEL token header
+  // Else, 403
+  next()
+})
+
+// CRUD Functions
+// --------------------------------------------------------
+// Read all users :: /admin/user/_list
 UserRouter.get('/_list', async (req, res)=>{
-  const userStream = await User.find({}).cursor({transform: JSON.stringify})
-  userStream.pipe(res.type('json'))
+  const userStream = await User.find({}).cursor({ transform: JSON.stringify })
+  // userStream.pipe(res.type('json'))
+  userStream.on('data', (data)=>{
+    setTimeout(()=>{
+      res.write(data)
+    }, 1000)
+  })
+  userStream.on('end', ()=>{
+    setTimeout(()=>{
+      res.end()
+    }, 2000)
+  })
 })
 
 // Read a user by ID :: /admin/user/_get/:userid
@@ -80,5 +117,4 @@ UserRouter.delete('/_delete/:userid', async (req, res)=>{
     result
   })
 })
-
-export default UserRouter
+// STOP ============================================== STOP
