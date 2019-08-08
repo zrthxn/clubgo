@@ -152,5 +152,39 @@ export interface IVenueModel extends mongoose.Document {
   }
 }
 
+export const DVenueModel = {
+  ref: null,
+  venueTitle: null,
+  description: null,
+  categories: null,
+  locality: null,
+  address: null,
+  altAddress: null,
+  nearestMetroStation: null,
+  coordinates: {
+    _lat: null,
+    _lon: null
+  },
+  knownFor: [],
+  cuisines: null,
+  facilities: [],
+  costForTwo: null,
+  settings: {
+    isPublished: false,
+    venuePriority: null,
+    isFeatured: false,
+    featured: {
+      featuredText: null,
+      featuredPriority: null
+    }
+  },
+  timings: [],
+  offers: [],
+  media: {
+    images: [],
+    videoURL: null
+  }
+}
+
 export const Venue = mongoose.model<IVenueModel>('Venue', venueSchema)
 export default Venue

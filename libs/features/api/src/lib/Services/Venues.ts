@@ -44,7 +44,7 @@ export class VenueService extends InterfaceAPI {
     )
   }
 
-  async createVenue(createBody:IVenueModel) {
+  async createVenue(createBody:object) {
     // Crud
     return await this.request.post(
       this.endpoint + '/_create', {

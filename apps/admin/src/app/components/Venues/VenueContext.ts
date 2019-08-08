@@ -8,16 +8,10 @@ export const VenueContext = React.createContext({
     }
   },
   actions: {
-    createVenue: () => {
+    openVenueEditor: (intent, data?) => {
       console.log()
     },
-    listVenue: () => {
-      console.log()
-    },
-    editVenue: (venueData) => {
-      console.log()
-    },
-    deleteVenue: (_id) => {
+    openVenueListing: () => {
       console.log()
     }
   }

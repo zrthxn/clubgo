@@ -21,33 +21,26 @@ export class VenueContextProvider extends VenueController {
     }))
   }
 
-  createVenue = () => {
-    console.log('Venue Create')
-    this.setState((prevState, props)=>({
-      uiType: 'create'
-    }))
+  openVenueEditor = (intent, data?) => {
+    console.log('Venue Editor')
+    this.setState((prevState, props)=>{
+      if(data!==null)
+        return {
+          uiType: intent,
+          venueData: data
+        }
+      else
+        return {
+          uiType: intent
+        }
+    })
   }
 
-  listVenue = () => {
+  openVenueListing = () => {
     console.log('Venue List')
     this.setState((prevState, props)=>({
       uiType: 'list'
     }))
-  }
-  
-  editVenue = (venueData) => {
-    console.log('Venue Edit')
-    this.setState((prevState, props)=>({
-      uiType: 'edit',
-      venueData: venueData
-    }))
-  }
-  
-  deleteVenue = (_id) => {
-    console.log('Venue Delete')
-    // this.setState((prevState, props)=>({
-    //   uiType: 'delete'
-    // }))
   }
 
   render() {
@@ -56,10 +49,8 @@ export class VenueContextProvider extends VenueController {
         value={{
           state: this.state,
           actions: {
-            createVenue: this.createVenue,
-            listVenue: this.listVenue,
-            editVenue: this.editVenue,
-            deleteVenue: this.deleteVenue
+            openVenueEditor: this.openVenueEditor,
+            openVenueListing: this.openVenueListing
           }
         }}
       >

@@ -49,7 +49,7 @@ export class Hours extends Component<HoursProps> {
 
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
-    this.props.syncParentData(this.state.data, 'root')
+    this.props.syncParentData([...this.state.data.timings], 'timings')
     this.setState((prevState, props)=>(
       result
     ))
@@ -116,7 +116,7 @@ export class Hours extends Component<HoursProps> {
                           timings[index].openTime = time
                           data.timings = timings
                           this.setState((prevState, props)=>{
-                            this.props.syncParentData(data.timings, 'timings')
+                            this.props.syncParentData([...this.state.data.timings], 'timings')
                             return {
                               data
                             }
@@ -140,7 +140,7 @@ export class Hours extends Component<HoursProps> {
                           timings[index].closeTime = time
                           data.timings = timings
                           this.setState((prevState, props)=>{
-                            this.props.syncParentData(data.timings, 'timings')
+                            this.props.syncParentData([...this.state.data.timings], 'timings')
                             return {
                               data
                             }
@@ -162,7 +162,7 @@ export class Hours extends Component<HoursProps> {
                             timings[index].busy = value
                             data.timings = timings
                             this.setState((prevState, props)=>{
-                              this.props.syncParentData(data.timings, 'timings')
+                              this.props.syncParentData([...this.state.data.timings], 'timings')
                               return {
                                 data
                               }

@@ -9,11 +9,17 @@ import { VenueListing } from './VenueListing'
 import { VenueContext } from './VenueContext'
 
 export class VenueController extends Component {
+  static contextType = VenueContext
+
   interfaceBuilder = ( contextState ) => {
     const { uiType } = contextState
     if(uiType==='create')
       return (
-        <VenueEditor intent={'create'}/>
+        <VenueEditor intent={'create'}
+          onFinalize={()=>{
+
+          }}
+        />
       )
     else if(uiType==='list')
       return (
@@ -21,9 +27,11 @@ export class VenueController extends Component {
       )
     else if(uiType==='edit')
       return (
-        <VenueEditor 
-          intent={'update'}
+        <VenueEditor intent={'update'}
           populateData={ contextState.venueData }
+          onFinalize={()=>{
+            
+          }}
         />
       )
     else
@@ -44,13 +52,13 @@ export class VenueController extends Component {
               <div className="section-nav">
                 <Nav tabs>
                   <NavItem>
-                    <button className="nav-link" onClick={() => venueContext.actions.createVenue()}>
+                    <button className="nav-link" onClick={() => venueContext.actions.openVenueEditor('create')}>
                       Create
                     </button>
                   </NavItem>
                   
                   <NavItem>
-                    <button className="nav-link" onClick={() => venueContext.actions.listVenue()}>
+                    <button className="nav-link" onClick={() => venueContext.actions.openVenueListing()}>
                       List
                     </button>
                   </NavItem>
