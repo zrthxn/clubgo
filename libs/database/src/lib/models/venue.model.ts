@@ -53,16 +53,18 @@ export const venueSchema = new mongoose.Schema(
     timings: [
       {
         day: { 
-          type: String, enum: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'], required: true
+          type: String, enum: [
+            'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+          ], required: true
         },
         isOpen: { 
           type: Boolean, required: true
         },
         openTime: {
-          type: Number, required: true, min: 0, max: 47
+          type: Number, required: true, min: 0, max: 720
         },
         closeTime: {
-          type: Number, required: true, min: 0, max: 47
+          type: Number, required: true, min: 0, max: 720
         },
         busy: Number
       }
@@ -126,7 +128,7 @@ export interface IVenueModel extends mongoose.Document {
   },
   timings: [
     {
-      day: string,
+      day: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
       isOpen: boolean,
       openTime: number,
       closeTime: number,
@@ -149,40 +151,6 @@ export interface IVenueModel extends mongoose.Document {
       }
     ],
     videoURL: string
-  }
-}
-
-export const DVenueModel = {
-  ref: null,
-  venueTitle: null,
-  description: null,
-  categories: null,
-  locality: null,
-  address: null,
-  altAddress: null,
-  nearestMetroStation: null,
-  coordinates: {
-    _lat: null,
-    _lon: null
-  },
-  knownFor: [],
-  cuisines: null,
-  facilities: [],
-  costForTwo: null,
-  settings: {
-    isPublished: false,
-    venuePriority: null,
-    isFeatured: false,
-    featured: {
-      featuredText: null,
-      featuredPriority: null
-    }
-  },
-  timings: [],
-  offers: [],
-  media: {
-    images: [],
-    videoURL: null
   }
 }
 

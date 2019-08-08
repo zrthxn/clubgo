@@ -44,26 +44,24 @@ export class VenueService extends InterfaceAPI {
     )
   }
 
-  async createVenue(createBody:object) {
+  async createVenue(createBody:object) { // IVenueModel
     // Crud
-    return await this.request.post(
-      this.endpoint + '/_create', {
-        createBody,
-        params: {
-
+    try {
+      return await this.request.post(
+        this.endpoint + '/_create', {
+          createBody
         }
-      }
-    )
+      )
+    } catch(err) {
+      return Promise.reject(err)
+    }
   }
 
   async updateVenue(updateBody) {
     // crUd
     return await this.request.put(
       this.endpoint + '/_update', {
-        updateBody,
-        params: {
-
-        }
+        updateBody
       }
     )
   }

@@ -9,37 +9,110 @@ import VenueDetails from './ui/VenueDetails'
 import Hours from './ui/Hours'
 import Offers from './ui/Offers'
 
-import {  } from '@clubgo/features/api'
+import { VenueService } from '@clubgo/features/api'
 
 export interface VenueEditorProps {
   intent: string,
+  onFinalize: Function,
+  onError: Function,
   focusEventId?: string,
   populateData?: IVenueModel
 }
 export class VenueEditor extends Component<VenueEditorProps> {
   state = {
-    data: {}
+    data: {
+      venueTitle: null,
+      description: null,
+      categories: [],
+      locality: null,
+      address: null,
+      altAddress: null,
+      nearestMetroStation: null,
+      coordinates: {
+        _lat: 0,
+        _lon: 0
+      },
+      knownFor: [],
+      cuisines: null,
+      facilities: [],
+      costForTwo: null,
+      settings: {
+        isPublished: false,
+        venuePriority: null,
+        isFeatured: false,
+        featured: {
+          featuredText: null,
+          featuredPriority: null
+        }
+      },
+      timings: [],
+      offers: [],
+      media: {
+        images: [],
+        videoURL: null
+      }
+    }
+  }
+
+  venueService = new VenueService('admin')
+
+  constructor(props) {
+    super(props)
   }
 
   componentDidMount() {
-    if(this.props.intent==='update')
+    if(this.props.intent==='update') {
       console.log('Updating event with props', this.props.focusEventId, this.props.populateData)
+      // this.state.data = this.props.populateData
+      this.populate(this.props.populateData)
+    }
   }
   
   syncChanges = (childData, key) => {
     let { data } = this.state
-    if(key==='root')
-      data = { ...childData }
-    else
-      data[key] = { ...childData }
+    if(key==='root') {
+      data = { ...data, ...childData }
+    }
+    else {
+      if(Array.isArray(childData)) {
+        let iterable = data
+        iterable[key] = childData
+        data = { ...iterable }
+      }
+      else {
+        data[key] = { ...childData }
+      }
+    }
 
     this.setState({
       data
     })
   }
 
-  onFinalize = () => {
-    // TODO
+  populate = (data) => {
+    console.log(data)
+  }
+
+  create = async (publish?) => {
+    let { data } = this.state
+    if(publish)
+      data.settings.isPublished = true
+
+    let result
+    try {
+      result = await this.venueService.createVenue(data)
+    } catch(e) {
+      result = e
+    }
+
+    if(result.status===201)
+      this.props.onFinalize('Venue Created')
+    else
+      this.props.onError(result)
+  }
+
+  save = () => {
+    
   }
 
   render() {
@@ -59,9 +132,19 @@ export class VenueEditor extends Component<VenueEditorProps> {
               )
             }
             
-            <Button color="primary" size="lg" className="float-right">Publish</Button>
+            <Button color="primary" size="lg" className="float-right"
+              onClick={()=>{
+                this.create(true)
+              }}
+            >
+              Publish
+            </Button>
+            
             <span className="float-right spacer"></span>
-            <Button outline color="secondary" size="lg" className="float-right">Save</Button>
+            
+            <Button outline color="secondary" size="lg" className="float-right" onClick={this.save}>
+              Save
+            </Button>
           </div>
 
           <Grid item container spacing={3}>

@@ -62,7 +62,7 @@ export default class InterfaceAPI {
   }
 
   async login(id, pw, headers?) {
-    const loginEndpoint = config.endpoints.login
+    const loginEndpoint = config.endpoints.login.url
     // Send login request with ID PW
     // GET Login Auth Headers specific to API level
     let loginResponse = await this.request.post(loginEndpoint, {

@@ -8,17 +8,32 @@
     font-weight: 600;
     font-size: 1.5em;
   }
+}
 
-  .listing-table {
-    margin: 2em 0;
-    padding: 1em;
-    box-shadow: 0 2.5px 5px #1c1c1c80;
-    // background-color: #fff;
+.listing-table {
+  margin: 2em 0;
+  padding: 1em;
+  // background-color: #fff;
+}
 
-    .list-item {
-      display: inline;
-      margin: 0.5em;
-      padding: 1em;
+.list-item {
+  display: flex;
+  flex-direction: row;
+  margin: 0.5em;
+  padding: 1em;
+  background-color: #fff;
+
+  border: 1px solid #1c1c1c40;
+  box-shadow: 0 2.5px 5px #1c1c1c80;
+  border-radius: 0.5em;
+
+  .action {
+    text-align: right;
+    margin: auto;
+    right: 0;
+
+    * {
+      margin: 0 0.5em;  
     }
   }
 }

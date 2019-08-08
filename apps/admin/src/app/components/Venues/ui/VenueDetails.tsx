@@ -40,8 +40,8 @@ export class VenueDetails extends Component<VenueDetailsProps> {
       altAddress: null,
       nearestMetroStation: null,
       coordinates: {
-        _lat: null,
-        _lon: null
+        _lat: 0,
+        _lon: 0
       },
       knownFor: [],
       cuisines: null,
@@ -167,10 +167,13 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                     isMulti
                     isClearable
                     placeholder="Known For"
-                    onChange={(value:any) => {
-                      let { knownFor } = this.state.data, { data } = this.state
-                      knownFor = [ ...value ]
-                      data.knownFor = knownFor
+                    onChange={(values:any) => {
+                      let labels = []
+                      for(let { label } of values)
+                        labels.push(label)
+
+                      let { data } = this.state
+                      data.knownFor = labels
                       this.setState((prevState, props)=>{
                         this.props.syncParentData(data, 'root')
                         return {
@@ -193,10 +196,13 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                     ].map(item=>({
                       label: item.label, value: item.label
                     }))}
-                    onChange={(value:any) => {
-                      let { facilities } = this.state.data, { data } = this.state
-                      facilities = [ ...value ]
-                      data.facilities = facilities
+                    onChange={(values:any) => {
+                      let labels = []
+                      for(let { label } of values)
+                        labels.push(label)
+
+                      let { data } = this.state
+                      data.facilities = labels
                       this.setState((prevState, props)=>{
                         this.props.syncParentData(data, 'root')
                         return {

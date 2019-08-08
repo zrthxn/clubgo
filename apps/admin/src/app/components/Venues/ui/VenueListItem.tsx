@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
+import { Grid, Button, Fab } from '@material-ui/core'
+import { red } from '@material-ui/core/colors'
+import { Edit, Delete } from '@material-ui/icons'
 import { IVenueModel } from '@clubgo/database'
+
+import '../../scss/Listing.scss'
 
 import { VenueContext } from '../VenueContext'
 
 export interface VenueListItemProps {
-  data?: any, //IVenueModel
+  data?: IVenueModel
 }
 export class VenueListItem extends Component<VenueListItemProps> {
   state = {
@@ -17,31 +22,31 @@ export class VenueListItem extends Component<VenueListItemProps> {
         {
           venueContext => (
             <div className="list-item">
-              <span>{ this.props.data.venueTitle }</span>
-              
-              <span>
-                <button onClick={() => venueContext.actions.editVenue(this.props.data)}>
-                  Edit
-                </button>
-                
-                <button onClick={
-                  () => {
-                    // open confirmation modal
-                    // on yes =>
-                    venueContext.actions.deleteVenue(this.props.data._id)
-                  }
-                }>
-                  Delete  
-                </button>
-              </span>
+              <Grid container spacing={1}>
+                <Grid item md={8} xs={12}>
+                  <span>{ this.props.data.venueTitle }</span>
+                </Grid>
 
-              {
-                this.state.openModal ? (
-                  <div></div>
-                ) : (
-                  <div></div>
-                )
-              }
+                <Grid item md={4} xs={12}>
+                  <div className="action">
+                    <Fab color="primary" size="small"
+                      onClick={()=>venueContext.actions.openVenueEditor('edit', this.props.data)}
+                    >
+                      <Edit/>
+                    </Fab>
+                    
+                    <Fab color="secondary" size="small"
+                      onClick={()=>{
+                          // open confirmation modal
+                          // on yes =>
+                          // venueContext.actions.deleteVenue(this.props.data._id)
+                      }}
+                    >
+                      <Delete/> 
+                    </Fab>
+                  </div>
+                </Grid>
+              </Grid>
             </div>
           )
         }

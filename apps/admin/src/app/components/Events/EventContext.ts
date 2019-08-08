@@ -3,21 +3,32 @@ import React from 'react'
 export const EventContext = React.createContext({
   state: {
     uiType: null,
-    eventData: {}
+    openSuccessFeedback: false,
+    openErrorFeedback: false,
+    feedbackMessage: 'Success',
+    eventData: {
+      
+    }
   },
   actions: {
-    createEvent: () => {
+    openEventEditor: (intent, data?) => {
       console.log()
     },
-    listEvents: () => {
+    openEventListing: () => {
       console.log()
     },
-    editEvent: (eventData) => {
-      console.log(eventData)
+    openSuccessFeedback: (message?:string) => {
+      console.log()
+    },
+    closeSuccessFeedback: () => {
+      console.log()
     },    
-    deleteEvent: (_id) => {
-      console.log(_id)
+    openErrorFeedback: (message?:string) => {
+      console.log()
     },
+    closeErrorFeedback: () => {
+      console.log()
+    }
   }
 })
 

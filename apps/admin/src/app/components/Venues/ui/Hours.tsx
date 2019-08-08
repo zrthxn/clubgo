@@ -39,10 +39,10 @@ export class Hours extends Component<HoursProps> {
     ].map(day => {
       timings.push({
         day: day.label,
-        isOpen: false,
-        openTime: null,
-        closeTime: null,
-        busy: null,
+        isOpen: true,
+        openTime: 60,
+        closeTime: 720,
+        busy: 50,
       })
     })
   }
@@ -97,7 +97,9 @@ export class Hours extends Component<HoursProps> {
                             this.state.data.timings[index].isOpen ? 'Open' : 'Closed'
                           }
                         </span>
-                        <Switch id={`timings#${index}/isOpen`} color={'primary'} onChange={this.handleChangeById}/>
+                        <Switch id={`timings#${index}/isOpen`} color={'primary'} onChange={this.handleChangeById}
+                          checked={ this.state.data.timings[index].isOpen }
+                        />
                       </span>
                       
                       <KeyboardTimePicker

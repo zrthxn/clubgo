@@ -154,7 +154,7 @@ export interface IEventModel extends mongoose.Document {
       detailName: string,
       detailData: string
     }
-  ]
+  ],
   settings: {
     isPublished: boolean,
     eventPriority?: number,
@@ -165,7 +165,6 @@ export interface IEventModel extends mongoose.Document {
     }
   },
   venue: {
-    venueType: 'regular' | 'custom',
     city: string,
     venueId?: string,
     title: string,

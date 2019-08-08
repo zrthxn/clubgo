@@ -41,16 +41,17 @@ export class EventService extends InterfaceAPI {
     )
   }
 
-  async createEvent(createBody:IEventModel) {
+  async createEvent(createBody:object) { // IEventModel
     // Crud
-    return await this.request.post(
-      this.endpoint + '/_create', {
-        createBody,
-        params: {
-
+    try {
+      return await this.request.post(
+        this.endpoint + '/_create', {
+          createBody
         }
-      }
-    )
+      )
+    } catch(err) {
+      return Promise.reject(err)
+    }
   }
 
   async updateEvent(updateBody) {

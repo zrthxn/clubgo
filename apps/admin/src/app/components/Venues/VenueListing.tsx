@@ -4,35 +4,28 @@ import { Paper } from '@material-ui/core'
 import '../scss/Listing.scss'
 
 import { VenueListItem } from './ui/VenueListItem'
+import { IVenueModel } from '@clubgo/database'
+import { VenueService } from '@clubgo/features/api'
 
 export class VenueListing extends Component {
+  venueSerice = new VenueService('admin')
+
   state = {
-    listing: [
-      {
-        _id: 'abcdef',
-        venueTitle: 'Editing 1'
-      },
-      {
-        _id: 'bcdef1',
-        venueTitle: 'Editing 2'
-      },
-      {
-        _id: 'cdef12',
-        venueTitle: 'Editing 3'
-      },
-      {
-        _id: 'def123',
-        venueTitle: 'Editing 4'
-      }
-    ]
+    loading: true,
+    listing: []
   }
 
   componentDidMount() {
-    // const provider = new ListingProvider
-    // const x = provider.fetch('venues').toString()
-    // console.log(x)
+    this.venueSerice.listVenues().then(({ data })=>{
+      let { listing } = this.state
+      listing = data.results
+      this.setState({
+        listing,
+        loading: false
+      })
+    }).catch(()=>{
 
-    // provider.fetch().subscribe()
+    })
   }
 
   render() {
@@ -40,23 +33,15 @@ export class VenueListing extends Component {
       <div className="listings">
         <span className="table-title">Venues Listing</span>
 
-        <Paper className="listing-table">
-          <div>
+          <div className="listing-table">
             {
-              this.state.listing.map((item, index)=>{
+              !this.state.loading && this.state.listing.map((item, index)=>{
                 return (
-                  <div key={ `venueListing_${index}` }>
-                    <VenueListItem data={ item }/>
-
-                    {
-                      index!==(this.state.listing.length-1) ? <hr/> : <span/>
-                    }
-                  </div>
+                  <VenueListItem data={ item } key={ `venueListing_${index}` }/>
                 )
               })
             }    
-          </div>    
-        </Paper>
+          </div>
       </div>
     )
   }

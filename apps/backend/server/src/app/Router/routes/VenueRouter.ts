@@ -34,8 +34,9 @@ VenueRouter.use('/_delete', (req, res, next)=>{
 // --------------------------------------------------------
 // Read all venues :: /admin/venue/_all
 VenueRouter.get('/_list', async (req, res)=>{
-  const venueStream = await Venue.find({}).cursor({transform: JSON.stringify})
-  venueStream.pipe(res.type('json'))
+  const venueStream = await Venue.find({})//.cursor({transform: JSON.stringify})
+  // venueStream.pipe(res.type('json'))
+  res.send({ results: venueStream })
 })
 
 // Read a venue by ID :: /admin/venue/_get/:venueid
@@ -65,18 +66,19 @@ VenueRouter.post('/_group', async (req, res)=>{
 // Create a venue :: /admin/venue/_create
 VenueRouter.post('/_create', async (req, res)=>{
   const { createBody } = req.body
-  const createVenue = new Venue(createBody)
-
+  createBody.ref = Date.now().toString(36)
+  
   try {
+    const createVenue = new Venue(createBody)
     const result = await createVenue.save()
-    res.status(201)
-    .send({ 
+    return res.status(201)
+    .send({
       message: 'created',
       result: result._id
     })
   } catch (err) {
     console.log(conf.Red(err))
-    res.status(400).send({ error: err })
+    return res.status(400).send({ error: err })
   }
 })
 

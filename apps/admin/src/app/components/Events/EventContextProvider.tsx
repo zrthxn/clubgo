@@ -5,6 +5,9 @@ import { EventController } from './EventController'
 export class EventContextProvider extends EventController {
   state = {
     uiType: null,
+    openSuccessFeedback: false,
+    openErrorFeedback: false,
+    feedbackMessage: 'Success',
     eventData: {
 
     }
@@ -21,33 +24,66 @@ export class EventContextProvider extends EventController {
     }))
   }
 
-  createEvent = () => {
-    console.log('Event Creation')
-    this.setState((prevState, props)=>({
-      uiType: 'create'
-    }))
+  openEventEditor = (intent, data?) => {
+    console.log('Event Editor')
+    this.setState((prevState, props)=>{
+      if(data!==null)
+        return {
+          uiType: intent,
+          eventData: data
+        }
+      else
+        return {
+          uiType: intent
+        }
+    })
   }
 
-  listEvents = () => {
-    console.log('Event Listing')
+  openEventListing = () => {
+    console.log('Event List')
     this.setState((prevState, props)=>({
       uiType: 'list'
     }))
+  }  
+
+  openSuccessFeedback = (message?:string) => {
+    this.setState((prevState, props)=>{
+      if(message!==null)
+        return {
+          openSuccessFeedback: true,
+          feedbackMessage: message
+        }
+      else
+        return {
+          openSuccessFeedback: true
+        }
+    })
   }
 
-  editEvent = (eventData) => {
-    console.log('Event Editing')
+  closeSuccessFeedback = () => {
     this.setState((prevState, props)=>({
-      uiType: 'edit',
-      eventData: eventData
+      openSuccessFeedback: false
     }))
   }
 
-  deleteEvent = (_id) => {
-    console.log('Event Delete')
-    // this.setState((prevState, props)=>({
-    //   uiType: 'delete'
-    // }))
+  openErrorFeedback = (message?:string) => {
+    this.setState((prevState, props)=>{
+      if(message!==null)
+        return {
+          openErrorFeedback: true,
+          feedbackMessage: message
+        }
+      else
+        return {
+          openErrorFeedback: true
+        }
+    })
+  }
+
+  closeErrorFeedback = () => {
+    this.setState((prevState, props)=>({
+      openErrorFeedback: false
+    }))
   }
 
   render() {
@@ -56,10 +92,14 @@ export class EventContextProvider extends EventController {
         value={{
           state: this.state,
           actions: {
-            createEvent: this.createEvent,
-            listEvents: this.listEvents,
-            editEvent: this.editEvent,
-            deleteEvent: this.deleteEvent
+            openEventEditor: this.openEventEditor,
+            openEventListing: this.openEventListing,
+
+            openSuccessFeedback: this.openSuccessFeedback,
+            closeSuccessFeedback: this.closeSuccessFeedback,
+            
+            openErrorFeedback: this.openErrorFeedback,
+            closeErrorFeedback: this.closeErrorFeedback
           }
         }}
       >

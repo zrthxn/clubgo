@@ -65,9 +65,11 @@ EventRouter.post('/_group', async (req, res)=>{
 // Create a event :: /admin/event/_create
 EventRouter.post('/_create', async (req, res)=>{
   const { createBody } = req.body
-  const createEvent = new Event(createBody)
+  createBody.ref = Date.now().toString(36)
+  console.log(createBody)
 
   try {
+    const createEvent = new Event(createBody)
     const result = await createEvent.save()
     res.status(201)
     .send({ 

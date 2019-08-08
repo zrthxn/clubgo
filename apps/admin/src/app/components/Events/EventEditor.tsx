@@ -10,35 +10,136 @@ import Scheduling from './ui/Scheduling'
 import Booking from './ui/Booking'
 import Settings from './ui/Settings'
 
+import { EventService } from '@clubgo/features/api'
+
 export interface EventEditorProps {
   intent: string,
+  onFinalize: Function,
+  onError: Function,
   focusEventId?: string,
   populateData?: IEventModel
 }
 export class EventEditor extends Component<EventEditorProps> {
   state = {
-    data: {}
+    data: {
+      eventTitle: null,
+      description: null,
+      categories: [],
+      tagline: null,
+      flashText: null,
+      artists: [],
+      music: [],
+      dressCode: {
+        title: null,
+        images: [],
+      },
+      tags: [],
+      hasCutomDetails: false,
+      customDetails: [],
+      settings: {
+        isPublished: false,
+        eventPriority: null,
+        isFeatured: false,
+        featured: {
+          featuredText: null,
+          featuredPriority: null
+        }
+      },
+      venue: {
+        city: null,
+        venueId: null,
+        title: null,
+        address: null, 
+        isCustomVenue: false,
+        customVenueDetails: {
+          locality: null,
+          coordinates: {
+            _lat: 0,
+            _lon: 0
+          }
+        }
+      },
+      scheduling: {
+        startTime: null,
+        endTime: null,
+        isRecurring: false,
+        recurringType: null,
+        isCustomRecurring: false,
+        customRecurring: {
+          initial: null,
+          final: null,
+          dates: []
+        }
+      },
+      bookings: {
+        isTakingOnsiteBookings: true,
+        isTakingOnsitePayments: false,
+        tickets: [],
+        registrationURL: null,
+        registrationPhone: null
+      },
+      media: {
+        images: [],
+        videoURL: null
+      }
+    }
   }
 
+  eventService = new EventService('admin')
+
   componentDidMount() {
-    if(this.props.intent==='update')
+    if(this.props.intent==='update') { 
       console.log('Updating event with props', this.props.focusEventId, this.props.populateData)
+      // this.state.data = this.props.populateData
+      this.populate(this.props.populateData)
+    }
   }
   
   syncChanges = (childData, key) => {
     let { data } = this.state
-    if(key==='root')
-      data = { ...childData }
-    else
-      data[key] = { ...childData }
-
+    if(key==='root') {
+      data = { ...data, ...childData }
+    }
+    else {
+      if(Array.isArray(childData)) {
+        let iterable = data
+        iterable[key] = childData
+        data = { ...iterable }
+      }
+      else {
+        data[key] = { ...childData }
+      }
+    }
+    
     this.setState({
       data
     })
   }
+  
+  populate = (data) => {
+    console.log(data)
+  }
 
-  onFinalize = () => {
-    // TODO
+  create = async (publish?) => {
+    let { data } = this.state
+    if(publish)
+      data.settings.isPublished = true
+
+    let result
+    try {
+      result = await this.eventService.createEvent(data)
+    } catch(e) {
+      result = e
+    }
+    
+    if(result.status===201)
+      this.props.onFinalize('Event Created')
+    else
+      this.props.onError(result)
+  }
+
+  save = () => {
+    
   }
 
   render() {
@@ -58,9 +159,19 @@ export class EventEditor extends Component<EventEditorProps> {
               )
             }
             
-            <Button color="primary" size="lg" className="float-right">Publish</Button>
+            <Button color="primary" size="lg" className="float-right"
+              onClick={()=>{
+                this.create(true)
+              }}
+            >
+              Publish
+            </Button>
+
             <span className="float-right spacer"></span>
-            <Button outline color="secondary" size="lg" className="float-right">Save</Button>
+
+            <Button outline color="secondary" size="lg" className="float-right" onClick={this.save}>
+              Save
+            </Button>
           </div>
 
           <Grid item container spacing={3}>

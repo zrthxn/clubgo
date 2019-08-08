@@ -13,6 +13,13 @@ export const _Router = express.Router()
 export default _Router
 // ========================================================
 
+// TEMPORARY CORS CONFIG
+_Router.use((req,res,next)=>{
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  next()
+})
+
 // Router Security Validation
 // --------------------------------------------------------
 _Router.use('/api', (req, res, next)=>{

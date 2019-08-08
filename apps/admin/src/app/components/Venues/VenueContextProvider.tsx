@@ -5,6 +5,9 @@ import { VenueController } from './VenueController'
 export class VenueContextProvider extends VenueController {
   state = {
     uiType: null,
+    openSuccessFeedback: false,
+    openErrorFeedback: false,
+    feedbackMessage: 'Success',
     venueData: {
       
     }
@@ -17,7 +20,7 @@ export class VenueContextProvider extends VenueController {
 
   componentDidMount() {
     this.setState((prevState, props)=>({
-      uiType: 'create'
+      uiType: 'list'
     }))
   }
 
@@ -43,6 +46,46 @@ export class VenueContextProvider extends VenueController {
     }))
   }
 
+  openSuccessFeedback = (message?:string) => {
+    this.setState((prevState, props)=>{
+      if(message!==null)
+        return {
+          openSuccessFeedback: true,
+          feedbackMessage: message
+        }
+      else
+        return {
+          openSuccessFeedback: true
+        }
+    })
+  }
+
+  closeSuccessFeedback = () => {
+    this.setState((prevState, props)=>({
+      openSuccessFeedback: false
+    }))
+  }
+
+  openErrorFeedback = (message?:string) => {
+    this.setState((prevState, props)=>{
+      if(message!==null)
+        return {
+          openErrorFeedback: true,
+          feedbackMessage: message
+        }
+      else
+        return {
+          openErrorFeedback: true
+        }
+    })
+  }
+
+  closeErrorFeedback = () => {
+    this.setState((prevState, props)=>({
+      openErrorFeedback: false
+    }))
+  }
+
   render() {
     return (
       <VenueContext.Provider
@@ -50,7 +93,13 @@ export class VenueContextProvider extends VenueController {
           state: this.state,
           actions: {
             openVenueEditor: this.openVenueEditor,
-            openVenueListing: this.openVenueListing
+            openVenueListing: this.openVenueListing,
+
+            openSuccessFeedback: this.openSuccessFeedback,
+            closeSuccessFeedback: this.closeSuccessFeedback,
+            
+            openErrorFeedback: this.openErrorFeedback,
+            closeErrorFeedback: this.closeErrorFeedback
           }
         }}
       >
