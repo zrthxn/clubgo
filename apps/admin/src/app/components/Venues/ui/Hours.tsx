@@ -9,7 +9,8 @@ import { handleChangeById as inputHandler } from '@clubgo/util'
 import { Label } from 'reactstrap';
 
 export interface HoursProps {
-  syncParentData: Function
+  syncParentData?: Function
+  populate?: boolean,
 }
 export class Hours extends Component<HoursProps> {
   state = {

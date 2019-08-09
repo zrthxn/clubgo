@@ -40,6 +40,11 @@ export default class InterfaceAPI {
         'X-Basic-Auth': 'key'
       }
     })
+
+    this.request.interceptors.response.use(
+      (response) => response,
+      (error) => Promise.reject(error.response)
+    )
   }
 
   async authenticate(headers?) {

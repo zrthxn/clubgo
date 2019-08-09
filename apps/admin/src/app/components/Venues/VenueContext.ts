@@ -5,18 +5,35 @@ export const VenueContext = React.createContext({
     uiType: null,
     openSuccessFeedback: false,
     openErrorFeedback: false,
-    feedbackMessage: 'Success',
+    feedbackMessage: { 
+      message: 'Success',
+      details: undefined
+    },
     venueData: {
       
     }
   },
   actions: {
-    openVenueEditor: (intent, data?) => {
-      console.log()
+    openVenueEditor: (uiType:string, data?) => {
+      console.log('Venue Editor')
     },
     openVenueListing: () => {
-      console.log()
+      console.log('Venue List')
     },
+    // ------------------------------------------------------------------------
+    create: (venueData, publish?:boolean) => {
+
+    },
+    list: () => {
+
+    },
+    update: (id:string, updateBody, publish?:boolean) => {
+      
+    },
+    delete: (id:string) => {
+  
+    },
+    // ------------------------------------------------------------------------
     openSuccessFeedback: (message?:string) => {
       console.log()
     },

@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
 import { VenueContext } from './VenueContext'
 import { VenueController } from './VenueController'
+import { VenueService } from '@clubgo/features/api'
 
 export class VenueContextProvider extends VenueController {
+  static contextType = VenueContext
+  venueService = new VenueService('admin')
+
   state = {
     uiType: null,
     openSuccessFeedback: false,
     openErrorFeedback: false,
-    feedbackMessage: 'Success',
+    feedbackMessage: {
+      message: 'Success',
+      details: undefined
+    },
     venueData: {
       
     }
@@ -15,7 +22,6 @@ export class VenueContextProvider extends VenueController {
 
   constructor(props) {
     super(props)
-
   }
 
   componentDidMount() {
@@ -24,34 +30,62 @@ export class VenueContextProvider extends VenueController {
     }))
   }
 
-  openVenueEditor = (intent, data?) => {
+  openVenueEditor = (uiType:string, data?:object) => {
     console.log('Venue Editor')
     this.setState((prevState, props)=>{
       if(data!==null)
         return {
-          uiType: intent,
+          uiType: uiType,
           venueData: data
         }
       else
         return {
-          uiType: intent
+          uiType: uiType
         }
     })
   }
 
   openVenueListing = () => {
     console.log('Venue List')
-    this.setState((prevState, props)=>({
-      uiType: 'list'
-    }))
+    this.setState({
+      uiType: 'list',
+      venueData: {
+
+      }
+    })
+  }
+  
+  // ------------------------------------------------------------------------
+  create = async (venueData, publish?:boolean) => {
+    if(publish)
+      venueData.settings.isPublished = true
+
+    try {
+      return await this.venueService.createVenue(venueData)
+    } catch(e) {
+      return Promise.reject(e)
+    }
   }
 
+  list = async () => {
+    return await this.venueService.listVenues()
+  }
+
+  update = async (id:string, updateBody, publish?:boolean) => {
+    return await this.venueService.updateVenue(id, updateBody)
+  }
+
+  delete = async (id) => {
+    return await this.venueService.deleteVenue(id)
+  }
+
+  // ------------------------------------------------------------------------
   openSuccessFeedback = (message?:string) => {
     this.setState((prevState, props)=>{
       if(message!==null)
         return {
           openSuccessFeedback: true,
-          feedbackMessage: message
+          feedbackMessage: { message }
         }
       else
         return {
@@ -66,12 +100,12 @@ export class VenueContextProvider extends VenueController {
     }))
   }
 
-  openErrorFeedback = (message?:string) => {
+  openErrorFeedback = (message?:string, details?:string) => {
     this.setState((prevState, props)=>{
       if(message!==null)
         return {
           openErrorFeedback: true,
-          feedbackMessage: message
+          feedbackMessage: { message, details }
         }
       else
         return {
@@ -94,6 +128,11 @@ export class VenueContextProvider extends VenueController {
           actions: {
             openVenueEditor: this.openVenueEditor,
             openVenueListing: this.openVenueListing,
+
+            create: this.create,
+            list: this.list,
+            update: this.update,
+            delete: this.delete,
 
             openSuccessFeedback: this.openSuccessFeedback,
             closeSuccessFeedback: this.closeSuccessFeedback,

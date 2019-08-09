@@ -24,7 +24,7 @@ export const database = {
       {
         useNewUrlParser: true,
         useCreateIndex: true,
-        useFindAndModify: true,
+        useFindAndModify: false,
       }
     )
     database.state = {

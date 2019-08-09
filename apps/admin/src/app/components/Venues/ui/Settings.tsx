@@ -6,17 +6,20 @@ import { TextField, Button, Switch, Checkbox } from '@material-ui/core'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface SettingsProps {
-  syncParentData: Function
+  syncParentData?: Function
+  populate?: boolean,
+  data?: any
 }
 export class Settings extends Component<SettingsProps> {
   state = {
+    loading: true,
     data: {
       isFeatured: false,
       isPublished: true,
-      venuePriority: null,
+      venuePriority: undefined,
       featured: {
-        featuredText: null,
-        featuredPriority: null
+        featuredText: undefined,
+        featuredPriority: undefined
       }
     },
     requiredFulfilled: false,
@@ -26,6 +29,21 @@ export class Settings extends Component<SettingsProps> {
     iterableMembers: [
       
     ]
+  }
+
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.populate) {
+        return {
+          data: this.props.data,
+          loading: false,
+        }
+      }
+      else
+        return {
+          loading: false,
+        }
+    })
   }
   
   handleChangeById = (event) => {
@@ -37,7 +55,7 @@ export class Settings extends Component<SettingsProps> {
   }
 
   render() {
-    return (
+    if(!this.state.loading) return (
       <Grid item container>
         <Grid item xs={12}>
           <Paper className="create-block">
@@ -45,12 +63,16 @@ export class Settings extends Component<SettingsProps> {
 
             <Grid item container spacing={3}>
               <Grid item xs={6}>
-                <Switch id="isPublished" defaultChecked color="primary" onChange={this.handleChangeById}/>  
+                <Switch id="isPublished" color="primary" onChange={this.handleChangeById}
+                  checked={this.state.data.isPublished}
+                />  
                 <Label>Published</Label>
               </Grid>
 
               <Grid item xs={6}>
-                <Switch id="isFeatured" color="primary" onChange={this.handleChangeById}/>
+                <Switch id="isFeatured" color="primary" onChange={this.handleChangeById}
+                  checked={this.state.data.isFeatured}
+                />
                 <Label>Featured</Label>
               </Grid>
 
@@ -61,6 +83,7 @@ export class Settings extends Component<SettingsProps> {
                   ) : (
                     <TextField id="featured/featuredText" fullWidth label="Featured Text" 
                       variant="outlined" margin="dense" onChange={this.handleChangeById}
+                      value={this.state.data.featured.featuredText}
                     />
                   )
                 }
@@ -76,14 +99,18 @@ export class Settings extends Component<SettingsProps> {
             <Grid item container xs={12} spacing={3}>
               <Grid item xs={12}>
                 <TextField id="venuePriority" fullWidth label="Venue Priority (num)" 
-                  variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}
+                  value={this.state.data.venuePriority}
+                />
 
                 {
                   !this.state.data.isFeatured ? (
                     <div></div>
                   ) : (
                     <TextField id="featured/featuredPriority" fullWidth label="Featured Priority (num)" 
-                      variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                      variant="outlined" margin="dense" onChange={this.handleChangeById}
+                      value={this.state.data.featured.featuredPriority}
+                    />
                   )
                 }
               </Grid>
@@ -92,6 +119,9 @@ export class Settings extends Component<SettingsProps> {
         </Grid>
 
       </Grid>
+    )
+    else return (
+      <h3>Loading...</h3>
     )
   }
 }

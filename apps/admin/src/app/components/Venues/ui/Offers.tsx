@@ -5,6 +5,7 @@ import Select from 'react-select'
 
 export interface OffersProps {
   syncParentData?: Function
+  populate?: boolean,
 }
 export class Offers extends Component {
   render() {

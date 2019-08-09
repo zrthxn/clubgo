@@ -1,5 +1,6 @@
 import InterfaceAPI, { APIProps } from '../api'
-import { Observable, ErrorObserver } from 'rxjs'
+import ErrorsAPI from '../errors'
+import { Observable, ErrorObserver, from } from 'rxjs'
 
 import { IVenueModel } from '@clubgo/database'
 
@@ -38,7 +39,7 @@ export class VenueService extends InterfaceAPI {
   async findVenueGroupById(venueIds:Array<string>) {
     // cRud
     return await this.request.post(
-      this.endpoint + '/_group/', {
+      this.endpoint + '/_group', {
         searchIds: venueIds
       }
     )
@@ -57,19 +58,27 @@ export class VenueService extends InterfaceAPI {
     }
   }
 
-  async updateVenue(updateBody) {
+  async updateVenue(venueId, updateBody) {
     // crUd
-    return await this.request.put(
-      this.endpoint + '/_update', {
-        updateBody
-      }
-    )
+    try {
+      return await this.request.put(
+        this.endpoint + '/_update/' + venueId, {
+          updateBody
+        }
+      )
+    } catch(err) {
+      return Promise.reject(err)
+    }
   }
 
   async deleteVenue(venueId) {
     // cruD
-    return await this.request.delete(
-      this.endpoint + '/_delete/' + venueId
-    )
+    try {
+      return await this.request.delete(
+        this.endpoint + '/_delete/' + venueId
+      )
+    } catch(err) {
+      return Promise.reject(err)
+    }    
   }
 }

@@ -78,7 +78,7 @@ VenueRouter.post('/_create', async (req, res)=>{
     })
   } catch (err) {
     console.log(conf.Red(err))
-    return res.status(400).send({ error: err })
+    return res.status(400).send(err)
   }
 })
 

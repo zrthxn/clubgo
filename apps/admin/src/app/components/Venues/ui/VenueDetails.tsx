@@ -7,10 +7,13 @@ import CreateableSelect from 'react-select/creatable'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface VenueDetailsProps {
-  syncParentData: Function
+  syncParentData?: Function
+  populate?: boolean,
+  data?: any
 }
 export class VenueDetails extends Component<VenueDetailsProps> {
   state = {
+    loading: true,
     openMapModal: false,
     suggestions: {
       locality: [
@@ -29,30 +32,58 @@ export class VenueDetails extends Component<VenueDetailsProps> {
         label: item.label, value: item.label
       }))
     },
-    selectCategory: null,
-    selectLocality: null,
+    selectCategories: [],
+    selectLocality: undefined,
     data: {
-      venueTitle: null,
-      description: null,
+      venueTitle: undefined,
+      description: undefined,
       categories: [],
-      locality: null,
-      address: null,
-      altAddress: null,
-      nearestMetroStation: null,
+      locality: undefined,
+      address: undefined,
+      altAddress: undefined,
+      nearestMetroStation: undefined,
       coordinates: {
         _lat: 0,
         _lon: 0
       },
       knownFor: [],
-      cuisines: null,
+      cuisines: undefined,
       facilities: [],
-      costForTwo: null,      
+      costForTwo: undefined,      
     },
     requiredFulfilled: false,
     required: [
       
     ],
     iterableMembers: []
+  }
+
+  constructor(props) {
+    super(props)
+  } 
+
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.populate) {
+        let { selectCategories } = this.state
+        this.props.data.categories.forEach(cat => selectCategories.push({
+          label: cat, value: cat
+        }))
+
+        return {
+          selectCategories,
+          selectLocality: { label: this.props.data.locality, value: this.props.data.locality},
+    
+          data: this.props.data,
+          loading: false,
+        }
+      }
+      else
+        return {
+          loading: false,
+        }
+    })
+    
   }
 
   handleChangeById = (event) => {
@@ -64,7 +95,7 @@ export class VenueDetails extends Component<VenueDetailsProps> {
   }
 
   render() {
-    return (
+    if(!this.state.loading) return (
       <Grid item container spacing={3}>
         <Grid item xs={12}>
           <Paper className="create-block">
@@ -73,21 +104,24 @@ export class VenueDetails extends Component<VenueDetailsProps> {
             <Grid item container spacing={3}>
               <Grid item xs={12}>
                 <TextField id="venueTitle" required fullWidth label="Venue Name"
-                  variant="outlined" onChange={this.handleChangeById}/>
+                  variant="outlined" onChange={this.handleChangeById}
+                  value={this.state.data.venueTitle}
+                />
 
                 <TextField id="description" required multiline fullWidth label="Description" 
-                  variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}
+                  value={this.state.data.description}
+                />
 
                 <Select
                   inputId="category"
                   placeholder="Category"
-                  value={this.state.selectCategory}
+                  value={this.state.selectCategories}
                   options={this.state.suggestions.category}
                   isMulti
                   onChange={ selected => {
                     let { data } = this.state
                     data.categories = []
-                    // if(typeof selected==='[object Object]')
                     for(let item of selected)
                       data.categories.push(item.value)
                     
@@ -95,7 +129,7 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                       this.props.syncParentData(data, 'root')
                       return {
                         data,
-                        selectCategory: selected
+                        selectCategories: selected
                       }
                     })
                   }}
@@ -106,10 +140,14 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                 <p>Location</p>
 
                 <TextField id="address" required multiline fullWidth label="Address" 
-                  variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}
+                  value={this.state.data.address}
+                />
 
                 <TextField id="altAddress" multiline fullWidth label="Alternate Address" 
-                  variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}
+                  value={this.state.data.altAddress}
+                />
 
                 <Select
                   inputId="locality"
@@ -130,7 +168,9 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                 />
 
                 <TextField id="nearestMetroStation" fullWidth label="Nearest Metro Station" 
-                  variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}
+                  value={this.state.data.nearestMetroStation}
+                />
               </Grid>
 
               <Grid item xs={12}>
@@ -158,7 +198,9 @@ export class VenueDetails extends Component<VenueDetailsProps> {
             <h3 className="title">About</h3>
 
             <TextField id="cuisines" fullWidth label="Cuisines" 
-              variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+              variant="outlined" margin="dense" onChange={this.handleChangeById}
+              value={this.state.data.cuisines}
+            />
 
             <Grid item container spacing={3}>
               <Grid item xs={12}>                
@@ -167,6 +209,15 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                     isMulti
                     isClearable
                     placeholder="Known For"
+                    value={(()=>{
+                      let setKnown = []
+                      for (const known of this.state.data.knownFor) {
+                        setKnown.push({
+                          label: known
+                        })
+                      }
+                      return setKnown
+                    })()}
                     onChange={(values:any) => {
                       let labels = []
                       for(let { label } of values)
@@ -196,6 +247,15 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                     ].map(item=>({
                       label: item.label, value: item.label
                     }))}
+                    value={(()=>{
+                      let setFacilities = []
+                      for (const fac of this.state.data.facilities) {
+                        setFacilities.push({
+                          label: fac
+                        })
+                      }
+                      return setFacilities
+                    })()}
                     onChange={(values:any) => {
                       let labels = []
                       for(let { label } of values)
@@ -214,12 +274,17 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                 </div>
                 
                 <TextField id="costForTwo" fullWidth label="Cost For Two (&#x20B9;)" 
-                  variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}
+                  value={this.state.data.costForTwo}
+                />
               </Grid>
             </Grid>
           </Paper>
         </Grid>
       </Grid>
+    )
+    else return (
+      <h3>Loading...</h3>
     )
   }
 }

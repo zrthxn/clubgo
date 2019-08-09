@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Button, Fab } from '@material-ui/core'
+import { Grid, Button, Fab, Modal, Paper } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import { Edit, Delete } from '@material-ui/icons'
 import { IVenueModel } from '@clubgo/database'
@@ -9,11 +9,12 @@ import '../../scss/Listing.scss'
 import { VenueContext } from '../VenueContext'
 
 export interface VenueListItemProps {
-  data?: IVenueModel
+  data?: IVenueModel,
+  onDelete?: Function
 }
 export class VenueListItem extends Component<VenueListItemProps> {
   state = {
-    openModal: false
+    openDeleteModal: false
   }
 
   render() {
@@ -37,13 +38,45 @@ export class VenueListItem extends Component<VenueListItemProps> {
                     
                     <Fab color="secondary" size="small"
                       onClick={()=>{
-                          // open confirmation modal
-                          // on yes =>
-                          // venueContext.actions.deleteVenue(this.props.data._id)
+                        this.setState({
+                          openDeleteModal: true
+                        })
                       }}
                     >
                       <Delete/> 
                     </Fab>
+
+                    <Modal open={this.state.openDeleteModal}
+                      style={{
+                        margin: 'auto',
+                        width: 400,
+                        position: 'absolute',
+                        textAlign: 'center'
+                      }}
+                    >
+                      <Paper style={{ padding: '2em', margin: '10em 0' }}>
+                        <h3>Delete Venue</h3>
+                        <p>
+                          Are you sure you want to delete this venue? <br/>
+                          This action is irreversible.
+                        </p>
+
+                        <Button variant="outlined" color="default" style={{ margin: '0.5em' }}
+                          onClick={()=>{ this.setState({ openDeleteModal: false }) }}
+                        >
+                          Cancel
+                        </Button>
+
+                        <Button variant="contained" color="primary" style={{ margin: '0.5em', backgroundColor: red[600] }}
+                          onClick={()=>{ 
+                            this.setState({ openDeleteModal: false })
+                            this.props.onDelete()
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </Paper>
+                    </Modal>
                   </div>
                 </Grid>
               </Grid>
