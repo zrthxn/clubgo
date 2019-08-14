@@ -9,10 +9,13 @@ import { Add, Delete } from '@material-ui/icons'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface EventDetailsProps {
-  syncParentData: Function
+  syncParentData?: Function
+  populate?: boolean,
+  data?: any
 }
 export class EventDetails extends Component<EventDetailsProps> {
   state = {
+    loading: true,
     openArtistModal: false,
     openMusicModal: false,
     suggestions: {
@@ -31,20 +34,20 @@ export class EventDetails extends Component<EventDetailsProps> {
       })),
     },
     selectDressCode: null,
-    selectCategory: null,
+    selectCategories: [],
     data: {
-      eventTitle: String,
-      description: String,
-      categories: [ ], // handled internally
-      tagline: String,
-      flashText: String,
-      artists: [ ], // handled internally ## TODO
-      music: [ ], // handled internally ## TODO
+      eventTitle: undefined,
+      description: undefined,
+      categories: [ ],
+      tagline: undefined,
+      flashText: undefined,
+      artists: [ ],
+      music: [ ],
       dressCode: {
-        title: String,
-        images: [ ] // handled internally ## TODO
+        title: undefined,
+        images: [ ]
       },
-      tags: [ ], // handled internally
+      tags: [ ],
       hasCutomDetails: false,
       customDetails: [ ],
     },
@@ -57,6 +60,32 @@ export class EventDetails extends Component<EventDetailsProps> {
     ]
   }
 
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.populate) {
+        let { selectCategories } = this.state
+        this.props.data.categories.forEach(cat => selectCategories.push({
+          label: cat, value: cat
+        }))
+
+        return {
+          selectCategories,
+          selectDressCode: { 
+            label: this.props.data.dressCode.title, 
+            value: this.props.data.dressCode.title 
+          },
+    
+          data: this.props.data,
+          loading: false,
+        }
+      }
+      else
+        return {
+          loading: false,
+        }
+    }) 
+  }
+  
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
     this.props.syncParentData(this.state.data, 'root')
@@ -65,14 +94,10 @@ export class EventDetails extends Component<EventDetailsProps> {
     ))
   }
 
-  syncState = () => {
-
-  }
-
   render() {
     // Event Details Section  ----------------------------------------------  Event Details Section
     // ============================================================================================
-    return (
+    if(!this.state.loading) return (
       <div>
         <Paper className="create-block">
           <h3 className="title">Event</h3>
@@ -88,13 +113,12 @@ export class EventDetails extends Component<EventDetailsProps> {
               <Select
                 inputId="category"
                 placeholder="Category"
-                value={this.state.selectCategory}
+                value={this.state.selectCategories}
                 options={this.state.suggestions.category}
                 isMulti
                 onChange={ selected => {
                   let { data } = this.state
                   data.categories = []
-                  // if(typeof selected==='[object Object]')
                   for(let item of selected)
                     data.categories.push(item.value)
                   
@@ -102,7 +126,7 @@ export class EventDetails extends Component<EventDetailsProps> {
                     this.props.syncParentData(data, 'root')
                     return {
                       data,
-                      selectCategory: selected
+                      selectCategories: selected
                     }
                   })
                 }}
@@ -278,6 +302,9 @@ export class EventDetails extends Component<EventDetailsProps> {
           </Paper>
         </Modal>
       </div>
+    )
+    else return (
+      <h3>Loading...</h3>
     )
   }
 }

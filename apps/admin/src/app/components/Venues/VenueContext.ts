@@ -20,20 +20,7 @@ export const VenueContext = React.createContext({
     openVenueListing: () => {
       console.log('Venue List')
     },
-    // ------------------------------------------------------------------------
-    create: (venueData, publish?:boolean) => {
-
-    },
-    list: () => {
-
-    },
-    update: (id:string, updateBody, publish?:boolean) => {
-      
-    },
-    delete: (id:string) => {
-  
-    },
-    // ------------------------------------------------------------------------
+    
     openSuccessFeedback: (message?:string) => {
       console.log()
     },

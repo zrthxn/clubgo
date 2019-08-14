@@ -3,12 +3,17 @@ import { Input, InputGroup, InputGroupAddon, Button } from 'reactstrap'
 
 import './scss/LoginPage.scss'
 
-// import { adminLogin } from '@clubgo/features/api'
+import { LoginService } from '@clubgo/features/api'
 
 export interface LoginPageProps {
-  loginHandler: Function
+  onAuthenticate: Function
 }
 export class LoginPage extends Component<LoginPageProps> {
+  state = {
+    username: null,
+    password: null
+  }
+
   render() {
     return (
       <div className="login-page">
@@ -22,18 +27,21 @@ export class LoginPage extends Component<LoginPageProps> {
             </div>
 
             <InputGroup>
-              {/* <InputGroupAddon addonType="prepend">@</InputGroupAddon> */}
-              <Input type="text" placeholder="Username" required />
+              <Input type="text" placeholder="Username" required onChange={({target})=>{ this.setState({ username: target.value }) }}/>
             </InputGroup>
 
             <InputGroup>
-              {/* <InputGroupAddon addonType="prepend">#</InputGroupAddon> */}
-              <Input type="password" placeholder="Password" required />
+              <Input type="password" placeholder="Password" required onChange={({target})=>{ this.setState({ password: target.value }) }}/>
             </InputGroup>
 
             <Button color="link" className="forgot-pw float-left">Forgot Password?</Button>
 
-            <Button color="primary" className="float-right" onClick={ this.props.loginHandler }>Sign In</Button>
+            <Button color="primary" className="float-right" onClick={()=>{
+              if(this.state.username==='ajit' && this.state.password==='clubgo')
+                this.props.onAuthenticate()
+              else
+                alert('Invalid Login')
+            }}>Sign In</Button>
           </div>
 
           <div>

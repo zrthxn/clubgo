@@ -7,6 +7,7 @@ import { InputAdornment } from '@material-ui/core'
 import { Link, Delete } from '@material-ui/icons'
 
 import { ImageUploader } from './ImageUploader'
+import { APIEndpoints } from '@clubgo/features/api'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface MediaCardProps {
@@ -196,7 +197,7 @@ export class Image extends Component<ImageProps> {
         position: 'relative'
       }}>
         <img width="150px" style={{ borderRadius: '0.5em' }} src={
-          `http://localhost:4444/i/${this.props.src}`
+          APIEndpoints.cdn.url + `/i/${this.props.src}`
         } alt="Image"/>
 
         <Fab color="default" size="small" style={{ 

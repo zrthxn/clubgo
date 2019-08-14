@@ -1,9 +1,8 @@
 import InterfaceAPI, { APIProps } from '../api'
+import ErrorsAPI from '../errors'
 import { Observable, ErrorObserver } from 'rxjs'
 
 import { IEventModel } from '@clubgo/database'
-
-const config = require('../config.json')
 
 export class EventService extends InterfaceAPI {
   constructor(apiType:APIProps['apiTypes']) {
@@ -12,24 +11,31 @@ export class EventService extends InterfaceAPI {
   }
 
   async listEvents() {
-    return await this.request.get(
-      this.endpoint + '/_list'
-    )
+    try {
+      return await this.request.get(
+        this.endpoint + '/_list'
+      )      
+    } catch (HTTPError) {
+      return Promise.reject(HTTPError)
+    }
   }
 
-  async findEventById(EventId:string) {
+  async findEventById(eventId:string) {
     // cRud
     return await this.request.post(
-      this.endpoint + '/_get/' + EventId
+      this.endpoint + '/_get/' + eventId
     )
   }
 
-  async findEventBy(findBy:string) {
+  async findEventBy(findBy:object) {
     // cRud
-    // return await this.request.post(
-    //   this.endpoint + '/_find'
-    // )
-    return
+    return await this.request.post(
+      this.endpoint + '/_find', {
+        searchQuery: {
+          ...findBy
+        }
+      }
+    )
   }
 
   async findEventGroupById(eventIds:Array<string>) {
@@ -41,7 +47,7 @@ export class EventService extends InterfaceAPI {
     )
   }
 
-  async createEvent(createBody:object) { // IEventModel
+  async createEvent(createBody:IEventModel) { // IEventModel
     // Crud
     try {
       return await this.request.post(
@@ -49,27 +55,35 @@ export class EventService extends InterfaceAPI {
           createBody
         }
       )
-    } catch(err) {
-      return Promise.reject(err)
+    } catch(HTTPError) {
+      return Promise.reject(HTTPError)
     }
   }
 
-  async updateEvent(updateBody) {
+  async updateEvent(eventId:string, updateBody:object) {
     // crUd
-    return await this.request.put(
-      this.endpoint + '/_update', {
-        updateBody,
-        params: {
+    try {
+      return await this.request.put(
+        this.endpoint + '/_update' + eventId, {
+          updateBody,
+          params: {
 
+          }
         }
-      }
-    )
+      )
+    } catch (HTTPError) {
+      return Promise.reject(HTTPError)
+    }
   }
 
-  async deleteEvent(eventId) {
+  async deleteEvent(eventId:string) {
     // cruD
-    return await this.request.delete(
-      this.endpoint + '/_delete/' + eventId
-    )
+    try {
+      return await this.request.delete(
+        this.endpoint + '/_delete/' + eventId
+      )
+    } catch (HTTPError) {
+      return Promise.reject(HTTPError)
+    }
   }
 }

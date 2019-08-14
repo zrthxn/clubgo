@@ -1,10 +1,8 @@
 import InterfaceAPI, { APIProps } from '../api'
 import ErrorsAPI from '../errors'
-import { Observable, ErrorObserver, from } from 'rxjs'
+import { Observable, ErrorObserver } from 'rxjs'
 
 import { IVenueModel } from '@clubgo/database'
-
-const config = require('../config.json')
 
 export class VenueService extends InterfaceAPI {
   constructor(apiType:APIProps['apiTypes']) {
@@ -13,9 +11,13 @@ export class VenueService extends InterfaceAPI {
   }
 
   async listVenues() {
-    return await this.request.get(
-      this.endpoint + '/_list'
-    )
+    try {
+      return await this.request.get(
+        this.endpoint + '/_list'
+      )
+    } catch (HTTPError) {
+      return Promise.reject(HTTPError)
+    }
   }
 
   async findVenueById(venueId:string) {
@@ -27,13 +29,13 @@ export class VenueService extends InterfaceAPI {
 
   async findVenueBy(findBy:string) {
     // cRud
-    // this.setEndpoint(config.api)
-    // this.addPathRoute('/api')
-
-    // return await this.request.post(
-    //   this.endpoint + '/_find'
-    // )
-    return
+    return await this.request.post(
+      this.endpoint + '/_find', {
+        searchQuery: {
+          
+        }
+      }
+    )
   }
 
   async findVenueGroupById(venueIds:Array<string>) {
@@ -53,8 +55,8 @@ export class VenueService extends InterfaceAPI {
           createBody
         }
       )
-    } catch(err) {
-      return Promise.reject(err)
+    } catch(HTTPError) {
+      return Promise.reject(HTTPError)
     }
   }
 
@@ -66,8 +68,8 @@ export class VenueService extends InterfaceAPI {
           updateBody
         }
       )
-    } catch(err) {
-      return Promise.reject(err)
+    } catch(HTTPError) {
+      return Promise.reject(HTTPError)
     }
   }
 
@@ -77,8 +79,8 @@ export class VenueService extends InterfaceAPI {
       return await this.request.delete(
         this.endpoint + '/_delete/' + venueId
       )
-    } catch(err) {
-      return Promise.reject(err)
+    } catch(HTTPError) {
+      return Promise.reject(HTTPError)
     }    
   }
 }

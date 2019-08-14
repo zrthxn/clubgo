@@ -3,8 +3,6 @@ import { Observable, ErrorObserver } from 'rxjs'
 
 import { IUserModel } from '@clubgo/database'
 
-const config = require('../config.json')
-
 export class UserService extends InterfaceAPI {
   constructor(apiType:APIProps['apiTypes']) {
     super(apiType)

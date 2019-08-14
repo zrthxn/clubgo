@@ -2,6 +2,7 @@ import express from 'express'
 import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 import { Venue } from '@clubgo/database'
+import url from 'url'
 
 /**
  * @description
@@ -18,6 +19,12 @@ export default VenueRouter
 // --------------------------------------------------------
 // Validate Venue Creation
 VenueRouter.use('/_create', (req, res, next)=>{
+  // If req has ADMIN level access token, allow and DEL token header
+  // Else, 403
+  next()
+})
+
+VenueRouter.use('/_update', (req, res, next)=>{
   // If req has ADMIN level access token, allow and DEL token header
   // Else, 403
   next()
@@ -42,7 +49,18 @@ VenueRouter.get('/_list', async (req, res)=>{
 // Read a venue by ID :: /admin/venue/_get/:venueid
 VenueRouter.get('/_get/:venueid', async (req, res)=>{
   const searchResult = await Venue.findOne({ _id: req.params.venueid })
-  res.send({ message: 'found', result: searchResult })
+  res.send({ message: 'Found', result: searchResult })
+})
+
+// Read a group of venues by ID :: /admin/venue/_find
+VenueRouter.post('/_find', async (req, res)=>{
+  const { searchQuery } = req.body  
+  const searchResult = await Venue.find({ ...searchQuery })
+
+  res.send({ 
+    message: `Found ${searchResult.length} matching records`,
+    result: searchResult 
+  })
 })
 
 // Read a group of venues by ID :: /admin/venue/_group
@@ -58,7 +76,7 @@ VenueRouter.post('/_group', async (req, res)=>{
   })
 
   res.send({ 
-    message: `found ${searchResult.length} of ${searchIds.length}`,
+    message: `Found ${searchResult.length} of ${searchIds.length}`,
     result: searchResult 
   })
 })
@@ -73,7 +91,7 @@ VenueRouter.post('/_create', async (req, res)=>{
     const result = await createVenue.save()
     return res.status(201)
     .send({
-      message: 'created',
+      message: 'Created',
       result: result._id
     })
   } catch (err) {
@@ -92,7 +110,7 @@ VenueRouter.put('/_update/:venueid', async (req, res)=>{
     updateBody
   )
   res.send({
-    result: 'updated',
+    result: 'Updated',
     previous: result
   })
 })
@@ -105,7 +123,7 @@ VenueRouter.delete('/_delete/:venueid', async (req, res)=>{
     }
   )
   res.send({ 
-    result:'deleted', 
+    result:'Deleted', 
     message: result
   })
 })

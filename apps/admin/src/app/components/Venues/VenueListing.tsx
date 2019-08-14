@@ -8,8 +8,12 @@ import { IVenueModel } from '@clubgo/database'
 import { VenueService } from '@clubgo/features/api'
 import { VenueContext } from './VenueContext'
 
-export class VenueListing extends Component {
+export interface VenueListingProps {
+  onDelete: Function
+}
+export class VenueListing extends Component<VenueListingProps> {
   static contextType = VenueContext
+  venueService = new VenueService('api')
 
   state = {
     loading: true,
@@ -20,37 +24,32 @@ export class VenueListing extends Component {
     this.loadVenueListings()
   }
 
-  loadVenueListings = () => {
-    this.context.actions.list().then(({ data })=>{
+  loadVenueListings = async () => {
+    try {
+      let { data } = await this.venueService.listVenues()
       let { listing } = this.state
-      listing = data.results
+
+      if(data.results!==undefined)
+        listing = data.results
+
       this.setState({
         listing,
         loading: false
       })
-    }).catch((err)=>{
+    } catch (err) {
       this.context.actions.openErrorFeedback(err.toString())
-      this.setState({
-        loading: false
-      })
-    })
+    }
   }
 
   deleteVenue = async (venueId:string) => {
-    try {
-      await this.context.actions.delete(venueId)
-      this.context.actions.openSuccessFeedback('Venue Deleted')
-      let { listing } = this.state
-      listing = listing.filter(listItem => {
-        if(listItem._id!==venueId) return true
-        else return false
-      })
-      this.setState({
-        listing
-      })
-    } catch(err) {
-      this.context.actions.openErrorFeedback(err.data._message)
-    }
+    await this.props.onDelete(venueId)
+    let { listing } = this.state
+    listing = listing.filter(listItem => {
+      return listItem._id!==venueId
+    })
+    this.setState({
+      listing
+    })
   }
 
   render() {

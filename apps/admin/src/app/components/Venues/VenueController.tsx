@@ -10,20 +10,52 @@ import '../scss/Create.scss'
 import { VenueEditor } from './VenueEditor'
 import { VenueListing } from './VenueListing'
 import { VenueContext } from './VenueContext'
+import { VenueService } from '@clubgo/features/api'
 
 export class VenueController extends Component {
+  static contextType = VenueContext
+  venueService = new VenueService('admin')
+
   interfaceBuilder = ( uiType, context ) => {
     if(uiType==='create')
       return (
-        <VenueEditor intent={'create'}/>
+        <VenueEditor intent={'create'} onFinalize={(createBody)=>{
+          this.venueService.createVenue(createBody).then((result) => {
+            if (result.status===201) {
+              this.context.actions.openSuccessFeedback('Venue Created')
+              this.context.actions.openVenueListing()
+            }
+            else throw result
+          }).catch((VenueServiceError) => {
+            this.context.actions.openErrorFeedback(VenueServiceError.data._message, VenueServiceError.data.message)
+          })
+        }}/>
       )
     else if(uiType==='list')
       return (
-        <VenueListing/>
+        <VenueListing onDelete={ async (venueId)=>{
+          try {
+            await this.venueService.deleteVenue(venueId)
+            this.context.actions.openSuccessFeedback('Venue Deleted')
+            return
+          } catch(VenueServiceError) {
+            this.context.actions.openErrorFeedback(VenueServiceError.data._message)
+          }
+        }}/>
       )
     else if(uiType==='edit')
       return (
-        <VenueEditor intent={'update'} populateData={context.state.venueData}/>
+        <VenueEditor intent={'update'} populateData={context.state.venueData} onFinalize={(updateBody)=>{
+          this.venueService.updateVenue(context.state.venueData._id, updateBody).then((result) => {
+            if(result.status===200) {
+              this.context.actions.openSuccessFeedback('Venue Updated')  
+              this.context.actions.openVenueListing()
+            }
+            else throw result
+          }).catch((VenueServiceError) => {
+            this.context.actions.openErrorFeedback(VenueServiceError.data._message, VenueServiceError.data.message)
+          })
+        }}/>
       )
     else
       return (

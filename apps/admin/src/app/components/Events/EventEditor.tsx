@@ -10,27 +10,29 @@ import Scheduling from './ui/Scheduling'
 import Booking from './ui/Booking'
 import Settings from './ui/Settings'
 
-import { EventService } from '@clubgo/features/api'
+import { EventContext } from './EventContext'
 
 export interface EventEditorProps {
   intent: string,
   onFinalize: Function,
-  onError: Function,
-  focusEventId?: string,
-  populateData?: IEventModel
+  populateData?: object //IEventModel
 }
 export class EventEditor extends Component<EventEditorProps> {
+  static contextType = EventContext
+
   state = {
+    loading: true,
+    populateDataFromParent: false,
     data: {
-      eventTitle: null,
-      description: null,
+      eventTitle: undefined,
+      description: undefined,
       categories: [],
-      tagline: null,
-      flashText: null,
+      tagline: undefined,
+      flashText: undefined,
       artists: [],
       music: [],
       dressCode: {
-        title: null,
+        title: undefined,
         images: [],
       },
       tags: [],
@@ -38,21 +40,21 @@ export class EventEditor extends Component<EventEditorProps> {
       customDetails: [],
       settings: {
         isPublished: false,
-        eventPriority: null,
+        eventPriority: undefined,
         isFeatured: false,
         featured: {
-          featuredText: null,
-          featuredPriority: null
+          featuredText: undefined,
+          featuredPriority: undefined
         }
       },
       venue: {
-        city: null,
-        venueId: null,
-        title: null,
-        address: null, 
+        city: undefined,
+        venueId: undefined,
+        title: undefined,
+        address: undefined, 
         isCustomVenue: false,
         customVenueDetails: {
-          locality: null,
+          locality: undefined,
           coordinates: {
             _lat: 0,
             _lon: 0
@@ -60,42 +62,47 @@ export class EventEditor extends Component<EventEditorProps> {
         }
       },
       scheduling: {
-        startTime: null,
-        endTime: null,
+        startTime: undefined,
+        endTime: undefined,
         isRecurring: false,
-        recurringType: null,
+        recurringType: undefined,
         isCustomRecurring: false,
         customRecurring: {
-          initial: null,
-          final: null,
+          initial: undefined,
+          final: undefined,
           dates: []
         }
       },
       bookings: {
+        tickets: [],
         isTakingOnsiteBookings: true,
         isTakingOnsitePayments: false,
-        tickets: [],
-        registrationURL: null,
-        registrationPhone: null
+        registrationURL: undefined,
+        registrationPhone: undefined
       },
       media: {
         images: [],
-        videoURL: null
+        videoURL: undefined
       }
     }
   }
 
-  eventService = new EventService('admin')
-
   componentDidMount() {
-    if(this.props.intent==='update') { 
-      console.log('Updating event with props', this.props.focusEventId, this.props.populateData)
-      // this.state.data = this.props.populateData
-      this.populate(this.props.populateData)
-    }
+    this.setState(()=>{
+      if(this.props.intent==='update')
+        return {
+          data: this.props.populateData,
+          populateDataFromParent: true,
+          loading: false,
+        }
+      else
+        return {
+          loading: false
+        }
+    })
   }
   
-  syncChanges = (childData, key) => {
+  syncDataChanges = (childData:object, key:string) => {
     let { data } = this.state
     if(key==='root') {
       data = { ...data, ...childData }
@@ -110,36 +117,17 @@ export class EventEditor extends Component<EventEditorProps> {
         data[key] = { ...childData }
       }
     }
-    
-    this.setState({
-      data
+
+    this.setState((prevState, props)=>{
+      return {
+        data
+      }
     })
   }
-  
-  populate = (data) => {
-    console.log(data)
-  }
 
-  create = async (publish?) => {
-    let { data } = this.state
-    if(publish)
-      data.settings.isPublished = true
-
-    let result
-    try {
-      result = await this.eventService.createEvent(data)
-    } catch(e) {
-      result = e
-    }
-    
-    if(result.status===201)
-      this.props.onFinalize('Event Created')
-    else
-      this.props.onError(result)
-  }
-
-  save = () => {
-    
+  saveEvent = (data, publish?:boolean) => {
+    if(publish) data.settings.isPublished = true
+    this.props.onFinalize(data)
   }
 
   render() {
@@ -159,48 +147,68 @@ export class EventEditor extends Component<EventEditorProps> {
               )
             }
             
-            <Button color="primary" size="lg" className="float-right"
-              onClick={()=>{
-                this.create(true)
-              }}
-            >
+            <Button color="primary" size="lg" className="float-right" onClick={()=>{
+              this.saveEvent(this.state.data, true)
+            }}>
               Publish
             </Button>
 
             <span className="float-right spacer"></span>
 
-            <Button outline color="secondary" size="lg" className="float-right" onClick={this.save}>
+            <Button outline color="secondary" size="lg" className="float-right" onClick={()=>{
+              this.saveEvent(this.state.data, false)
+            }}>
               Save
             </Button>
           </div>
 
-          <Grid item container spacing={3}>
-            <Grid item md={7} xs={12}>
-              <EventDetails syncParentData={this.syncChanges}/>
-            </Grid>
+          {
+            !this.state.loading ? (
+              <Grid item container spacing={3}>
+                <Grid item md={7} xs={12}>
+                  <EventDetails populate={this.state.populateDataFromParent} data={this.state.data}
+                    syncParentData={this.syncDataChanges}
+                  />
+                </Grid>
 
-            <Grid item md={5} xs={12}>
-              <Settings syncParentData={this.syncChanges}/>
-            </Grid>
+                <Grid item md={5} xs={12}>
+                  <Settings populate={this.state.populateDataFromParent} data={this.state.data}
+                    syncParentData={this.syncDataChanges}
+                  />
+                </Grid>
 
-            <Grid item md={12} xs={12}><hr/></Grid>
+                <Grid item md={12} xs={12}><hr/></Grid>
 
-            <Grid item md={6} xs={12}>
-              <Venue/>
-            </Grid>
+                <Grid item md={6} xs={12}>
+                  <Venue populate={this.state.populateDataFromParent} data={this.state.data}
+                    syncParentData={this.syncDataChanges}
+                  />
+                </Grid>
 
-            <Grid item md={6} xs={12}>
-              <MediaCard tag="event" name="event" syncParentData={this.syncChanges} includeVideoURL={true}/>
-            </Grid>
-            
-            <Grid item md={6} xs={12}>
-              <Booking syncParentData={this.syncChanges}/>
-            </Grid>
+                <Grid item md={6} xs={12}>
+                  <MediaCard populate={this.state.populateDataFromParent} data={this.state.data}
+                    syncParentData={this.syncDataChanges} tag="event" name="event" includeVideoURL={true}
+                  />
+                </Grid>
+                
+                <Grid item md={6} xs={12}>
+                  <Booking populate={this.state.populateDataFromParent} data={this.state.data}
+                    syncParentData={this.syncDataChanges}
+                  />
+                </Grid>
 
-            <Grid item md={6} xs={12}>
-              <Scheduling/>
-            </Grid>                
-          </Grid>
+                <Grid item md={6} xs={12}>
+                  <Scheduling populate={this.state.populateDataFromParent} data={this.state.data}
+                    syncParentData={this.syncDataChanges}
+                  />
+                </Grid>                
+              </Grid>
+            ) : (
+              <div>
+                <p>Please Wait</p>
+              </div>
+            )
+          }          
         </div>
       </div>
     )

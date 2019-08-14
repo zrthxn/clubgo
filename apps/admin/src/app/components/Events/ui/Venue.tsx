@@ -5,7 +5,12 @@ import Select from 'react-select';
 
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
-export class Venue extends Component {
+export interface VenueProps {
+  syncParentData?: Function
+  populate?: boolean,
+  data?: any
+}
+export class Venue extends Component<VenueProps> {
   state = {
     suggestions:{
       city: [ ],

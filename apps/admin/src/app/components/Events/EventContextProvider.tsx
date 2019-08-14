@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
 import { EventContext } from './EventContext'
 import { EventController } from './EventController'
+import { EventService } from '@clubgo/features/api'
 
 export class EventContextProvider extends EventController {
+  static contextType = EventContext
+  eventService = new EventService('admin')
+
   state = {
     uiType: null,
     openSuccessFeedback: false,
     openErrorFeedback: false,
-    feedbackMessage: 'Success',
+    feedbackMessage: {
+      message: 'Success',
+      details: undefined
+    },
     eventData: {
 
     }
@@ -24,7 +31,7 @@ export class EventContextProvider extends EventController {
     }))
   }
 
-  openEventEditor = (intent, data?) => {
+  openEventEditor = (intent:'create'|'edit', data?) => {
     console.log('Event Editor')
     this.setState((prevState, props)=>{
       if(data!==null)
@@ -44,14 +51,14 @@ export class EventContextProvider extends EventController {
     this.setState((prevState, props)=>({
       uiType: 'list'
     }))
-  }  
-
+  }
+  
   openSuccessFeedback = (message?:string) => {
     this.setState((prevState, props)=>{
       if(message!==null)
         return {
           openSuccessFeedback: true,
-          feedbackMessage: message
+          feedbackMessage: { message }
         }
       else
         return {
@@ -66,12 +73,12 @@ export class EventContextProvider extends EventController {
     }))
   }
 
-  openErrorFeedback = (message?:string) => {
+  openErrorFeedback = (message?:string, details?:string) => {
     this.setState((prevState, props)=>{
       if(message!==null)
         return {
           openErrorFeedback: true,
-          feedbackMessage: message
+          feedbackMessage: { message, details }
         }
       else
         return {

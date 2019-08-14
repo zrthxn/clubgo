@@ -6,7 +6,9 @@ import { Slider } from '@material-ui/lab'
 import { Link, Phone } from '@material-ui/icons'
 
 export interface BookingProps {
-  syncParentData: Function
+  syncParentData?: Function
+  populate?: boolean,
+  data?: any
 }
 export class Booking extends Component<BookingProps> {
   state = {

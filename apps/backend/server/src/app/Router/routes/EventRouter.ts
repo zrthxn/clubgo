@@ -23,6 +23,12 @@ EventRouter.use('/_create', (req, res, next)=>{
   next()
 })
 
+EventRouter.use('/_update', (req, res, next)=>{
+  // If req has ADMIN level access token, allow and DEL token header
+  // Else, 403
+  next()
+})
+
 // Validate Event Deletion
 EventRouter.use('/_delete', (req, res, next)=>{
   // If req has ADMIN level access token, allow and DEL token header
@@ -34,14 +40,26 @@ EventRouter.use('/_delete', (req, res, next)=>{
 // --------------------------------------------------------
 // Read all events :: /admin/event/_all
 EventRouter.get('/_list', async (req, res)=>{
-  const eventStream = await Event.find({}).cursor({transform: JSON.stringify})
-  eventStream.pipe(res.type('json'))
+  const eventStream = await Event.find({})//.cursor({transform: JSON.stringify})
+  // eventStream.pipe(res.type('json'))
+  res.send({ results: eventStream })
 })
 
 // Read a event by ID :: /admin/event/_get/:eventid
 EventRouter.get('/_get/:eventid', async (req, res)=>{
   const searchResult = await Event.findOne({ _id: req.params.userid })
-  res.send({ message: 'found', result: searchResult })
+  res.send({ message: 'Found', result: searchResult })
+})
+
+// Read a group of venues by ID :: /admin/event/_find
+EventRouter.post('/_find', async (req, res)=>{
+  const { searchQuery } = req.body  
+  const searchResult = await Event.find({ ...searchQuery })
+
+  res.send({ 
+    message: `Found ${searchResult.length} matching records`,
+    result: searchResult 
+  })
 })
 
 // Read a group of events by ID :: /admin/event/_group
@@ -57,7 +75,7 @@ EventRouter.post('/_group', async (req, res)=>{
   })
 
   res.send({ 
-    message: `found ${searchResult.length} of ${searchIds.length}`,
+    message: `Found ${searchResult.length} of ${searchIds.length}`,
     result: searchResult 
   })
 })
@@ -66,14 +84,13 @@ EventRouter.post('/_group', async (req, res)=>{
 EventRouter.post('/_create', async (req, res)=>{
   const { createBody } = req.body
   createBody.ref = Date.now().toString(36)
-  console.log(createBody)
 
   try {
     const createEvent = new Event(createBody)
     const result = await createEvent.save()
     res.status(201)
     .send({ 
-      message: 'created',
+      message: 'Created',
       result: result._id
     })
   } catch (err) {
@@ -92,7 +109,7 @@ EventRouter.put('/_update/:eventid', async (req, res)=>{
     updateBody
   )
   res.send({
-    result: 'updated',
+    result: 'Updated',
     previous: result
   })
 })
@@ -105,7 +122,7 @@ EventRouter.delete('/_delete/:eventid', async (req, res)=>{
     }
   )
   res.send({ 
-    result:'deleted', 
+    result:'Deleted', 
     message: result
   })
 })

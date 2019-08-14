@@ -72,7 +72,10 @@ export class VenueDetails extends Component<VenueDetailsProps> {
 
         return {
           selectCategories,
-          selectLocality: { label: this.props.data.locality, value: this.props.data.locality},
+          selectLocality: { 
+            label: this.props.data.locality, 
+            value: this.props.data.locality
+          },
     
           data: this.props.data,
           loading: false,
@@ -83,7 +86,6 @@ export class VenueDetails extends Component<VenueDetailsProps> {
           loading: false,
         }
     })
-    
   }
 
   handleChangeById = (event) => {

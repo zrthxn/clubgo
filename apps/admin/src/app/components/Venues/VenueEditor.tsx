@@ -13,7 +13,8 @@ import { VenueContext } from './VenueContext'
 
 export interface VenueEditorProps {
   intent: string,
-  populateData?: object
+  onFinalize: Function,
+  populateData?: object //IVenueModel
 }
 export class VenueEditor extends Component<VenueEditorProps> {
   static contextType = VenueContext
@@ -94,28 +95,8 @@ export class VenueEditor extends Component<VenueEditorProps> {
   }
 
   saveVenue = (data, publish?:boolean) => {
-    if(this.props.intent==='create')
-      this.context.actions.create(data, publish).then((result) => {
-        if(result.status===201) {
-          this.context.actions.openSuccessFeedback('Venue Created')
-          this.context.actions.openVenueListing()
-        }
-        else throw result
-      }).catch((err) => {
-        this.context.actions.openErrorFeedback(err.data._message, err.data.message)
-      })
-
-    else if(this.props.intent==='update')
-      this.context.actions.update(data._id, data, publish).then((result) => {
-        if(result.status===200) {
-          this.context.actions.openSuccessFeedback('Venue Updated')  
-          this.context.actions.openVenueListing()
-        }
-        else throw result
-      }).catch((err) => {
-        this.context.actions.openErrorFeedback(err.data._message, err.data.message)
-      })
-      
+    if(publish) data.settings.isPublished = true
+    this.props.onFinalize(data)
   }
 
   render() {
@@ -154,16 +135,14 @@ export class VenueEditor extends Component<VenueEditorProps> {
             !this.state.loading ? (
               <Grid item container spacing={3}>
                 <Grid item md={7} xs={12}>
-                  <VenueDetails 
-                    syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent} data={this.state.data}
+                  <VenueDetails populate={this.state.populateDataFromParent} data={this.state.data}
+                    syncParentData={this.syncDataChanges}                    
                   />
                 </Grid>
 
                 <Grid item md={5} xs={12}>
-                  <Settings 
-                    syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent} data={this.state.data.settings}
+                  <Settings populate={this.state.populateDataFromParent} data={this.state.data.settings}
+                    syncParentData={this.syncDataChanges}                    
                   />
                   <Offers/>
                 </Grid>
@@ -171,16 +150,14 @@ export class VenueEditor extends Component<VenueEditorProps> {
                 <Grid item xs={12}><hr/></Grid>
 
                 <Grid item xs={12}>
-                  <Images 
-                    syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent} data={this.state.data.media}  
+                  <Images populate={this.state.populateDataFromParent} data={this.state.data.media}  
+                    syncParentData={this.syncDataChanges}                    
                   />
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Hours 
-                    syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent}
+                  <Hours populate={this.state.populateDataFromParent}
+                    syncParentData={this.syncDataChanges}                    
                   />
                 </Grid>
               </Grid>

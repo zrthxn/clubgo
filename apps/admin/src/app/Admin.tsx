@@ -33,16 +33,10 @@ const theme = createMuiTheme({
 
 export class Admin extends Component {
   state = {
-    authenticated: true,
+    authenticated: false,
     notificationsOpen: false,
     messagesOpen: false,
     userAccountMenuOpen: false
-  }
-
-  onExecute = () => {
-    this.setState({
-      authenticated: true
-    })
   }
 
   openMessages = () => {
@@ -154,7 +148,11 @@ export class Admin extends Component {
             this.state.authenticated ? (
               this.onAuthenticate()
             ) : (
-              <LoginPage loginHandler={ this.onExecute } />
+              <LoginPage onAuthenticate={()=>{
+                this.setState({
+                  authenticated: true
+                })
+              }} />
             )
           }
         </div>

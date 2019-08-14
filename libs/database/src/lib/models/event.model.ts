@@ -12,7 +12,7 @@ import { artistSchema, IArtistModel } from './artist.model'
  export const eventSchema = new mongoose.Schema(
   {
     ref: { 
-      type: String, required: true, unique: true // first 8 charecters (4 bytes) of ObjectID
+      type: String, required: true, unique: true
     },
     eventTitle: { 
       type: String, required: true
@@ -27,7 +27,7 @@ import { artistSchema, IArtistModel } from './artist.model'
     music: [String],
     dressCode: {
       title: {
-        type: String, required: true
+        type: String, //required: true
       },
       images: [String]
     },
@@ -36,10 +36,10 @@ import { artistSchema, IArtistModel } from './artist.model'
     customDetails: [
       {
         detailName: {
-          type: String, required: true
+          type: String
         },
         detailData: {
-          type: String, required: true
+          type: String
         }
       }
     ],
@@ -56,11 +56,11 @@ import { artistSchema, IArtistModel } from './artist.model'
     },
     venue: {
       city: { 
-        type: String, required: true 
+        type: String, //required: true 
       },
       venueId: String,
       title: {
-        type: String, required: true
+        type: String, //required: true
       },
       address: String, 
       isCustomVenue: Boolean,
@@ -68,20 +68,20 @@ import { artistSchema, IArtistModel } from './artist.model'
         locality: String,
         coordinates: {
           _lat: { 
-            type: Number, required: true, min: -180, max: 180 
+            type: Number, min: -180, max: 180 
           },
           _lon: { 
-            type: Number, required: true, min: -180, max: 180 
+            type: Number, min: -180, max: 180 
           }
         }        
       }
     },
     scheduling: {
       startTime: { 
-        type: Date, required: true 
+        type: Date, //required: true 
       },
       endTime: { 
-        type: Date, required: true 
+        type: Date, //required: true 
       },
       isRecurring: Boolean,
       recurringType: { 
@@ -90,27 +90,25 @@ import { artistSchema, IArtistModel } from './artist.model'
       isCustomRecurring: Boolean,
       customRecurring: {
         initial: {
-          type: Date, required: true
+          type: Date, //required: true
         },
         final: Date || Infinity,
         dates: [
           {
             date: { 
-              type: Date, required: true 
+              type: Date, //required: true 
             },
             startTime: { 
-              type: Date, required: true 
+              type: Date, //required: true 
             },
             endTime: { 
-              type: Date, required: true
+              type: Date, //required: true
             }
           }
         ]
       }
     },
     bookings: {
-      isTakingOnsiteBookings: Boolean,
-      isTakingOnsitePayments: Boolean,
       tickets: [
         {
           ticketId: String,
@@ -119,6 +117,8 @@ import { artistSchema, IArtistModel } from './artist.model'
           deactivateTime: Date || Number
         }
       ],
+      isTakingOnsiteBookings: Boolean,
+      isTakingOnsitePayments: Boolean,
       registrationURL: String,
       registrationPhone: String
     },
@@ -197,8 +197,6 @@ export interface IEventModel extends mongoose.Document {
     }
   },
   bookings: {
-    isTakingOnsiteBookings?: boolean,
-    isTakingOnsitePayments?: boolean,
     tickets?: [
       {
         ticketId: string,
@@ -207,6 +205,8 @@ export interface IEventModel extends mongoose.Document {
         deactivateTime?: Date | number
       }
     ],
+    isTakingOnsiteBookings?: boolean,
+    isTakingOnsitePayments?: boolean,
     registrationURL?: string,
     registrationPhone?: string
   },

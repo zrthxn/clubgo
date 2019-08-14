@@ -16,13 +16,6 @@ export default UserRouter
 
 // Security Functions
 // --------------------------------------------------------
-// Validate User Creation
-UserRouter.use('/_create', (req, res, next)=>{
-  // If req has ADMIN level access token, allow and DEL token header
-  // Else, 403
-  next()
-})
-
 // Validate User Deletion
 UserRouter.use('/_delete', (req, res, next)=>{
   // If req has ADMIN level access token, allow and DEL token header
@@ -51,7 +44,7 @@ UserRouter.get('/_list', async (req, res)=>{
 // Read a user by ID :: /admin/user/_get/:userid
 UserRouter.get('/_get/:userid', async (req, res)=>{
   const searchResult = await User.findOne({ _id: req.params.userid })
-  res.send({ message: 'found', result: searchResult })
+  res.send({ message: 'Found', result: searchResult })
 })
 
 // Read a group of users by ID :: /admin/user/_group
@@ -67,7 +60,7 @@ UserRouter.post('/_group', async (req, res)=>{
   })
 
   res.send({ 
-    message: `found ${searchResult.length} of ${searchIds.length}`,
+    message: `Found ${searchResult.length} of ${searchIds.length}`,
     result: searchResult 
   })
 })
@@ -81,7 +74,7 @@ UserRouter.post('/_create', async (req, res)=>{
     const result = await createUser.save()
     res.status(201)
     .send({ 
-      message: 'created',
+      message: 'Created',
       result: result._id
     })
   } catch (err) {
@@ -100,7 +93,7 @@ UserRouter.put('/_update/:userid', async (req, res)=>{
     updateBody
   )
   res.send({
-    message: 'updated',
+    message: 'Updated',
     previous: result
   })
 })
@@ -113,7 +106,7 @@ UserRouter.delete('/_delete/:userid', async (req, res)=>{
     }
   )
   res.send({ 
-    message:'deleted', 
+    message:'Deleted', 
     result
   })
 })

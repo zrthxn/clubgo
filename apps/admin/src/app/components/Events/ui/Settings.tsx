@@ -6,7 +6,9 @@ import { TextField, Button, Switch, Checkbox } from '@material-ui/core'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface SettingsProps {
-  syncParentData: Function
+  syncParentData?: Function
+  populate?: boolean,
+  data?: any
 }
 export class Settings extends Component<SettingsProps> {
   state = {

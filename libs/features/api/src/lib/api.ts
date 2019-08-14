@@ -1,7 +1,7 @@
 import axios from 'axios'
 import crypto from 'crypto'
 
-const config = require('./config.json')
+export const APIEndpoints = require('./config.json').endpoints
 
 export default class InterfaceAPI {
   request = axios
@@ -17,10 +17,10 @@ export default class InterfaceAPI {
     }
   }
 
-  protected endpoint = config.endpoints.backend
+  protected endpoint = APIEndpoints.api
 
   constructor(apiType:APIProps['apiTypes']) {
-    this.setAPIEndpoint(config.endpoints[apiType].url)
+    this.setAPIEndpoint(APIEndpoints[apiType].url)
     this.apiType = apiType
 
     this.authenticate()
@@ -48,8 +48,8 @@ export default class InterfaceAPI {
   }
 
   async authenticate(headers?) {
-    if(config.endpoints[this.apiType].secure) {
-      const authEndpoint = config.endpoints.auth
+    if(APIEndpoints[this.apiType].secure) {
+      const authEndpoint = APIEndpoints.auth
       // Send auth request
       // GET CSRF Tokens
       // let authResponse = await this.request.post(authEndpoint, {
@@ -67,7 +67,7 @@ export default class InterfaceAPI {
   }
 
   async login(id, pw, headers?) {
-    const loginEndpoint = config.endpoints.login.url
+    const loginEndpoint = APIEndpoints.login.url
     // Send login request with ID PW
     // GET Login Auth Headers specific to API level
     let loginResponse = await this.request.post(loginEndpoint, {

@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { VenueContext } from './VenueContext'
 import { VenueController } from './VenueController'
-import { VenueService } from '@clubgo/features/api'
 
 export class VenueContextProvider extends VenueController {
   static contextType = VenueContext
-  venueService = new VenueService('admin')
 
   state = {
     uiType: null,
@@ -54,32 +52,7 @@ export class VenueContextProvider extends VenueController {
       }
     })
   }
-  
-  // ------------------------------------------------------------------------
-  create = async (venueData, publish?:boolean) => {
-    if(publish)
-      venueData.settings.isPublished = true
 
-    try {
-      return await this.venueService.createVenue(venueData)
-    } catch(e) {
-      return Promise.reject(e)
-    }
-  }
-
-  list = async () => {
-    return await this.venueService.listVenues()
-  }
-
-  update = async (id:string, updateBody, publish?:boolean) => {
-    return await this.venueService.updateVenue(id, updateBody)
-  }
-
-  delete = async (id) => {
-    return await this.venueService.deleteVenue(id)
-  }
-
-  // ------------------------------------------------------------------------
   openSuccessFeedback = (message?:string) => {
     this.setState((prevState, props)=>{
       if(message!==null)
@@ -128,11 +101,6 @@ export class VenueContextProvider extends VenueController {
           actions: {
             openVenueEditor: this.openVenueEditor,
             openVenueListing: this.openVenueListing,
-
-            create: this.create,
-            list: this.list,
-            update: this.update,
-            delete: this.delete,
 
             openSuccessFeedback: this.openSuccessFeedback,
             closeSuccessFeedback: this.closeSuccessFeedback,

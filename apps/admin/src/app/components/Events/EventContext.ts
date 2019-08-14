@@ -5,7 +5,10 @@ export const EventContext = React.createContext({
     uiType: null,
     openSuccessFeedback: false,
     openErrorFeedback: false,
-    feedbackMessage: 'Success',
+    feedbackMessage: { 
+      message: 'Success', 
+      details: undefined
+    },
     eventData: {
       
     }
@@ -17,6 +20,7 @@ export const EventContext = React.createContext({
     openEventListing: () => {
       console.log()
     },
+    
     openSuccessFeedback: (message?:string) => {
       console.log()
     },

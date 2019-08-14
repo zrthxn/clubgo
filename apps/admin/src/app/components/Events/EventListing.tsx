@@ -4,59 +4,80 @@ import { Grid, Paper } from '@material-ui/core'
 import '../scss/Listing.scss'
 
 import { EventListItem } from './ui/EventListItem'
+import { EventContext } from './EventContext'
+import { EventService } from '@clubgo/features/api'
 
-export class EventListing extends Component {
+export interface EventListingProps {
+  onDelete: Function
+}
+export class EventListing extends Component<EventListingProps> {
+  static contextType = EventContext
+  eventService = new EventService('admin')
+
   state = {
-    listing: [
-      {
-        _id: 'abcdef',
-        eventTitle: 'Editing 1'
-      },
-      {
-        _id: 'bcdef1',
-        eventTitle: 'Editing 2'
-      },
-      {
-        _id: 'cdef12',
-        eventTitle: 'Editing 3'
-      },
-      {
-        _id: 'def123',
-        eventTitle: 'Editing 4'
-      }
-    ]
+    loading: true,
+    query: {
+      findBy: null,
+      params: [],
+      maxRecords: 0,
+      lazyLoad: true
+    },
+    listing: []
   }
 
   componentDidMount() {
-    // const provider = new ListingProvider
-    // const x = provider.fetch('events').toString()
-    // console.log(x)
+    this.loadVenueListings()
+  }
 
-    // provider.fetch().subscribe()
+  loadVenueListings = async () => {
+    try {
+      let { data } = await this.eventService.listEvents()
+      let { listing } = this.state
+
+      if(data.results!==undefined)
+        listing = data.results
+      
+      this.setState({
+        listing,
+        loading: false
+      })
+    } catch (err) {
+      this.context.actions.openErrorFeedback(err.toString())
+    }
+  }
+
+  deleteEvent = async (eventId:string) => {
+    await this.props.onDelete(eventId)
+    let { listing } = this.state
+    listing = listing.filter(listItem => {
+      return listItem._id!==eventId
+    })
+    this.setState({
+      listing
+    })
   }
 
   render() {
     return (
       <div className="listings">
         <span className="table-title">Events Listing</span>
+        {
+          this.state.loading ? <p>Loading...</p> : null
+        }
 
-        <Paper className="listing-table">
-          <div>
-            {
-              this.state.listing.map((item, index)=>{
-                return (
-                  <div key={ `eventListing_${index}` }>
-                    <EventListItem data={ item } />
-
-                    {
-                      index!==(this.state.listing.length-1) ? <hr/> : <span/>
-                    }
-                  </div>
-                )
-              })
-            }    
-          </div>    
-        </Paper>
+        <div className="listing-table">
+          {
+            !this.state.loading && this.state.listing.map((item, index)=>{
+              return (
+                <EventListItem data={ item } key={ `eventListing_${index}` }
+                  onDelete={()=>{
+                    this.deleteEvent(item._id)
+                  }}
+                />
+              )
+            })
+          }    
+        </div>
       </div>
     )
   }
