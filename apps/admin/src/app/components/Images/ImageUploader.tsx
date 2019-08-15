@@ -26,17 +26,17 @@ export class ImageUploader extends Component<ImageUploaderProps> {
   }
 
   upload = async () => {
-    if(this.props.env!=='dev') {
+    // if(this.props.env!=='dev') {
       let result = await this.uploader.multiple(this.state.files)
       let { refs } = result.data
       this.props.onUploadComplete(refs)
-    }
-    else {
-      this.props.onUploadComplete([
-        { ref: 'abcd' },
-        { ref: 'efgh' }
-      ])
-    }
+    // }
+    // else {
+    //   this.props.onUploadComplete([
+    //     { ref: 'abcd' },
+    //     { ref: 'efgh' }
+    //   ])
+    // }
   }
 
   render() {
