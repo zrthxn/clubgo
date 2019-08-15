@@ -19,6 +19,9 @@ export const venueSchema = new mongoose.Schema(
       type: String, required: true
     },
     categories: [String],
+    city: {
+      type: String, required: true
+    },
     locality: String,
     address: {
       type:String, required: true
@@ -105,6 +108,7 @@ export interface IVenueModel extends mongoose.Document {
   venueTitle: string,
   description: string,
   categories?: [string],
+  city: string,
   locality?: string,
   address: string,
   altAddress?: string,

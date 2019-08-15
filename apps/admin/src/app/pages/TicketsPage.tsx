@@ -10,7 +10,7 @@ export class TicketsPage extends Component {
           <h2 className="title">Tickets</h2>
         </article>
 
-        <article className="main-content">
+        <article className="page-content">
           
         </article>
       </div>

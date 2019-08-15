@@ -2,8 +2,6 @@
   padding: 2em;
   
   .table-title {
-    padding: 1em;
-
     width: fit-content;
     font-weight: 600;
     font-size: 1.5em;
@@ -23,9 +21,9 @@
   padding: 1em;
   background-color: #fff;
 
-  border: 1px solid #1c1c1c40;
-  box-shadow: 0 2.5px 5px #1c1c1c80;
-  border-radius: 0.5em;
+  border: 1.5px solid #1c1c1c40;
+  // box-shadow: 0 0 2px #1c1c1c80;
+  border-radius: 5px;
 
   .action {
     text-align: right;

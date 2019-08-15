@@ -72,21 +72,11 @@ export class VenueController extends Component {
         {
           venueContext => (
             <div>
-              <div className="section-nav">
-                <Nav tabs>
-                  <NavItem>
-                    <button className="nav-link" onClick={() => venueContext.actions.openVenueEditor('create')}>
-                      Create
-                    </button>
-                  </NavItem>
-                  
-                  <NavItem>
-                    <button className="nav-link" onClick={venueContext.actions.openVenueListing}>
-                      List
-                    </button>
-                  </NavItem>
-                </Nav>
-              </div>
+              <section className="section-content">
+                {
+                  this.interfaceBuilder(venueContext.state.uiType, venueContext)
+                }
+              </section>
 
               <Snackbar open={ venueContext.state.openSuccessFeedback }
                 // SUCCESS
@@ -133,12 +123,6 @@ export class VenueController extends Component {
                   ]}
                 />
               </Snackbar>
-
-              <section className="section-content">
-                {
-                  this.interfaceBuilder(venueContext.state.uiType, venueContext)
-                }
-              </section>
             </div>
           )
         }

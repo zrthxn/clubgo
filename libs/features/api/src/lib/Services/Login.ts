@@ -6,7 +6,7 @@ export class LoginService extends InterfaceAPI {
   // }
 
   // async login(id, pw, headers?) {
-  //   const loginEndpoint = config.endpoints.login
+  //   const loginEndpoint = APIEndpoints.login.url
   //   // Send login request with ID PW
   //   // GET Login Auth Headers specific to API level
   //   let loginResponse = await this.request.post(loginEndpoint, {
@@ -15,6 +15,12 @@ export class LoginService extends InterfaceAPI {
   //       id,
   //       pw
   //     }
+  //   }, {
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       ...this.auth.headers
+  //     },
+  //     xsrfCookieName: null
   //   })
 
   //   this.auth.headers = {

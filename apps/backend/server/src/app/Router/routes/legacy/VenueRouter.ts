@@ -4,6 +4,8 @@ import { conf } from '@clubgo/util'
 import { Venue } from '@clubgo/database'
 import url from 'url'
 
+// import CRUDRouter from './CRUDRouter'
+
 /**
  * @description
  * * Venues Router
@@ -12,30 +14,31 @@ import url from 'url'
  */
 
 export const VenueRouter = express.Router()
+// export const VenueRouter = new CRUDRouter(Venue).createRouter({ addDefaults: true })
 export default VenueRouter
 // ========================================================
 
 // Security Functions
 // --------------------------------------------------------
 // Validate Venue Creation
-VenueRouter.use('/_create', (req, res, next)=>{
-  // If req has ADMIN level access token, allow and DEL token header
-  // Else, 403
-  next()
-})
+// VenueRouter.use('/_create', (req, res, next)=>{
+//   // If req has ADMIN level access token, allow and DEL token header
+//   // Else, 403
+//   next()
+// })
 
-VenueRouter.use('/_update', (req, res, next)=>{
-  // If req has ADMIN level access token, allow and DEL token header
-  // Else, 403
-  next()
-})
+// VenueRouter.use('/_update', (req, res, next)=>{
+//   // If req has ADMIN level access token, allow and DEL token header
+//   // Else, 403
+//   next()
+// })
 
-// Validate Venue Deletion
-VenueRouter.use('/_delete', (req, res, next)=>{
-  // If req has ADMIN level access token, allow and DEL token header
-  // Else, 403
-  next()
-})
+// // Validate Venue Deletion
+// VenueRouter.use('/_delete', (req, res, next)=>{
+//   // If req has ADMIN level access token, allow and DEL token header
+//   // Else, 403
+//   next()
+// })
 
 // CRUD Functions
 // --------------------------------------------------------

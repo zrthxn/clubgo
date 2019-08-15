@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Grid, Button, Fab, Modal, Paper } from '@material-ui/core'
-import { red } from '@material-ui/core/colors'
+import { red, blue, green } from '@material-ui/core/colors'
 import { Edit, Delete } from '@material-ui/icons'
 import { IEventModel } from '@clubgo/database'
 
@@ -25,8 +25,16 @@ export class EventListItem extends Component<EventListItemProps> {
             <div className="list-item">
               
               <Grid container spacing={1}>
-                <Grid item md={8} xs={12}>
-                  <span>{ this.props.data.eventTitle }</span>
+                <Grid item md={8} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
+                  <span style={{ margin: 'auto 0', width: '200px' }}>{ this.props.data.eventTitle }</span>
+
+                  {
+                    this.props.data.settings.isPublished ? (
+                      <span style={{ margin: 'auto 1em', color: green[400] }}><b>Published</b></span>
+                    ) : (
+                      <span style={{ margin: 'auto 1em', color: '#1c1c1c' }}>Unpublished</span>
+                    )
+                  }
                 </Grid>
 
                 <Grid item md={4} xs={12}>

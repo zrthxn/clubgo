@@ -1,29 +1,35 @@
-$section-content-bg: #bdbdbd80;
+$page-header-bg: #bdbdbd40;
 
 .page {
   .page-header {
+    padding: 4em;
+    padding-bottom: 0;
+    // background-color: $page-header-bg;
+  }
+
+  .page-content {
     padding: 2em;
+    // box-shadow: 0 0 5px #1c1c1c40;
+  }
+  @media (max-width: 600px) {
+    .page-header {
+      padding: 2em;
+      padding-bottom: 0;
+    }
+    .page-content {
+      padding: 0;
+    }
   }
 
-  .title {
-    margin-bottom: 1em;
-  }
-
-  .section-nav {
-    padding: 0 2em;
+  .page-nav {
+    // padding: 0 2em;
 
     .nav-item {
       margin: auto 0.25em;
     }
   }
 
-  .section-content {
-    background: $section-content-bg;
-    padding: 2em;
-  }
-  @media (max-width: 600px) {
-    .section-content {
-      padding: 0;
-    }
+  .title {
+    margin-bottom: 1em;
   }
 }

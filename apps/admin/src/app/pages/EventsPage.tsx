@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Nav, NavItem, NavLink } from 'reactstrap'
+import { Nav, NavItem, NavLink, Button } from 'reactstrap'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 
 import './scss/Pages.scss'
 
 import { EventController } from '../components/Events/EventController'
+import { EventContext } from '../components/Events/EventContext'
 import { EventContextProvider } from '../components/Events/EventContextProvider'
 
 export class EventsPage extends Component {
@@ -14,14 +15,32 @@ export class EventsPage extends Component {
         <div className="page">
           <article className="page-header">
             <h2 className="title">Events</h2>
-            
-            <div>
-              Select one of the options above. <br/>
-              Other details will come here
-            </div>
+
+            <EventContext.Consumer>
+              {
+                eventContext => (
+                  <div className="page-nav clearfix">
+                    <p>
+                      Select one of the options. <br/>
+                      Other details will come here.
+                    </p>
+
+                    {
+                      eventContext.state.uiType==='create' ? null : (
+                        <Button color="primary" size="lg" onClick={()=>{
+                          eventContext.actions.openEventEditor('create')
+                        }}>
+                          Create Event
+                        </Button>
+                      )
+                    }
+                  </div>
+                )
+              }
+            </EventContext.Consumer>
           </article>
 
-          <article className="main-content">
+          <article className="page-content">
             <EventController/>
           </article>
         </div>

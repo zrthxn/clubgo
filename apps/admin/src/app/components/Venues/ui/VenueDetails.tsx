@@ -15,29 +15,14 @@ export class VenueDetails extends Component<VenueDetailsProps> {
   state = {
     loading: true,
     openMapModal: false,
-    suggestions: {
-      locality: [
-        { label: 'Locality 1' },
-        { label: 'Locality 2' },
-        { label: 'Locality 3' }
-      ].map(item=>({
-        label: item.label, value: item.label
-      })),
-      category: [
-        { label: 'EDM' },
-        { label: 'Clubbing' },
-        { label: 'Comedy' },
-        { label: 'General' },
-      ].map(item=>({
-        label: item.label, value: item.label
-      }))
-    },
     selectCategories: [],
+    selectCity: undefined,
     selectLocality: undefined,
     data: {
       venueTitle: undefined,
       description: undefined,
       categories: [],
+      city: undefined,
       locality: undefined,
       address: undefined,
       altAddress: undefined,
@@ -56,6 +41,32 @@ export class VenueDetails extends Component<VenueDetailsProps> {
       
     ],
     iterableMembers: []
+  }
+
+  suggestions = {
+    city: [
+      { label: 'Delhi' },
+      { label: 'Gurgaon' },
+      { label: 'Mumbai' },
+      { label: 'Bangalore' },
+    ].map(item=>({
+      label: item.label, value: item.label
+    })),
+    locality: [
+      { label: 'Locality 1' },
+      { label: 'Locality 2' },
+      { label: 'Locality 3' }
+    ].map(item=>({
+      label: item.label, value: item.label
+    })),
+    category: [
+      { label: 'EDM' },
+      { label: 'Clubbing' },
+      { label: 'Comedy' },
+      { label: 'General' },
+    ].map(item=>({
+      label: item.label, value: item.label
+    }))
   }
 
   constructor(props) {
@@ -119,7 +130,7 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                   inputId="category"
                   placeholder="Category"
                   value={this.state.selectCategories}
-                  options={this.state.suggestions.category}
+                  options={this.suggestions.category}
                   isMulti
                   onChange={ selected => {
                     let { data } = this.state
@@ -151,11 +162,33 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                   value={this.state.data.altAddress}
                 />
 
+                <div style={{ padding: '0.5em' }}></div>
+
+                <Select
+                  inputId="city"
+                  placeholder="City"
+                  value={this.state.selectCity}
+                  options={this.suggestions.city}
+                  onChange={ selected => {
+                    let { data } = this.state
+                    data.city = selected.value
+                    this.setState((prevState, props)=>{
+                      this.props.syncParentData(data, 'root')
+                      return {
+                        data,
+                        selectCity: selected
+                      }
+                    })
+                  }}
+                />
+
+                <div style={{ padding: '0.5em' }}></div>
+
                 <Select
                   inputId="locality"
                   placeholder="Locality"
                   value={this.state.selectLocality}
-                  options={this.state.suggestions.locality}
+                  options={this.suggestions.locality}
                   onChange={ selected => {
                     let { data } = this.state
                     data.locality = selected.value

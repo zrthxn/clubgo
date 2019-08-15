@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
-import { Nav, NavItem } from 'reactstrap'
+import { Nav, NavItem, Button } from 'reactstrap'
 
 import './scss/Pages.scss'
 
 import { VenueController } from '../components/Venues/VenueController'
+import { VenueContext } from '../components/Venues/VenueContext'
 import { VenueContextProvider } from '../components/Venues/VenueContextProvider'
 
 export class VenuesPage extends Component {
@@ -15,13 +16,31 @@ export class VenuesPage extends Component {
           <article className="page-header">
             <h2 className="title">Venues</h2>
             
-            <div>
-              Select one of the options above. <br/>
-              Other details will come here
-            </div>
+            <VenueContext.Consumer>
+              {
+                venueContext => (
+                  <div className="page-nav clearfix">
+                    <p>
+                      Select one of the options. <br/>
+                      Other details will come here.
+                    </p>
+
+                    {
+                      venueContext.state.uiType==='create' ? null : (
+                        <Button color="primary" size="lg" onClick={()=>{
+                          venueContext.actions.openVenueEditor('create')
+                        }}>
+                          Create Venue
+                        </Button>
+                      )
+                    }
+                  </div>
+                )
+              }
+            </VenueContext.Consumer>
           </article>
 
-          <article className="main-content">
+          <article className="page-content">
             <VenueController/>
           </article>
         </div>

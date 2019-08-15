@@ -3,36 +3,36 @@ import { Event, Venue, User, Offer } from '@clubgo/database'
 import { conf } from '@clubgo/util'
 import { CRUDRouter } from '@clubgo/database'
 
-export const WebRouter = express.Router()
-export default WebRouter
+export const AdminRouter = express.Router()
+export default AdminRouter
 // ========================================================
 
 // Security Functions
 // --------------------------------------------------------
-WebRouter.use((req, res, next)=>{
-  // If req has API level access token, allow and DEL token header
+AdminRouter.use((req, res, next)=>{
+  // If req has ADMIN level access token, allow and DEL token header
   // Else, 403
   next()
 })
 
-// Web Functions
+// Admin Functions
 // --------------------------------------------------------
-WebRouter.get('/', (req, res)=>{
-  res.send({ message: 'web' })
+AdminRouter.get('/', (req, res)=>{
+  res.send({ message: 'admin' })
 })
 
 // CRUD Functions
 // --------------------------------------------------------
 const EventRouter = new CRUDRouter(Event).createRouter({ addDefaults: true })
-WebRouter.use('/event', EventRouter)
+AdminRouter.use('/event', EventRouter)
 
 const VenueRouter = new CRUDRouter(Venue).createRouter({ addDefaults: true })
-WebRouter.use('/venue', VenueRouter)
+AdminRouter.use('/venue', VenueRouter)
 
 const UserRouter = new CRUDRouter(User).createRouter({ addDefaults: true })
-WebRouter.use('/user', UserRouter)
+AdminRouter.use('/user', UserRouter)
 
 const OfferRouter = new CRUDRouter(Offer).createRouter({ addDefaults: true })
-WebRouter.use('/offer', OfferRouter)
+AdminRouter.use('/offer', OfferRouter)
 
 // STOP ============================================== STOP

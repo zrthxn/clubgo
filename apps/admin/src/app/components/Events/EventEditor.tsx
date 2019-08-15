@@ -134,7 +134,7 @@ export class EventEditor extends Component<EventEditorProps> {
     return (
       <div className="create-form">
         <div>
-          <div className="clearfix" style={{ padding: '1em' }}>            
+          <div className="clearfix" style={{ padding: '2em 1em' }}>            
             {
               this.props.intent==='create' ? (
                 <span className="form-title">Create Event</span>
@@ -159,6 +159,14 @@ export class EventEditor extends Component<EventEditorProps> {
               this.saveEvent(this.state.data, false)
             }}>
               Save
+            </Button>
+
+            <span className="float-right spacer"></span>
+
+            <Button outline color="error" size="lg" className="float-right" onClick={()=>{
+              this.context.actions.openEventListing()
+            }}>
+              Cancel
             </Button>
           </div>
 
@@ -208,7 +216,23 @@ export class EventEditor extends Component<EventEditorProps> {
                 <p>Please Wait</p>
               </div>
             )
-          }          
+          } 
+          
+          <div className="clearfix" style={{ padding: '1em' }}>
+            <Button color="primary" size="lg" className="float-right" onClick={()=>{
+              this.saveEvent(this.state.data, true)
+            }}>
+              Publish
+            </Button>
+
+            <span className="float-right spacer"></span>
+
+            <Button outline color="secondary" size="lg" className="float-right" onClick={()=>{
+              this.saveEvent(this.state.data, false)
+            }}>
+              Save
+            </Button>
+          </div>        
         </div>
       </div>
     )

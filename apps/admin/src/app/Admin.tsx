@@ -16,11 +16,13 @@ import { AccountCircle, MenuRounded, MessageRounded, Notifications } from '@mate
 
 import './Admin.scss'
 
-import { LoginPage } from './pages/LoginPage'
-import { Dashboard } from './pages/Dashboard'
-import { EventsPage } from './pages/EventsPage'
-import { VenuesPage } from './pages/VenuesPage'
-import { TicketsPage } from './pages/TicketsPage'
+import LoginPage from './pages/LoginPage'
+import Dashboard from './pages/Dashboard'
+import EventsPage from './pages/EventsPage'
+import VenuesPage from './pages/VenuesPage'
+import TicketsPage from './pages/TicketsPage'
+import OffersPage from './pages/OffersPage'
+import SettingsPage from './pages/SettingsPage'
 
 const theme = createMuiTheme({
   palette: {
@@ -73,13 +75,13 @@ export class Admin extends Component {
               </div>
 
               <Link to="/dashboard"> Dashboard </Link>
-              <Link to="/users"> Users </Link>
               <Link to="/events"> Events </Link>
               <Link to="/venues"> Venues </Link>
               <Link to="/tickets"> Tickets </Link>
+              <Link to="/offers"> Offers </Link>
+              <Link to="/users"> Users </Link>
               <Link to="/artists"> Artists </Link>
               <Link to="/locations"> Locations </Link>
-              <Link to="/coupons"> Coupons </Link>
               <Link to="/settings"> Settings </Link>
             </div>
 
@@ -131,6 +133,11 @@ export class Admin extends Component {
                   <Route path="/events" component={ EventsPage } />
                   <Route path="/venues" component={ VenuesPage } />
                   <Route path="/tickets" component={ TicketsPage } />
+                  <Route path="/offers" component={ OffersPage } />
+                  <Route path="/users" component={ TicketsPage } />
+                  <Route path="/artists" component={ TicketsPage } />
+                  <Route path="/locations" component={ TicketsPage } />
+                  <Route path="/settings" component={ SettingsPage } />
                 </Switch>
               </section>
             </div>

@@ -1,26 +1,22 @@
 import React, { Component } from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid, Paper } from '@material-ui/core'
 
 import './scss/Pages.scss'
 
-import CreateableSelect from 'react-select/creatable'
+import { Offer } from '../components/Offers/Offer'
 
-export class Dashboard extends Component {
-  state = {
-    
-  }
-
+export default class OffersPage extends Component {
   render() {
     return (
       <div className="page">
         <article className="page-header">
-          <h2 className="title">Dashboard</h2>
+          <h2 className="title">Offers</h2>
         </article>
 
         <article className="page-content">
           <Grid container spacing={3}>
-            <Grid item xs={12} style={{ padding: '2em' }}>
-              
+            <Grid item xs={3}>
+              <Offer/>
             </Grid>
           </Grid>
         </article>
@@ -28,5 +24,3 @@ export class Dashboard extends Component {
     )
   }
 }
-
-export default Dashboard 

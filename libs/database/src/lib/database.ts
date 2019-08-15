@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 
-const config = require('./config.json').database
+const config = require('../config.json').database
 
 let dbConnOptions = ''
 for(const key in config.options)

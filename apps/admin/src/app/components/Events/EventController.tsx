@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
-import { Nav, NavItem } from 'reactstrap'
+import { Nav, NavItem, Button } from 'reactstrap'
 import { Grid, Snackbar, SnackbarContent, IconButton, Tooltip } from '@material-ui/core'
 import { Close, Help } from '@material-ui/icons'
 import { green, red } from '@material-ui/core/colors'
@@ -76,21 +76,11 @@ export class EventController extends Component {
         {
           eventContext => (
             <div>
-              <div className="section-nav">
-                <Nav tabs>
-                  <NavItem>
-                    <button className="nav-link" onClick={() => eventContext.actions.openEventEditor('create')}>
-                      Create
-                    </button>
-                  </NavItem>
-                  
-                  <NavItem>
-                    <button className="nav-link" onClick={eventContext.actions.openEventListing}>
-                      List
-                    </button>
-                  </NavItem>
-                </Nav>
-              </div>
+              <section className="section-content">
+                {
+                  this.interfaceBuilder(eventContext.state.uiType, eventContext)
+                }
+              </section>
 
               <Snackbar open={ eventContext.state.openSuccessFeedback }
                 // SUCCESS
@@ -137,12 +127,6 @@ export class EventController extends Component {
                   ]}
                 />
               </Snackbar>
-
-              <section className="section-content">
-                {
-                  this.interfaceBuilder(eventContext.state.uiType, eventContext)
-                }
-              </section>
             </div>
           )
         }

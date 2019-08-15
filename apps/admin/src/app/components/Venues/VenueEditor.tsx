@@ -26,6 +26,7 @@ export class VenueEditor extends Component<VenueEditorProps> {
       venueTitle: undefined,
       description: undefined,
       categories: [],
+      city: undefined,
       locality: undefined,
       address: undefined,
       altAddress: undefined,
@@ -129,6 +130,14 @@ export class VenueEditor extends Component<VenueEditorProps> {
             }>
               Save
             </Button>
+
+            <span className="float-right spacer"></span>
+
+            <Button outline color="error" size="lg" className="float-right" onClick={()=>{
+              this.context.actions.openVenueListing()
+            }}>
+              Cancel
+            </Button>
           </div>
 
           {
@@ -167,6 +176,22 @@ export class VenueEditor extends Component<VenueEditorProps> {
               </div>
             )
           }
+          
+          <div className="clearfix" style={{ padding: '1em' }}>            
+            <Button color="primary" size="lg" className="float-right" onClick={()=>
+              this.saveVenue(this.state.data, true)
+            }>
+              Publish
+            </Button>
+            
+            <span className="float-right spacer"></span>
+            
+            <Button outline color="secondary" size="lg" className="float-right" onClick={()=>
+              this.saveVenue(this.state.data, false)
+            }>
+              Save
+            </Button>
+          </div>
         </div>
       </div>
     )

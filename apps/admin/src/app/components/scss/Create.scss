@@ -1,5 +1,14 @@
+$section-content-bg: #bdbdbd40;
+
+.section-content {
+  // background-color: $section-content-bg;
+}
+
 .create-form {
   padding: 2em;
+  border-radius: 5px;
+  border: 1.5px solid #1c1c1c40;
+  box-shadow: 0 0 5px #1c1c1c40;
   
   .form-title {
     width: fit-content;
@@ -10,7 +19,8 @@
   .create-block {
     margin: 1em 0;
     padding: 2em;
-    box-shadow: 0 2.5px 5px #1c1c1c80;
+    border: 1.5px solid #1c1c1c40;
+    box-shadow: none;
 
     .title {
       text-transform: uppercase;
@@ -29,6 +39,13 @@
       grid-gap: 1em;
     }
   }
+  // .create-block::before {
+  //   display: block;
+  //   content: '';
+  //   padding: 1em;
+  //   margin: -2em;
+  //   background: linear-gradient(#00aeff, transparent);
+  // }
 }
 
 .form-group {

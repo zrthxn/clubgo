@@ -2,10 +2,8 @@ import express from 'express'
 import path from 'path'
 import { conf } from '@clubgo/util'
 
-import EventRouter from './routes/EventRouter'
-import UserRouter from './routes/UserRouter'
-import VenueRouter from './routes/VenueRouter'
-import WebsiteRouter from './routes/WebsiteRouter'
+import AdminRouter from './routes/AdminRouter'
+import WebRouter from './routes/WebsiteRouter'
 
 import { auth } from '../Auth/Authentication'
 
@@ -40,12 +38,6 @@ _Router.use('/admin', (req, res, next)=>{
 
 // Router API Type Routes
 // --------------------------------------------------------
-_Router.use('/api', WebsiteRouter)
+_Router.use('/api', WebRouter)
 
-_Router.use('/api/user', UserRouter)
-_Router.use('/api/event', EventRouter)
-_Router.use('/api/venue', VenueRouter)
-
-_Router.use('/admin/user', UserRouter)
-_Router.use('/admin/event', EventRouter)
-_Router.use('/admin/venue', VenueRouter)
+_Router.use('/admin', AdminRouter)
