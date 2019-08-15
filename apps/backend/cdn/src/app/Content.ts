@@ -12,6 +12,13 @@ const { __storagedir } = config
 Content.use(express.json())
 Content.use(express.urlencoded({ extended: true }))
 
+Content.use((req,res,next)=>{
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  res.header('Access-Control-Allow-Methods', '*')
+  next()
+})
+
 Content.use('/static', express.static( path.join(__storagedir, 'static') ))
 
 Content.use('/i', DeliveryRouter)
