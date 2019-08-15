@@ -5,6 +5,7 @@ import FormData from 'form-data'
 export class UploadService extends InterfaceAPI {
   constructor() {
     super('cdn')
+    this.addPathRoute('/api/_upload')
   }
 
   async single(file:IUploadFile) {

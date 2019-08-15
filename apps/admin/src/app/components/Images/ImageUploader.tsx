@@ -22,7 +22,7 @@ export class ImageUploader extends Component<ImageUploaderProps> {
   constructor(props) {
     super(props)
     this.uploader = new UploadService()
-    this.uploader.addPathRoute('/api/_upload/multiple')
+    this.uploader.addPathRoute('/multiple/images')
   }
 
   upload = async () => {

@@ -12,7 +12,7 @@
       "secure": true
     },
     "cdn": {
-      "url": "http://localhost:4444/",
+      "url": "http://localhost:4444",
       "secure": false
     },
     "auth": {
