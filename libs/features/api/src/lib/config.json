@@ -2,8 +2,8 @@
   "auth": {
     "clientToken": null
   },
-  "endpoints": {
-    "prod": {
+  "prod": {
+    "endpoints": {
       "api": {
         "url": "http://13.233.155.228:3333/api",
         "secure": true
@@ -24,8 +24,10 @@
         "url": "http://13.233.155.228:3333/_login",
         "secure": true
       }
-    },
-    "dev": {
+    }
+  },  
+  "dev": {
+    "endpoints": {
       "api": {
         "url": "http://localhost:3333/api",
         "secure": true
