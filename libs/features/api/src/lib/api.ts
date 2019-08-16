@@ -10,7 +10,7 @@ export const APIEndpoints = process.env.NODE_ENV==='production' ? (
 export default class InterfaceAPI {
   request = axios
   apiType = null
-``
+  
   private auth = {
     accessKey: null,
     csrf: {
