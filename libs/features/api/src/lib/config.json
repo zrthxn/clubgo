@@ -3,25 +3,49 @@
     "clientToken": null
   },
   "endpoints": {
-    "api": {
-      "url": "http://localhost:3333/api",
-      "secure": true
+    "prod": {
+      "api": {
+        "url": "http://13.233.155.228:3333/api",
+        "secure": true
+      },
+      "admin": {
+        "url": "http://13.233.155.228:3333/admin",
+        "secure": true
+      },
+      "cdn": {
+        "url": "http://13.233.155.228:4444",
+        "secure": false
+      },
+      "auth": {
+        "url": "http://13.233.155.228:3333/_authenicate",
+        "secure": false
+      },
+      "login": {
+        "url": "http://13.233.155.228:3333/_login",
+        "secure": true
+      }
     },
-    "admin": {
-      "url": "http://localhost:3333/admin",
-      "secure": true
-    },
-    "cdn": {
-      "url": "http://localhost:4444",
-      "secure": false
-    },
-    "auth": {
-      "url": "http://localhost:3333/_authenicate",
-      "secure": false
-    },
-    "login": {
-      "url": "http://localhost:3333/_login",
-      "secure": true
+    "dev": {
+      "api": {
+        "url": "http://localhost:3333/api",
+        "secure": true
+      },
+      "admin": {
+        "url": "http://localhost:3333/admin",
+        "secure": true
+      },
+      "cdn": {
+        "url": "http://localhost:4444",
+        "secure": false
+      },
+      "auth": {
+        "url": "http://localhost:3333/_authenicate",
+        "secure": false
+      },
+      "login": {
+        "url": "http://localhost:3333/_login",
+        "secure": true
+      }  
     }
   }
 }

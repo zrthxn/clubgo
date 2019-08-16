@@ -1,12 +1,16 @@
 import axios from 'axios'
 import crypto from 'crypto'
 
-export const APIEndpoints = require('./config.json').endpoints
+export const APIEndpoints = process.env.NODE_ENV==='production' ? (
+  require('./config.json').prod.endpoints
+) : (
+  require('./config.json').dev.endpoints
+)
 
 export default class InterfaceAPI {
   request = axios
   apiType = null
-
+``
   private auth = {
     accessKey: null,
     csrf: {
