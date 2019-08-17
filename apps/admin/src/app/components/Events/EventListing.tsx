@@ -5,14 +5,15 @@ import '../scss/Listing.scss'
 
 import { EventListItem } from './ui/EventListItem'
 import { EventContext } from './EventContext'
-import { EventService } from '@clubgo/features/api'
+import { IEventModel } from '@clubgo/database'
+import { DatabaseCRUDService } from '@clubgo/features/api'
 
 export interface EventListingProps {
   onDelete: Function
 }
 export class EventListing extends Component<EventListingProps> {
   static contextType = EventContext
-  eventService = new EventService('admin')
+  eventService = new DatabaseCRUDService({ endpoint: 'api', path: '/event' })
 
   state = {
     loading: true,
@@ -31,7 +32,7 @@ export class EventListing extends Component<EventListingProps> {
 
   loadVenueListings = async () => {
     try {
-      let { data } = await this.eventService.listEvents()
+      let { data } = await this.eventService.list()
       let { listing } = this.state
 
       if(data.results!==undefined)

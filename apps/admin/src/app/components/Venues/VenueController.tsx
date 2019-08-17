@@ -10,17 +10,18 @@ import '../scss/Create.scss'
 import { VenueEditor } from './VenueEditor'
 import { VenueListing } from './VenueListing'
 import { VenueContext } from './VenueContext'
-import { VenueService } from '@clubgo/features/api'
+import { IVenueModel } from '@clubgo/database'
+import { DatabaseCRUDService } from '@clubgo/features/api'
 
 export class VenueController extends Component {
   static contextType = VenueContext
-  venueService = new VenueService('admin')
+  venueService = new DatabaseCRUDService({ endpoint: 'api', path: '/venue' })
 
   interfaceBuilder = ( uiType, context ) => {
     if(uiType==='create')
       return (
         <VenueEditor intent={'create'} onFinalize={(createBody)=>{
-          this.venueService.createVenue(createBody).then((result) => {
+          this.venueService.create(createBody).then((result) => {
             if (result.status===201) {
               this.context.actions.openSuccessFeedback('Venue Created')
               this.context.actions.openVenueListing()
@@ -35,7 +36,7 @@ export class VenueController extends Component {
       return (
         <VenueListing onDelete={ async (venueId)=>{
           try {
-            await this.venueService.deleteVenue(venueId)
+            await this.venueService.delete(venueId)
             this.context.actions.openSuccessFeedback('Venue Deleted')
             return
           } catch(VenueServiceError) {
@@ -46,7 +47,7 @@ export class VenueController extends Component {
     else if(uiType==='edit')
       return (
         <VenueEditor intent={'update'} populateData={context.state.venueData} onFinalize={(updateBody)=>{
-          this.venueService.updateVenue(context.state.venueData._id, updateBody).then((result) => {
+          this.venueService.update(context.state.venueData._id, updateBody).then((result) => {
             if(result.status===200) {
               this.context.actions.openSuccessFeedback('Venue Updated')  
               this.context.actions.openVenueListing()

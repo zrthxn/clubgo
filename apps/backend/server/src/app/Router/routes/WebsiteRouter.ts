@@ -17,22 +17,15 @@ WebRouter.use((req, res, next)=>{
 
 // Web Functions
 // --------------------------------------------------------
-WebRouter.get('/', (req, res)=>{
-  res.send({ message: 'web' })
+WebRouter.get('/', (req, res, next)=>{
+  res.write('ClubGo Website Backend. \n')
+  next()  
 })
 
-// CRUD Functions
-// --------------------------------------------------------
-const EventRouter = new CRUDRouter(Event).createRouter({ addDefaults: true })
-WebRouter.use('/event', EventRouter)
-
-const VenueRouter = new CRUDRouter(Venue).createRouter({ addDefaults: true })
-WebRouter.use('/venue', VenueRouter)
-
-const UserRouter = new CRUDRouter(User).createRouter({ addDefaults: true })
-WebRouter.use('/user', UserRouter)
-
-const OfferRouter = new CRUDRouter(Offer).createRouter({ addDefaults: true })
-WebRouter.use('/offer', OfferRouter)
-
 // STOP ============================================== STOP
+
+WebRouter.use((req, res)=>{
+  // End any caught requests if no matching paths are found
+  res.write('405 Request Forcefully Closed. \nYour request was caught but did not match any paths.\n')
+  res.end()
+})

@@ -5,35 +5,27 @@
   "prod": {
     "endpoints": {
       "api": {
-        "url": "http://13.233.155.228:3333/api",
-        "secure": true
-      },
-      "admin": {
-        "url": "http://13.233.155.228:3333/admin",
+        "url": "https://api.clubgo.in",
         "secure": true
       },
       "cdn": {
-        "url": "http://13.233.155.228:4444",
+        "url": "https://cdn.clubgo.in",
         "secure": false
       },
       "auth": {
-        "url": "http://13.233.155.228:3333/_authenicate",
-        "secure": false
+        "url": "https://clubgo.in/_authenicate",
+        "secure": true
       },
       "login": {
-        "url": "http://13.233.155.228:3333/_login",
-        "secure": true
+        "url": "https://clubgo.in/_login",
+        "secure": false
       }
     }
   },  
   "dev": {
     "endpoints": {
       "api": {
-        "url": "http://localhost:3333/api",
-        "secure": true
-      },
-      "admin": {
-        "url": "http://localhost:3333/admin",
+        "url": "http://localhost:3333",
         "secure": true
       },
       "cdn": {

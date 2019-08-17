@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose'
-import UserController from '../controllers/user.controller'
 import { ObjectID } from 'bson'
 
 /**
@@ -44,8 +43,6 @@ export const userSchema = new mongoose.Schema(
     collection: 'Users'
   }
 )
-
-userSchema.loadClass(UserController)
 
 export interface IUserModel extends mongoose.Document {
   email: string,

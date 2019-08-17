@@ -1,6 +1,4 @@
 import * as mongoose from 'mongoose'
-import EventController from '../controllers/event.controller'
-
 import { artistSchema, IArtistModel } from './artist.model'
 
 /**
@@ -131,8 +129,6 @@ import { artistSchema, IArtistModel } from './artist.model'
     collection: 'Events'
   }
 );
-
-eventSchema.loadClass(EventController)
 
 export interface IEventModel extends mongoose.Document {
   ref: string,

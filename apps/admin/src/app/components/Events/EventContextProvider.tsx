@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { EventContext } from './EventContext'
 import { EventController } from './EventController'
-import { EventService } from '@clubgo/features/api'
 
 export class EventContextProvider extends EventController {
   static contextType = EventContext
-  eventService = new EventService('admin')
 
   state = {
     uiType: null,

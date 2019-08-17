@@ -7,11 +7,10 @@ export const APIEndpoints = process.env.NODE_ENV==='production' ? (
   require('./config.json').dev.endpoints
 )
 
-export default class InterfaceAPI {
+export default class Interface {
   request = axios
-  apiType = null
   
-  private auth = {
+  protected auth = {
     accessKey: null,
     csrf: {
 
@@ -23,11 +22,11 @@ export default class InterfaceAPI {
 
   protected endpoint = APIEndpoints.api
 
-  constructor(apiType:APIProps['apiTypes']) {
-    this.setAPIEndpoint(APIEndpoints[apiType].url)
-    this.apiType = apiType
+  constructor(api:APIProps) {
+    this.setAPIEndpoint(APIEndpoints[api.endpoint].url)
 
-    this.authenticate()
+    if(APIEndpoints[api.endpoint].secure)
+      this.authenticate(api.endpoint)
   }
 
   addPathRoute(setPath:string) {
@@ -51,23 +50,19 @@ export default class InterfaceAPI {
     )
   }
 
-  async authenticate(headers?) {
-    if(APIEndpoints[this.apiType].secure) {
-      const authEndpoint = APIEndpoints.auth
-      // Send auth request
-      // GET CSRF Tokens
-      // let authResponse = await this.request.post(authEndpoint, {
-      //   apiType: this.apiType,
-      //   client: {
-      //     key: null, // random value
-      //     token: null, // fixed value, hashed with key
-      //   }
-      // })
+  async authenticate(authType, headers?) {
+    // Send auth request
+    // GET CSRF Tokens
+    const authEndpoint = APIEndpoints.auth
+    let authResponse = await this.request.post(authEndpoint, {
+      apiType: authType,
+      client: {
+        key: null, // random value
+        token: null, // fixed value, hashed with key
+      }
+    })
 
-      // await this.login(null, null)
-    }
-    else
-      return
+    // await this.login(null, null)
   }
 
   getEndpoint() { 
@@ -76,7 +71,8 @@ export default class InterfaceAPI {
 }
 
 export interface APIProps {
-  apiTypes: 'api' | 'admin' | 'cdn'
+  endpoint: 'api' | 'cdn' | 'login' | 'auth',
+  path: string
 }
 export interface AuthInitializationTypes {
   headers:Object

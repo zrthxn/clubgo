@@ -4,16 +4,16 @@ import { Paper } from '@material-ui/core'
 import '../scss/Listing.scss'
 
 import { VenueListItem } from './ui/VenueListItem'
-import { IVenueModel } from '@clubgo/database'
-import { VenueService } from '@clubgo/features/api'
 import { VenueContext } from './VenueContext'
+import { IVenueModel } from '@clubgo/database'
+import { DatabaseCRUDService } from '@clubgo/features/api'
 
 export interface VenueListingProps {
   onDelete: Function
 }
 export class VenueListing extends Component<VenueListingProps> {
   static contextType = VenueContext
-  venueService = new VenueService('api')
+  venueService = new DatabaseCRUDService({ endpoint: 'api', path: '/venue' })
 
   state = {
     loading: true,
@@ -26,7 +26,7 @@ export class VenueListing extends Component<VenueListingProps> {
 
   loadVenueListings = async () => {
     try {
-      let { data } = await this.venueService.listVenues()
+      let { data } = await this.venueService.list()
       let { listing } = this.state
 
       if(data.results!==undefined)

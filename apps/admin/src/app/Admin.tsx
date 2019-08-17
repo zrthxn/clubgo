@@ -134,9 +134,9 @@ export class Admin extends Component {
                   <Route path="/venues" component={ VenuesPage } />
                   <Route path="/tickets" component={ TicketsPage } />
                   <Route path="/offers" component={ OffersPage } />
-                  <Route path="/users" component={ TicketsPage } />
-                  <Route path="/artists" component={ TicketsPage } />
-                  <Route path="/locations" component={ TicketsPage } />
+                  <Route path="/users" component={ Dashboard } />
+                  <Route path="/artists" component={ Dashboard } />
+                  <Route path="/locations" component={ Dashboard } />
                   <Route path="/settings" component={ SettingsPage } />
                 </Switch>
               </section>

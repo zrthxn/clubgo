@@ -1,53 +1,55 @@
-import InterfaceAPI, { APIProps } from '../api'
+import Interface, { APIProps } from '../api'
 import ErrorsAPI from '../errors'
 import { Observable, ErrorObserver } from 'rxjs'
 
-import { IVenueModel } from '@clubgo/database'
+export class DatabaseCRUDService extends Interface {
+  model = null
 
-export class VenueService extends InterfaceAPI {
-  constructor(apiType:APIProps['apiTypes']) {
-    super(apiType)
-    this.addPathRoute('/venue')
+  constructor(apiProps:APIProps, DatabaseModel?) {
+    super(apiProps)
+    this.addPathRoute(apiProps.path)
+
+    this.model = DatabaseModel
   }
 
-  async listVenues() {
+  async list() {
     try {
       return await this.request.get(
         this.endpoint + '/_list'
-      )
+      )      
     } catch (HTTPError) {
       return Promise.reject(HTTPError)
     }
   }
 
-  async findVenueById(venueId:string) {
+  async findById(id:string) {
     // cRud
     return await this.request.post(
-      this.endpoint + '/_get/' + venueId
+      this.endpoint + '/_get/' + id
     )
   }
 
-  async findVenueBy(findBy:string) {
+  async findBy(findBy:object) {
     // cRud
     return await this.request.post(
       this.endpoint + '/_find', {
         searchQuery: {
-          
+          ...findBy
         }
       }
     )
   }
 
-  async findVenueGroupById(venueIds:Array<string>) {
+  async findGroupById(ids:Array<string>) {
     // cRud
     return await this.request.post(
-      this.endpoint + '/_group', {
-        searchIds: venueIds
+      this.endpoint + '/_group/', {
+        searchIds: ids
       }
     )
   }
 
-  async createVenue(createBody:object) { // IVenueModel
+  async create(createBody) {
     // Crud
     try {
       return await this.request.post(
@@ -60,27 +62,30 @@ export class VenueService extends InterfaceAPI {
     }
   }
 
-  async updateVenue(venueId, updateBody) {
+  async update(id:string, updateBody:object, options?) {
     // crUd
     try {
       return await this.request.put(
-        this.endpoint + '/_update/' + venueId, {
-          updateBody
+        this.endpoint + '/_update' + id, {
+          updateBody,
+          params: {
+            ...options
+          }
         }
       )
-    } catch(HTTPError) {
+    } catch (HTTPError) {
       return Promise.reject(HTTPError)
     }
   }
 
-  async deleteVenue(venueId) {
+  async delete(id:string) {
     // cruD
     try {
       return await this.request.delete(
-        this.endpoint + '/_delete/' + venueId
+        this.endpoint + '/_delete/' + id
       )
-    } catch(HTTPError) {
+    } catch (HTTPError) {
       return Promise.reject(HTTPError)
-    }    
+    }
   }
 }

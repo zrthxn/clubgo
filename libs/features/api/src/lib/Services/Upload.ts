@@ -1,11 +1,11 @@
-import InterfaceAPI from '../api'
+import Interface from '../api'
 import { Observable, ErrorObserver } from 'rxjs'
 import FormData from 'form-data'
 
-export class UploadService extends InterfaceAPI {
+export class UploadService extends Interface {
   constructor() {
-    super('cdn')
-    this.addPathRoute('/api/_upload')
+    super({ authType: 'cdn', path: '/api' })
+    this.addPathRoute('/_upload')
   }
 
   async single(file:IUploadFile) {

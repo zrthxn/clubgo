@@ -27,14 +27,13 @@ _Server.use(express.json())
 _Server.use(express.urlencoded({ extended: true }))
 
 import _Router from './Router/Router'
-
-import { database as Database } from '@clubgo/database'
 import { auth } from './Auth/Authentication'
 
+const ServerConfig = require('./serverconfig.json')
+
 // MongoDB Connection
-Database.connect({ db: 'clubgo' })
-  .then(() => console.log(conf.Magenta('Ready')))
-  .catch((e) => console.log(conf.Red(e)) )
+import { DatabaseConnection } from '@clubgo/database'
+const db = new DatabaseConnection({ database: 'clubgo' })
 // ========================================================
 
 /**
@@ -48,35 +47,22 @@ Database.connect({ db: 'clubgo' })
  * STOP : Flow goes no further in this direction
  */
 
-// Security Lifecycle Routes
+// Root Headers 
 // --------------------------------------------------------
-_Server.use('/_authenticate', (req, res, next)=>{
-  // Auth, headers, CSRF 
-  const AuthRouter = express.Router()
-  // Set proper and unique auth header, according to API
-  AuthRouter.post('/', (req, res)=>{
-    res.send(':: AUTH ::')
-  })
-
-  AuthRouter(req, res, next)
+_Server.use((req, res, next)=>{
+  if(ServerConfig.policy.ALLOW_CORS) {
+    res.header('Access-Control-Allow-Origin', ServerConfig.policy.ALLOW_ORIGIN)
+    res.header('Access-Control-Allow-Headers', ServerConfig.policy.ALLOW_HEADERS)
+    res.header('Access-Control-Allow-Methods', ServerConfig.policy.ALLOW_METHODS)
+  }
+  next()
 })
-
-_Server.use('/_login', (req, res, next)=>{
-  // API Login or user login 
-  const LoginRouter = express.Router()
-  // Set proper and unique login header, according to API
-  LoginRouter.post('/', (req, res)=>{
-    res.send(':: LOGIN ::')
-  })
-
-  LoginRouter(req, res, next)
-})
-// STOP ============================================== STOP
 
 // API Routes
 // --------------------------------------------------------
-_Server.get('/', (req, res)=>{
-  res.send({ message: 'clubgo' })
+_Server.get('/', (req, res, next)=>{
+  res.write(`ClubGo Server | ${conf.copyright} CLUBGO 2019 \n`)
+  next()
 })
 
 _Server.use((req, res, next)=>{
@@ -86,3 +72,30 @@ _Server.use((req, res, next)=>{
   console.log('CSRF')
   _Router(req, res, next)
 })
+
+// Security Lifecycle Routes
+// --------------------------------------------------------
+_Server.use('/_authenticate', (req, res, next)=>{
+  // 1. Authenticate service, CSRF 
+  const AuthRouter = express.Router()
+  // Set unique CSRF Tokens
+  AuthRouter.post('/', (req, res)=>{
+    res.send(':: AUTH ::')
+  })
+
+  AuthRouter(req, res, next)
+})
+
+_Server.use('/_login', (req, res, next)=>{
+  // 2. API Login or user login 
+  const LoginRouter = express.Router()
+  // Check CSRF Tokens
+  // Set proper and unique login header
+  // Set access headers for API access, according to access level
+  LoginRouter.post('/', (req, res)=>{
+    res.send(':: LOGIN ::')
+  })
+
+  LoginRouter(req, res, next)
+})
+// STOP ============================================== STOP

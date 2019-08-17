@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose'
-import VenueController from '../controllers/venue.controller'
 
 /**
  * @module
@@ -100,8 +99,6 @@ export const venueSchema = new mongoose.Schema(
     collection: 'Venues'
   }
 )
-
-venueSchema.loadClass(VenueController)
 
 export interface IVenueModel extends mongoose.Document {
   ref: string,

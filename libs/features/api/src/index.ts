@@ -1,12 +1,7 @@
 export * from './lib/api'
 
-// Class Services
-export * from './lib/Services/Events'
-export * from './lib/Services/Venues'
-export * from './lib/Services/Users'
-
-// Upload Service
-export * from './lib/Services/Upload'
-
-// Login Service
-export * from './lib/Services/Login'
+// Services
+export * from './lib/Services/login'
+export * from './lib/Services/auth'
+export * from './lib/Services/crud'
+export * from './lib/Services/upload'

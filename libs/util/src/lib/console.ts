@@ -8,6 +8,8 @@ export const conf = {
   Cyan: (arg:String) => '\u001b[36m' + arg + '\u001b[0m',
   White: (arg:String) => '\u001b[37m' + arg + '\u001b[0m',
 
+  copyright:'\u00A9',
+
   format: {
 
   },

@@ -10,17 +10,18 @@ import '../scss/Create.scss'
 import { EventEditor } from './EventEditor'
 import { EventListing } from './EventListing'
 import { EventContext } from './EventContext'
-import { EventService } from '@clubgo/features/api'
+import { IEventModel } from '@clubgo/database'
+import { DatabaseCRUDService } from '@clubgo/features/api'
 
 export class EventController extends Component {
   static contextType = EventContext
-  eventService = new EventService('admin')
+  eventService = new DatabaseCRUDService({ endpoint: 'api', path: '/event' })
 
   interfaceBuilder = ( uiType, context ) => {
     if(uiType==='create')
       return (
         <EventEditor intent={'create'} onFinalize={ async (createBody)=>{
-          this.eventService.createEvent(createBody).then((result) => {
+          this.eventService.create(createBody).then((result) => {
             if(result.status===201) {
               this.context.actions.openSuccessFeedback('Event Created')
               this.context.actions.openEventListing()
@@ -37,7 +38,7 @@ export class EventController extends Component {
       return (
         <EventListing onDelete={ async (eventId)=>{
           try {
-            await this.eventService.deleteEvent(eventId)
+            await this.eventService.delete(eventId)
             this.context.actions.openSuccessFeedback('Event Deleted')
             return
           } catch(EventServiceError) {
@@ -50,7 +51,7 @@ export class EventController extends Component {
     else if(uiType==='edit')
       return (
         <EventEditor intent={'update'} populateData={ context.state.eventData } onFinalize={ async (updateBody)=>{
-          this.eventService.updateEvent(context.state.eventData._id, updateBody).then((result) => {
+          this.eventService.update(context.state.eventData._id, updateBody).then((result) => {
             if(result.status===200) {
               this.context.actions.openSuccessFeedback('Event Updated')  
               this.context.actions.openEventListing()

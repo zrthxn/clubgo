@@ -14,6 +14,8 @@ export class LoginPage extends Component<LoginPageProps> {
     password: null
   }
 
+  loginService = new LoginService('admin')
+
   render() {
     return (
       <div className="login-page">
@@ -30,17 +32,18 @@ export class LoginPage extends Component<LoginPageProps> {
               <Input type="text" placeholder="Username" required onChange={({target})=>{ this.setState({ username: target.value }) }}/>
             </InputGroup>
 
-            <InputGroup>
+            <InputGroup>`
               <Input type="password" placeholder="Password" required onChange={({target})=>{ this.setState({ password: target.value }) }}/>
             </InputGroup>
 
             <Button color="link" className="forgot-pw float-left">Forgot Password?</Button>
 
             <Button color="primary" className="float-right" onClick={()=>{
-              if(this.state.username==='ajit' && this.state.password==='clubgo')
+              this.loginService.login('admin', 'admin').then(()=>{
                 this.props.onAuthenticate()
-              else
+              }).catch(()=>{
                 alert('Invalid Login')
+              })                
             }}>Sign In</Button>
           </div>
 

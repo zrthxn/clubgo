@@ -3,54 +3,68 @@ import { conf } from '@clubgo/util'
 
 const config = require('../config.json').database
 
-let dbConnOptions = ''
-for(const key in config.options)
-  if(config.options.hasOwnProperty(key))
-    dbConnOptions += (key + '=' + config.options[key].toString() + '&')
-
-const url = (db) => `${config.protocol}://${config.username}:${config.password}@${config.url}/${db}?${dbConnOptions}`
-
-export const database = {
-  state: {
-    db: null,
-    mode: 'UNINITIALIZED'
-  },
-
-  connect: async (options) => {
-    if (database.state.mode==='CONNECTED') return database.state
-    
-    await mongoose.connect(
-      url(options.db), 
-      {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
-      }
-    )
-    database.state = {
-      db: mongoose.connection,
-      mode: 'CONNECTED'
-    }
-    console.log(conf.Green(`Mongoose Connected to ${config.url}/${options.db}`))
-    return database.state
-  },
-
-  get: () => {
-    return database.state.mode
-  },  
+export class DatabaseConnection {
+  private connection = null
+  private db = null
+  private url = null
   
-  close: async () => {
+  state = undefined
+
+  mongooseOptions = {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  }
+
+  constructor(connectionOptions:DatabaseConnectionOptions) {
+    this.url = `${config.protocol}://${config.username}:${config.password}@${config.url}/`
+    this.db = connectionOptions.database
+    
+    let urlOptions = ''
+    for(const key in config.options)
+      if(config.options.hasOwnProperty(key))
+        urlOptions += (key + '=' + config.options[key].toString() + '&')
+
+    this.url += `${connectionOptions.database}?${urlOptions}`
+
+    this.connect().then(()=>{
+      console.log('Mongoose connected to', conf.Green(`${config.protocol}://${config.url}/${this.db}`))
+    })
+  }
+
+  async connect() {    
     try {
-      await mongoose.disconnect()
-      database.state = {
-        db: null,
-        mode: 'DISCONNECTED'
-      }
-      console.log(conf.Red('Mongoose Disconnected'), 'EXIT_MODE 0')
-      return database.state.mode
+      
+      await mongoose.connect( this.url, { ...this.mongooseOptions })
+
+      this.connection = mongoose.connection
+      this.state = 'CONNECTED'
+      return this.state
+
     } catch (err) {
       console.log(conf.Red(err))
       return Promise.reject(err)
     }
   }
+
+  async close() {
+    try {
+
+      await mongoose.disconnect()
+      
+      this.connection = null
+      this.state = 'DISCONNECTED'
+
+      console.log(conf.Green('Mongoose Disconnected'), 'EXIT 0')
+      return this.state
+
+    } catch (err) {
+      console.log(conf.Red(err))
+      return Promise.reject(err)
+    }
+  }
+}
+
+export interface DatabaseConnectionOptions {
+  database: string
 }

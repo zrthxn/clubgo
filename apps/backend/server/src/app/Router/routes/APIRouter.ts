@@ -3,13 +3,13 @@ import { Event, Venue, User, Offer } from '@clubgo/database'
 import { conf } from '@clubgo/util'
 import { CRUDRouter } from '@clubgo/database'
 
-export const AdminRouter = express.Router()
-export default AdminRouter
+export const APIRouter = express.Router()
+export default APIRouter
 // ========================================================
 
 // Security Functions
 // --------------------------------------------------------
-AdminRouter.use((req, res, next)=>{
+APIRouter.use((req, res, next)=>{
   // If req has ADMIN level access token, allow and DEL token header
   // Else, 403
   next()
@@ -17,22 +17,29 @@ AdminRouter.use((req, res, next)=>{
 
 // Admin Functions
 // --------------------------------------------------------
-AdminRouter.get('/', (req, res)=>{
-  res.send({ message: 'admin' })
+APIRouter.get('/', (req, res, next)=>{
+  res.write('ClubGo API Backend. \n')
+  next()  
 })
 
 // CRUD Functions
 // --------------------------------------------------------
 const EventRouter = new CRUDRouter(Event).createRouter({ addDefaults: true })
-AdminRouter.use('/event', EventRouter)
+APIRouter.use('/event', EventRouter)
 
 const VenueRouter = new CRUDRouter(Venue).createRouter({ addDefaults: true })
-AdminRouter.use('/venue', VenueRouter)
+APIRouter.use('/venue', VenueRouter)
 
 const UserRouter = new CRUDRouter(User).createRouter({ addDefaults: true })
-AdminRouter.use('/user', UserRouter)
+APIRouter.use('/user', UserRouter)
 
 const OfferRouter = new CRUDRouter(Offer).createRouter({ addDefaults: true })
-AdminRouter.use('/offer', OfferRouter)
+APIRouter.use('/offer', OfferRouter)
 
 // STOP ============================================== STOP
+
+APIRouter.use((req, res)=>{
+  // End any caught requests if no matching paths are found
+  res.write('405 Request Forcefully Closed. \nYour request was caught but did not match any paths.')
+  res.end()
+})

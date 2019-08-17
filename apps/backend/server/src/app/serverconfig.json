@@ -1,0 +1,14 @@
+{
+  "PORT": 3333,
+  "domains": {
+    "web": "clubgo.in",
+    "api": "api.clubgo.in",
+    "cdn": "cdn.clubgo.in"
+  },
+  "policy": {
+    "ALLOW_CORS": true,
+    "ALLOW_ORIGIN": "*",
+    "ALLOW_HEADERS": "Origin, X-Requested-With, Content-Type, Accept",
+    "ALLOW_METHODS": "*"
+  }
+}

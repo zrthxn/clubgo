@@ -11,8 +11,13 @@ export const offerSchema = new mongoose.Schema(
     category: {
       type: String, required: true
     }
+  },
+  {
+    collection: 'Offers'
   }
 )
+
+type sad = string
 
 export interface IOfferModel extends mongoose.Document {
   name: string,
