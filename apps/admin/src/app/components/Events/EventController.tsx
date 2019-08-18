@@ -13,14 +13,26 @@ import { EventContext } from './EventContext'
 import { IEventModel } from '@clubgo/database'
 import { DatabaseCRUDService } from '@clubgo/features/api'
 
-export class EventController extends Component {
+export interface EventControllerProps {
+  mount?: 'create' | 'list'
+}
+export class EventController extends Component<EventControllerProps> {
   static contextType = EventContext
   eventService = new DatabaseCRUDService({ endpoint: 'api', path: '/event' })
+
+  componentDidMount() {
+    if(this.props.mount!==undefined) {
+      if(this.props.mount==='create')
+        this.context.actions.openEventEditor()
+      else if(this.props.mount==='list')
+        this.context.actions.openEventListing()
+    }
+  }
 
   interfaceBuilder = ( uiType, context ) => {
     if(uiType==='create')
       return (
-        <EventEditor intent={'create'} onFinalize={ async (createBody)=>{
+        <EventEditor intent={'create'} onFinalize={ async (createBody:IEventModel)=>{
           this.eventService.create(createBody).then((result) => {
             if(result.status===201) {
               this.context.actions.openSuccessFeedback('Event Created')

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Tickets extends Component {
+export default class AccountPage extends Component {
   render() {
     return (
       <div>

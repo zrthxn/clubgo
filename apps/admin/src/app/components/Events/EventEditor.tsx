@@ -15,7 +15,7 @@ import { EventContext } from './EventContext'
 export interface EventEditorProps {
   intent: string,
   onFinalize: Function,
-  populateData?: object //IEventModel
+  populateData?: IEventModel
 }
 export class EventEditor extends Component<EventEditorProps> {
   static contextType = EventContext

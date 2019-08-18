@@ -17,7 +17,14 @@ export class VenueListing extends Component<VenueListingProps> {
 
   state = {
     loading: true,
-    listing: []
+    errorText: undefined,
+    query: {
+      findBy: null,
+      params: [],
+      maxRecords: 0,
+      lazyLoad: true
+    },
+    listing: Array<IVenueModel>()
   }
 
   componentDidMount() {
@@ -37,7 +44,13 @@ export class VenueListing extends Component<VenueListingProps> {
         loading: false
       })
     } catch (err) {
-      this.context.actions.openErrorFeedback(err.toString())
+      this.setState(()=>{
+        this.context.actions.openErrorFeedback(err.toString())
+        return {
+          loading: false,
+          errorText: err.toString()
+        }
+      })
     }
   }
 
@@ -59,6 +72,8 @@ export class VenueListing extends Component<VenueListingProps> {
           {
             this.state.loading ? <p>Loading...</p> : null
           }
+
+          <p style={{ color: '#ff0000' }}>{ this.state.errorText }</p>
 
           <div className="listing-table">
             {

@@ -17,13 +17,14 @@ export class EventListing extends Component<EventListingProps> {
 
   state = {
     loading: true,
+    errorText: undefined,
     query: {
       findBy: null,
       params: [],
       maxRecords: 0,
       lazyLoad: true
     },
-    listing: []
+    listing: Array<IEventModel>()
   }
 
   componentDidMount() {
@@ -43,7 +44,13 @@ export class EventListing extends Component<EventListingProps> {
         loading: false
       })
     } catch (err) {
-      this.context.actions.openErrorFeedback(err.toString())
+      this.setState(()=>{
+        this.context.actions.openErrorFeedback(err.toString())
+        return {
+          loading: false,
+          errorText: err.toString()
+        }
+      })
     }
   }
 
@@ -65,6 +72,8 @@ export class EventListing extends Component<EventListingProps> {
         {
           this.state.loading ? <p>Loading...</p> : null
         }
+        
+        <p style={{ color: '#ff0000' }}>{ this.state.errorText }</p>
 
         <div className="listing-table">
           {

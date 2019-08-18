@@ -13,14 +13,26 @@ import { VenueContext } from './VenueContext'
 import { IVenueModel } from '@clubgo/database'
 import { DatabaseCRUDService } from '@clubgo/features/api'
 
-export class VenueController extends Component {
+export interface VenueControllerProps {
+  mount?: 'create' | 'list'
+}
+export class VenueController extends Component<VenueControllerProps> {
   static contextType = VenueContext
   venueService = new DatabaseCRUDService({ endpoint: 'api', path: '/venue' })
+
+  componentDidMount() {
+    if(this.props.mount!==undefined) {
+      if(this.props.mount==='create')
+        this.context.actions.openVenueEditor()
+      else if(this.props.mount==='list')
+        this.context.actions.openVenueListing()
+    }
+  }
 
   interfaceBuilder = ( uiType, context ) => {
     if(uiType==='create')
       return (
-        <VenueEditor intent={'create'} onFinalize={(createBody)=>{
+        <VenueEditor intent={'create'} onFinalize={(createBody:IVenueModel)=>{
           this.venueService.create(createBody).then((result) => {
             if (result.status===201) {
               this.context.actions.openSuccessFeedback('Venue Created')

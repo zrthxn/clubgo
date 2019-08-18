@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Button, Fab, Modal, Paper } from '@material-ui/core'
+import { Grid, Button, IconButton, Modal, Paper } from '@material-ui/core'
 import { red, blue, green } from '@material-ui/core/colors'
 import { Edit, Delete } from '@material-ui/icons'
 import { IVenueModel } from '@clubgo/database'
@@ -37,22 +37,20 @@ export class VenueListItem extends Component<VenueListItemProps> {
                 </Grid>
 
                 <Grid item md={4} xs={12}>
-                  <div className="action">
-                    <Fab color="primary" size="small"
-                      onClick={()=>venueContext.actions.openVenueEditor('edit', this.props.data)}
-                    >
-                      <Edit/>
-                    </Fab>
-                    
-                    <Fab color="secondary" size="small"
-                      onClick={()=>{
-                        this.setState({
-                          openDeleteModal: true
-                        })
-                      }}
-                    >
+                  <div className="action clearfix">
+                    <IconButton className="float-right" onClick={()=>{
+                      this.setState({
+                        openDeleteModal: true
+                      })
+                    }}>
                       <Delete/> 
-                    </Fab>
+                    </IconButton>
+
+                    <IconButton className="float-right" onClick={()=>{
+                      venueContext.actions.openVenueEditor('edit', this.props.data)
+                    }}>
+                      <Edit/>
+                    </IconButton>
 
                     <Modal open={this.state.openDeleteModal}
                       style={{

@@ -14,7 +14,7 @@ import { VenueContext } from './VenueContext'
 export interface VenueEditorProps {
   intent: string,
   onFinalize: Function,
-  populateData?: object //IVenueModel
+  populateData?: IVenueModel
 }
 export class VenueEditor extends Component<VenueEditorProps> {
   static contextType = VenueContext
