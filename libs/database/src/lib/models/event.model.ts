@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose'
 import { artistSchema, IArtistModel } from './artist.model'
+import { ticketSchema, ITicketModel } from './ticket.model'
 
 /**
  * @module
@@ -13,7 +14,7 @@ import { artistSchema, IArtistModel } from './artist.model'
       type: String, required: true, unique: true
     },
     eventTitle: { 
-      type: String, required: true
+      type: String, required: true, index: true
     },
     description: { 
       type: String, required: true 
@@ -107,16 +108,19 @@ import { artistSchema, IArtistModel } from './artist.model'
       }
     },
     bookings: {
-      tickets: [
-        {
-          ticketId: String,
-          price: Number,
-          activateTime: Date || Number,
-          deactivateTime: Date || Number
-        }
-      ],
       isTakingOnsiteBookings: Boolean,
       isTakingOnsitePayments: Boolean,
+      tickets: [
+        {
+          activate: {
+            type: Number, required: true, min: 0
+          },
+          deactivate: {
+            type: Number, min: 0
+          },
+          entry: ticketSchema
+        }
+      ],
       registrationURL: String,
       registrationPhone: String
     },
@@ -193,16 +197,15 @@ export interface IEventModel extends mongoose.Document {
     }
   },
   bookings: {
-    tickets?: [
-      {
-        ticketId: string,
-        price: number,
-        activateTime?: Date | number,
-        deactivateTime?: Date | number
-      }
-    ],
     isTakingOnsiteBookings?: boolean,
     isTakingOnsitePayments?: boolean,
+    tickets?: [
+      {
+        activate: number,
+        deactivate?: number,
+        entry: ITicketModel
+      }
+    ],
     registrationURL?: string,
     registrationPhone?: string
   },

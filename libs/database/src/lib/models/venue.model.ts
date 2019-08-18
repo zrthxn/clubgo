@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose'
+import { ticketSchema, ITicketModel } from './ticket.model'
 
 /**
  * @module
@@ -9,10 +10,10 @@ import * as mongoose from 'mongoose'
 export const venueSchema = new mongoose.Schema(
   {
     ref: {
-      type: String, required: true, unique: true // first 8 charecters (4 bytes) of ObjectID
+      type: String, required: true, unique: true
     },
     venueTitle: {
-      type: String, required: true
+      type: String, required: true, index: true
     },
     description: {
       type: String, required: true
@@ -52,6 +53,7 @@ export const venueSchema = new mongoose.Schema(
         featuredPriority: Number
       }
     },
+    defaultEntryType: ticketSchema,
     timings: [
       {
         day: { 
@@ -127,6 +129,7 @@ export interface IVenueModel extends mongoose.Document {
       featuredPriority?: number
     }
   },
+  defaultEntryType: ITicketModel,
   timings: [
     {
       day: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'

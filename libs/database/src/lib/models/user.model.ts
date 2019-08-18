@@ -9,15 +9,15 @@ import { ObjectID } from 'bson'
 
 export const userSchema = new mongoose.Schema(
   {
+    name: { 
+      type: String, required: true, unique: true
+    },
     email: { 
-      type: String, required: true, //unique: true 
+      type: String, required: true, unique: true 
     },
     password: { 
-      type: String, required: true, //unique: true // unique to prevent hash collisions
+      type: String, required: true, unique: true // unique to prevent hash collisions
     }, 
-    name: { 
-      type: String, required: true
-    },
     phone: {
       type: String
     },
