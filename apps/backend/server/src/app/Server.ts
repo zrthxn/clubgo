@@ -75,27 +75,30 @@ _Server.use((req, res, next)=>{
 
 // Security Lifecycle Routes
 // --------------------------------------------------------
-_Server.use('/_authenticate', (req, res, next)=>{
-  // 1. Authenticate service, CSRF 
-  const AuthRouter = express.Router()
+// 1. Authenticate service, CSRF 
+const AuthRouter = express.Router()
+AuthRouter.post('/', (req, res)=>{
   // Set unique CSRF Tokens
-  AuthRouter.post('/', (req, res)=>{
-    res.send(':: AUTH ::')
-  })
-
-  AuthRouter(req, res, next)
+  res.send(':: AUTH ::')
 })
 
-_Server.use('/_login', (req, res, next)=>{
-  // 2. API Login or user login 
-  const LoginRouter = express.Router()
-  // Check CSRF Tokens
-  // Set proper and unique login header
-  // Set access headers for API access, according to access level
-  LoginRouter.post('/', (req, res)=>{
-    res.send(':: LOGIN ::')
-  })
+_Server.use('/_authenticate', AuthRouter)
 
-  LoginRouter(req, res, next)
+// 2. API Login or user login 
+const LoginRouter = express.Router()
+LoginRouter.post('/', (req, res)=>{
+// Check CSRF Tokens
+// Set proper and unique login header
+// Set access headers for API access, according to access level
+  res.send(':: LOGIN ::')
 })
+
+_Server.use('/_login', LoginRouter)
+
 // STOP ============================================== STOP
+
+_Server.use((req, res)=>{
+  // End any caught requests if no matching paths are found
+  res.write('405 Request Forcefully Closed.\n Your request was caught but did not match any paths.\n')
+  res.end()
+})

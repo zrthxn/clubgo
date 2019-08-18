@@ -53,7 +53,7 @@ export default class Interface {
   async authenticate(authType, headers?) {
     // Send auth request
     // GET CSRF Tokens
-    const authEndpoint = APIEndpoints.auth
+    const authEndpoint = APIEndpoints.auth.url
     let authResponse = await this.request.post(authEndpoint, {
       apiType: authType,
       client: {

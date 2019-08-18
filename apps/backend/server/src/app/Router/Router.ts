@@ -4,7 +4,7 @@ import vhost from 'vhost'
 import { conf } from '@clubgo/util'
 
 import APIRouter from './routes/APIRouter'
-import WebRouter from './routes/WebsiteRouter'
+import WebRouter from './routes/WebRouter'
 
 import { auth } from '../Auth/Authentication'
 const ServerConfig = require('../serverconfig.json')
@@ -32,6 +32,10 @@ _Router.use((req, res, next)=>{
 
 // Router API Type Routes
 // --------------------------------------------------------
+// Development
+_Router.use( APIRouter )
+
+// Production
 _Router.use(vhost(ServerConfig.domains.web, WebRouter))
 
 _Router.use(vhost(ServerConfig.domains.api, APIRouter))
