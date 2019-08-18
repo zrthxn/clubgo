@@ -5,19 +5,19 @@
   "prod": {
     "endpoints": {
       "api": {
-        "url": "https://api.clubgo.in",
+        "url": "http://13.233.155.228:3333",
         "secure": true
       },
       "cdn": {
-        "url": "https://cdn.clubgo.in",
+        "url": "http://13.233.155.228:4444",
         "secure": false
       },
       "auth": {
-        "url": "https://clubgo.in/_authenicate",
+        "url": "http://13.233.155.228:3333/_authenicate",
         "secure": true
       },
       "login": {
-        "url": "https://clubgo.in/_login",
+        "url": "http://13.233.155.228:3333/_login",
         "secure": false
       }
     }
