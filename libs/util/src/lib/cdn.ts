@@ -1,10 +1,12 @@
 export interface IFileItem {
-  fileRef: string,
+  ref: string,
+  path: string,
   filename: string,
-  contentType?: string,
-  originalFilename?: string,
-  metadata?: {
-    sizeInBytes?: number
+  originalname: string,
+  metadata: {
+    size: string,
+    encoding: string,
+    mimetype: string,
   }
 }
 

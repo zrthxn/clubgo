@@ -4,8 +4,7 @@ import FormData from 'form-data'
 
 export class UploadService extends Interface {
   constructor() {
-    super({ authType: 'cdn', path: '/api' })
-    this.addPathRoute('/_upload')
+    super({ endpoint: 'cdn', path: '/_upload' })
   }
 
   async single(file:IUploadFile) {

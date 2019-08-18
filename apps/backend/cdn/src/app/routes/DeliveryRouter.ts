@@ -2,13 +2,20 @@ import * as express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 
-import { conf, findItemIndexByRef, sortItemArrayByRef, IFileItem } from '@clubgo/util'
+import { 
+  conf, 
+  findItemIndexByRef
+} from '@clubgo/util'
 
 export const DeliveryRouter = express.Router()
+export default DeliveryRouter
 
-const config = require('../../assets/config.json')
-const { __storagedir } = config
+const ContentConfig = require('../cdnconfig.json')
+const { __storagedir } = ContentConfig
 
+// ========================================================
+
+// GET lookup file :: /i
 DeliveryRouter.get('/', (req, res)=>{
   fs.readFile(path.join(__storagedir, 'root', 'lookup.json'), {
     encoding: 'utf-8'
@@ -18,6 +25,7 @@ DeliveryRouter.get('/', (req, res)=>{
   })
 })
 
+// GET file from root directory :: /i/jsd7qkc
 DeliveryRouter.get('/:fileId', (req, res)=>{
   const { fileId } = req.params
 
@@ -47,6 +55,7 @@ DeliveryRouter.get('/:fileId', (req, res)=>{
   })
 })
 
+// GET file from collection :: /i/images/jsd7qkc
 DeliveryRouter.get('/:collection/:fileId', (req, res)=>{
   const { fileId, collection } = req.params
 
@@ -75,3 +84,5 @@ DeliveryRouter.get('/:collection/:fileId', (req, res)=>{
       }
   })
 })
+
+// STOP ============================================== STOP
