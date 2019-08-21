@@ -5,7 +5,7 @@ import { Add } from '@material-ui/icons'
 import '../scss/ImageUploader.scss'
 
 import { Image } from './ui/Image'
-import { UploadService } from '@clubgo/features/api'
+import { UploadService, IUploadFile } from '@clubgo/features/api'
 
 export interface ImageUploaderProps{
   type: 'single' | 'multiple',
@@ -14,29 +14,31 @@ export interface ImageUploaderProps{
 }
 export class ImageUploader extends Component<ImageUploaderProps> {
   state = {
-    files: [ ]
+    files: Array<IUploadFile>()
   }
 
   uploader = null
 
   constructor(props) {
     super(props)
-    this.uploader = new UploadService()
-    this.uploader.addPathRoute('/multiple/images')
+    this.uploader = new UploadService({
+      uploadType: 'multiple',
+      collection: 'images'
+    })
   }
 
   upload = async () => {
-    // if(this.props.env!=='dev') {
+    if(this.props.env!=='dev') {
       let result = await this.uploader.multiple(this.state.files)
       let { refs } = result.data
       this.props.onUploadComplete(refs)
-    // }
-    // else {
-    //   this.props.onUploadComplete([
-    //     { ref: 'abcd' },
-    //     { ref: 'efgh' }
-    //   ])
-    // }
+    }
+    else {
+      this.props.onUploadComplete([
+        { ref: 'abcd' },
+        { ref: 'efgh' }
+      ])
+    }
   }
 
   render() {

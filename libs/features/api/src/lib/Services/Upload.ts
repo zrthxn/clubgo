@@ -3,8 +3,14 @@ import { Observable, ErrorObserver } from 'rxjs'
 import FormData from 'form-data'
 
 export class UploadService extends Interface {
-  constructor() {
-    super({ endpoint: 'cdn', path: '/_upload' })
+  constructor(uploaderProps:UploadServiceProps) {
+    super({ endpoint: 'cdn', path: '/_upload', accessLevel: 'admin' })
+
+    let collection = 'root'
+    if(uploaderProps.collection!==null && uploaderProps.collection!==undefined)
+      collection = uploaderProps.collection
+
+    this.addPathRoute(`/${uploaderProps.uploadType}/${collection}`)
   }
 
   async single(file:IUploadFile) {
@@ -57,6 +63,11 @@ export class UploadService extends Interface {
       return Promise.reject(err)
     }
   }
+}
+
+export interface UploadServiceProps {
+  uploadType: 'single' | 'multiple',
+  collection?: string
 }
 
 export interface IUploadFile {

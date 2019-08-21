@@ -12,6 +12,7 @@ export const venueSchema = new mongoose.Schema(
     ref: {
       type: String, required: true, unique: true
     },
+    // owner = username of logged in user on admin
     venueTitle: {
       type: String, required: true, index: true
     },

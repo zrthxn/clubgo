@@ -32,7 +32,7 @@ export class LoginPage extends Component<LoginPageProps> {
               <Input type="text" placeholder="Username" required onChange={({target})=>{ this.setState({ username: target.value }) }}/>
             </InputGroup>
 
-            <InputGroup>`
+            <InputGroup>
               <Input type="password" placeholder="Password" required onChange={({target})=>{ this.setState({ password: target.value }) }}/>
             </InputGroup>
 

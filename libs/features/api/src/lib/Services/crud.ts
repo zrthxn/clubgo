@@ -7,8 +7,6 @@ export class DatabaseCRUDService extends Interface {
 
   constructor(apiProps:APIProps, DatabaseModel?) {
     super(apiProps)
-    this.addPathRoute(apiProps.path)
-
     this.model = DatabaseModel
   }
 

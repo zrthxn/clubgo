@@ -125,7 +125,7 @@ export class MediaCard extends Component<MediaCardProps> {
               open={this.state.openImageUploadModal}
             >
               <Paper style={{ width: '50em', padding: '2em' }}>
-                <ImageUploader type="multiple" env="dev"
+                <ImageUploader type="multiple" env="prod"
                   onUploadComplete={(uploadData)=>{
                     let { images } = this.state.data
                     for (const img of uploadData)

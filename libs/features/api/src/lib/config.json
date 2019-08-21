@@ -5,6 +5,26 @@
   "prod": {
     "endpoints": {
       "api": {
+        "url": "https://api.clubgo.in",
+        "secure": true
+      },
+      "cdn": {
+        "url": "https://cdn.clubgo.in",
+        "secure": false
+      },
+      "auth": {
+        "url": "https://clubgo.in/_authenicate",
+        "secure": true
+      },
+      "login": {
+        "url": "https://clubgo.in/_login",
+        "secure": false
+      }
+    }
+  },
+  "test": {
+    "endpoints": {
+      "api": {
         "url": "http://13.233.155.228:3333",
         "secure": true
       },

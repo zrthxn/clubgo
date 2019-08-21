@@ -13,6 +13,7 @@ import { ticketSchema, ITicketModel } from './ticket.model'
     ref: { 
       type: String, required: true, unique: true
     },
+    // owner = username of logged in user on admin
     eventTitle: { 
       type: String, required: true, index: true
     },
@@ -109,7 +110,11 @@ import { ticketSchema, ITicketModel } from './ticket.model'
     },
     bookings: {
       isTakingOnsiteBookings: Boolean,
+      // Special Details
       isTakingOnsitePayments: Boolean,
+      // taxPercent %
+      // processingFee Rs
+      // GSTIN
       tickets: [
         {
           activate: {
