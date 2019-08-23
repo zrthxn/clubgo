@@ -15,6 +15,8 @@ export class CreateTicket extends Component<CreateTicketProps> {
   state = {
     loading: true,
     data: {
+      // ref: '',
+      owner: 'admin',
       ticketTitle: undefined,
       description: undefined,
       entryType: 'stag',

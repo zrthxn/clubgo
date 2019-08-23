@@ -23,6 +23,8 @@ export class VenueEditor extends Component<VenueEditorProps> {
     loading: true,
     populateDataFromParent: false,
     data: {
+      // ref: '',
+      owner: 'admin',
       venueTitle: undefined,
       description: undefined,
       categories: [],

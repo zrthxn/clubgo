@@ -24,6 +24,8 @@ export class EventEditor extends Component<EventEditorProps> {
     loading: true,
     populateDataFromParent: false,
     data: {
+      // ref: '',
+      owner: 'admin',
       eventTitle: undefined,
       description: undefined,
       categories: [],

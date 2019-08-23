@@ -13,7 +13,9 @@ import { ticketSchema, ITicketModel } from './ticket.model'
     ref: { 
       type: String, required: true, unique: true
     },
-    // owner = username of logged in user on admin
+    owner: { 
+      type: String, required: true
+    },
     eventTitle: { 
       type: String, required: true, index: true
     },

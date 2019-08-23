@@ -6,6 +6,9 @@ export const ticketSchema = new mongoose.Schema(
     ticketTitle: {
       type: String, required: true, index: true
     },
+    owner: { 
+      type: String, required: true
+    },
     description: {
       type: String, required: true
     },

@@ -110,6 +110,36 @@ UploadRouter.post('/multiple/:collection', (req, res)=>{
     let refs = [], lookupEntries = Array<IFileItem>()
 
     for (const file of uploadedFiles) {
+      let genFileName = parseInt((file.filename.split('upload_')[1])).toString(36)
+      let writePath = path.join(__storagedir, 'root')
+      
+      if(collection==='root') {
+        writePath = path.join(writePath, genFileName + getFileExtension(file.originalname))
+        refs.push({
+          ref: genFileName,
+          ...file
+        })
+      }
+      else {
+        writePath = path.join(writePath, collection, genFileName + getFileExtension(file.originalname))
+        refs.push({
+          ref: collection + '/' + genFileName,
+          ...file
+        })
+      }
+      
+      lookupEntries.push({
+        ref: genFileName,
+        filename: genFileName + '.' + file.originalname.split('.')[1],
+        originalname: file.originalname,
+        path: writePath,
+        metadata: {
+          size: file.size,
+          encoding: file.encoding,
+          mimetype: file.mimetype,
+        }
+      })
+      
       fs.readFile(file.path, (err, data)=>{
         if (err) return res.status(500).send(err)
 
@@ -117,37 +147,6 @@ UploadRouter.post('/multiple/:collection', (req, res)=>{
         // let raw = decodeBase64Image(data.toString('base64'))
         
         let raw = decodeBase64Image(data.toString())
-
-        let genFileName = parseInt((file.filename.split('upload_')[1])).toString(36)
-        let writePath = path.join(__storagedir, 'root')
-        
-        if(collection==='root') {
-          writePath = path.join(writePath, genFileName + getFileExtension(file.originalname))
-          refs.push({
-            ref: genFileName,
-            ...file
-          })
-        }
-        else {
-          writePath = path.join(writePath, collection, genFileName + getFileExtension(file.originalname))
-          refs.push({
-            ref: collection + '/' + genFileName,
-            ...file
-          })
-        }
-
-        lookupEntries.push({
-          ref: genFileName,
-          filename: genFileName + '.' + file.originalname.split('.')[1],
-          originalname: file.originalname,
-          path: writePath,
-          metadata: {
-            size: raw.data.length,
-            encoding: file.encoding,
-            mimetype: file.mimetype,
-          }
-        })
-        
         // Write new image to root
         fs.writeFile(writePath, raw.data, ()=>{
           if (err) res.status(500).send(err)
@@ -166,14 +165,14 @@ UploadRouter.post('/multiple/:collection', (req, res)=>{
   })
 })
 
-function createLookupEntries(collection:string, lookupEntries:IFileItem[]) {
+function createLookupEntries(collection:string, lookupEntries) {
   let lookupPath = path.join(__storagedir, 'root', 'lookup.json')
   let cdndata = fs.readFileSync(lookupPath)
   let lookupTable = JSON.parse(cdndata.toString())
   let redundantTable = lookupTable
 
   lookupTable = lookupTable[collection].files
-  lookupTable.push([ ...lookupEntries ])
+  lookupTable.push( ...lookupEntries )
 
   lookupTable = sortItemArrayByRef(lookupTable)
 

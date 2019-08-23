@@ -10,7 +10,7 @@ export interface CreateOfferProps {
 export default class CreateOffer extends Component<CreateOfferProps> {
   state = {
     data: {
-
+      owner: 'admin',
     }
   }
 

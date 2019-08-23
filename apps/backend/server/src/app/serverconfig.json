@@ -10,5 +10,11 @@
     "ALLOW_ORIGIN": "*",
     "ALLOW_HEADERS": "Origin, X-Requested-With, Content-Type, Accept",
     "ALLOW_METHODS": "*"
+  },
+  "access": {
+    "apiKeys": [
+      "", "", ""
+    ],
+    "clientSecretKey": ""
   }
 }
