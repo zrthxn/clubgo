@@ -1,18 +1,18 @@
 import React from 'react';
 import { render, cleanup } from 'react-testing-library';
 
-import ClubGo from './ClubGo';
+import WebsiteController from './Website';
 
 describe('App', () => {
   afterEach(cleanup);
 
   it('should render successfully', () => {
-    const { baseElement } = render(<ClubGo />);
+    const { baseElement } = render(<WebsiteController />);
     expect(baseElement).toBeTruthy();
   });
 
   it('should have a greeting as the title', () => {
-    const { getByText } = render(<ClubGo />);
+    const { getByText } = render(<WebsiteController />);
     expect(getByText('Welcome to website!')).toBeTruthy();
   });
 });

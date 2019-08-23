@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import ClubGo from './app/ClubGo'
+import WebsiteController from './app/Website'
 import './styles.scss'
 
-ReactDOM.render(<ClubGo />, document.getElementById('root'))
+ReactDOM.render(<WebsiteController />, document.getElementById('root'))

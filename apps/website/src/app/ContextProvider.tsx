@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 
-import { ClubGo } from './ClubGo'
-import { AppContext } from './AppContext'
+import WebsiteController from './Website'
+import { Context } from './Context'
 
-export default class AppContextProvider extends ClubGo {
+export default class ContextProvider extends WebsiteController {
   state = {
 
   }
 
   render() {
     return (
-      <AppContext.Provider
+      <Context.Provider
         value={{
           state: this.state,
           actions: {
@@ -21,7 +21,7 @@ export default class AppContextProvider extends ClubGo {
         {
           this.props.children
         }
-      </AppContext.Provider>
+      </Context.Provider>
     )
   }
 }
