@@ -1,27 +1,72 @@
 @import "../../Global.scss";
 
 .textbox {
-  margin: 0.5em;
-  // padding: 0.5em;
-  max-width: 18em;
-}
-
-input, input::placeholder {
-  font-family: $fontFamily;
-}
-input::placeholder {
-  opacity: 0.75;
-}
-
-input {
+  font-family: $montserratFont;
+  font-size: 16px;
   width: 100%;
+  margin: 0.5rem 0;
   padding: 1em;
-  border: 2px solid #1c1c1c40;
-  border-radius: 0.5em;
+  color: #FFF;
+  background: #1C1C1C60;
+
+  max-width: 20em;
+
+  border: 2px solid transparent;
+  border-radius: 10px;
   transition: all 0.25s ease;
 }
-input:active, input:focus {
+
+.textbox::placeholder {
+  font-family: $montserratFont;
+  color: #FFFFFF80;
+}
+.textbox:active, .textbox:focus {
+  background: #1C1C1C80;
   transition: all 0.25s ease;
-  border: 2px solid #1c1c1c80;
+  // border: 2px solid #1C1C1C40;
+  box-shadow: 0 0 8px #1C1C1C60;
   outline: none;
+}
+
+// Textbox Colors -----------------------------------------
+.textbox[class~="dark"] {
+  color: #FFF;
+  background: #1C1C1C60;
+  border: 2px solid transparent;
+}
+
+.textbox[class~="light"] {
+  color: #1C1C1C;
+  background: #FFF;
+  border: 2px solid transparent;
+
+  &::placeholder {
+    color: #1C1C1C80;
+  }
+  
+  &::selection {
+    color: #FFF;
+    background: $primaryColor;
+  }
+}
+
+// Textbox Variants ---------------------------------------
+.textbox[class~="solid"] {
+  background: #1C1C1C60;
+  border: 2px solid transparent;
+}
+
+.textbox[class~="outlined"] {
+  font-weight: 600;
+  color: #1C1C1C;
+  background: transparent;
+  border: 2px solid #1C1C1C60;
+
+  &::placeholder {
+    color: #1C1C1C80;
+  }
+
+  &::selection {
+    background: #1C1C1C;
+  }
 }

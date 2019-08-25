@@ -1,28 +1,65 @@
 @import "../../Global.scss";
 
 .button {
-  margin: 0.5em;
-  // padding: 0.5em;
+  font-family: $montserratFont;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0.5rem;
+  padding: 0.75em;
+  width: 100%;
+
+  min-width: 6em;
+  max-width: 10em;
+  
+  background: #FFF;
+  color:#000;
+
+  border: none;
+  border-radius: 10px;
+  box-shadow: 1px 2px 5px #1c1c1c60;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.button:active {
+  transition: all 0.25s ease;
+  transform: scale(0.95);
+  transform: translate(0.25em 0.25em 0);
+}
+.button:active, .button:focus {
+  outline: none;
+}
+
+// Button Sizes -------------------------------------------
+.button[class~="small"] {
+  min-width: 4em;
+  max-width: 6em;
+}
+
+.button[class~="medium"] {
+  padding: 1em;
+  min-width: 6em;
   max-width: 10em;
 }
 
-button {
-  font-family: $fontFamily;
-  padding: 1em;
-  width: 100%;
-  box-shadow: 1px 2px 5px #1c1c1c60;
-  transition: all 0.25s ease;
+.button[class~="large"] {
+  padding: 1.5em;
+  min-width: 12em;
+  max-width: 16em;
+}
 
-  border: none;
-  border-radius: 2em;
-  color: #fff;
-  background: linear-gradient(90deg, #a600c7, #c7007b);
+// Button Colors ------------------------------------------
+.primary {
+  color: $accentLightColor;
+  background: $primaryColor;
 }
-button:active, button:focus {
-  outline: none;
+
+.secondary {
+  color: $accentLightColor;
+  background: $secondaryColor;
 }
-button:active {
-  transition: all 0.25s ease;
-  transform: scale(0.98);
-  transform: translate(0.25em 0.25em 0);
+
+.default {
+  background: #FFF;
+  color:#000;
 }

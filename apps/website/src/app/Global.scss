@@ -1,7 +1,78 @@
-$fontFamily: 'Poppins', sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Francois+One&display=swap');
+
+$poppinsFont: 'Poppins', sans-serif;
+$montserratFont: 'Montserrat', sans-serif;
+$francoisFont: 'Francois One', sans-serif;
+
+$primaryColor: #D62839;
+$secondaryColor: #89216B;
+$accentColor: #26233D;
+$accentLightColor: #FFF;
+
+$bodyBg: linear-gradient(90deg, $primaryColor, $secondaryColor);
+
+body {
+  background: $bodyBg;
+  font-family: $montserratFont;
+
+  color: #fff;
+  padding: 1em;
+}
+::selection {
+  background: #FFF;
+}
+
+// Typography ---------------------------------------------
+// ========================================================
+h1 {
+  // Page Heading
+  font-family: $francoisFont;
+  font-size: 36px;
+  font-weight: 600;
+  margin: 2.5rem 0;
+}
+h2 {
+  // Section Heading
+  font-family: $montserratFont;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0.75rem 0;
+}
+
+h3 {
+  // Label
+  font-family: $poppinsFont;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0.25rem 0;
+  // padding: 0.25rem 1rem;
+  // width: fit-content;
+  // border-radius: 10px;
+  // background: #ffffff40; 
+}
+h4 {
+  // Subheading
+  font-family: $montserratFont;
+  font-size: 16px;
+  font-weight: 400;
+  color: #FFFFFFC0;
+  margin: 0.25rem 0;
+}
+
+p {
+  font-family: $montserratFont;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 1.5rem 0;
+}
+
+// ========================================================
 
 article {
   opacity: 1;
+  z-index: 1;
   animation: fadeIn 0.5s ease forwards;
 }
 @keyframes fadeIn {

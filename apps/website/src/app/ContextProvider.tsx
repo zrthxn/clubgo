@@ -1,21 +1,34 @@
 import React, { Component } from 'react'
 
-import WebsiteController from './Website'
-import { Context } from './Context'
+var _iactions = Object()
 
-export default class ContextProvider extends WebsiteController {
-  state = {
+// Initial State
+const _istate = {
+  
+}
 
+export class ContextProvider extends Component {
+  state = _istate
+
+  constructor(props) {
+    super(props)
+
+    // Register new actions here
+    _iactions = {
+      
+    }
   }
+
+  componentDidMount() {
+    
+  }  
 
   render() {
     return (
       <Context.Provider
         value={{
           state: this.state,
-          actions: {
-            
-          }
+          actions: _iactions
         }}
       >
         {
@@ -25,3 +38,13 @@ export default class ContextProvider extends WebsiteController {
     )
   }
 }
+
+export const Context = React.createContext({
+  state: _istate,
+  actions: (()=>{
+    new ContextProvider({})
+    return _iactions
+  })()
+})
+
+export default Context
