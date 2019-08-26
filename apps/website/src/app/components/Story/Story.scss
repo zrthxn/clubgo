@@ -1,0 +1,81 @@
+@import "../../Global.scss";
+
+$outlineDistance: 0.25em;
+$storyMargin: 0.5em;
+
+.stories-container {
+  display: flex;
+  flex-direction: row;
+
+  width: 100vw;
+  padding: 1em;
+  margin: 0 -2em;
+  overflow: scroll;
+}
+
+.story {
+  width: fit-content;
+  height: fit-content;
+
+  padding: $outlineDistance;
+  margin: $storyMargin;
+
+  border-radius: 50%;
+  border: 3px solid  #17dddd;
+  transition: border 0.25s ease;
+
+  &:active {
+    border: 3px solid  #174cdd;
+  }
+
+  .face-container {
+    width: 6em;
+    height: 6em;
+    border-radius: 50%;
+
+    background-color: black;
+
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .story-container {
+    width: 50vw;
+    height: 0;
+    top: 100%;
+    left: 25vw;
+    opacity: 0;
+    
+    position: absolute;
+    transition: all 0.25s ease;
+    
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      height: 100%;
+    }
+  }
+}
+
+.story[class~="open"] {
+  .story-container {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    z-index: 10000;
+    transition: all 0.5s ease;
+  }
+}

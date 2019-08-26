@@ -11,14 +11,15 @@ $secondaryColor: #89216B;
 $accentColor: #26233D;
 $accentLightColor: #FFF;
 
-$bodyBg: linear-gradient(90deg, $primaryColor, $secondaryColor);
+$bodyBg: linear-gradient(180deg, $primaryColor, $secondaryColor);
 
 body {
   background: $bodyBg;
+  height: 100%;
   font-family: $montserratFont;
 
   color: #fff;
-  padding: 1em;
+  margin: 0;
 }
 ::selection {
   background: #FFF;
@@ -82,4 +83,8 @@ article {
   to {
     opacity: 1;
   }
+}
+
+.container {
+  padding: 1em;
 }

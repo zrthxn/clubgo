@@ -26,7 +26,9 @@ export default class WebsiteController extends Component {
             appContext => (
               <Router>
                 <Switch>
-                  <Route path={'/:whatever'} render={(routeProps)=>(
+                  <Route exact path="/" component={Home}/>
+
+                  <Route path="/:whatever" render={(routeProps)=>(
                     <Home { ...routeProps }/>
                   )}/>
                 </Switch>

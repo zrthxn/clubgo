@@ -1,13 +1,13 @@
 import React, { Component, ReactChild, ReactNode, CSSProperties, ButtonHTMLAttributes } from 'react'
 import './Button.scss'
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactChild | ReactNode | HTMLElement,
   style?: CSSProperties,
   color?: 'secondary' | 'default',
   size?: 'small' | 'medium' | 'large'
 }
-export function Button(props:ButtonProps) {
+export function Button(props:IButtonProps) {
   var buttonStyle = "button"
   
   if(props.size!==undefined)

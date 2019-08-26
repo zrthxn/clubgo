@@ -1,12 +1,12 @@
 import React, { Component, InputHTMLAttributes, CSSProperties } from 'react'
 import './Textbox.scss'
 
-export interface TextboxProps extends InputHTMLAttributes<HTMLInputElement> {  
+export interface ITextboxProps extends InputHTMLAttributes<HTMLInputElement> {  
   style?: CSSProperties,
   color?: 'dark' | 'light',
   variant?: 'outlined' | 'solid',
 }
-export function Textbox(props:TextboxProps) {  
+export function Textbox(props:ITextboxProps) {  
   var textboxStyle = "textbox"
   
   if(props.variant!==undefined)
