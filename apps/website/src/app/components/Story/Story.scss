@@ -3,14 +3,22 @@
 $outlineDistance: 0.25em;
 $storyMargin: 0.5em;
 
+
+.stories-view-area {
+  // margin: 0 -2em;
+  // position: absolute;
+  // overflow: hidden;
+  width: 100%;
+}
+
 .stories-container {
   display: flex;
   flex-direction: row;
 
-  width: 100vw;
-  padding: 1em;
-  margin: 0 -2em;
-  overflow: scroll;
+  width: fit-content;
+  padding: 1em 0;
+  overflow: visible;
+  // position: absolute;
 }
 
 .story {
@@ -26,6 +34,15 @@ $storyMargin: 0.5em;
 
   &:active {
     border: 3px solid  #174cdd;
+  }
+
+  &:first-of-type {
+    margin-left: 0;
+    margin-block-start: 0;
+  }
+  &:last-of-type {
+    margin-right: 0;
+    margin-block-end: 0;
   }
 
   .face-container {
@@ -49,7 +66,7 @@ $storyMargin: 0.5em;
   .story-container {
     width: 50vw;
     height: 0;
-    top: 100%;
+    top: 100vh;
     left: 25vw;
     opacity: 0;
     

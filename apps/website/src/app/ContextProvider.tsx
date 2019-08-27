@@ -4,7 +4,10 @@ var _iactions = Object()
 
 // Initial State
 const _istate = {
-  
+  story: {
+    isOpen: false,
+    imageURL: String()
+  }
 }
 
 export class ContextProvider extends Component {
@@ -15,13 +18,35 @@ export class ContextProvider extends Component {
 
     // Register new actions here
     _iactions = {
-      
+      openStory: this.openStory,
+      closeStory: this.closeStory
     }
   }
 
   componentDidMount() {
     
   }  
+
+  openStory = (img) => {
+    this.setState(()=>{
+      let { story } = this.state
+      story.isOpen = true
+      story.imageURL = img
+      return {
+        story
+      }
+    })
+  }
+
+  closeStory = (img) => {
+    this.setState(()=>{
+      let { story } = this.state
+      story.isOpen = false
+      return {
+        story
+      }
+    })
+  }
 
   render() {
     return (

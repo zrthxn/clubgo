@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-
-import { Story, StoryContainer } from '@clubgo/website/components'
+import ScrollArea from 'react-scrollbar'
+import { Story, StoryContainer, StoryDisplay } from '@clubgo/website/components'
+import Context from '../../ContextProvider';
 
 type URLParams = { 
   whatever: string
@@ -14,6 +15,7 @@ export default class Home extends Component<RouteComponentProps<URLParams> & ICo
   render() {
     return (
       <div className="container">
+
         <h1>ClubGo</h1>
         <h2>{ this.props.match.params.whatever }</h2>
 
@@ -23,7 +25,20 @@ export default class Home extends Component<RouteComponentProps<URLParams> & ICo
           <Story/>
           <Story/>
           <Story/>
+          <Story/>
+          <Story/>
+          <Story/>
+          <Story/>
+          <Story/>
         </StoryContainer>
+
+        <Context.Consumer>
+          {
+            appContext => (
+              <StoryDisplay open={appContext.state.story.isOpen} url={appContext.state.story.imageURL} />
+            )
+          }
+        </Context.Consumer>
 
         <h2>Featured</h2>
         <p>Lorm</p>
