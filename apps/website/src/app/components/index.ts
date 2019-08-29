@@ -1,4 +1,6 @@
 export * from './Button/Button'
 export * from './Textbox/Textbox'
 export * from './Story/Story'
+export * from './Banner/Banner'
+export * from './Event/Event'
 export * from './Recommender/Recommender'

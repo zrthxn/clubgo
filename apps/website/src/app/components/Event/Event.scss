@@ -1,0 +1,15 @@
+.event {
+  padding: 1em;
+  margin: 1em;
+  width: 16em;
+  height: 18em;
+  border-radius: 1em;
+  background-color: #ffffff40;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
+  &:last-of-type {
+    margin-right: 0; 
+  }
+}

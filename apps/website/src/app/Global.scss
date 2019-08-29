@@ -11,7 +11,7 @@ $secondaryColor: #89216B;
 $accentColor: #26233D;
 $accentLightColor: #FFF;
 
-$bodyBg: linear-gradient(180deg, $primaryColor, $secondaryColor);
+$bodyBg: linear-gradient(135deg, $primaryColor, $secondaryColor);
 
 body {
   background: $bodyBg;
@@ -85,6 +85,37 @@ article {
   }
 }
 
+section {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2em;
+}
+
 .container {
   padding: 1em;
+}
+
+.scroll-view-area {
+  // margin: 0 -2em;
+  // position: absolute;
+  // overflow: hidden;
+  width: 100%;
+}
+
+.scroll-container-row {
+  display: flex;
+  flex-direction: row;
+  
+  padding: 1em 0;
+  width: fit-content;
+  overflow: visible;
+}
+
+.scroll-container-col {
+  display: flex;
+  flex-direction: column;
+  
+  padding: 1em 0;
+  width: fit-content;
+  overflow: visible;
 }
