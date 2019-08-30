@@ -6,10 +6,14 @@
   border-radius: 1em;
   background-color: #ffffff40;
 
-  &:first-of-type {
-    margin-left: 0;
-  }
-  &:last-of-type {
-    margin-right: 0; 
+  position: relative;
+  overflow: hidden;
+
+  img {
+    // position: absolute;
+    border-radius: inherit;
+    max-width: 100%;
+    object-fit: cover;
+    transition: all 0.25s ease;
   }
 }

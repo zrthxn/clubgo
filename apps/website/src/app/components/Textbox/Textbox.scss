@@ -70,3 +70,12 @@
     background: #1C1C1C;
   }
 }
+
+// Textbox Margins ---------------------------------------
+.textbox[class~="dense"] {
+  padding: 0.75em
+}
+
+.textbox[class~="normal"] {
+  padding: 1em;
+}

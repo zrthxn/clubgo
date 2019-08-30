@@ -1,0 +1,12 @@
+.flexbox {
+  display: flex;
+  flex-flow: row wrap;
+  width: min-content;
+  margin: auto;
+
+  @media (min-width: 600px) {
+    & {
+      width: 100%;
+    }
+  }
+}

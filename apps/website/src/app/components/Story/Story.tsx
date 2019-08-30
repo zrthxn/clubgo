@@ -3,13 +3,13 @@ import ScrollArea from 'react-scrollbar'
 import './Story.scss'
 import Context from '../../ContextProvider';
 
-export interface IStoryProps {
+export interface StoryProps {
   story: {
     imageURL: string,
     faceImageURL?:  string
   }
 }
-export function Story(props:IStoryProps) {
+export function Story(props:StoryProps) {
   let { imageURL, faceImageURL } = props.story
   
   if(faceImageURL===undefined)

@@ -81,7 +81,7 @@ AuthRouter.post('/', (req, res)=>{
   // Set unique CSRF Tokens
   // 1. you send the shared apiKey
   // 2. I use the current apiSecret to generate CSRF access token
-  // -- sha512( apiKey + '\\' + apiSecret ).digest(base64)
+  // -- accessToken = sha512( apiKey + '\\' + apiSecret ).digest(base64)
   // 3. I send the access token to you
 
   // Every 100 transactions the apiSecret is changed

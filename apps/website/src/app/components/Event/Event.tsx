@@ -1,40 +1,21 @@
 import React, { Component } from 'react'
-import ScrollArea from 'react-scrollbar'
 import './Event.scss'
 
 export class Event extends Component {
   render() {
     return (
       <div className="event">
+        <img alt="Image"
+          src="http://cgsquad.in/backend/images/event/1559398045.png"
+        />
+
         <h3>Event Name</h3>
-        hello
+        <h4>Venue</h4>
+
+        <p>Date | Time</p>
       </div>
     )
   }
-}
-
-export function EventsContainer(props) {
-  const scrollbarStyles = {
-    borderRadius: 5
-  }
-
-  return (
-    <ScrollArea
-      speed={1}
-      horizontal={true}
-      vertical={false}
-      className="scroll-view-area"
-      contentClassName="scroll-container-row"
-      horizontalScrollbarStyle={scrollbarStyles}
-      horizontalContainerStyle={scrollbarStyles}
-      smoothScrolling= {true}
-      minScrollSize={40}
-    >  
-      {
-        props.children
-      }
-    </ScrollArea>
-  )
 }
 
 export default Event
