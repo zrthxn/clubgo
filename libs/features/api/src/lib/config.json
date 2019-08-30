@@ -25,19 +25,19 @@
   "test": {
     "endpoints": {
       "api": {
-        "url": "http://13.233.155.228:3333",
+        "url": "http://13.234.122.145:3333",
         "secure": true
       },
       "cdn": {
-        "url": "http://13.233.155.228:4444",
+        "url": "http://13.234.122.145:4444",
         "secure": false
       },
       "auth": {
-        "url": "http://13.233.155.228:3333/_authenicate",
+        "url": "http://13.234.122.145:3333/_authenicate",
         "secure": true
       },
       "login": {
-        "url": "http://13.233.155.228:3333/_login",
+        "url": "http://13.234.122.145:3333/_login",
         "secure": false
       }
     }
