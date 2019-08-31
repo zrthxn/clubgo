@@ -25,19 +25,19 @@
   "test": {
     "endpoints": {
       "api": {
-        "url": "http://13.234.122.145:3333",
+        "url": "https://api.cg.zrthxn.com",
         "secure": true
       },
       "cdn": {
-        "url": "http://13.234.122.145:4444",
+        "url": "https://cdn.cg.zrthxn.com",
         "secure": false
       },
       "auth": {
-        "url": "http://13.234.122.145:3333/_authenicate",
+        "url": "https://cg.zrthxn.com/_authenicate",
         "secure": true
       },
       "login": {
-        "url": "http://13.234.122.145:3333/_login",
+        "url": "https://cg.zrthxn.com/_login",
         "secure": false
       }
     }

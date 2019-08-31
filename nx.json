@@ -9,31 +9,31 @@
   },
   "projects": {
     "website": {
-      "tags": ["app:website"]
+      "tags": ["app"]
     },
     "website-e2e": {
       "tags": []
     },
     "admin": {
-      "tags": ["app:admin"]
+      "tags": ["app"]
     },
     "authorize": {
-      "tags": ["app:auth"]
+      "tags": ["app"]
     },
     "server": {
-      "tags": ["app:server"]
+      "tags": ["app"]
     },
     "features-api": {
-      "tags": ["features:api"]
+      "tags": ["lib"]
     },
     "util": {
-      "tags": ["util"]
+      "tags": ["lib"]
     },
     "database": {
-      "tags": ["lib:db"]
+      "tags": ["lib"]
     },
-    "backend-cdn": {
-      "tags": ["app:backend"]
+    "cdn": {
+      "tags": ["app"]
     }
   }
 }
