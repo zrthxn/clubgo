@@ -1,4 +1,4 @@
-include ./website.nginx 
-include ./admin.nginx
-include ./api.nginx
-include ./cdn.nginx
+include website.nginx 
+include admin.nginx
+include api.nginx
+include cdn.nginx
