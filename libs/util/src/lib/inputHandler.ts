@@ -1,6 +1,5 @@
 export function handleChangeById(event, state) {
-  const { iterableMembers } = state
-  let payload = null, truth = true, _data = state.data
+  let payload = null, _data = state.data
 
   switch (event.target.type) {
     case 'checkbox':
@@ -18,7 +17,7 @@ export function handleChangeById(event, state) {
   }
 
   if(event.target.id.includes('/')) {
-    if(event.target.id.split('/')[0].includes('#') && iterableMembers.length!==0) {
+    if(event.target.id.split('/')[0].includes('#')) {
       let parentKey = event.target.id.split('/')[0].split('#')[0]
       let index = parseInt(event.target.id.split('/')[0].split('#')[1], 10)
       let childKey = event.target.id.split('/')[1]
@@ -32,8 +31,16 @@ export function handleChangeById(event, state) {
   }
   else
     _data[event.target.id] = payload
+  
+  return ({
+    data: _data
+  })
+}
 
-    
+export function verifyRequirements(event, state) {
+  const { iterableMembers } = state
+  let payload = null, truth = true
+  
   if(state.required.length!==0) {
     for(let field of state.required) {
       if(field.includes('/')) {
@@ -64,9 +71,8 @@ export function handleChangeById(event, state) {
   }
   else
     truth = true
-  
+
   return ({
-    requiredFulfilled: truth,
-    data: _data
+    requiredFulfilled: truth
   })
 }

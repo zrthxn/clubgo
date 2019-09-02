@@ -2,26 +2,27 @@ import React, { Component } from 'react'
 import { Button } from 'reactstrap'
 import { Modal, Paper, Grid, Fab, IconButton } from '@material-ui/core'
 import { Add, Delete, Edit } from '@material-ui/icons'
-import { DatabaseCRUDService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/features/api'
 import { ITicketModel } from '@clubgo/database'
 
 import '../scss/Create.scss'
 import '../scss/Listing.scss'
 
-import { CreateTicket } from './CreateTicket'
+import { TicketEditor } from './TicketEditor'
+import { Ticket } from './Ticket';
 
-export class Tickets extends Component {
-  ticketService = new DatabaseCRUDService({ endpoint: 'api', path: '/ticket' })
+export class TicketListing extends Component {
+  ticketService = new DatabaseService({ endpoint: 'api', path: '/ticket' })
   
   state = {
     openCreateModal: false,
     loading: true,
     errorText: undefined,
     populateDataFromParent: false,
+    listing: Array<ITicketModel>(),
     populateData: {
       
-    },
-    listing: Array<ITicketModel>()
+    }
   }
 
   componentDidMount() {
@@ -72,40 +73,15 @@ export class Tickets extends Component {
             {
               !this.state.loading && this.state.listing.map((ticket, index)=>{
                 return (
-                  <div key={`ticketlist_${index}`} className="clearfix"
-                    style={{ 
-                      margin: '1em', padding: '1em', width: '250px',
-                      border: '1.5px solid #1c1c1c40', borderRadius: '5px',
-                      overflow: 'hidden'
-                    }}
-                  >
-                    <p style={{ fontSize: '1.25em', margin: 0 }}>{ ticket.ticketTitle }</p>
-                    <p style={{ fontSize: '1em', opacity: 0.75 }}>{ ticket.description }</p>
-
-                    <p style={{ fontSize: '1.5em', margin: 0 }}>{ ticket.pricing.stag.admissionPrice }</p>
-
-                    <IconButton className="float-right" onClick={()=>{
+                  <Ticket key={`ticketlist_${index}`} data={ticket}
+                    onDelete={()=>{
                       this.ticketService.delete(ticket._id).then(()=>{
                         let { listing } = this.state
                         listing = listing.filter(item => (item._id!==ticket._id))
                         this.setState({ listing })
                       })
-                    }}>
-                      <Delete/>
-                    </IconButton>
-
-                    <IconButton className="float-right" onClick={()=>{
-                      this.setState(()=>{
-                        return {
-                          openCreateModal: true,
-                          populateDataFromParent: true,
-                          populateData: ticket
-                        }
-                      })
-                    }}>
-                      <Edit/>
-                    </IconButton>
-                  </div>
+                    }}
+                  />
                 )
               })
             }
@@ -120,7 +96,7 @@ export class Tickets extends Component {
             textAlign: 'center'
           }}
         >
-          <CreateTicket
+          <TicketEditor
             populate={this.state.populateDataFromParent}
             data={this.state.populateData}
             onFinalize={(createBody:ITicketModel)=>{
@@ -145,4 +121,4 @@ export class Tickets extends Component {
   }
 }
 
-export default Tickets
+export default TicketListing

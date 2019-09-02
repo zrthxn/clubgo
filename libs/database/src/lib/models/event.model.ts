@@ -112,10 +112,14 @@ import { ticketSchema, ITicketModel } from './ticket.model'
     },
     bookings: {
       isTakingOnsiteBookings: Boolean,
-      // Special Details
       isTakingOnsitePayments: Boolean,
-      // taxPercent %
-      // processingFee Rs
+      details: [String],
+      taxPercent: {
+        type: Number, min: 0, max: 100, default: 18
+      },
+      processingFeePercent: {
+        type: Number, min: 0, max: 100, default: 0
+      },
       // GSTIN
       tickets: [
         {
@@ -206,6 +210,9 @@ export interface IEventModel extends mongoose.Document {
   bookings: {
     isTakingOnsiteBookings?: boolean,
     isTakingOnsitePayments?: boolean,
+    details: [string],
+    taxPercent: number,
+    processingFeePercent: number,
     tickets?: [
       {
         activate: number,

@@ -2,7 +2,7 @@ import Interface, { APIProps } from '../api'
 import ErrorsAPI from '../errors'
 import { Observable, ErrorObserver } from 'rxjs'
 
-export class DatabaseCRUDService extends Interface {
+export class DatabaseService extends Interface {
   model = null
 
   constructor(apiProps:APIProps, DatabaseModel?) {
@@ -64,7 +64,7 @@ export class DatabaseCRUDService extends Interface {
     // crUd
     try {
       return await this.request.put(
-        this.endpoint + '/_update' + id, {
+        this.endpoint + '/_update/' + id, {
           updateBody,
           params: {
             ...options

@@ -41,6 +41,13 @@ export class Admin extends Component {
     userAccountMenuOpen: false
   }
 
+  constructor(props) {
+    super(props)
+    if(process.env.NODE_ENV!=="production") {
+      this.state.authenticated = true
+    }
+  }
+
   openMessages = () => {
     this.setState({
       messagesOpen: true

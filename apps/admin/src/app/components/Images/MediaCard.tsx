@@ -13,6 +13,7 @@ import { handleChangeById as inputHandler } from '@clubgo/util'
 export interface MediaCardProps {
   name: string,
   syncParentData?: Function,
+  syncData?: boolean,
   includeVideoURL?: boolean,
   tag?: string,
   populate?: boolean,
@@ -21,6 +22,7 @@ export interface MediaCardProps {
 export class MediaCard extends Component<MediaCardProps> {
   state = {
     openImageUploadModal: false,
+    synchronized: false,
     data: {
       images: [],
       videoURL: null
@@ -54,10 +56,21 @@ export class MediaCard extends Component<MediaCardProps> {
 
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
-    this.props.syncParentData(this.state.data, this.props.name)
+    this.props.syncParentData(this.state.data, )
     this.setState((prevState, props)=>(
       result
     ))
+  }
+
+  componentDidUpdate() {    
+    if(this.props.syncData!==this.state.synchronized) { 
+      if(this.props.syncData) {
+        this.props.syncParentData(this.state.data, this.props.name)
+        this.setState({
+          synchronized: this.props.syncData
+        })
+      }        
+    }
   }
 
   render() {
@@ -92,7 +105,6 @@ export class MediaCard extends Component<MediaCardProps> {
                       })
                       let { data } = this.state
                       data.images = images
-                      this.props.syncParentData(data, this.props.name)
                       this.setState({
                         data
                       })
@@ -138,7 +150,6 @@ export class MediaCard extends Component<MediaCardProps> {
                     data.images = images
                     
                     this.setState((prevState, props)=>{
-                      this.props.syncParentData(data, this.props.name)
                       return {
                         openImageUploadModal: false,
                         data

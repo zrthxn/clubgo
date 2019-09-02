@@ -10,6 +10,7 @@ import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface EventDetailsProps {
   syncParentData?: Function
+  syncData?: boolean,
   populate?: boolean,
   data?: any
 }
@@ -35,6 +36,7 @@ export class EventDetails extends Component<EventDetailsProps> {
     },
     selectDressCode: null,
     selectCategories: [],
+    synchronized: false,
     data: {
       eventTitle: undefined,
       description: undefined,
@@ -50,14 +52,14 @@ export class EventDetails extends Component<EventDetailsProps> {
       tags: [ ],
       hasCutomDetails: false,
       customDetails: [ ],
-    },
-    requiredFulfilled: false,
-    required: [
-      'eventTitle', 'description', 'categories'
-    ],
-    iterableMembers: [
-      'customDetails'
-    ]
+    }
+  }
+
+  handleChangeById = (event) => {
+    const result = inputHandler(event, this.state)
+    this.setState((prevState, props)=>(
+      result
+    ))
   }
 
   componentDidMount() {
@@ -85,15 +87,18 @@ export class EventDetails extends Component<EventDetailsProps> {
         }
     }) 
   }
-  
-  handleChangeById = (event) => {
-    const result = inputHandler(event, this.state)
-    this.props.syncParentData(this.state.data, 'root')
-    this.setState((prevState, props)=>(
-      result
-    ))
-  }
 
+  componentDidUpdate() {    
+    if(this.props.syncData!==this.state.synchronized) {
+      if(this.props.syncData) {
+        this.props.syncParentData(this.state.data, 'root')
+        this.setState({
+          synchronized: this.props.syncData
+        })
+      }        
+    }
+  }
+  
   render() {
     // Event Details Section  ----------------------------------------------  Event Details Section
     // ============================================================================================
@@ -113,6 +118,7 @@ export class EventDetails extends Component<EventDetailsProps> {
               <Select
                 inputId="category"
                 placeholder="Category"
+                backspaceRemovesValue
                 value={this.state.selectCategories}
                 options={this.state.suggestions.category}
                 isMulti
@@ -123,7 +129,7 @@ export class EventDetails extends Component<EventDetailsProps> {
                     data.categories.push(item.value)
                   
                   this.setState((prevState, props)=>{
-                    this.props.syncParentData(data, 'root')
+                    // this.props.syncParentData(data, 'root')
                     return {
                       data,
                       selectCategories: selected
@@ -174,13 +180,14 @@ export class EventDetails extends Component<EventDetailsProps> {
                 <Select
                   inputId="dressCode"
                   placeholder="Dress Code"
+                  backspaceRemovesValue
                   value={this.state.selectDressCode}
                   options={this.state.suggestions.dressCode}
                   onChange={ selected => {
                     let { data } = this.state
                     data.dressCode.title = selected.value
                     this.setState((prevState, props)=>{
-                      this.props.syncParentData(data, 'root')
+                      // this.props.syncParentData(data, 'root')
                       return {
                         data,
                         selectDressCode: selected
@@ -202,7 +209,7 @@ export class EventDetails extends Component<EventDetailsProps> {
                     tags = [ ...value ]
                     data.tags = tags
                     this.setState((prevState, props)=>{
-                      this.props.syncParentData(data, 'root')
+                      // this.props.syncParentData(data, 'root')
                       return {
                         data
                       }
@@ -226,7 +233,7 @@ export class EventDetails extends Component<EventDetailsProps> {
                   detailData: String
                 })
                 this.setState((prevState, props)=>{
-                  this.props.syncParentData(data, 'root')
+                  // this.props.syncParentData(data, 'root')
                   return { data }
                 })
               }}
@@ -253,7 +260,7 @@ export class EventDetails extends Component<EventDetailsProps> {
                                 data.hasCutomDetails = false
                               
                               this.setState((prevState, props)=>{
-                                this.props.syncParentData(data, 'root')
+                                // this.props.syncParentData(data, 'root')
                                 return { data }
                               })
                             }}

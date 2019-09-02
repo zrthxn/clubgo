@@ -25,7 +25,7 @@ export class EventContextProvider extends EventController {
 
   componentDidMount() {
     this.setState((prevState, props)=>({
-      uiType: 'list'
+      uiType: 'create'
     }))
   }
 

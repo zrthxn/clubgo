@@ -19,6 +19,8 @@ export class VenueDetails extends Component<VenueDetailsProps> {
     selectCity: undefined,
     selectLocality: undefined,
     data: {
+      ref: Date.now().toString(36),
+      owner: 'admin',
       venueTitle: undefined,
       description: undefined,
       categories: [],

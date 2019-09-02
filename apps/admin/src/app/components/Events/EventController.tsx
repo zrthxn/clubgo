@@ -11,14 +11,14 @@ import { EventEditor } from './EventEditor'
 import { EventListing } from './EventListing'
 import { EventContext } from './EventContext'
 import { IEventModel } from '@clubgo/database'
-import { DatabaseCRUDService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/features/api'
 
 export interface EventControllerProps {
   mount?: 'create' | 'list'
 }
 export class EventController extends Component<EventControllerProps> {
   static contextType = EventContext
-  eventService = new DatabaseCRUDService({ endpoint: 'api', path: '/event' })
+  eventService = new DatabaseService({ endpoint: 'api', path: '/event' })
 
   componentDidMount() {
     if(this.props.mount!==undefined) {

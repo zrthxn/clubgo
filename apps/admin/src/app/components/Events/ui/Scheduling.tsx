@@ -5,7 +5,8 @@ import { Grid, Paper } from '@material-ui/core'
 import { TextField, Button, Switch, Checkbox } from '@material-ui/core'
 
 export interface SchedulingProps {
-  syncParentData?: Function
+  syncParentData?: Function,
+  syncData?: boolean,
   populate?: boolean,
   data?: any
 }

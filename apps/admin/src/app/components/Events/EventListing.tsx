@@ -6,14 +6,14 @@ import '../scss/Listing.scss'
 import { EventListItem } from './ui/EventListItem'
 import { EventContext } from './EventContext'
 import { IEventModel } from '@clubgo/database'
-import { DatabaseCRUDService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/features/api'
 
 export interface EventListingProps {
   onDelete: Function
 }
 export class EventListing extends Component<EventListingProps> {
   static contextType = EventContext
-  eventService = new DatabaseCRUDService({ endpoint: 'api', path: '/event' })
+  eventService = new DatabaseService({ endpoint: 'api', path: '/event' })
 
   state = {
     loading: true,

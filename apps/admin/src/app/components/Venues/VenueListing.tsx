@@ -6,14 +6,14 @@ import '../scss/Listing.scss'
 import { VenueListItem } from './ui/VenueListItem'
 import { VenueContext } from './VenueContext'
 import { IVenueModel } from '@clubgo/database'
-import { DatabaseCRUDService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/features/api'
 
 export interface VenueListingProps {
   onDelete: Function
 }
 export class VenueListing extends Component<VenueListingProps> {
   static contextType = VenueContext
-  venueService = new DatabaseCRUDService({ endpoint: 'api', path: '/venue' })
+  venueService = new DatabaseService({ endpoint: 'api', path: '/venue' })
 
   state = {
     loading: true,

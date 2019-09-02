@@ -20,72 +20,15 @@ export interface EventEditorProps {
 export class EventEditor extends Component<EventEditorProps> {
   static contextType = EventContext
 
+  ongoingStateTransition = false
+
   state = {
     loading: true,
     populateDataFromParent: false,
+    collectChildData: false,
     data: {
-      // ref: '',
-      owner: 'admin',
-      eventTitle: undefined,
-      description: undefined,
-      categories: [],
-      tagline: undefined,
-      flashText: undefined,
-      artists: [],
-      music: [],
-      dressCode: {
-        title: undefined,
-        images: [],
-      },
-      tags: [],
-      hasCutomDetails: false,
-      customDetails: [],
-      settings: {
-        isPublished: false,
-        eventPriority: undefined,
-        isFeatured: false,
-        featured: {
-          featuredText: undefined,
-          featuredPriority: undefined
-        }
-      },
-      venue: {
-        city: undefined,
-        venueId: undefined,
-        title: undefined,
-        address: undefined, 
-        isCustomVenue: false,
-        customVenueDetails: {
-          locality: undefined,
-          coordinates: {
-            _lat: 0,
-            _lon: 0
-          }
-        }
-      },
-      scheduling: {
-        startTime: undefined,
-        endTime: undefined,
-        isRecurring: false,
-        recurringType: undefined,
-        isCustomRecurring: false,
-        customRecurring: {
-          initial: undefined,
-          final: undefined,
-          dates: []
-        }
-      },
-      bookings: {
-        tickets: [],
-        isTakingOnsiteBookings: true,
-        isTakingOnsitePayments: false,
-        registrationURL: undefined,
-        registrationPhone: undefined
-      },
-      media: {
-        images: [],
-        videoURL: undefined
-      }
+      ref: Date.now().toString(36),
+      owner: 'admin'
     }
   }
 
@@ -105,31 +48,64 @@ export class EventEditor extends Component<EventEditorProps> {
   }
   
   syncDataChanges = (childData:object, key:string) => {
-    let { data } = this.state
-    if(key==='root') {
-      data = { ...data, ...childData }
-    }
-    else {
-      if(Array.isArray(childData)) {
-        let iterable = data
-        iterable[key] = childData
-        data = { ...iterable }
+    let transition = setInterval(()=>{
+      if(this.ongoingStateTransition)
+        return
+
+      this.ongoingStateTransition = true
+      
+      let { data } = this.state
+      if(key==='root') {
+        data = { ...data, ...childData }
       }
       else {
-        data[key] = { ...childData }
+        if(Array.isArray(childData)) {
+          let iterable = data
+          iterable[key] = childData
+          data = { ...iterable }
+        }
+        else {
+          data[key] = { ...childData }
+        }
       }
-    }
 
-    this.setState((prevState, props)=>{
-      return {
-        data
-      }
+      clearInterval(transition)
+      this.ongoingStateTransition = false
+      this.setState({
+        data,
+        syncData: false
+      })  
+    }, 100)    
+  }
+
+  collectChildData = () => {
+    return new Promise((resolve, reject)=>{
+      if(this.state.collectChildData) resolve()
+      this.setState({
+        collectChildData: true
+      })
+
+      setTimeout(()=>{
+        let waiting = setInterval(()=>{
+          if(this.state.collectChildData && !this.ongoingStateTransition) {
+            clearInterval(waiting)
+            resolve()
+          }
+        }, 100)
+      }, 100)
     })
   }
 
-  saveEvent = (data, publish?:boolean) => {
-    if(publish) data.settings.isPublished = true
-    this.props.onFinalize(data)
+  saveEvent = async (publish?:boolean) => {
+    await this.collectChildData()
+
+    let createBody = this.state.data
+    this.setState({
+      collectChildData: false
+    })
+
+    // if(publish) createBody.settings.isPublished = true
+    this.props.onFinalize(createBody)
   }
 
   render() {
@@ -150,7 +126,7 @@ export class EventEditor extends Component<EventEditorProps> {
             }
             
             <Button color="primary" size="lg" className="float-right" onClick={()=>{
-              this.saveEvent(this.state.data, true)
+              this.saveEvent(true)
             }}>
               Publish
             </Button>
@@ -158,7 +134,7 @@ export class EventEditor extends Component<EventEditorProps> {
             <span className="float-right spacer"></span>
 
             <Button outline color="secondary" size="lg" className="float-right" onClick={()=>{
-              this.saveEvent(this.state.data, false)
+              this.saveEvent(false)
             }}>
               Save
             </Button>
@@ -176,40 +152,41 @@ export class EventEditor extends Component<EventEditorProps> {
             !this.state.loading ? (
               <Grid item container spacing={3}>
                 <Grid item md={7} xs={12}>
-                  <EventDetails populate={this.state.populateDataFromParent} data={this.state.data}
-                    syncParentData={this.syncDataChanges}
+                  <EventDetails syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
+                    populate={this.state.populateDataFromParent} data={this.state.data}
                   />
                 </Grid>
 
                 <Grid item md={5} xs={12}>
-                  <Settings populate={this.state.populateDataFromParent} data={this.state.data}
-                    syncParentData={this.syncDataChanges}
+                  <Settings syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
+                    populate={this.state.populateDataFromParent} data={this.state.data}
                   />
                 </Grid>
 
                 <Grid item md={12} xs={12}><hr/></Grid>
 
                 <Grid item md={6} xs={12}>
-                  <Venue populate={this.state.populateDataFromParent} data={this.state.data}
-                    syncParentData={this.syncDataChanges}
+                  <Venue syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
+                    populate={this.state.populateDataFromParent} data={this.state.data}
                   />
                 </Grid>
 
                 <Grid item md={6} xs={12}>
-                  <MediaCard populate={this.state.populateDataFromParent} data={this.state.data}
-                    syncParentData={this.syncDataChanges} tag="event" name="event" includeVideoURL={true}
+                  <MediaCard syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
+                    populate={this.state.populateDataFromParent} data={this.state.data}
+                    tag="event" name="event" includeVideoURL={true}
                   />
                 </Grid>
                 
                 <Grid item md={6} xs={12}>
-                  <Booking populate={this.state.populateDataFromParent} data={this.state.data}
-                    syncParentData={this.syncDataChanges}
+                  <Booking syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
+                    populate={this.state.populateDataFromParent} data={this.state.data}
                   />
                 </Grid>
 
                 <Grid item md={6} xs={12}>
-                  <Scheduling populate={this.state.populateDataFromParent} data={this.state.data}
-                    syncParentData={this.syncDataChanges}
+                  <Scheduling syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
+                    populate={this.state.populateDataFromParent} data={this.state.data}
                   />
                 </Grid>                
               </Grid>
@@ -222,7 +199,7 @@ export class EventEditor extends Component<EventEditorProps> {
           
           <div className="clearfix" style={{ padding: '1em' }}>
             <Button color="primary" size="lg" className="float-right" onClick={()=>{
-              this.saveEvent(this.state.data, true)
+              this.saveEvent(true)
             }}>
               Publish
             </Button>
@@ -230,7 +207,7 @@ export class EventEditor extends Component<EventEditorProps> {
             <span className="float-right spacer"></span>
 
             <Button outline color="secondary" size="lg" className="float-right" onClick={()=>{
-              this.saveEvent(this.state.data, false)
+              this.saveEvent(false)
             }}>
               Save
             </Button>

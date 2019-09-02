@@ -11,14 +11,14 @@ import { VenueEditor } from './VenueEditor'
 import { VenueListing } from './VenueListing'
 import { VenueContext } from './VenueContext'
 import { IVenueModel } from '@clubgo/database'
-import { DatabaseCRUDService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/features/api'
 
 export interface VenueControllerProps {
   mount?: 'create' | 'list'
 }
 export class VenueController extends Component<VenueControllerProps> {
   static contextType = VenueContext
-  venueService = new DatabaseCRUDService({ endpoint: 'api', path: '/venue' })
+  venueService = new DatabaseService({ endpoint: 'api', path: '/venue' })
 
   componentDidMount() {
     if(this.props.mount!==undefined) {

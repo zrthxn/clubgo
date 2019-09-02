@@ -3,7 +3,7 @@ import { Button } from 'reactstrap'
 
 import './scss/Pages.scss'
 
-import { Tickets } from '../components/Tickets/Tickets'
+import { TicketListing } from '../components/Tickets/TicketListing'
 
 export class TicketsPage extends Component {
   state = {
@@ -25,7 +25,7 @@ export class TicketsPage extends Component {
         </article>
 
         <article className="page-content">
-          <Tickets/>
+          <TicketListing/>
         </article>
       </div>
     )

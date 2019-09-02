@@ -5,42 +5,41 @@ import { RadioGroup, Radio } from '@material-ui/core'
 
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
-export interface CreateTicketProps {
+export interface TicketEditorProps {
   onFinalize: Function,
   onCancel: Function,
   populate?: boolean,
   data?: any
 }
-export class CreateTicket extends Component<CreateTicketProps> {
+export class TicketEditor extends Component<TicketEditorProps> {
   state = {
     loading: true,
     data: {
-      // ref: '',
+      ref: Date.now().toString(36),
       owner: 'admin',
       ticketTitle: undefined,
-      description: undefined,
-      entryType: 'stag',
+      entryType: 'couple',
       pricing: {
         couple: {
           admissionPrice: undefined,
           bookingDescription: undefined,
-          discount: undefined,
+          discount: 0,
           malesPerCoupleRatio: undefined,
           female: {
             admissionPrice: undefined,
             bookingDescription: undefined,
-            discount: undefined
+            discount: 0
           },
           male: {
             admissionPrice: undefined,
             bookingDescription: undefined,
-            discount: undefined
+            discount: 0
           },
         },        
         stag: {
           admissionPrice: undefined,
           bookingDescription: undefined,
-          discount: undefined
+          discount: 0
         }
       }
     },
@@ -84,12 +83,9 @@ export class CreateTicket extends Component<CreateTicketProps> {
               variant="outlined" onChange={this.handleChangeById}
               value={this.state.data.ticketTitle}
             />
+          </Grid>
 
-            <TextField id="description" required multiline fullWidth label="Description" 
-              variant="outlined" margin="dense" onChange={this.handleChangeById}
-              value={this.state.data.description}
-            />
-            
+          <Grid item xs={6}>
             <Label>Couples</Label>
             <Switch checked={(()=>this.state.data.entryType==='couple')()}
               onChange={()=>{
@@ -102,6 +98,14 @@ export class CreateTicket extends Component<CreateTicketProps> {
                   }
                 })
               }}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <TextField id="malesPerCoupleRatio" required fullWidth label="Males Per Couple"
+              disabled={(this.state.data.entryType!=='couple')}
+              variant="outlined" margin="dense" //onChange={this.handleChangeById}
+              //value={this.state.data.ticketTitle}
             />
           </Grid>
 
@@ -118,7 +122,10 @@ export class CreateTicket extends Component<CreateTicketProps> {
                         type="number" value={this.state.data.pricing.couple.admissionPrice}
                         variant="outlined" margin="dense" onChange={({target})=>{ 
                           let { data } = this.state
-                          data.pricing.couple.admissionPrice = parseInt(target.value, 10)
+                          if(target.value!=='')
+                            data.pricing.couple.admissionPrice = parseInt(target.value, 10)
+                          else
+                            data.pricing.couple.admissionPrice = 0
                           this.setState({ data }) 
                         }}
                       />
@@ -126,10 +133,13 @@ export class CreateTicket extends Component<CreateTicketProps> {
 
                     <Grid item xs={4}>
                       <TextField multiline fullWidth label="Discount %" 
-                        type="number" value={((this.state.data.pricing.couple.discount*100)*-1)}
+                        type="number" value={this.state.data.pricing.couple.discount}
                         variant="outlined" margin="dense" onChange={({target})=>{ 
                           let { data } = this.state
-                          data.pricing.couple.discount = -1*((parseInt(target.value, 10))/100)
+                          if(target.value!=='')
+                            data.pricing.couple.discount = parseInt(target.value, 10)
+                          else
+                            data.pricing.couple.discount = 0
                           this.setState({ data }) 
                         }}
                       />
@@ -157,7 +167,10 @@ export class CreateTicket extends Component<CreateTicketProps> {
                         type="number" value={this.state.data.pricing.couple.female.admissionPrice}
                         variant="outlined" margin="dense" onChange={({target})=>{ 
                           let { data } = this.state
-                          data.pricing.couple.female.admissionPrice = parseInt(target.value, 10)
+                          if(target.value!=='')
+                            data.pricing.couple.female.admissionPrice = parseInt(target.value, 10)
+                          else
+                            data.pricing.couple.female.admissionPrice = 0
                           this.setState({ data }) 
                         }}
                       />
@@ -165,10 +178,13 @@ export class CreateTicket extends Component<CreateTicketProps> {
 
                     <Grid item xs={6}>
                       <TextField multiline fullWidth label="Discount %" 
-                        type="number" value={((this.state.data.pricing.couple.female.discount*100)*-1)}
+                        type="number" value={this.state.data.pricing.couple.female.discount}
                         variant="outlined" margin="dense" onChange={({target})=>{ 
                           let { data } = this.state
-                          data.pricing.couple.female.discount = -1*((parseInt(target.value, 10))/100)
+                          if(target.value!=='')
+                            data.pricing.couple.female.discount = parseInt(target.value, 10)
+                          else
+                            data.pricing.couple.female.discount = 0
                           this.setState({ data }) 
                         }}
                       />
@@ -196,7 +212,10 @@ export class CreateTicket extends Component<CreateTicketProps> {
                         type="number" value={this.state.data.pricing.couple.male.admissionPrice}
                         variant="outlined" margin="dense" onChange={({target})=>{ 
                           let { data } = this.state
-                          data.pricing.couple.male.admissionPrice = parseInt(target.value, 10)
+                          if(target.value!=='')
+                            data.pricing.couple.male.admissionPrice = parseInt(target.value, 10)
+                          else
+                            data.pricing.couple.male.admissionPrice = 0
                           this.setState({ data }) 
                         }}
                       />
@@ -204,10 +223,13 @@ export class CreateTicket extends Component<CreateTicketProps> {
 
                     <Grid item xs={6}>
                       <TextField multiline fullWidth label="Discount %" 
-                        type="number" value={((this.state.data.pricing.couple.male.discount*100)*-1)}
+                        type="number" value={this.state.data.pricing.couple.male.discount}
                         variant="outlined" margin="dense" onChange={({target})=>{ 
                           let { data } = this.state
-                          data.pricing.couple.male.discount = -1*((parseInt(target.value, 10))/100)
+                          if(target.value!=='')
+                            data.pricing.couple.male.discount = parseInt(target.value, 10)
+                          else
+                            data.pricing.couple.male.discount = 0
                           this.setState({ data }) 
                         }}
                       />
@@ -237,7 +259,10 @@ export class CreateTicket extends Component<CreateTicketProps> {
                         type="number" value={this.state.data.pricing.stag.admissionPrice}
                         variant="outlined" margin="dense" onChange={({target})=>{ 
                           let { data } = this.state
-                          data.pricing.stag.admissionPrice = target.value
+                          if(target.value!=='')
+                            data.pricing.stag.admissionPrice = target.value
+                          else
+                            data.pricing.stag.admissionPrice = 0
                           this.setState({ data }) 
                         }}
                       />
@@ -245,11 +270,14 @@ export class CreateTicket extends Component<CreateTicketProps> {
 
                     <Grid item xs={4}>
                       <TextField multiline fullWidth label="Discount %" 
-                        type="number" value={((this.state.data.pricing.stag.discount*100)*-1)}
+                        type="number" value={this.state.data.pricing.stag.discount}
                         variant="outlined" margin="dense" onChange={({target})=>{ 
                           let { data } = this.state
-                          data.pricing.stag.discount = -1*((parseInt(target.value, 10))/100)
-                          this.setState({ data }) 
+                          if(target.value!=='')
+                            data.pricing.stag.discount = parseInt(target.value, 10)
+                          else
+                            data.pricing.stag.discount = 0
+                          this.setState({ data })
                         }}
                       />
                     </Grid>
@@ -290,4 +318,4 @@ export class CreateTicket extends Component<CreateTicketProps> {
   }
 }
 
-export default CreateTicket
+export default TicketEditor

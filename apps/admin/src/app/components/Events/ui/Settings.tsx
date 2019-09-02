@@ -7,11 +7,13 @@ import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface SettingsProps {
   syncParentData?: Function
+  syncData?: boolean,
   populate?: boolean,
   data?: any
 }
 export class Settings extends Component<SettingsProps> {
   state = {
+    synchronized: false,
     data: {
       isFeatured: false,
       isPublished: true,
@@ -20,22 +22,25 @@ export class Settings extends Component<SettingsProps> {
         featuredText: null,
         featuredPriority: null
       }
-    },
-    requiredFulfilled: false,
-    required: [
-      'isPublished', 'isFeatured', 'eventPriority'
-    ],
-    iterableMembers: [
-      
-    ]
+    }
   }
   
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
-    this.props.syncParentData(this.state.data, 'settings')
     this.setState((prevState, props)=>(
       result
     ))
+  }
+
+  componentDidUpdate() {    
+    if(this.props.syncData!==this.state.synchronized) { 
+      if(this.props.syncData) {
+        this.props.syncParentData(this.state.data, 'settings')
+        this.setState({
+          synchronized: this.props.syncData
+        })
+      }        
+    }
   }
 
   render() {

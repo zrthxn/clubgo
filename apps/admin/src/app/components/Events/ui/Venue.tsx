@@ -6,7 +6,8 @@ import Select from 'react-select';
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface VenueProps {
-  syncParentData?: Function
+  syncParentData?: Function,
+  syncData?: boolean,
   populate?: boolean,
   data?: any
 }
@@ -24,6 +25,7 @@ export class Venue extends Component<VenueProps> {
     filters: [
       'selectCity', 'selectVenueCategory'
     ],
+    synchronized: false,
     data: {
       city: String,
       venueId: String,
@@ -37,12 +39,7 @@ export class Venue extends Component<VenueProps> {
           _lon: Number
         }
       }
-    },
-    requiredFulfilled: false,
-    required: [
-      'city'
-    ],
-    iterableMembers: [ ]
+    }
   }
 
   constructor(props) {
@@ -79,6 +76,17 @@ export class Venue extends Component<VenueProps> {
     this.setState((prevState)=>(
       result
     ))
+  }
+
+  componentDidUpdate() {    
+    if(this.props.syncData!==this.state.synchronized) { 
+      if(this.props.syncData) {
+        this.props.syncParentData(this.state.data, 'venue')
+        this.setState({
+          synchronized: this.props.syncData
+        })
+      }        
+    }
   }
 
   render() {
