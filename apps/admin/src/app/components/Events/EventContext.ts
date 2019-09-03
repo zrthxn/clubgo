@@ -27,7 +27,7 @@ export const EventContext = React.createContext({
     closeSuccessFeedback: () => {
       console.log()
     },    
-    openErrorFeedback: (message?:string) => {
+    openErrorFeedback: (message?:string, details?:string) => {
       console.log()
     },
     closeErrorFeedback: () => {

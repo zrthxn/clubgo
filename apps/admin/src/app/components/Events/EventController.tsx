@@ -18,12 +18,14 @@ export interface EventControllerProps {
 }
 export class EventController extends Component<EventControllerProps> {
   static contextType = EventContext
-  eventService = new DatabaseService({ endpoint: 'api', path: '/event' })
+  context!: React.ContextType<typeof EventContext>
+
+  eventService = new DatabaseService('/event')
 
   componentDidMount() {
     if(this.props.mount!==undefined) {
       if(this.props.mount==='create')
-        this.context.actions.openEventEditor()
+        this.context.actions.openEventEditor('create')
       else if(this.props.mount==='list')
         this.context.actions.openEventListing()
     }

@@ -18,12 +18,14 @@ export interface VenueControllerProps {
 }
 export class VenueController extends Component<VenueControllerProps> {
   static contextType = VenueContext
-  venueService = new DatabaseService({ endpoint: 'api', path: '/venue' })
+  context!: React.ContextType<typeof VenueContext>
+
+  venueService = new DatabaseService('/venue')
 
   componentDidMount() {
     if(this.props.mount!==undefined) {
       if(this.props.mount==='create')
-        this.context.actions.openVenueEditor()
+        this.context.actions.openVenueEditor('create')
       else if(this.props.mount==='list')
         this.context.actions.openVenueListing()
     }

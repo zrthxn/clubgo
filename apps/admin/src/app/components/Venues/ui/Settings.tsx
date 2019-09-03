@@ -6,13 +6,15 @@ import { TextField, Button, Switch, Checkbox } from '@material-ui/core'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface SettingsProps {
-  syncParentData?: Function
+  syncParentData?: Function,
+  syncData?: boolean,
   populate?: boolean,
   data?: any
 }
 export class Settings extends Component<SettingsProps> {
   state = {
     loading: true,
+    synchronized: false,
     data: {
       isFeatured: false,
       isPublished: true,
@@ -21,14 +23,7 @@ export class Settings extends Component<SettingsProps> {
         featuredText: undefined,
         featuredPriority: undefined
       }
-    },
-    requiredFulfilled: false,
-    required: [
-      'isPublished', 'isFeatured', 'eventPriority'
-    ],
-    iterableMembers: [
-      
-    ]
+    }
   }
 
   componentDidMount() {
@@ -45,10 +40,20 @@ export class Settings extends Component<SettingsProps> {
         }
     })
   }
+
+  componentDidUpdate() {
+    if(this.props.syncData!==this.state.synchronized) {
+      if(this.props.syncData) {
+        this.props.syncParentData(this.state.data, 'settings')
+        this.setState({
+          synchronized: this.props.syncData
+        })
+      }        
+    }
+  }
   
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
-    this.props.syncParentData(this.state.data, 'settings')
     this.setState((prevState, props)=>(
       result
     ))

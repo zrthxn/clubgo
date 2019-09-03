@@ -7,7 +7,8 @@ import CreateableSelect from 'react-select/creatable'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 export interface VenueDetailsProps {
-  syncParentData?: Function
+  syncParentData?: Function,
+  syncData?: boolean,
   populate?: boolean,
   data?: any
 }
@@ -18,9 +19,8 @@ export class VenueDetails extends Component<VenueDetailsProps> {
     selectCategories: [],
     selectCity: undefined,
     selectLocality: undefined,
+    synchronized: false,
     data: {
-      ref: Date.now().toString(36),
-      owner: 'admin',
       venueTitle: undefined,
       description: undefined,
       categories: [],
@@ -37,12 +37,7 @@ export class VenueDetails extends Component<VenueDetailsProps> {
       cuisines: undefined,
       facilities: [],
       costForTwo: undefined,      
-    },
-    requiredFulfilled: false,
-    required: [
-      
-    ],
-    iterableMembers: []
+    }
   }
 
   suggestions = {
@@ -101,9 +96,19 @@ export class VenueDetails extends Component<VenueDetailsProps> {
     })
   }
 
+  componentDidUpdate() {    
+    if(this.props.syncData!==this.state.synchronized) {
+      if(this.props.syncData) {
+        this.props.syncParentData(this.state.data, 'root')
+        this.setState({
+          synchronized: this.props.syncData
+        })
+      }        
+    }
+  }
+
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
-    this.props.syncParentData(this.state.data, 'root')
     this.setState((prevState, props)=>(
       result
     ))
@@ -141,7 +146,6 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                       data.categories.push(item.value)
                     
                     this.setState((prevState, props)=>{
-                      this.props.syncParentData(data, 'root')
                       return {
                         data,
                         selectCategories: selected
@@ -175,7 +179,6 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                     let { data } = this.state
                     data.city = selected.value
                     this.setState((prevState, props)=>{
-                      this.props.syncParentData(data, 'root')
                       return {
                         data,
                         selectCity: selected
@@ -195,7 +198,6 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                     let { data } = this.state
                     data.locality = selected.value
                     this.setState((prevState, props)=>{
-                      this.props.syncParentData(data, 'root')
                       return {
                         data,
                         selectLocality: selected
@@ -263,7 +265,6 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                       let { data } = this.state
                       data.knownFor = labels
                       this.setState((prevState, props)=>{
-                        this.props.syncParentData(data, 'root')
                         return {
                           data
                         }
@@ -301,7 +302,6 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                       let { data } = this.state
                       data.facilities = labels
                       this.setState((prevState, props)=>{
-                        this.props.syncParentData(data, 'root')
                         return {
                           data
                         }

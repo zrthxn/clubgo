@@ -43,9 +43,13 @@ export class Admin extends Component {
 
   constructor(props) {
     super(props)
-    if(process.env.NODE_ENV!=="production") {
+    if(process.env.NODE_ENV!=='production') {
       this.state.authenticated = true
     }
+  }
+
+  componentDidMount() {
+    
   }
 
   openMessages = () => {
@@ -115,8 +119,7 @@ export class Admin extends Component {
 
                   <IconButton color="inherit" onClick={this.openUserAccountMenu}>
                     <AccountCircle />
-                    {/* <Menu id="appbarUserAccountMenu" keepMounted
-                      // anchorEl={}
+                    <Menu id="appbarUserAccountMenu" keepMounted
                       open={ this.state.userAccountMenuOpen }
                       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -128,7 +131,7 @@ export class Admin extends Component {
                     >
                       <MenuItem>Profile</MenuItem>
                       <MenuItem>My account</MenuItem>
-                    </Menu> */}
+                    </Menu>
                   </IconButton>
                 </Toolbar>
               </AppBar>

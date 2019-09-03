@@ -5,8 +5,8 @@ import { Observable, ErrorObserver } from 'rxjs'
 export class DatabaseService extends Interface {
   model = null
 
-  constructor(apiProps:APIProps, DatabaseModel?) {
-    super(apiProps)
+  constructor(path:string, DatabaseModel?) {
+    super({ endpoint: 'api', path })
     this.model = DatabaseModel
   }
 

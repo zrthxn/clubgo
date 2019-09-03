@@ -9,21 +9,17 @@ import { handleChangeById as inputHandler } from '@clubgo/util'
 import { Label } from 'reactstrap';
 
 export interface HoursProps {
-  syncParentData?: Function
+  syncParentData?: Function,
+  syncData?: boolean,
   populate?: boolean,
+  data?: object
 }
 export class Hours extends Component<HoursProps> {
   state = {
+    synchronized: false,
     data: {
       timings: []
-    },
-    requiredFulfilled: false,
-    required: [
-
-    ],
-    iterableMembers: [
-      'timings'
-    ]
+    }
   }
 
   constructor(props) {
@@ -48,9 +44,19 @@ export class Hours extends Component<HoursProps> {
     })
   }
 
+  componentDidUpdate() {    
+    if(this.props.syncData!==this.state.synchronized) {
+      if(this.props.syncData) {
+        this.props.syncParentData([...this.state.data.timings], 'timings')
+        this.setState({
+          synchronized: this.props.syncData
+        })
+      }        
+    }
+  }
+
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
-    this.props.syncParentData([...this.state.data.timings], 'timings')
     this.setState((prevState, props)=>(
       result
     ))
@@ -119,7 +125,6 @@ export class Hours extends Component<HoursProps> {
                           timings[index].openTime = time
                           data.timings = timings
                           this.setState((prevState, props)=>{
-                            this.props.syncParentData([...this.state.data.timings], 'timings')
                             return {
                               data
                             }
@@ -143,7 +148,6 @@ export class Hours extends Component<HoursProps> {
                           timings[index].closeTime = time
                           data.timings = timings
                           this.setState((prevState, props)=>{
-                            this.props.syncParentData([...this.state.data.timings], 'timings')
                             return {
                               data
                             }
@@ -165,7 +169,6 @@ export class Hours extends Component<HoursProps> {
                             timings[index].busy = value
                             data.timings = timings
                             this.setState((prevState, props)=>{
-                              this.props.syncParentData([...this.state.data.timings], 'timings')
                               return {
                                 data
                               }

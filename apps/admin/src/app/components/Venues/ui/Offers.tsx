@@ -4,7 +4,8 @@ import { TextField, Button } from '@material-ui/core'
 import Select from 'react-select'
 
 export interface OffersProps {
-  syncParentData?: Function
+  syncParentData?: Function,
+  syncData?: boolean,
   populate?: boolean,
 }
 export class Offers extends Component {

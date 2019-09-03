@@ -19,6 +19,7 @@ export interface EventEditorProps {
 }
 export class EventEditor extends Component<EventEditorProps> {
   static contextType = EventContext
+  context!: React.ContextType<typeof EventContext>
 
   ongoingStateTransition = false
 
@@ -152,8 +153,8 @@ export class EventEditor extends Component<EventEditorProps> {
             !this.state.loading ? (
               <Grid item container spacing={3}>
                 <Grid item md={7} xs={12}>
-                  <EventDetails syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent} data={this.state.data}
+                  <EventDetails populate={this.state.populateDataFromParent} data={this.state.data}
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
                   />
                 </Grid>
 
