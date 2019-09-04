@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-var _iactions = Object()
-
 // Initial State
 const _istate = {
   story: {
@@ -9,6 +7,8 @@ const _istate = {
     imageURL: String()
   }
 }
+
+var _iactions = {}
 
 export class ContextProvider extends Component {
   state = _istate
@@ -22,10 +22,6 @@ export class ContextProvider extends Component {
       closeStory: this.closeStory
     }
   }
-
-  componentDidMount() {
-    
-  }  
 
   openStory = (img) => {
     this.setState(()=>{
@@ -67,7 +63,7 @@ export class ContextProvider extends Component {
 export const Context = React.createContext({
   state: _istate,
   actions: (()=>{
-    new ContextProvider({})
+    const _Context = new ContextProvider({})
     return _iactions
   })()
 })
