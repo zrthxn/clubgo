@@ -13,10 +13,7 @@ type URLParams = {
   whatever: string
 }
 
-interface IComponentProps {
-  
-}
-export default class Home extends Component<RouteComponentProps<URLParams> & IComponentProps> {
+export default class Home extends Component<RouteComponentProps<URLParams>> {
   state = {
     stories: [
       { 

@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, ReactElement } from 'react'
 import ScrollArea from 'react-scrollbar'
 import './Recommender.scss'
 
-export interface RecommenderProps {
+interface RecommenderComponentProps {
   direction: 'horizontal' | 'vertical'
 }
-export class Recommender extends Component<RecommenderProps> {
+
+export class Recommender extends Component<RecommenderComponentProps> {
   direction = null
 
   constructor(props) {

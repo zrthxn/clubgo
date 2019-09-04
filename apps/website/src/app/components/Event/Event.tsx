@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import './Event.scss'
 
-export class Event extends Component {
+interface EventComponentProps {
+  image?: string
+}
+
+export class Event extends Component<EventComponentProps> {
   render() {
     return (
       <div className="event">

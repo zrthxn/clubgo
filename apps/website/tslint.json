@@ -1,4 +1,6 @@
 {
   "extends": "../../tslint.json",
-  "rules": []
+  "rules": {
+    "interface-over-type-literal": false
+  }
 }

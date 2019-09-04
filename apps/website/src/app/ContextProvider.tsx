@@ -8,7 +8,7 @@ const _istate = {
   }
 }
 
-var _iactions = {}
+var _iactions = Object()
 
 export class ContextProvider extends Component {
   state = _istate
