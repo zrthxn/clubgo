@@ -13,7 +13,7 @@ export interface EventListingProps {
 }
 export class EventListing extends Component<EventListingProps> {
   static contextType = EventContext
-  eventService = new DatabaseService({ endpoint: 'api', path: '/event' })
+  eventService = new DatabaseService('/event')
 
   state = {
     loading: true,

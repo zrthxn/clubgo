@@ -57,10 +57,8 @@ export class VenueDetails extends Component<VenueDetailsProps> {
       label: item.label, value: item.label
     })),
     category: [
-      { label: 'EDM' },
-      { label: 'Clubbing' },
-      { label: 'Comedy' },
-      { label: 'General' },
+      { label: 'Nightclubs' },
+      { label: 'Clubs and Bars' }
     ].map(item=>({
       label: item.label, value: item.label
     }))
@@ -83,6 +81,10 @@ export class VenueDetails extends Component<VenueDetailsProps> {
           selectLocality: { 
             label: this.props.data.locality, 
             value: this.props.data.locality
+          },
+          selectCity: { 
+            label: this.props.data.city, 
+            value: this.props.data.city
           },
     
           data: this.props.data,

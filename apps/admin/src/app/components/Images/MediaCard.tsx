@@ -26,20 +26,13 @@ export class MediaCard extends Component<MediaCardProps> {
     data: {
       images: [],
       videoURL: null
-    },
-    requiredFulfilled: false,
-    required: [
-      'images#1'
-    ],
-    iteratableMembers: [
-      'images'
-    ]
+    }
   }
 
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
-        let images = this.props.data
+        let { images } = this.props.data
         let { data } = this.state
         
         if(images!==undefined)

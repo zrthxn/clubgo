@@ -1,9 +1,12 @@
 import React, { Component, CSSProperties, HTMLAttributes } from 'react'
-import { Grid, Paper, InputAdornment, MenuItem } from '@material-ui/core'
+import { Grid, Paper, InputAdornment, MenuItem, Fab } from '@material-ui/core'
 import { TextField, Button, Switch, Checkbox, Chip } from '@material-ui/core'
-import Select from 'react-select';
+import Select from 'react-select'
 
 import { handleChangeById as inputHandler } from '@clubgo/util'
+import { DatabaseService } from '@clubgo/features/api'
+import { IVenueModel } from '@clubgo/database'
+import { Delete } from '@material-ui/icons'
 
 export interface VenueProps {
   syncParentData?: Function,
@@ -12,31 +15,32 @@ export interface VenueProps {
   data?: any
 }
 export class Venue extends Component<VenueProps> {
+  searchService = new DatabaseService('/venue')
+
   state = {
+    loading: true,
     suggestions:{
       city: [ ],
       venueCategory: [ ],
       venue: [ ],
       locality: [ ]
     },
-    selectCity: null,
-    selectVenueCategory: null,
-    selectCustomLocality: null,
-    filters: [
-      'selectCity', 'selectVenueCategory'
-    ],
+    selectCity: undefined,
+    selectVenue: undefined,
+    selectVenueCategory: undefined,
+    selectCustomLocality: undefined,
     synchronized: false,
     data: {
-      city: String,
-      venueId: String,
-      title: String,
-      address: String,
+      city: String(),
+      venueId: String(),
+      title: String(),
+      address: String(),
       isCustomVenue: false,
       customVenueDetails: {
-        locality: String,
+        locality: String(),
         coordinates: {
-          _lat: Number,
-          _lon: Number
+          _lat: Number(),
+          _lon: Number()
         }
       }
     }
@@ -44,8 +48,8 @@ export class Venue extends Component<VenueProps> {
 
   constructor(props) {
     super(props)
-    let { suggestions } = this.state
 
+    let { suggestions } = this.state
     suggestions.city = [
       { label: 'Delhi' },
       { label: 'Mumbai' },
@@ -62,20 +66,22 @@ export class Venue extends Component<VenueProps> {
       value: item.label, label: item.label,
     }))
 
-    suggestions.venue = [
-      // 
-    ].map(item=>({
-      value: item.label, label: item.label,
-    }))
-
     this.state.suggestions = suggestions
   }
 
-  handleChangeById = (event) => {
-    const result = inputHandler(event, this.state)
-    this.setState((prevState)=>(
-      result
-    ))
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.populate) {
+        return {
+          data: this.props.data,
+          loading: false,
+        }
+      }
+      else
+        return {
+          loading: false,
+        }
+    })  
   }
 
   componentDidUpdate() {    
@@ -89,10 +95,44 @@ export class Venue extends Component<VenueProps> {
     }
   }
 
+  handleChangeById = (event) => {
+    const result = inputHandler(event, this.state)
+    this.setState((prevState)=>(
+      result
+    ))
+  }
+
+  clearVenue = () => {
+    this.setState(()=>{
+      return {
+        loading: true,
+        selectCity: null,
+        selectVenue: null,
+        selectVenueCategory: null,
+        selectCustomLocality: null,
+        synchronized: false,
+        data: {
+          city: String(),
+          venueId: String(),
+          title: String(),
+          address: String(),
+          isCustomVenue: false,
+          customVenueDetails: {
+            locality: String(),
+            coordinates: {
+              _lat: Number(),
+              _lon: Number()
+            }
+          }
+        }
+      }
+    })
+  }
+
   render() {
     // Venue Details Section  ----------------------------------------------  Venue Details Section
     // ============================================================================================
-    return (
+    if(!this.state.loading) return (
       <Paper className="create-block">
         <h3 className="title clearfix">
           Venue
@@ -137,17 +177,91 @@ export class Venue extends Component<VenueProps> {
               </Grid>
 
               <Grid item xs={12}>
-                <TextField id="title" fullWidth label={(()=>{
-                  try {
+                <Select
+                  inputId="searchVenue"
+                  style={{ padding: '2em' }}
+                  placeholder={(()=>{
                     try {
-                      return `${this.state.selectVenueCategory.label} in ${this.state.selectCity.label}`
+                      try {
+                        return `${this.state.selectVenueCategory.label} in ${this.state.selectCity.label}`
+                      } catch(e) {
+                        return `Venues in ${this.state.selectCity.label}`
+                      }
                     } catch(e) {
-                      return `Venues in ${this.state.selectCity.label}`
+                      return 'Venue Name'
                     }
-                  } catch(e) {
-                    return 'Venue Name'
-                  }
-                })()} variant="outlined"/>
+                  })()}
+                  backspaceRemovesValue={true}
+                  value={this.state.selectVenue}
+                  options={this.state.suggestions.venue}
+                  onInputChange={(value, { action }) => {
+                    if(action==="input-change" && value.length>3) {
+                      this.searchService.searchBy({
+                        city: this.state.selectCity!==undefined ? 
+                          this.state.selectCity.value : undefined,
+                        categories: this.state.selectVenueCategory!==undefined ? 
+                          this.state.selectVenueCategory.value : undefined,
+                        $text: {
+                          $search: value
+                        }
+                      }).then((response)=>{
+                        let apiResponse = response.data
+                        
+                        if (apiResponse.results.length!==0) {
+                          let { suggestions } = this.state
+                          suggestions.venue = apiResponse.results.map((item:IVenueModel)=>({
+                            label: item.venueTitle, value: item
+                          }))
+                    
+                          this.setState({
+                            suggestions
+                          })
+                        }
+                      }) 
+                    }
+                  }}
+                  onChange={({ value }:{ value:IVenueModel })=>{
+                    let { data } = this.state
+                    
+                    data.venueId = value._id
+                    data.title = value.venueTitle
+                    data.address = value.address
+
+                    this.setState({
+                      data,
+                      selectVenue: {
+                        label: value.venueTitle, value: value
+                      }
+                    })
+                  }}
+                />
+
+                {
+                  this.state.data.venueId!==String() ? (
+                    <div
+                      className="clearfix"
+                      style={{
+                        padding: '1em',
+                        margin: '1em',
+                        border: '1.5px solid #1c1c1c40',
+                        borderRadius: '10px'
+                      }}
+                    >
+                      <div className="float-left">
+                        <h3>{ this.state.data.title }</h3>
+                        <p>{ this.state.data.address }</p>
+                      </div>
+
+                      <Fab className="float-right"
+                        onClick={this.clearVenue}
+                      >
+                        <Delete/>
+                      </Fab>
+                    </div>
+                  ) : (
+                    null
+                  )
+                }
               </Grid>
             </Grid>
           ) : (
@@ -195,6 +309,9 @@ export class Venue extends Component<VenueProps> {
           )
         }
       </Paper>
+    )
+    else return (
+      <h3>Loading...</h3>
     )
   }
 }

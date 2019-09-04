@@ -31,10 +31,10 @@ export class CRUDRouter {
       res.send({ message: 'Found', results: searchResult })
     })
 
-    // Read a group of venues by ID :: /_find
-    this._CRUD.post('/_find', async (req, res)=>{
-      const { searchQuery } = req.body
-      const searchResult = await this.Object.find({ ...searchQuery })
+    // Search for venues :: /_search
+    this._CRUD.post('/_search', async (req, res)=>{
+      const { query } = req.body
+      const searchResult = await this.Object.find({ ...query })
 
       res.send({ 
         message: `Found ${searchResult.length} matching records`,

@@ -88,14 +88,17 @@ export class EventDetails extends Component<EventDetailsProps> {
     }) 
   }
 
-  componentDidUpdate() {    
+  componentDidUpdate() {
+    // if(this.state.synchronized)
+    //   this.setState({ synchronized: false })
+
     if(this.props.syncData!==this.state.synchronized) {
       if(this.props.syncData) {
         this.props.syncParentData(this.state.data, 'root')
         this.setState({
           synchronized: this.props.syncData
         })
-      }        
+      }
     }
   }
   
@@ -111,9 +114,11 @@ export class EventDetails extends Component<EventDetailsProps> {
             <Grid item xs={12}>
               <Label>Details</Label>
               <TextField id="eventTitle" required fullWidth label="Event Name" 
-                variant="outlined" onChange={this.handleChangeById}/>
+                variant="outlined" onChange={this.handleChangeById} 
+                value={this.state.data.eventTitle}/>
               <TextField id="description" required multiline fullWidth label="Description" 
-                variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                variant="outlined" margin="dense" onChange={this.handleChangeById} 
+                value={this.state.data.description}/>
               
               <Select
                 inputId="category"
@@ -129,7 +134,6 @@ export class EventDetails extends Component<EventDetailsProps> {
                     data.categories.push(item.value)
                   
                   this.setState((prevState, props)=>{
-                    // this.props.syncParentData(data, 'root')
                     return {
                       data,
                       selectCategories: selected
@@ -142,9 +146,11 @@ export class EventDetails extends Component<EventDetailsProps> {
             <Grid item md={6} xs={12}>
               <Label>Tagline</Label>
               <TextField id="tagline" fullWidth label="Tagline" 
-                variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                variant="outlined" margin="dense" onChange={this.handleChangeById} 
+                value={this.state.data.tagline}/>
               <TextField id="flashText" fullWidth label="Flash Text" 
-                variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                variant="outlined" margin="dense" onChange={this.handleChangeById}
+                value={this.state.data.flashText}/>
             </Grid>
 
             <Grid item md={6} xs={12}>
@@ -187,7 +193,6 @@ export class EventDetails extends Component<EventDetailsProps> {
                     let { data } = this.state
                     data.dressCode.title = selected.value
                     this.setState((prevState, props)=>{
-                      // this.props.syncParentData(data, 'root')
                       return {
                         data,
                         selectDressCode: selected
@@ -204,12 +209,15 @@ export class EventDetails extends Component<EventDetailsProps> {
                 <CreateableSelect
                   isMulti
                   isClearable
-                  onChange={(value:any) => {
-                    let { tags } = this.state.data, { data } = this.state
-                    tags = [ ...value ]
+                  onChange={(values:any) => {
+                    let { data } = this.state
+
+                    let tags = []
+                    for (const tag of values)
+                      tags = [ ...tags, tag.value ]
+
                     data.tags = tags
                     this.setState((prevState, props)=>{
-                      // this.props.syncParentData(data, 'root')
                       return {
                         data
                       }
@@ -233,7 +241,6 @@ export class EventDetails extends Component<EventDetailsProps> {
                   detailData: String
                 })
                 this.setState((prevState, props)=>{
-                  // this.props.syncParentData(data, 'root')
                   return { data }
                 })
               }}
@@ -260,7 +267,6 @@ export class EventDetails extends Component<EventDetailsProps> {
                                 data.hasCutomDetails = false
                               
                               this.setState((prevState, props)=>{
-                                // this.props.syncParentData(data, 'root')
                                 return { data }
                               })
                             }}

@@ -12,7 +12,7 @@ import { TicketEditor } from './TicketEditor'
 import { Ticket } from './Ticket';
 
 export class TicketListing extends Component {
-  ticketService = new DatabaseService({ endpoint: 'api', path: '/ticket' })
+  ticketService = new DatabaseService('/ticket')
   
   state = {
     openCreateModal: false,

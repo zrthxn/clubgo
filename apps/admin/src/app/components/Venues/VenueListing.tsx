@@ -13,7 +13,7 @@ export interface VenueListingProps {
 }
 export class VenueListing extends Component<VenueListingProps> {
   static contextType = VenueContext
-  venueService = new DatabaseService({ endpoint: 'api', path: '/venue' })
+  venueService = new DatabaseService('/venue')
 
   state = {
     loading: true,

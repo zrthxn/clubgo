@@ -82,12 +82,12 @@ export class Images extends Component<ImagesProps> {
           <MediaCard tag="cover" name="cover" 
             syncParentData={this.syncDataChanges}
             populate={this.state.populateDataFromParent}
-            data={this.state.data.cover}
+            data={{ images: this.state.data.cover }}
           />
           <MediaCard tag="ambiance" name="ambiance" 
             syncParentData={this.syncDataChanges}
             populate={this.state.populateDataFromParent}
-            data={this.state.data.ambiance}
+            data={{ images: this.state.data.ambiance }}
           />
         </Grid>
 
@@ -95,12 +95,12 @@ export class Images extends Component<ImagesProps> {
           <MediaCard tag="food" name="food" 
             syncParentData={this.syncDataChanges}
             populate={this.state.populateDataFromParent}
-            data={this.state.data.food}
+            data={{ images: this.state.data.food }}
           />
           <MediaCard tag="bar" name="bar" 
             syncParentData={this.syncDataChanges}
             populate={this.state.populateDataFromParent}
-            data={this.state.data.bar}
+            data={{ images: this.state.data.bar }}
           />
         </Grid>
       </Grid>

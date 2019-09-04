@@ -9,6 +9,7 @@ import MediaCard from '../Images/MediaCard'
 import Scheduling from './ui/Scheduling'
 import Booking from './ui/Booking'
 import Settings from './ui/Settings'
+import Offers from './ui/Offers'
 
 import { EventContext } from './EventContext'
 
@@ -29,7 +30,25 @@ export class EventEditor extends Component<EventEditorProps> {
     collectChildData: false,
     data: {
       ref: Date.now().toString(36),
-      owner: 'admin'
+      owner: 'admin',
+      settings: {
+
+      },
+      venue: {
+
+      },
+      bookings: {
+
+      },
+      offers: {
+        
+      },
+      scheduling: {
+
+      },
+      media: {
+
+      }
     }
   }
 
@@ -110,7 +129,7 @@ export class EventEditor extends Component<EventEditorProps> {
   }
 
   render() {
-    return (
+    if(!this.state.loading) return (
       <div className="create-form">
         <div>
           <div className="clearfix" style={{ padding: '2em 1em' }}>            
@@ -159,35 +178,39 @@ export class EventEditor extends Component<EventEditorProps> {
                 </Grid>
 
                 <Grid item md={5} xs={12}>
-                  <Settings syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent} data={this.state.data}
+                  <Settings populate={this.state.populateDataFromParent} data={this.state.data.settings}
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
+                  />
+
+                  <Offers populate={this.state.populateDataFromParent} data={this.state.data.offers}
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
                   />
                 </Grid>
 
                 <Grid item md={12} xs={12}><hr/></Grid>
 
                 <Grid item md={6} xs={12}>
-                  <Venue syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent} data={this.state.data}
+                  <Venue populate={this.state.populateDataFromParent} data={this.state.data.venue}
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
                   />
                 </Grid>
 
                 <Grid item md={6} xs={12}>
-                  <MediaCard syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent} data={this.state.data}
+                  <MediaCard populate={this.state.populateDataFromParent} data={this.state.data.media}
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
                     tag="event" name="event" includeVideoURL={true}
                   />
                 </Grid>
                 
                 <Grid item md={6} xs={12}>
-                  <Booking syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent} data={this.state.data}
+                  <Booking populate={this.state.populateDataFromParent} data={this.state.data.bookings}
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
                   />
                 </Grid>
 
                 <Grid item md={6} xs={12}>
-                  <Scheduling syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                    populate={this.state.populateDataFromParent} data={this.state.data}
+                  <Scheduling populate={this.state.populateDataFromParent} data={this.state.data.scheduling}
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
                   />
                 </Grid>                
               </Grid>
@@ -216,6 +239,10 @@ export class EventEditor extends Component<EventEditorProps> {
         </div>
       </div>
     )
+    else 
+      return (
+        <div>Loading...</div>
+      )
   }
 }
 

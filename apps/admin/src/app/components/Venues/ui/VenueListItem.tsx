@@ -7,6 +7,7 @@ import { IVenueModel } from '@clubgo/database'
 import '../../scss/Listing.scss'
 
 import { VenueContext } from '../VenueContext'
+import { ConfirmDelete } from '../../Modals/ConfirmDelete'
 
 export interface VenueListItemProps {
   data?: IVenueModel,
@@ -24,9 +25,14 @@ export class VenueListItem extends Component<VenueListItemProps> {
           venueContext => (
             <div className="list-item">
               <Grid container spacing={1}>
-                <Grid item md={8} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
-                  <span style={{ margin: 'auto 0', width: '200px' }}>{ this.props.data.venueTitle }</span>
+                <Grid item md={6} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
+                  <div>
+                    <h4>{ this.props.data.venueTitle }</h4>
+                    <span style={{ width: '200px', overflow: 'hidden' }}>{ this.props.data.description }</span>
+                  </div>
+                </Grid>
 
+                <Grid item xs={2} style={{ display: 'flex', flexDirection: 'row' }}>
                   {
                     this.props.data.settings.isPublished ? (
                       <span style={{ margin: 'auto 1em', color: green[400] }}><b>Published</b></span>
@@ -52,37 +58,21 @@ export class VenueListItem extends Component<VenueListItemProps> {
                       <Edit/>
                     </IconButton>
 
-                    <Modal open={this.state.openDeleteModal}
-                      style={{
-                        margin: 'auto',
-                        width: 400,
-                        position: 'absolute',
-                        textAlign: 'center'
+                    <ConfirmDelete isOpen={this.state.openDeleteModal}
+                      confirm={()=>{
+                        this.setState({ openDeleteModal: false })
+                        this.props.onDelete()
+                      }}
+                      close={()=>{
+                        this.setState({ openDeleteModal: false })
                       }}
                     >
-                      <Paper style={{ padding: '2em', margin: '10em 0' }}>
-                        <h3>Delete Venue</h3>
-                        <p>
-                          Are you sure you want to delete this venue? <br/>
-                          This action is irreversible.
-                        </p>
-
-                        <Button variant="outlined" color="default" style={{ margin: '0.5em' }}
-                          onClick={()=>{ this.setState({ openDeleteModal: false }) }}
-                        >
-                          Cancel
-                        </Button>
-
-                        <Button variant="contained" color="primary" style={{ margin: '0.5em', backgroundColor: red[600] }}
-                          onClick={()=>{ 
-                            this.setState({ openDeleteModal: false })
-                            this.props.onDelete()
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </Paper>
-                    </Modal>
+                      <h3>Delete Venue</h3>
+                      <p>
+                        Are you sure you want to delete this venue? <br/>
+                        This action is irreversible.
+                      </p>
+                    </ConfirmDelete>
                   </div>
                 </Grid>
               </Grid>

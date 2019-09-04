@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Select from 'react-select'
 import { Label } from 'reactstrap'
 import { Grid, Paper } from '@material-ui/core'
-import { TextField, Button, Switch, Checkbox, InputAdornment, Tooltip} from '@material-ui/core'
+import { TextField, Button, Switch, InputAdornment, Tooltip} from '@material-ui/core'
 import { Slider } from '@material-ui/lab'
 import { Link, Phone } from '@material-ui/icons'
 import { ITicketModel } from '@clubgo/database'
@@ -23,10 +23,11 @@ export interface IAssignTicket {
 }
 
 export class Booking extends Component<BookingProps> {
-  searchService = new DatabaseService({ endpoint: 'api', path: '/ticket' })
+  searchService = new DatabaseService('/ticket')
 
   state = {
-    breakpoint: 25,
+    loading: true,
+    breakpoints: [0, 100],
     suggestions: {
       tickets: [].map((item:ITicketModel)=>({
         label: item.ticketTitle, value: item
@@ -36,13 +37,34 @@ export class Booking extends Component<BookingProps> {
     data: {
       isTakingOnsiteBookings: true,
       isTakingOnsitePayments: false,
+      details: undefined,
+      taxPercent: undefined,
+      processingFeePercent: undefined,
       tickets: Array<IAssignTicket>(),
       registrationURL: String,
       registrationPhone: String
     }
-  }  
+  } 
+
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.populate) {
+        return {
+          data: this.props.data,
+          loading: false,
+        }
+      }
+      else
+        return {
+          loading: false,
+        }
+    })  
+  }
 
   componentDidUpdate() {    
+    // if(this.state.synchronized)
+    //   this.setState({ synchronized: false })
+      
     if(this.props.syncData!==this.state.synchronized) {
       if(this.props.syncData) {
         this.props.syncParentData(this.state.data, 'bookings')
@@ -54,7 +76,7 @@ export class Booking extends Component<BookingProps> {
   }
 
   render() {
-    return (
+    if(!this.state.loading) return (
       <Paper className="create-block">
         <h3 className="title">
           Booking
@@ -102,7 +124,7 @@ export class Booking extends Component<BookingProps> {
                     options={this.state.suggestions.tickets}
                     onInputChange={(value, { action }) => {
                       if(action==="input-change") {
-                        this.searchService.findBy({
+                        this.searchService.searchBy({
                           $text: {
                             $search: value
                           }
@@ -121,31 +143,43 @@ export class Booking extends Component<BookingProps> {
                         }) 
                       }
                     }}
-                    onChange={(selected)=>{
-                      let { data } = this.state
+                    onChange={({ value }:{ value:ITicketModel })=>{
+                      let { data, breakpoints } = this.state
                       data.tickets.push({
                         activate: undefined,
-                        entry: selected.value
+                        entry: value
                       })
 
+                      if(data.tickets.length>1) {
+                        let terminus = breakpoints.pop(), penultimate = breakpoints.pop()
+                        let added = penultimate + ((terminus - penultimate) / 2)
+                        breakpoints = [ ...breakpoints, penultimate, added, terminus ]
+                      }
+
                       this.setState({
-                        data
+                        data,
+                        breakpoints
                       })
                     }}
                   />
                 </Grid>
                 
-                <Grid item xs={12} style={{ padding: '1em' }}>
+                <Grid item xs={12} style={{ padding: '1em', height: 'fit-content' }}>
                   {
                     this.state.data.tickets.map((ticket, index)=>{
                       return (
-                        <div key={`ticketBooking_${index}`}>
+                        <div key={`ticketBooking_${index}`} style={{ height: 'fit-content' }}>
                           <Ticket data={ticket.entry}
                             onDelete={()=>{
-                              let { data } = this.state
+                              let { data, breakpoints } = this.state
+                              
+                              if(data.tickets.length>1)
+                                breakpoints.splice(index, 1)
                               data.tickets.splice(index, 1)
+
                               this.setState({
-                                data
+                                data,
+                                breakpoints
                               })
                             }}
                             onEdit={(updatedTicket)=>{
@@ -157,38 +191,25 @@ export class Booking extends Component<BookingProps> {
                             }}
                           />
 
-                          <Slider value={[0, this.state.breakpoint]} 
-                            onChange={(e, vals)=>{
-                              this.setState(()=>({
-                                breakpoint: vals[1]
-                              }))
-                            }}
-                          />
+                          <div style={{ padding: '0 2em' }}>
+                            <Slider value={[this.state.breakpoints[index], this.state.breakpoints[index + 1]]} 
+                              onChange={(e, vals)=>{
+                                this.setState(()=>{
+                                  let { breakpoints } = this.state
+                                  breakpoints[index] = vals[0]
+                                  breakpoints[index + 1] = vals[1]
+                                  return {  
+                                    breakpoints
+                                  }
+                                })
+                              }}
+                            />
+                          </div>
                         </div>
                       )
                     })
                   }
                 </Grid>
-                
-
-                {/* <Grid item xs={12}>
-                  <Slider value={[0, this.state.breakpoint]} 
-                    onChange={(e, vals)=>{
-                      this.setState(()=>({
-                        breakpoint: vals[1]
-                      }))
-                    }}
-                  />
-
-                  <Slider value={[this.state.breakpoint,100]}
-                    onChange={(e, vals)=>{
-                      this.setState(()=>({
-                        breakpoint: vals[0]
-                      }))
-                    }}
-                  />
-                </Grid> */}
-
               </Grid>
             ) : (
               <Grid item container xs={12} spacing={3}>
@@ -218,6 +239,9 @@ export class Booking extends Component<BookingProps> {
           }
         </Grid>
       </Paper>
+    )
+    else return (
+      <h3>Loading...</h3>
     )
   }
 }

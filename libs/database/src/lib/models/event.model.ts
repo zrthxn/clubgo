@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose'
 import { artistSchema, IArtistModel } from './artist.model'
 import { ticketSchema, ITicketModel } from './ticket.model'
+import { offerSchema, IOfferModel } from './offer.model'
 
 /**
  * @module
@@ -58,11 +59,11 @@ import { ticketSchema, ITicketModel } from './ticket.model'
     },
     venue: {
       city: { 
-        type: String, //required: true 
+        type: String, required: true 
       },
       venueId: String,
       title: {
-        type: String, //required: true
+        type: String, required: true
       },
       address: String, 
       isCustomVenue: Boolean,
@@ -113,27 +114,30 @@ import { ticketSchema, ITicketModel } from './ticket.model'
     bookings: {
       isTakingOnsiteBookings: Boolean,
       isTakingOnsitePayments: Boolean,
-      details: [String],
+      details: String,
       taxPercent: {
         type: Number, min: 0, max: 100, default: 18
       },
       processingFeePercent: {
         type: Number, min: 0, max: 100, default: 0
       },
-      // GSTIN
       tickets: [
         {
+          entry: ticketSchema,
           activate: {
-            type: Number, required: true, min: 0
+            type: Number, min: 0
           },
           deactivate: {
             type: Number, min: 0
-          },
-          entry: ticketSchema
+          }
         }
       ],
       registrationURL: String,
       registrationPhone: String
+    },
+    offers: {
+      maxOffers: Number,
+      availableOffers: [ offerSchema ]
     },
     media: {
       images: [String],
@@ -143,7 +147,15 @@ import { ticketSchema, ITicketModel } from './ticket.model'
   {
     collection: 'Events'
   }
-);
+)
+
+eventSchema.index({
+  eventTitle: 'text',
+  description: 'text',
+  categories: 'text',
+  tagline: 'text',
+  tags: 'text'
+})
 
 export interface IEventModel extends mongoose.Document {
   ref: string,
@@ -210,18 +222,22 @@ export interface IEventModel extends mongoose.Document {
   bookings: {
     isTakingOnsiteBookings?: boolean,
     isTakingOnsitePayments?: boolean,
-    details: [string],
+    details: string,
     taxPercent: number,
     processingFeePercent: number,
     tickets?: [
       {
-        activate: number,
+        entry: ITicketModel,
+        activate?: number,
         deactivate?: number,
-        entry: ITicketModel
       }
     ],
     registrationURL?: string,
     registrationPhone?: string
+  },
+  offers?: {
+    maxOffers: number,
+    availableOffers: [ IOfferModel ]
   },
   media: {
     images: [string],

@@ -13,15 +13,45 @@ export interface SettingsProps {
 }
 export class Settings extends Component<SettingsProps> {
   state = {
+    loading: true,
     synchronized: false,
     data: {
       isFeatured: false,
       isPublished: true,
-      eventPriority: null,
+      eventPriority: undefined,
       featured: {
-        featuredText: null,
-        featuredPriority: null
+        featuredText: undefined,
+        featuredPriority: undefined
       }
+    }
+  }
+
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.populate) {
+        return {
+          data: this.props.data,
+          loading: false,
+        }
+      }
+      else
+        return {
+          loading: false,
+        }
+    }) 
+  }
+
+  componentDidUpdate() { 
+    // if(this.state.synchronized)
+    //   this.setState({ synchronized: false })
+         
+    if(this.props.syncData!==this.state.synchronized) { 
+      if(this.props.syncData) {
+        this.props.syncParentData(this.state.data, 'settings')
+        this.setState({
+          synchronized: this.props.syncData
+        })
+      }        
     }
   }
   
@@ -32,19 +62,8 @@ export class Settings extends Component<SettingsProps> {
     ))
   }
 
-  componentDidUpdate() {    
-    if(this.props.syncData!==this.state.synchronized) { 
-      if(this.props.syncData) {
-        this.props.syncParentData(this.state.data, 'settings')
-        this.setState({
-          synchronized: this.props.syncData
-        })
-      }        
-    }
-  }
-
   render() {
-    return (
+    if(!this.state.loading) return (
       <Grid item container xs={12}>
         <Grid item xs={12}>
           <Paper className="create-block">
@@ -52,12 +71,14 @@ export class Settings extends Component<SettingsProps> {
 
             <Grid item container xs={12} spacing={3}>
               <Grid item xs={6}>
-                <Switch id="isPublished" defaultChecked color="primary" onChange={this.handleChangeById}/>  
+                <Switch id="isPublished" defaultChecked color="primary" 
+                  checked={this.state.data.isPublished} onChange={this.handleChangeById}/>  
                 <Label>Published</Label>
               </Grid>
 
               <Grid item xs={6}>
-                <Switch id="isFeatured" color="primary" onChange={this.handleChangeById}/>
+                <Switch id="isFeatured" color="primary" 
+                  checked={this.state.data.isFeatured} onChange={this.handleChangeById}/>
                 <Label>Featured</Label>
               </Grid>
 
@@ -68,7 +89,7 @@ export class Settings extends Component<SettingsProps> {
                   ) : (
                     <TextField id="featured/featuredText" fullWidth label="Featured Text" 
                       variant="outlined" margin="dense" onChange={this.handleChangeById}
-                    />
+                      value={this.state.data.featured.featuredText}/>
                   )
                 }
               </Grid>
@@ -84,7 +105,7 @@ export class Settings extends Component<SettingsProps> {
               <Grid item xs={12}>
                 <TextField id="eventPriority" fullWidth label="Event Priority (num)" 
                   variant="outlined" margin="dense" onChange={this.handleChangeById}
-                />
+                  value={this.state.data.eventPriority}/>
 
                 {
                   !this.state.data.isFeatured ? (
@@ -92,7 +113,7 @@ export class Settings extends Component<SettingsProps> {
                   ) : (
                     <TextField id="featured/featuredPriority" fullWidth label="Featured Priority (num)" 
                       variant="outlined" margin="dense" onChange={this.handleChangeById}
-                    />
+                      value={this.state.data.featured.featuredPriority}/>
                   )
                 }
               </Grid>
@@ -100,6 +121,9 @@ export class Settings extends Component<SettingsProps> {
           </Paper>
         </Grid>
       </Grid>
+    )
+    else return (
+      <h3>Loading...</h3>
     )
   }
 }

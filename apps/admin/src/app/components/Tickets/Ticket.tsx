@@ -14,7 +14,7 @@ export interface TicketProps {
   onEdit?: Function
 }
 export class Ticket extends Component<TicketProps> {
-  ticketService = new DatabaseService({ endpoint: 'api', path: '/ticket' })
+  ticketService = new DatabaseService('/ticket')
 
   state = {
     openEditModal: false
@@ -24,7 +24,22 @@ export class Ticket extends Component<TicketProps> {
     return (
       <div className="ticket clearfix">
         <div className="ticket-item">
-          <p className="title">{ this.props.data.ticketTitle }</p>
+          <p className="ticket-title">{ this.props.data.ticketTitle }</p>
+
+          <div style={{ color: '#1c1c1c80' }}>
+            {
+              this.props.data.entryType==="stag" ? (
+                'Stag Ticket'
+              ) : (
+                this.props.data.entryType==="couple" ? (
+                  'Couple Ticket'
+                ) : (
+                  null
+                )
+              )
+            }
+          </div>
+
           <p className="price float-left">{(()=>{
             if(this.props.data.entryType==="stag")
               return '\u20B9' + this.props.data.pricing.stag.admissionPrice

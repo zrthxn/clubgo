@@ -27,13 +27,11 @@ export class DatabaseService extends Interface {
     )
   }
 
-  async findBy(findBy:object) {
+  async searchBy(query:object) {
     // cRud
     return await this.request.post(
-      this.endpoint + '/_find', {
-        searchQuery: {
-          ...findBy
-        }
+      this.endpoint + '/_search', {
+        query
       }
     )
   }

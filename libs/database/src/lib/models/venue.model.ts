@@ -16,7 +16,7 @@ export const venueSchema = new mongoose.Schema(
       type: String, required: true
     },
     venueTitle: {
-      type: String, required: true, index: true
+      type: String, required: true
     },
     description: {
       type: String, required: true
@@ -104,6 +104,12 @@ export const venueSchema = new mongoose.Schema(
     collection: 'Venues'
   }
 )
+
+venueSchema.index({
+  venueTitle: 'text',
+  description: 'text',
+  categories: 'text'
+})
 
 export interface IVenueModel extends mongoose.Document {
   ref: string,
