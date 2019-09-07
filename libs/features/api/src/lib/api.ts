@@ -7,48 +7,52 @@ export const APIEndpoints = process.env.NODE_ENV==='production' ? (
   require('./config.json').dev.endpoints
 )
 
+export interface APIProps {
+  endpoint: 'api' | 'cdn' | 'login' | 'auth'
+  path?: string
+  accessLevel?: 'admin' | 'user'
+}
+
+/**
+ * Interface Class.
+ * Standard methods used to connect to the backend or CDN servers.
+ * Automatically handles authentication and URLs.
+ * Inherited by other APIs to create Services.
+ * 
+ * @description Base API Interface Class.
+ */
 export default class Interface {
-  request = axios
-  
-  protected auth = {
-    accessKey: null,
-    accessLevel: null,
-    csrf: {
+  protected endpoint = APIEndpoints.api.url
 
-    },
-    headers: {
-
-    }
+  private auth = {
+    csrf: null,
+    headers: null
   }
 
-  protected endpoint = APIEndpoints.api
+  request = axios.create({
+    baseURL: this.endpoint,
+    timeout: 5000
+  })
 
+  /**
+   * @param api Properties/options
+   */
   constructor(api:APIProps) {
-    this.setAPIEndpoint(APIEndpoints[api.endpoint].url)
-    this.addPathRoute(api.path)
+    this.setAPIEndpoint(api.endpoint)
 
-    if(api.accessLevel!==null && api.accessLevel!==undefined)
-      this.auth.accessLevel = api.accessLevel
-    else
-      this.auth.accessLevel = 'user'
+    if(api.path!==undefined)
+      this.addPathRoute(api.path)
 
-    if(APIEndpoints[api.endpoint].secure)
-      this.authenticate()
-  }
+    let xsrf = localStorage.getItem('X-Request-Validation')
+    if(xsrf!==undefined) this.auth.csrf = xsrf
 
-  addPathRoute(setPath:string) {
-    this.endpoint += setPath
-  }
-
-  setAPIEndpoint(setUrl:string) {
-    this.endpoint = setUrl
-
-    this.request.create({
-      baseURL: this.endpoint,
-      timeout: 5000,
-      headers: {
-        'X-Basic-Auth': 'key'
+    this.request.interceptors.request.use((config)=>{
+      config.xsrfHeaderName = 'X-Request-Validation'
+      config.headers = {
+        [config.xsrfHeaderName] : this.auth.csrf,
+        Authorization: this.auth.headers
       }
+      return config
     })
 
     this.request.interceptors.response.use(
@@ -57,31 +61,51 @@ export default class Interface {
     )
   }
 
-  async authenticate(headers?) {
-    // Send auth request
-    // GET CSRF Tokens
-    const authEndpoint = APIEndpoints.auth.url
-    let authResponse = await this.request.post(authEndpoint, {
-      apiType: this.auth.accessLevel,
-      client: {
-        key: null, // random value
-        token: null, // fixed value, hashed with key
-      }
-    })
+  /**
+   * @param endpoint `Desginator` to set as endpoint
+   */
+  setAPIEndpoint(endpoint:APIProps['endpoint']) {
+    this.endpoint = APIEndpoints[endpoint].url
 
-    // await this.login(null, null)
+    this.request = axios.create({
+      baseURL: this.endpoint,
+      timeout: 5000
+    })
   }
 
+  setBaseURL(url:string) {
+    this.endpoint = url
+
+    this.request = axios.create({
+      baseURL: this.endpoint,
+      timeout: 5000
+    })
+  }
+
+  /**
+   * @returns `endpoint`
+   */
   getEndpoint() { 
     return this.endpoint
   }
-}
 
-export interface APIProps {
-  endpoint: 'api' | 'cdn' | 'login' | 'auth',
-  path: string,
-  accessLevel?: 'admin' | 'user'
-}
-export interface AuthInitializationTypes {
-  headers:Object
+  /**
+   * @param setPath `string` path to add to endpoint
+   */
+  addPathRoute(setPath:string) {
+    this.endpoint += setPath
+  }
+
+  /**
+   * @param header Header to stringify and add to auth
+   */
+  addAuthHeader(headers:object) {
+    for (const key in headers) {
+      if (headers.hasOwnProperty(key)) {
+        const element = headers[key]
+        this.auth.headers += 
+          key + '~' + element.toString() + ';'
+      }
+    }
+  }
 }

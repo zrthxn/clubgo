@@ -3,10 +3,9 @@ import path from 'path'
 import vhost from 'vhost'
 import { conf } from '@clubgo/util'
 
-import APIRouter from './routes/APIRouter'
-import WebRouter from './routes/WebRouter'
+import APIRouter from './Routes/APIRouter'
+import WebRouter from './Routes/WebRouter'
 
-import { auth } from '../Auth/Authentication'
 const ServerConfig = require('../serverconfig.json')
 
 export const _Router = express.Router()
@@ -16,7 +15,6 @@ export default _Router
 // Router Security Validation
 // --------------------------------------------------------
 _Router.use((req, res, next)=>{
-  console.log('ROUTER AUTH')
   // USER auth
   // If req has CSRF auth token, set a USER level access token
 
@@ -36,9 +34,9 @@ _Router.use((req, res, next)=>{
 _Router.use( APIRouter )
 
 // Production
-_Router.use(vhost(ServerConfig.domains.web, WebRouter))
+// _Router.use(vhost(ServerConfig.domains.web, WebRouter))
 
-_Router.use(vhost(ServerConfig.domains.api, APIRouter))
+// _Router.use(vhost(ServerConfig.domains.api, APIRouter))
 
 // STOP ============================================== STOP
 

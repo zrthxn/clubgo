@@ -14,6 +14,8 @@ import {
 import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
 import { AccountCircle, MenuRounded, MessageRounded, Notifications } from '@material-ui/icons'
 
+import { LoginService } from '@clubgo/features/api'
+
 import './Admin.scss'
 
 import LoginPage from './pages/LoginPage'
@@ -49,7 +51,16 @@ export class Admin extends Component {
   }
 
   componentDidMount() {
-    
+    this.validateApplication()
+  }
+
+  async validateApplication() {
+    const appAuthentication = new LoginService('auth')
+    try {
+      await appAuthentication.authenticate()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   openMessages = () => {

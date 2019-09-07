@@ -1,13 +1,17 @@
-export function auth() {
-  // Auth, CSRF and stuff
-  // try {
-  //   if(req.cookies['auth']==='auth')
-  //     next()
-  //   else
-  //     res.status(403)//.sendFile(path.resolve(__dirname, 'src', 'assets', 'noauth.html'))
-  // } catch (err) {
-  //   res.sendStatus(500)
-  // }
-  // req.cookie
-  // check cookie => / => /authorize => sms otp => back to /
-}
+/**
+ * @todo
+ * CSRF token generation from API Key
+ * 
+ * @todo
+ * CSRF Secret generation on server restart
+ * using fixed generator and random prime
+ * 
+ * @todo
+ * CSRF according to access level
+ * 
+ * @todo
+ * Access token generation according to access level
+ * 
+ * @todo
+ * Unique Login token generation acc. to access level
+ */

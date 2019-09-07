@@ -3,6 +3,9 @@ import { conf } from '@clubgo/util'
 
 const config = require('../config.json').database
 
+/**
+ * @description Mongoose Connection.
+ */
 export class DatabaseConnection {
   private connection = null
   private db = null
@@ -16,6 +19,10 @@ export class DatabaseConnection {
     useFindAndModify: false
   }
 
+  /**
+   * Mongoose connection class
+   * @param connectionOptions 
+   */
   constructor(connectionOptions:DatabaseConnectionOptions) {
     this.url = `${config.protocol}://${config.username}:${config.password}@${config.url}/`
     this.db = connectionOptions.database
@@ -32,24 +39,32 @@ export class DatabaseConnection {
     })
   }
 
+  /**
+   * Connects to the database and 
+   * returns a `Promise` which is resolved when
+   * the connection is established.
+   * @returns `Promise`
+   */
   async connect() {    
     try {
-      
       await mongoose.connect( this.url, { ...this.mongooseOptions })
 
       this.connection = mongoose.connection
       this.state = 'CONNECTED'
+      
       return this.state
-
     } catch (err) {
       console.log(conf.Red(err))
       return Promise.reject(err)
     }
   }
 
+  /**
+   * Closes the database connection
+   * @returns `Promise`
+   */
   async close() {
     try {
-
       await mongoose.disconnect()
       
       this.connection = null
@@ -57,7 +72,6 @@ export class DatabaseConnection {
 
       console.log(conf.Green('Mongoose Disconnected'), 'EXIT 0')
       return this.state
-
     } catch (err) {
       console.log(conf.Red(err))
       return Promise.reject(err)

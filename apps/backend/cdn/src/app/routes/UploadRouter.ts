@@ -51,7 +51,7 @@ UploadRouter.post('/single/:collection', (req, res)=>{
     
     const file = req['file']
 
-    let genFileName = collection + parseInt((file.filename.split('upload_')[1])).toString(36)
+    let genFileName = collection + parseInt((file.filename.split('upload_')[1]), 10).toString(36)
 
     fs.readFile(file.path, (err, data)=>{
       if (err) return res.status(500).send(err)
@@ -110,7 +110,7 @@ UploadRouter.post('/multiple/:collection', (req, res)=>{
     let refs = [], lookupEntries = Array<IFileItem>()
 
     for (const file of uploadedFiles) {
-      let genFileName = parseInt((file.filename.split('upload_')[1])).toString(36)
+      let genFileName = parseInt((file.filename.split('upload_')[1]), 10).toString(36)
       let writePath = path.join(__storagedir, 'root')
       
       if(collection==='root') {

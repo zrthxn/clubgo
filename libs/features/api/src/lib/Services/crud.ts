@@ -1,15 +1,32 @@
-import Interface, { APIProps } from '../api'
+import Interface from '../api'
 import ErrorsAPI from '../errors'
 import { Observable, ErrorObserver } from 'rxjs'
+import { serialize } from '@clubgo/util'
 
+/**
+ * @description Standard Database CRUD Service
+ * 
+ * @author 
+ * Alisamar Husain `zrthxn`
+ */
 export class DatabaseService extends Interface {
   model = null
 
+  /**
+   * @param `path` The route to the backend URI
+   * @param `DatabaseModel` (optional)
+   */
   constructor(path:string, DatabaseModel?) {
     super({ endpoint: 'api', path })
-    this.model = DatabaseModel
+    
+    if(DatabaseModel!==undefined)
+      this.model = DatabaseModel
   }
 
+  /**
+   * Lists all the objects at the given route
+   * @todo Make the objects streamable 
+   */
   async list() {
     try {
       return await this.request.get(
@@ -20,6 +37,10 @@ export class DatabaseService extends Interface {
     }
   }
 
+  /**
+   * Finds an object by ID
+   * @param id ID of the entry `Mongoose.ObjectID`
+   */
   async findById(id:string) {
     // cRud
     return await this.request.post(
@@ -27,15 +48,23 @@ export class DatabaseService extends Interface {
     )
   }
 
-  async searchBy(query:object) {
+  /**
+   * Search for object by given params
+   * @param search `Mongoose.Query` 
+   */
+  async searchBy(search:object) {
     // cRud
     return await this.request.post(
       this.endpoint + '/_search', {
-        query
+        query: serialize(search)
       }
     )
   }
 
+  /**
+   * Get a group of objects by ID
+   * @param ids `Array<Mongoose.ObjectID>`
+   */
   async findGroupById(ids:Array<string>) {
     // cRud
     return await this.request.post(
@@ -45,6 +74,10 @@ export class DatabaseService extends Interface {
     )
   }
 
+  /**
+   * Create a new oject
+   * @param createBody `Mongoose.Document`
+   */
   async create(createBody) {
     // Crud
     try {
@@ -58,6 +91,12 @@ export class DatabaseService extends Interface {
     }
   }
 
+  /**
+   * Updates object by ID
+   * @param id `ObjectID` to update
+   * @param updateBody `Mongoose.Document | object` update body
+   * @param options 
+   */
   async update(id:string, updateBody:object, options?) {
     // crUd
     try {
@@ -74,6 +113,10 @@ export class DatabaseService extends Interface {
     }
   }
 
+  /**
+   * Delete object by ID
+   * @param id `ObjectID`
+   */
   async delete(id:string) {
     // cruD
     try {

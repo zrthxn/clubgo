@@ -24,19 +24,19 @@ APIRouter.get('/', (req, res, next)=>{
 
 // CRUD Functions
 // --------------------------------------------------------
-const EventRouter = new CRUDRouter(Event).createRouter({ addDefaults: true })
+const EventRouter = new CRUDRouter(Event).create()
 APIRouter.use('/event', EventRouter)
 
-const VenueRouter = new CRUDRouter(Venue).createRouter({ addDefaults: true })
+const VenueRouter = new CRUDRouter(Venue).create()
 APIRouter.use('/venue', VenueRouter)
 
-const UserRouter = new CRUDRouter(User).createRouter({ addDefaults: true })
+const UserRouter = new CRUDRouter(User).create()
 APIRouter.use('/user', UserRouter)
 
-const OfferRouter = new CRUDRouter(Offer).createRouter({ addDefaults: true })
+const OfferRouter = new CRUDRouter(Offer).create()
 APIRouter.use('/offer', OfferRouter)
 
-const TicketRouter = new CRUDRouter(Ticket).createRouter({ addDefaults: true })
+const TicketRouter = new CRUDRouter(Ticket).create()
 APIRouter.use('/ticket', TicketRouter)
 
 // STOP ============================================== STOP

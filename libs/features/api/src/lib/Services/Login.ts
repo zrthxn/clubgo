@@ -1,11 +1,33 @@
 import Interface from '../api'
+import { APIEndpoints, APIProps } from '../api'
 
 export class LoginService extends Interface {
   accessLevel = null
 
-  constructor(loginAccessLevel:string) {
-    super({ endpoint: 'login', path: '/' })
-    this.accessLevel = loginAccessLevel
+  constructor(endpoint:APIProps['endpoint']) {
+    super({ endpoint })
+  }
+
+  /**
+   * Authenticate with the backend server to get CSRF tokens and headers.
+   */
+  async authenticate() {
+    const APIKEY = 'qWertT2uiOp2lkjhgfD5Sa2zxcvBn831'
+
+    try {
+      let authResponse = await this.request.post(
+        this.endpoint, {
+          shared: APIKEY
+        }
+      )
+      
+      let { token } = authResponse.data
+      localStorage.setItem('X-Request-Validation', token)
+    } catch (error) {
+      
+    } finally {
+      return
+    }
   }
 
   async login(loginId, password) {

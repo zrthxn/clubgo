@@ -3,18 +3,29 @@ import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
 
 /**
- * @description
- * * CRUD Router
- * This Express Router handles all CRUD functions.
+ * @description CRUD Router.
+ * This returns an instance of Express Router 
+ * which handles all CRUD functions.
  */
 
 export class CRUDRouter {
   Object = null
   _CRUD = express.Router()
 
+  /**
+   * @param Mongoose DatabaseObjectModel 
+   */
   constructor(DatabaseObjectModel:mongoose.Model<mongoose.Document>) {
     this.Object = DatabaseObjectModel
+    this.addDefaultRoutes()
   }
+
+  /**
+   * Returns the instance of `express.Router()` with
+   * the default CRUD routes added to it.
+   * @returns `express.Router()`
+   */
+  create = () => this._CRUD
 
   // CRUD Functions
   // --------------------------------------------------------
@@ -105,16 +116,6 @@ export class CRUDRouter {
       })
     })
   }
-
-  createRouter(options?:RouterOptions) {
-    if(options.addDefaults!==undefined && options.addDefaults)
-      this.addDefaultRoutes()
-    return this._CRUD
-  }
-}
-
-export interface RouterOptions {
-  addDefaults: boolean
 }
 
 // STOP ============================================== STOP
