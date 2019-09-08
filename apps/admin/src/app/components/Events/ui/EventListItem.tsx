@@ -29,7 +29,15 @@ export class EventListItem extends Component<EventListItemProps> {
                 <Grid item md={6} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
                   <div style={{ maxWidth: '200px', overflow: 'hidden' }}>
                     <h4>{ this.props.data.eventTitle }</h4>
-                    <span>{ this.props.data.description }</span>
+                    <span>
+                      { 
+                        this.props.data.description.length < 25 ? (
+                          this.props.data.description
+                        ) : ( 
+                          this.props.data.description.substr(0, 25) + '...'
+                        )
+                      }
+                    </span>
                   </div>
                 </Grid>
 

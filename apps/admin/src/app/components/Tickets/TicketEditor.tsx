@@ -87,7 +87,8 @@ export class TicketEditor extends Component<TicketEditorProps> {
 
           <Grid item xs={6}>
             <Label>Couples</Label>
-            <Switch checked={(()=>this.state.data.entryType==='couple')()}
+            <Switch defaultChecked={(()=>this.state.data.entryType==='couple')()}
+              color="primary"
               onChange={()=>{
                 this.setState(()=>{
                   let { data } = this.state
@@ -104,9 +105,19 @@ export class TicketEditor extends Component<TicketEditorProps> {
           <Grid item xs={6}>
             <TextField id="malesPerCoupleRatio" required fullWidth label="Males Per Couple"
               disabled={(this.state.data.entryType!=='couple')}
-              variant="outlined" margin="dense" //onChange={this.handleChangeById}
-              //value={this.state.data.ticketTitle}
-            />
+              value={this.state.data.pricing.couple.malesPerCoupleRatio}
+              variant="outlined" margin="dense" onChange={({ target })=>{
+                this.setState(()=>{
+                  let { data } = this.state
+                  if(target.value!=='')
+                    data.pricing.couple.malesPerCoupleRatio = parseInt(target.value, 10)
+                  else
+                    data.pricing.couple.malesPerCoupleRatio = 0
+                  return {
+                    data
+                  }
+                })
+              }} />
           </Grid>
 
           <Grid item xs={12}>

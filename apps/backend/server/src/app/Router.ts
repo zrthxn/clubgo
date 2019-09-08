@@ -6,7 +6,7 @@ import { conf } from '@clubgo/util'
 import APIRouter from './Routes/APIRouter'
 import WebRouter from './Routes/WebRouter'
 
-const ServerConfig = require('../serverconfig.json')
+const ServerConfig = require('./serverconfig.json')
 
 export const _Router = express.Router()
 export default _Router

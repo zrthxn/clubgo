@@ -1,5 +1,5 @@
 import React, { Component, CSSProperties, HTMLAttributes } from 'react'
-import { Grid, Paper, InputAdornment, MenuItem, Fab } from '@material-ui/core'
+import { Grid, Paper, InputAdornment, MenuItem, Fab, IconButton } from '@material-ui/core'
 import { TextField, Button, Switch, Checkbox, Chip } from '@material-ui/core'
 import Select from 'react-select'
 
@@ -15,7 +15,7 @@ export interface VenueProps {
   data?: any
 }
 export class Venue extends Component<VenueProps> {
-  searchService = new DatabaseService('/venue')
+  venueService = new DatabaseService('/venue')
 
   state = {
     loading: true,
@@ -25,10 +25,9 @@ export class Venue extends Component<VenueProps> {
       venue: [ ],
       locality: [ ]
     },
-    selectCity: undefined,
-    selectVenue: undefined,
-    selectVenueCategory: undefined,
-    selectCustomLocality: undefined,
+    selectCity: null,
+    selectVenue: null,
+    selectVenueCategory: null,
     synchronized: false,
     data: {
       city: String(),
@@ -72,14 +71,17 @@ export class Venue extends Component<VenueProps> {
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
+        let venue = this.props.data
         return {
-          data: this.props.data,
+          data: venue,
           loading: false,
+          selectCity: { label: venue.city, value: venue.city },
+          selectVenue: { label: venue.title, value: venue }
         }
       }
       else
         return {
-          loading: false,
+          loading: false
         }
     })  
   }
@@ -91,7 +93,7 @@ export class Venue extends Component<VenueProps> {
         this.setState({
           synchronized: this.props.syncData
         })
-      }        
+      }
     }
   }
 
@@ -102,10 +104,25 @@ export class Venue extends Component<VenueProps> {
     ))
   }
 
+  assignVenue = (venue:IVenueModel) => {
+    let { data } = this.state
+                    
+    this.setState(()=>{
+      data.venueId = venue._id
+      data.title = venue.venueTitle
+      data.address = venue.address
+
+      return {
+        data,
+        selectCity: { label: venue.city, value: venue.city },
+        selectVenue: { label: venue.venueTitle, value: venue }
+      }
+    })
+  }
+
   clearVenue = () => {
     this.setState(()=>{
       return {
-        loading: true,
         selectCity: null,
         selectVenue: null,
         selectVenueCategory: null,
@@ -138,7 +155,8 @@ export class Venue extends Component<VenueProps> {
           Venue
           <div className="float-right">
             <span className="inline-text-label">Custom</span>
-            <Switch id="isCustomVenue" color="primary" onChange={this.handleChangeById}/>
+            <Switch id="isCustomVenue" color="primary" 
+              defaultChecked={this.state.data.isCustomVenue} onChange={this.handleChangeById}/>
           </div>
         </h3>
 
@@ -183,12 +201,12 @@ export class Venue extends Component<VenueProps> {
                   placeholder={(()=>{
                     try {
                       try {
-                        return `${this.state.selectVenueCategory.label} in ${this.state.selectCity.label}`
+                        return `Search ${this.state.selectVenueCategory.label} in ${this.state.selectCity.label}`
                       } catch(e) {
-                        return `Venues in ${this.state.selectCity.label}`
+                        return `Search Venues in ${this.state.selectCity.label}`
                       }
                     } catch(e) {
-                      return 'Venue Name'
+                      return 'Search Venues'
                     }
                   })()}
                   backspaceRemovesValue={true}
@@ -196,11 +214,10 @@ export class Venue extends Component<VenueProps> {
                   options={this.state.suggestions.venue}
                   onInputChange={(value, { action }) => {
                     if(action==="input-change" && value.length>3) {
-                      this.searchService.searchBy({
-                        city: this.state.selectCity!==undefined ? 
-                          this.state.selectCity.value : undefined,
-                        categories: this.state.selectVenueCategory!==undefined ? 
-                          this.state.selectVenueCategory.value : undefined,
+                      let { selectCity, selectVenueCategory } = this.state
+                      this.venueService.searchBy({
+                        city: selectCity!==null ? selectCity.value : undefined,
+                        categories: selectVenueCategory!==null ? selectVenueCategory.value : undefined,
                         $text: {
                           $search: value
                         }
@@ -220,19 +237,8 @@ export class Venue extends Component<VenueProps> {
                       }) 
                     }
                   }}
-                  onChange={({ value }:{ value:IVenueModel })=>{
-                    let { data } = this.state
-                    
-                    data.venueId = value._id
-                    data.title = value.venueTitle
-                    data.address = value.address
-
-                    this.setState({
-                      data,
-                      selectVenue: {
-                        label: value.venueTitle, value: value
-                      }
-                    })
+                  onChange={({ value })=>{
+                    this.assignVenue(value)
                   }}
                 />
 
@@ -252,11 +258,9 @@ export class Venue extends Component<VenueProps> {
                         <p>{ this.state.data.address }</p>
                       </div>
 
-                      <Fab className="float-right"
-                        onClick={this.clearVenue}
-                      >
+                      <IconButton className="float-right" onClick={this.clearVenue}>
                         <Delete/>
-                      </Fab>
+                      </IconButton>
                     </div>
                   ) : (
                     null
@@ -284,26 +288,21 @@ export class Venue extends Component<VenueProps> {
               </Grid>
               
               <Grid item xs={6}>
-                <Select
-                  inputId="customVenueDetails/locality"
-                  placeholder="Select Locality"
-                  value={this.state.selectCustomLocality}
-                  options={this.state.suggestions.locality}
-                  onChange={ selected => {
-                    let { data } = this.state
-                    data.customVenueDetails.locality = selected.value
-                    this.setState((prevState, props)=>({ 
-                      data: data,
-                      selectCustomLocality: selected
-                    }))
-                  }}
-                />
+                <TextField  id="customVenueDetails/locality" fullWidth label="Locality" style={{ margin: 0 }}
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}
+                  value={this.state.data.customVenueDetails.locality}/>
               </Grid>
 
               <Grid item xs={12}>
-                <TextField id="title" fullWidth label="Venue Name" variant="outlined"/>
-                <TextField id="address" fullWidth label="Address" variant="outlined" multiline margin="dense"/>
-                <TextField id="" fullWidth label="Coordinates (map)" variant="outlined" multiline margin="dense"/>
+                <TextField id="title" fullWidth label="Venue Name" variant="outlined" 
+                  onChange={this.handleChangeById} value={this.state.data.title}/>
+
+                <TextField id="address" fullWidth multiline label="Address" 
+                  variant="outlined" margin="dense" onChange={this.handleChangeById}
+                  value={this.state.data.address}/>
+
+                <TextField id="customVenueDetails/coordinates" fullWidth multiline label="Coordinates (map)" 
+                  variant="outlined" margin="dense"/>
               </Grid>
             </Grid>
           )

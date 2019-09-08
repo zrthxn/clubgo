@@ -3,55 +3,64 @@ import { Paper } from '@material-ui/core'
 
 import '../scss/Listing.scss'
 
+import { DatabaseService } from '@clubgo/features/api'
+
+import { Filters } from '../Filters/Filters'
 import { VenueListItem } from './ui/VenueListItem'
 import { VenueContext } from './VenueContext'
 import { IVenueModel } from '@clubgo/database'
-import { DatabaseService } from '@clubgo/features/api'
 
-export interface VenueListingProps {
+interface VenueListingProps {
   onDelete: Function
 }
+
 export class VenueListing extends Component<VenueListingProps> {
   static contextType = VenueContext
-  venueService = new DatabaseService('/venue')
+  context!: React.ContextType<typeof VenueContext>
+
+  service = new DatabaseService('/venue')
 
   state = {
     loading: true,
     errorText: undefined,
-    query: {
-      findBy: null,
-      params: [],
+    listing: Array<IVenueModel>(),
+
+    search: {
       maxRecords: 0,
-      lazyLoad: true
-    },
-    listing: Array<IVenueModel>()
+      lazyLoad: true,
+      query: {
+
+      }
+    }
   }
 
   componentDidMount() {
-    this.loadVenueListings()
+    this.loadListings(this.state.search)
   }
 
-  loadVenueListings = async () => {
+  async loadListings(search) {
+    let { query } = search, listing, errorText
     try {
-      let { data } = await this.venueService.list()
-      let { listing } = this.state
-
-      if(data.results!==undefined)
+      let { data } = await this.service.searchBy(query)
+      errorText = undefined
+      if(data.results.length > 0) 
         listing = data.results
-
-      this.setState({
-        listing,
-        loading: false
-      })
+      else
+        errorText = 'No results found for this query!'
     } catch (err) {
-      this.setState(()=>{
-        this.context.actions.openErrorFeedback(err.toString())
-        return {
-          loading: false,
-          errorText: err.toString()
-        }
-      })
+      this.context.actions.openErrorFeedback(err)
+      errorText = err
     }
+
+    this.setState(()=>{
+      return {
+        listing,
+        errorText,
+        loading: false
+      }
+    })
+
+    return
   }
 
   deleteVenue = async (venueId:string) => {
@@ -73,19 +82,47 @@ export class VenueListing extends Component<VenueListingProps> {
             this.state.loading ? <p>Loading...</p> : null
           }
 
-          <p style={{ color: '#ff0000' }}>{ this.state.errorText }</p>
+          <Filters 
+            filters={[
+              {
+                key: 'city',
+                placeholder: 'City',
+                suggestions: [
+                  {
+                    label: 'Delhi',
+                    value: 'Delhi'
+                  },
+                  {
+                    label: 'Mumbai',
+                    value: 'Mumbai'
+                  }
+                ]
+              }
+            ]}
+            onChange={(filters)=>{
+              this.loadListings({
+                query: filters
+              })
+            }}
+          />
+
+          <p style={{ color: '#ff0000', margin: '1em' }}>{ this.state.errorText }</p>
 
           <div className="listing-table">
             {
-              !this.state.loading && this.state.listing.map((item, index)=>{
-                return (
-                  <VenueListItem data={ item } key={ `venueListing_${index}` }
-                    onDelete={()=>{
-                      this.deleteVenue(item._id)
-                    }}
-                  />
-                )
-              })
+              !this.state.loading && this.state.listing!==undefined ? (
+                this.state.listing.map((item, index)=>{
+                  return (
+                    <VenueListItem data={ item } key={ `venueListing_${index}` }
+                      onDelete={()=>{
+                        this.deleteVenue(item._id)
+                      }}
+                    />
+                  )
+                })
+              ) : (
+                null
+              )
             }    
           </div>
       </div>

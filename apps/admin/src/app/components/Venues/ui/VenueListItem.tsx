@@ -28,7 +28,15 @@ export class VenueListItem extends Component<VenueListItemProps> {
                 <Grid item md={6} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
                   <div>
                     <h4>{ this.props.data.venueTitle }</h4>
-                    <span style={{ width: '200px', overflow: 'hidden' }}>{ this.props.data.description }</span>
+                    <span>
+                      { 
+                        this.props.data.description.length < 25 ? (
+                          this.props.data.description
+                        ) : ( 
+                          this.props.data.description.substr(0, 25) + '...'
+                        )
+                      }
+                    </span>
                   </div>
                 </Grid>
 

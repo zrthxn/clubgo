@@ -71,14 +71,14 @@ export class Settings extends Component<SettingsProps> {
 
             <Grid item container xs={12} spacing={3}>
               <Grid item xs={6}>
-                <Switch id="isPublished" defaultChecked color="primary" 
-                  checked={this.state.data.isPublished} onChange={this.handleChangeById}/>  
+                <Switch id="isPublished" color="primary" 
+                  defaultChecked={this.state.data.isPublished} onChange={this.handleChangeById}/>  
                 <Label>Published</Label>
               </Grid>
 
               <Grid item xs={6}>
                 <Switch id="isFeatured" color="primary" 
-                  checked={this.state.data.isFeatured} onChange={this.handleChangeById}/>
+                  defaultChecked={this.state.data.isFeatured} onChange={this.handleChangeById}/>
                 <Label>Featured</Label>
               </Grid>
 

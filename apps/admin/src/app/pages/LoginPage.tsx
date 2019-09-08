@@ -14,7 +14,7 @@ export class LoginPage extends Component<LoginPageProps> {
     password: null
   }
 
-  loginService = new LoginService('admin')
+  loginService = new LoginService('login')
 
   render() {
     return (
