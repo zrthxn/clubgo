@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core'
 import './Events.scss'
 
 import { DatabaseService } from '@clubgo/features/api'
-import { IEventModel } from '@clubgo/database'
+import { IEventModel, IVenueModel } from '@clubgo/database'
 import Context from '../../ContextProvider'
 
 type URLParams = {
@@ -22,8 +22,11 @@ export default class Details extends Component<RouteComponentProps<URLParams> & 
   context!: React.ContextType<typeof Context>
 
   eventService = new DatabaseService('/event')
+  venueService = new DatabaseService('/venue')
   
-  data:IEventModel
+  event:IEventModel
+
+  venue:IVenueModel
 
   state = {
     loading: true
@@ -34,7 +37,13 @@ export default class Details extends Component<RouteComponentProps<URLParams> & 
     this.eventService.searchBy({
       ref: eventRef
     }).then((event)=>{
-      this.data = event.data.results[0]
+      this.event = event.data.results[0]
+
+      this.venueService.findById(this.event.venue.venueId)
+        .then((venue)=>{
+          this.venue = venue.data.results
+        })
+
       this.setState({
         loading: false
       })
@@ -42,7 +51,7 @@ export default class Details extends Component<RouteComponentProps<URLParams> & 
   }
 
   openBooking = () => {
-    this.context.router('/event/booking/' + this.data.ref)
+    this.context.router('/event/booking/' + this.event.ref)
   }
   
   render() {
@@ -62,8 +71,8 @@ export default class Details extends Component<RouteComponentProps<URLParams> & 
                 <div className="action">
                   <div className="floater">
                     <div className="block">
-                      <h2 className="event-name">{ this.data.eventTitle }</h2>
-                      <h3 className="venue-name">{ this.data.venue.title }</h3>
+                      <h2 className="event-name">{ this.event.eventTitle }</h2>
+                      <h3 className="venue-name">{ this.event.venue.title }</h3>
                       <span>Dates | Offers</span>
                     </div>
                     <button onClick={this.openBooking}>Book Now</button>
