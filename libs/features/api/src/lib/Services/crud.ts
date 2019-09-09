@@ -43,7 +43,7 @@ export class DatabaseService extends Interface {
    */
   async findById(id:string) {
     // cRud
-    return await this.request.post(
+    return await this.request.get(
       this.endpoint + '/_get/' + id
     )
   }

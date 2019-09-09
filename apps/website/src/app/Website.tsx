@@ -9,10 +9,12 @@ import Context from './ContextProvider'
 
 import Home from './views/Home/Home'
 import Events from './views/Events/Events'
+import Details from './views/Events/Details'
 
 import Header from './partials/Header/Header'
 import Footer from './partials/Footer/Footer'
 import NotFound from './partials/Errors/NotFound'
+import Booking from './views/Bookings/Booking'
 
 export default class WebsiteController extends Component {
   static contextType = Context
@@ -53,24 +55,38 @@ export default class WebsiteController extends Component {
             <Context.Consumer>
               {
                 appContext => (
-                  <Switch>
-                    <Route exact path="/" component={Home}/>
-                    <Route exact path="/events" component={Events}/>
+                  <div>
+                    <Switch>
+                      <Route exact path="/" component={Home}/>
+                      <Route exact path="/events" component={Events}/>
 
-                    <Route path="/404" component={NotFound}/>
+                      <Route exact path="/404" component={NotFound}/>
 
-                    <Route path="/:city" render={(routeProps)=>{
-                      let { city } = routeProps.match.params
-                      if(city==='delhi' || city==='mumbai')
+                      <Route exact path="/:city" render={(routeProps)=>{
+                        let { city } = routeProps.match.params
+                        if(city==='delhi' || city==='mumbai')
+                          return (
+                            <Events { ...routeProps }/>
+                          )
+                        else
+                          appContext.router('/404')
+                      }}/>
+
+                      <Route path="/event/details/:eventRef" render={(routeProps)=>{
                         return (
-                          <Events { ...routeProps }/>
+                          <Details { ...routeProps }/>
                         )
-                      else
-                        appContext.router('/404')
-                    }}/>
+                      }}/>
 
-                    <Route component={NotFound}/>
-                  </Switch>
+                      <Route path="/event/booking/:eventRef" render={(routeProps)=>{
+                        return (
+                          <Booking { ...routeProps }/>
+                        )
+                      }}/>
+
+                      <Route component={NotFound}/>
+                    </Switch>
+                  </div>
                 )
               }
             </Context.Consumer>

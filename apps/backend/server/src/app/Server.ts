@@ -118,5 +118,5 @@ _Server.use(APIRouter)
 
 _Server.use((req, res)=>{
   // End any caught requests if no matching paths are found
-  res.end('Request Forcefully Closed.\n Your request was caught but did not match any paths.\n')
+  res.end('Request Forcefully Closed. Your request was caught here but did not match any paths.')
 })

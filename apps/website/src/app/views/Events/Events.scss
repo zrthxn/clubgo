@@ -1,0 +1,75 @@
+@import '../../Global.scss';
+
+.event-details {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .action {
+    position: relative;
+
+    .floater {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #1c1c1c80;
+
+      .block {
+        padding: 1.5em;
+        color: #000;
+      }
+      
+      button {
+        width: 100%;
+        padding: 1em 1.5em;
+
+        border: none;
+        color: #fff;
+        font-size: 1.125em;
+        font-family: $poppinsFont;
+        background: $primaryColor;
+        
+        border-bottom-left-radius: 0.5em;
+        border-bottom-right-radius: 0.5em;
+
+        &:focus, &:active {
+          outline: none;
+        }
+      }
+  
+      .event-name {
+        margin: 0;
+      }
+  
+      .venue-name {
+        color: #dd0000;
+      }
+    }
+
+    @media (min-width: 600px) {
+      & {
+        width: 24em;
+        position: fixed;
+      }
+    }
+
+    .attendees {
+      display: flex;
+      flex-direction: row;
+      
+      span {
+        margin: auto 0.25em;
+        padding: 1em;
+        border-radius: 50%;
+        background: #fff;
+
+        &:first-of-type {
+          margin-left: 1em;
+        }
+      }
+    }
+  }
+
+  .details {
+    margin: 2em 0;
+  }
+}

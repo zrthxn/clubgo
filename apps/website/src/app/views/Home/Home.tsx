@@ -69,7 +69,9 @@ export default class Home extends Component {
               })
             }
           </Recommender>
+        </section>
 
+        <section className="container">
           <h2>Nearby</h2>
           <FlexContainer>
             <Flexbox flow="row">
@@ -82,7 +84,9 @@ export default class Home extends Component {
               }
             </Flexbox>
           </FlexContainer>
+        </section>
 
+        <section className="container">
           <h2>Recommended</h2>
           <Recommender direction="horizontal">
             {
@@ -92,8 +96,7 @@ export default class Home extends Component {
                 )
               })
             }
-          </Recommender>
-          
+          </Recommender>          
         </section>
       </article>
       

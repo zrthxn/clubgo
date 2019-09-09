@@ -26,9 +26,6 @@ export default class Events extends Component<RouteComponentProps<URLParams>> {
     if(this.props.match.params.city!==undefined) {
       let { city } = this.props.match.params
       city = city.substr(0, 1).toUpperCase() + city.substr(1)
-
-      
-      
       this.setState({
         city
       })

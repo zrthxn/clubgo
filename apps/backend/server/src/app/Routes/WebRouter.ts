@@ -29,8 +29,3 @@ WebRouter.get('^/$', (req, res)=>{
 WebRouter.use(express.static( path.join(BUILD_PATH) ))
 
 // STOP ============================================== STOP
-
-WebRouter.use((req, res)=>{
-  // End any caught requests if no matching paths are found
-  res.end('Request Forcefully Closed.\n Your request was caught but did not match any paths.\n')
-})

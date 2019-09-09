@@ -40,8 +40,3 @@ const TicketRouter = new CRUDRouter(Ticket).create()
 APIRouter.use('/ticket', TicketRouter)
 
 // STOP ============================================== STOP
-
-APIRouter.use((req, res)=>{
-  // End any caught requests if no matching paths are found
-  res.end('Request Forcefully Closed.\n Your request was caught but did not match any paths.\n')
-})
