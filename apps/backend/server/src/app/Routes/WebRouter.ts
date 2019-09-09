@@ -11,29 +11,26 @@ export default WebRouter
 // Security Functions
 // --------------------------------------------------------
 WebRouter.use((req, res, next)=>{
-  // If req has API level access token, allow and DEL token header
-  // Else, 403
+  // Maybe
   next()
 })
 
-import { Renderer } from '../SSR/renderer'
-// Web Functions
-// --------------------------------------------------------
-// WebRouter.get('^/$', (req, res, next)=>{
-//   // res.write('ClubGo Website Backend. \n')
-//   // next()  
-// })
+import { render } from '../SSR/renderer'
+import { build, BUILD_PATH } from '../SSR/application'
 
-import { BUILD_PATH } from '../SSR/application'
+// tslint:disable: nx-enforce-module-boundaries
+import { Home } from '@clubgo/website/server'
 
-WebRouter.get('^/$', Renderer)
+WebRouter.get('^/$', (req, res)=>{
+  const Application = build(Home)
+  render(Application, req, res)
+})
 
 WebRouter.use(express.static( path.join(BUILD_PATH) ))
 
 // STOP ============================================== STOP
 
-// WebRouter.use((req, res)=>{
-//   // End any caught requests if no matching paths are found
-//   res.write('405 Request Forcefully Closed. \nYour request was caught but did not match any paths.\n')
-//   res.end()
-// })
+WebRouter.use((req, res)=>{
+  // End any caught requests if no matching paths are found
+  res.end('Request Forcefully Closed.\n Your request was caught but did not match any paths.\n')
+})

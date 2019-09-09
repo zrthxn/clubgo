@@ -50,7 +50,8 @@ export default class Interface {
       config.xsrfHeaderName = 'X-Request-Validation'
       config.headers = {
         [config.xsrfHeaderName] : this.auth.csrf,
-        Authorization: this.auth.headers
+        Authorization: this.auth.headers,
+        // Host: this.endpoint
       }
       return config
     })

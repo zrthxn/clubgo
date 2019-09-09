@@ -1,9 +1,11 @@
+import React from 'react'
 import path from 'path'
 
-import Footer from '../../../../../website/src/app/partials/Footer/Footer'
-export const Application = Footer
-
-import WebsiteController from '../../../../../website/src/app/Website'
-// export const Application = WebsiteController
+// tslint:disable: nx-enforce-module-boundaries
 
 export const BUILD_PATH = path.join(__dirname, '..', '..', '..', '..', 'dist', 'apps', 'website')
+
+export function build(view:React.ComponentClass<unknown, any>, props?:object) {
+  const Factory = React.createFactory(view)
+  return Factory(props)
+}

@@ -43,6 +43,5 @@ APIRouter.use('/ticket', TicketRouter)
 
 APIRouter.use((req, res)=>{
   // End any caught requests if no matching paths are found
-  res.write('405 Request Forcefully Closed. \nYour request was caught but did not match any paths.')
-  res.end()
+  res.end('Request Forcefully Closed.\n Your request was caught but did not match any paths.\n')
 })

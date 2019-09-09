@@ -1,6 +1,7 @@
 import React from 'react'
+import { conf } from '@clubgo/util'
 
-// import './Footer.scss'
+import './Footer.scss'
 
 export default function Footer() {
   return (

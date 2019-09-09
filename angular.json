@@ -265,7 +265,7 @@
           "builder": "@nrwl/node:build",
           "options": {
             "outputPath": "dist/apps/backend/server",
-            "main": "apps/backend/server/src/launch.ts",
+            "main": "apps/backend/server/src/main.ts",
             "tsConfig": "apps/backend/server/tsconfig.app.json",
             "assets": ["apps/backend/server/src/assets"],
             "styles": [

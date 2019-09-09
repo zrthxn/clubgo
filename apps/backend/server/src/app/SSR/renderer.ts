@@ -3,15 +3,18 @@ import ReactDOMServer from 'react-dom/server'
 import path from 'path'
 import fs from 'fs'
 
-// tslint:disable-next-line: nx-enforce-module-boundaries
-import { Application, BUILD_PATH } from './application'
+import { BUILD_PATH } from './application'
 
-const Factory = React.createFactory(Application)
-const isProd = process.env.NODE_ENV === 'production'
+const MIMETypes = {
+  '.js': 'application/javascript',
+  '.map': 'application/javascript',
+  '.json': 'application/json',
+  '.css': 'text/css',
+  '.html': 'text/html',
+  '.txt': 'text/plain',
+}
 
-import { initProps } from './props'
-import { lookup } from './mime'
-import { control } from './cache'
+const ENV = process.env.NODE_ENV === 'production'
 
 /**
  * React Server Side Rendering Middleware
@@ -19,18 +22,40 @@ import { control } from './cache'
  * @param res Response Object
  * @param next Next Function
  */
-export function Renderer(req, res, next) {
+export function render(app, req, res) {
   const file = path.resolve(BUILD_PATH, 'index.html')
+
   fs.readFile(file, 'utf8', (err, html) => {
     if (err) return res.status(404).send(err)
 
-    res.setHeader('Content-Type', lookup(req.url))
-    res.setHeader('Cache-Control', control(isProd, 1))
+    res.setHeader('Content-Type', mimeLookup(req.url))
+    res.setHeader('Cache-Control', cacheControl(ENV, 1))
 
-    const render = ReactDOMServer.renderToString(Factory(initProps()))
+    const rendered = ReactDOMServer.renderToString(app)
 
     return res.send(
-      html.replace('<div id="root"></div>', `<div id="root">${render}</div>`)
+      html.replace('<div id="root"></div>', `<div id="root">${rendered}</div>`)
     )
   })
+}
+
+function mimeLookup(_path: string): string {
+  const ext = path.extname(_path)
+  const mime = MIMETypes[ext]
+
+  if(_path==='/')
+    return 'text/html'
+  else if (!mime)
+    throw new Error(`No mime type for file: ${_path}`)
+
+  return mime
+}
+
+function cacheControl(isProd: boolean, days: number): string {
+  const sec = days * 24 * 60 * 60
+
+  if (days === 0 || !isProd)
+    return 'public, no-cache, no-store, must-revalidate'
+
+  return `public, max-age=${sec}`
 }

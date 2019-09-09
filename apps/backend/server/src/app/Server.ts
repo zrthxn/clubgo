@@ -36,6 +36,7 @@ _Server.use(express.urlencoded({ extended: true }))
 import APIRouter from './Routes/APIRouter'
 import WebRouter from './Routes/WebRouter'
 
+import { APIEndpoints } from '@clubgo/features/api'
 const ServerConfig = require('./serverconfig.json')
 
 // MongoDB Connection
@@ -98,24 +99,24 @@ LoginRouter.post('/_login', (req, res)=>{
   res.send(':: LOGIN ::')
 })
 
-// Routes
+// Router
 // --------------------------------------------------------
 _Server.use(AuthRouter)
 
 _Server.use(LoginRouter)
 
 // Development
-// _Server.use(APIRouter)
-_Server.use(WebRouter)
+_Server.use(APIRouter)
+// _Server.use(WebRouter)
 
 // Production
 // _Server.use(vhost(ServerConfig.domains.web, WebRouter))
 
-// _Server.use(vhost(ServerConfig.domains.api, APIRouter))
+// _Server.use(vhost(APIEndpoints.api.url, APIRouter))
 
 // STOP ============================================== STOP
 
 _Server.use((req, res)=>{
   // End any caught requests if no matching paths are found
-  res.send('Request Forcefully Closed.\n Your request was caught but did not match any paths.\n')
+  res.end('Request Forcefully Closed.\n Your request was caught but did not match any paths.\n')
 })
