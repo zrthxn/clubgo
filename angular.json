@@ -265,9 +265,12 @@
           "builder": "@nrwl/node:build",
           "options": {
             "outputPath": "dist/apps/backend/server",
-            "main": "apps/backend/server/src/main.ts",
+            "main": "apps/backend/server/src/launch.ts",
             "tsConfig": "apps/backend/server/tsconfig.app.json",
-            "assets": ["apps/backend/server/src/assets"]
+            "assets": ["apps/backend/server/src/assets"],
+            "styles": [
+              "apps/website/src/app/partials/Footer/Footer.scss"
+            ]
           },
           "configurations": {
             "production": {

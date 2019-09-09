@@ -3,6 +3,7 @@ import { conf } from '@clubgo/util'
 import * as bodyParser from 'body-parser'
 import * as cookieParser from 'cookie-parser'
 import crypto from 'crypto'
+import vhost from 'vhost'
 
 /**
  * @description
@@ -32,7 +33,8 @@ _Server.use(bodyParser.urlencoded({ extended: true }))
 _Server.use(express.json())
 _Server.use(express.urlencoded({ extended: true }))
 
-import _Router from './Router'
+import APIRouter from './Routes/APIRouter'
+import WebRouter from './Routes/WebRouter'
 
 const ServerConfig = require('./serverconfig.json')
 
@@ -96,18 +98,20 @@ LoginRouter.post('/_login', (req, res)=>{
   res.send(':: LOGIN ::')
 })
 
-// API Routes
+// Routes
 // --------------------------------------------------------
-// _Server.get('/', (req, res, next)=>{
-//   res.write(`ClubGo Server | ${conf.copyright} CLUBGO 2019 \n`)
-//   next()
-// })
-
 _Server.use(AuthRouter)
 
 _Server.use(LoginRouter)
 
-_Server.use(_Router)
+// Development
+// _Server.use(APIRouter)
+_Server.use(WebRouter)
+
+// Production
+// _Server.use(vhost(ServerConfig.domains.web, WebRouter))
+
+// _Server.use(vhost(ServerConfig.domains.api, APIRouter))
 
 // STOP ============================================== STOP
 

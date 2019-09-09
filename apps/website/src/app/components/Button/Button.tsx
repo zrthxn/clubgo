@@ -17,9 +17,7 @@ export function Button(props:ButtonProps) {
     buttonStyle += " " + props.color
 
   return (
-    <button style={props.style} className={buttonStyle} onClick={()=>{
-      setTimeout(props.onClick, 250)
-    }}>
+    <button { ...props } style={props.style} className={buttonStyle}>
       {
         props.children
       }

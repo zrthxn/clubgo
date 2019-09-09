@@ -1,26 +1,23 @@
 import React, { Component } from 'react'
+import { Image } from '@clubgo/website/components'
 import './Banner.scss'
 
-export interface BannerProps {
-  id?: string,
-  imageURL: string,
+interface BannerProps {
+  image: string
+  id?: string
+  link?: string
   onClick?: Function
 }
-export class Banner extends Component<BannerProps> {
-  bannerAction = () => {
-    if(this.props.onClick!==undefined)
-      this.props.onClick()
-  }
 
-  render() {
-    return (
-      <div className="banner">
-        <img src={this.props.imageURL} alt="banner"
-          onClick={this.bannerAction}
-        />
-      </div>
-    )
-  }
+export function Banner(props:BannerProps) {
+  return (
+    <div id={props.id} className="banner">
+      <img src={props.image} alt="banner" onClick={()=>{
+        if(props.onClick!==undefined)
+          props.onClick()
+      }}/>
+    </div>
+  )
 }
 
 export default Banner

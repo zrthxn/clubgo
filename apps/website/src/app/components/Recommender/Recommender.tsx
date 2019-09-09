@@ -28,7 +28,7 @@ export class Recommender extends Component<RecommenderComponentProps> {
           horizontalContainerStyle={{ borderRadius: 5 }}
           smoothScrolling= {true}
           minScrollSize={40}
-        >  
+        >
           {
             this.props.children
           }

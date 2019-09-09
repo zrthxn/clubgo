@@ -4,10 +4,15 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import './Global.scss'
 
 import { LoginService } from '@clubgo/features/api'
-import Context from './ContextProvider'
 import { ContextProvider } from './ContextProvider'
+import Context from './ContextProvider'
 
 import Home from './views/Home/Home'
+import Events from './views/Events/Events'
+
+import Header from './partials/Header/Header'
+import Footer from './partials/Footer/Footer'
+import NotFound from './partials/Errors/NotFound'
 
 export default class WebsiteController extends Component {
   static contextType = Context
@@ -18,7 +23,13 @@ export default class WebsiteController extends Component {
   }
 
   componentDidMount() {
-    this.validateApplication()    
+    this.validateApplication().then(()=>{
+      this.setState({
+        appValidationFinished: true
+      })
+    }).catch((error)=>{
+      console.error(error)
+    })
   }
 
   async validateApplication() {
@@ -26,34 +37,47 @@ export default class WebsiteController extends Component {
     try {
       await appAuthentication.authenticate()
     } catch (error) {
-      console.error(error)
+      return Promise.reject(error)
     } finally {
-      this.setState({
-        appValidationFinished: true
-      })
+      return
     }
   }
 
   render() {
     if(this.state.appValidationFinished)
       return (
-        <ContextProvider>
-          <Context.Consumer>
-            {
-              appContext => (
-                <Router>
+        <Router>
+          <ContextProvider>
+            <Header/>
+
+            <Context.Consumer>
+              {
+                appContext => (
                   <Switch>
                     <Route exact path="/" component={Home}/>
+                    <Route exact path="/events" component={Events}/>
 
-                    <Route path="/:whatever" render={(routeProps)=>(
-                      <Home { ...routeProps }/>
-                    )}/>
+                    <Route path="/404" component={NotFound}/>
+
+                    <Route path="/:city" render={(routeProps)=>{
+                      let { city } = routeProps.match.params
+                      if(city==='delhi' || city==='mumbai')
+                        return (
+                          <Events { ...routeProps }/>
+                        )
+                      else
+                        appContext.router('/404')
+                    }}/>
+
+                    <Route component={NotFound}/>
                   </Switch>
-                </Router>
-              )
-            }
-          </Context.Consumer>
-        </ContextProvider>
+                )
+              }
+            </Context.Consumer>
+            
+            <Footer/>
+          </ContextProvider>
+        </Router>
       )
     else
       return (

@@ -21,8 +21,7 @@ export function Textbox(props:TextboxProps) {
 
   return (
     <input className={textboxStyle} 
-      style={props.style} 
-      type={props.type} 
+      style={props.style} type={props.type} 
       placeholder={props.placeholder}
       { ...props }
     />

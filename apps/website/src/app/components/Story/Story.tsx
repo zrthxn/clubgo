@@ -19,11 +19,15 @@ export function Story(props:StoryProps) {
     <Context.Consumer>
       {
         appContext => (
-          <div className="story">
-            <div className="face-container" onClick={()=>appContext.actions.openStory(imageURL)}>
-              <img src={faceImageURL}  alt="" onClick={()=>{
-                appContext.actions.openStory(imageURL)}
-              }/>
+          <div className="story" onClick={()=>{
+            appContext.actions.openStory(imageURL)
+          }}>
+            <div className="face-container" onClick={()=>{
+              appContext.actions.openStory(imageURL)
+            }}>
+              <img src={faceImageURL} alt="" onClick={()=>{
+                appContext.actions.openStory(imageURL)
+              }}/>
             </div>
           </div>
         )
@@ -32,53 +36,55 @@ export function Story(props:StoryProps) {
   )
 }
 
-export function StoryContainer(props) {
+export function StoriesContainer(props) {
   const scrollbarStyles = {
     borderRadius: 5
   }
 
   return (
-    <ScrollArea
-      speed={1}
-      horizontal={true}
-      vertical={false}
-      className="scroll-view-area"
-      contentClassName="scroll-container-row"
-      horizontalScrollbarStyle={scrollbarStyles}
-      horizontalContainerStyle={scrollbarStyles}
-      smoothScrolling= {true}
-      minScrollSize={40}
-    >
-      {
-        props.children
-      }
-    </ScrollArea>
-  )
-}
+    <div>
+      <h3>Highlights</h3>
+      <ScrollArea
+        speed={1}
+        horizontal={true}
+        vertical={false}
+        className="scroll-view-area"
+        contentClassName="scroll-container-row"
+        horizontalScrollbarStyle={scrollbarStyles}
+        horizontalContainerStyle={scrollbarStyles}
+        smoothScrolling= {true}
+        minScrollSize={40}
+      >
+        <Context.Consumer>
+          {
+            appContext => (
+              appContext.state.story.stories.map((story, index)=>(
+                <Story key={`story_${index}`}
+                  story={story}
+                />
+              ))
+            )
+          }
+        </Context.Consumer>
+      </ScrollArea>
 
-export function StoryDisplay(props) {
-  return (
-    <Context.Consumer>
+      <Context.Consumer>
       {
         appContext => (
-          <div className={
-              props.open ? "story open" : "story"
-            } 
+          <div className={ appContext.state.story.isOpen ? "story open" : "story" }
             onClick={appContext.actions.closeStory}
             style={{
               border: "none"
             }}
           >
             <div className="story-container">
-              <img src={props.url}  alt=""
-                onClick={appContext.actions.closeStory}
-              />
+              <img src={appContext.state.story.image}  alt="" onClick={appContext.actions.closeStory}/>
             </div>
-            
           </div>
         )
       }
     </Context.Consumer>
+    </div>
   )
 }
 

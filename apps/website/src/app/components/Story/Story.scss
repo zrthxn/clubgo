@@ -18,15 +18,6 @@ $storyMargin: 0.5em;
     border: 3px solid  #174cdd;
   }
 
-  &:first-of-type {
-    margin-left: 0;
-    margin-block-start: 0;
-  }
-  &:last-of-type {
-    margin-right: 0;
-    margin-block-end: 0;
-  }
-
   .face-container {
     width: 6em;
     height: 6em;
@@ -102,5 +93,14 @@ $storyMargin: 0.5em;
       background: linear-gradient(transparent, #00000080);
       background-blend-mode: multiply;
     }
+  }
+}
+
+.scrollarea-content {
+  .story:first-of-type {
+    margin-left: 0;
+  }
+  .story:last-of-type {
+    margin-right: 0;
   }
 }
