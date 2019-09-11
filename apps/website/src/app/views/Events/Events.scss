@@ -10,7 +10,7 @@
 
     .floater {
       background: #fff;
-      border-radius: 10px;
+      border-radius: 0.5em;
       box-shadow: 0 0 10px #1c1c1c80;
 
       .block {
@@ -28,8 +28,8 @@
         font-family: $poppinsFont;
         background: linear-gradient(45deg, $primaryColor, $secondaryColor);;
         
-        border-bottom-left-radius: 0.5em;
-        border-bottom-right-radius: 0.5em;
+        border-bottom-left-radius: 0.45em;
+        border-bottom-right-radius: 0.45em;
 
         &:focus, &:active {
           outline: none;

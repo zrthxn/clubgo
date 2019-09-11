@@ -13,6 +13,7 @@ export class LoginService extends Interface {
    */
   async authenticate() {
     const APIKEY = 'qWertT2uiOp2lkjhgfD5Sa2zxcvBn831'
+    // const APIKEY = process.env.APIKEY
 
     try {
       let authResponse = await this.request.post(
@@ -24,7 +25,7 @@ export class LoginService extends Interface {
       let { token } = authResponse.data
       localStorage.setItem('X-Request-Validation', token)
     } catch (error) {
-      
+      console.error(error)
     } finally {
       return
     }
