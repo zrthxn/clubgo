@@ -43,8 +43,8 @@ const { __storagedir } = ContentConfig
 // Root Headers 
 // --------------------------------------------------------
 Content.use((req,res,next)=>{
-  if(ContentConfig.policy.ALLOW_CORS)
-    res.header('Access-Control-Allow-Origin', ContentConfig.policy.ALLOW_ORIGIN)
+  // if(ContentConfig.policy.ALLOW_CORS)
+  res.header('Access-Control-Allow-Origin', ContentConfig.policy.ALLOW_ORIGIN)
   res.header('Access-Control-Allow-Headers', ContentConfig.policy.ALLOW_HEADERS)
   res.header('Access-Control-Allow-Methods', ContentConfig.policy.ALLOW_METHODS)
   next()
