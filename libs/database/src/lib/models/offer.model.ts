@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose'
 export const offerSchema = new mongoose.Schema(
   {
     name: {
-      type: String, required: true, unique: true
+      type: String, required: true
     },
     owner: { 
       type: String, required: true

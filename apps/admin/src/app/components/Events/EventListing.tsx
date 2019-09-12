@@ -88,28 +88,18 @@ export class EventListing extends Component<EventListingProps> {
               key: 'settings.isPublished',
               placeholder: 'Published',
               suggestions: [
-                {
-                  label: 'Published',
-                  value: true
-                },
-                {
-                  label: 'Unpublished',
-                  value: false
-                }
+                { label: 'Published', value: true },
+                { label: 'Unpublished', value: false }
               ]
             },
             {
               key: 'venue.city',
               placeholder: 'City',
               suggestions: [
-                {
-                  label: 'Delhi',
-                  value: 'Delhi'
-                },
-                {
-                  label: 'Mumbai',
-                  value: 'Mumbai'
-                }
+                { label: 'Delhi', value: 'Delhi' },
+                { label: 'Mumbai', value: 'Mumbai' },
+                { label: 'Gurgaon', value: 'Gurgaon' },
+                { label: 'Bangalore', value: 'Bangalore' }
               ]
             }
           ]}

@@ -11,26 +11,34 @@ import Context from '../../ContextProvider'
 
 import { DatabaseService } from '@clubgo/features/api'
 
-export default class Home extends Component {
+type URLParams = { 
+  city: string
+}
+
+export default class Home extends Component<RouteComponentProps<URLParams>> {
   static contextType = Context
   context!: React.ContextType<typeof Context>
 
   eventService = new DatabaseService('/event')
 
   state = {
-    events: [
-
-    ]
+    city: null,
+    events: {
+      nearby: []
+    }
   }
 
   componentDidMount() {
     this.eventService.searchBy({
       venue: {
-        city: 'Delhi'
+        city: this.props.match.params.city
       }
     }).then(({ data })=>{
+      let { events } = this.state
+      events.nearby = data.results
       this.setState({
-        events: data.results
+        city: this.props.match.params.city,
+        events
       })
     })
   }
@@ -62,9 +70,9 @@ export default class Home extends Component {
           <h2>Featured Events</h2>
           <Recommender direction="horizontal">
             {
-              [{},{},{}].map((event, index)=>{
+              this.state.events.nearby.slice(0, 10).map((event, index)=>{
                 return (
-                  <Event key={`event_${index}`}/>
+                  <Event key={`event_${index}`} data={event}/>
                 )
               })
             }
@@ -76,9 +84,9 @@ export default class Home extends Component {
           <FlexContainer>
             <Flexbox flow="row">
               {
-                this.state.events.map((event, index)=>{
+                this.state.events.nearby.map((event, index)=>{
                   return (
-                    <Event key={`event_${index}`}/>
+                    <Event key={`nearby-event-${index}`} data={event}/>
                   )
                 })
               }
@@ -90,9 +98,9 @@ export default class Home extends Component {
           <h2>Recommended</h2>
           <Recommender direction="horizontal">
             {
-              [{},{},{},{},{},{},{}].map((event, index)=>{
+              this.state.events.nearby.slice(0, 10).map((event, index)=>{
                 return (
-                  <Event key={`event_${index}`}/>
+                  <Event key={`event_${index}`} data={event}/>
                 )
               })
             }

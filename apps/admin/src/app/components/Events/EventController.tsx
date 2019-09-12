@@ -64,7 +64,7 @@ export class EventController extends Component<EventControllerProps> {
       
     else if(uiType==='edit')
       return (
-        <EventEditor intent={'update'} populateData={ context.state.eventData } onFinalize={ async (updateBody)=>{
+        <EventEditor intent={'update'} populateData={ context.state.eventData } onFinalize={ async (updateBody:IEventModel)=>{
           this.eventService.update(context.state.eventData._id, updateBody).then((result) => {
             if(result.status===200) {
               this.context.actions.openSuccessFeedback('Event Updated')  

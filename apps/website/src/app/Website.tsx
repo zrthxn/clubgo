@@ -66,6 +66,16 @@ export default class WebsiteController extends Component {
                         let { city } = routeProps.match.params
                         if(city==='delhi' || city==='mumbai')
                           return (
+                            <Home { ...routeProps }/>
+                          )
+                        else
+                          appContext.router('/404')
+                      }}/>
+
+                      <Route exact path="/events/:city" render={(routeProps)=>{
+                        let { city } = routeProps.match.params
+                        if(city==='delhi' || city==='mumbai')
+                          return (
                             <Events { ...routeProps }/>
                           )
                         else

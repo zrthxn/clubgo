@@ -7,10 +7,9 @@ import Context from '../../ContextProvider'
 
 import { Advert } from '@clubgo/website/components'
 import { Lightbox, Button } from '@clubgo/website/components'
-// import { Button } from '@material-ui/core'
 
 type URLParams = { 
-  city: 'Delhi' | 'Mumbai' | 'Gurgaon' | 'Bangalore'
+  city: string
 }
 
 export default class Events extends Component<RouteComponentProps<URLParams>> {
@@ -18,8 +17,7 @@ export default class Events extends Component<RouteComponentProps<URLParams>> {
   context!: React.ContextType<typeof Context>
 
   state = {
-    city: null,
-    openLightbox: true
+    city: null
   }
 
   componentDidMount() {  
@@ -60,28 +58,6 @@ export default class Events extends Component<RouteComponentProps<URLParams>> {
             </Flexbox>
           </FlexContainer>
         </section>
-
-        <Lightbox open={this.state.openLightbox}>
-          <div>
-            <h1>This is a Modal</h1>
-
-            <p>
-              Now here we are asking the user to user 
-              Now here we are asking the user to user 
-              Now here we are asking the user to user 
-              Now here we are asking the user to user 
-            </p>
-          </div>
-
-          <Button color="secondary" onClick={()=>{
-            this.setState({
-              openLightbox: false
-            })
-          }}>
-            Okay Dude
-          </Button>
-        </Lightbox>
-
       </article>
     )
   }
