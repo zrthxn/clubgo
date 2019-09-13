@@ -151,10 +151,10 @@ import { offerSchema, IOfferModel } from './offer.model'
 
 eventSchema.index({
   eventTitle: 'text',
-  description: 'text',
-  categories: 'text',
-  tagline: 'text',
-  tags: 'text'
+  // description: 'text',
+  // categories: 'text',
+  // tagline: 'text',
+  // tags: 'text'
 })
 
 export interface IEventModel extends mongoose.Document {

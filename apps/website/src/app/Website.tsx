@@ -10,6 +10,7 @@ import Context from './ContextProvider'
 import Home from './views/Home/Home'
 import Events from './views/Events/Events'
 import Details from './views/Events/Details'
+import Search from './views/Events/Search'
 
 import Header from './partials/Header/Header'
 import Footer from './partials/Footer/Footer'
@@ -55,48 +56,46 @@ export default class WebsiteController extends Component {
             <Context.Consumer>
               {
                 appContext => (
-                  <div>
-                    <Switch>
-                      <Route exact path="/" component={Home}/>
-                      <Route exact path="/events" component={Events}/>
+                  <Switch>
+                    <Route exact path="/" component={Home}/>
+                    <Route exact path="/events" component={Events}/>
 
-                      <Route exact path="/404" component={NotFound}/>
+                    <Route exact path="/404" component={NotFound}/>
 
-                      <Route exact path="/:city" render={(routeProps)=>{
-                        let { city } = routeProps.match.params
-                        if(city==='delhi' || city==='mumbai')
-                          return (
-                            <Home { ...routeProps }/>
-                          )
-                        else
-                          appContext.router('/404')
-                      }}/>
+                    <Route path="/search" render={(routeProps)=>(
+                      <Search { ...routeProps }/>
+                    )}/>
 
-                      <Route exact path="/events/:city" render={(routeProps)=>{
-                        let { city } = routeProps.match.params
-                        if(city==='delhi' || city==='mumbai')
-                          return (
-                            <Events { ...routeProps }/>
-                          )
-                        else
-                          appContext.router('/404')
-                      }}/>
-
-                      <Route path="/event/details/:eventRef" render={(routeProps)=>{
+                    <Route exact path="/:city" render={(routeProps)=>{
+                      let { city } = routeProps.match.params
+                      if(city==='delhi' || city==='mumbai')
                         return (
-                          <Details { ...routeProps }/>
+                          <Home { ...routeProps }/>
                         )
-                      }}/>
+                      else
+                        appContext.router('/404')
+                    }}/>
 
-                      <Route path="/event/booking/:eventRef" render={(routeProps)=>{
+                    <Route exact path="/events/:city" render={(routeProps)=>{
+                      let { city } = routeProps.match.params
+                      if(city==='delhi' || city==='mumbai')
                         return (
-                          <Booking { ...routeProps }/>
+                          <Events { ...routeProps }/>
                         )
-                      }}/>
+                      else
+                        appContext.router('/404')
+                    }}/>
 
-                      <Route component={NotFound}/>
-                    </Switch>
-                  </div>
+                    <Route path="/event/details/:eventRef" render={(routeProps)=>(
+                      <Details { ...routeProps }/>
+                    )}/>
+
+                    <Route path="/event/booking/:eventRef" render={(routeProps)=>(
+                      <Booking { ...routeProps }/>
+                    )}/>
+
+                    <Route component={NotFound}/>
+                  </Switch>
                 )
               }
             </Context.Consumer>

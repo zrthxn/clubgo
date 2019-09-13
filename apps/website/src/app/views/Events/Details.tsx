@@ -39,10 +39,9 @@ export default class Details extends Component<RouteComponentProps<URLParams> & 
     }).then((event)=>{
       this.event = event.data.results[0]
 
-      this.venueService.findById(this.event.venue.venueId)
-        .then((venue)=>{
-          this.venue = venue.data.results
-        })
+      this.venueService.findById(this.event.venue.venueId).then((venue)=>{
+        this.venue = venue.data.results
+      })
 
       this.setState({
         loading: false
@@ -129,8 +128,8 @@ export default class Details extends Component<RouteComponentProps<URLParams> & 
     else
       return (
         <article>
-          <section>
-            <h2>Loading</h2>
+          <section style={{ height: '100vh' }} className="center">
+            <h1 style={{ margin: '5em' }}>Loading</h1>
           </section>
         </article>
       )

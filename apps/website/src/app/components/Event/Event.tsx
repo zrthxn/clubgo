@@ -13,9 +13,7 @@ export class Event extends Component<EventComponentProps> {
   static contextType = Context
   context!: React.ContextType<typeof Context>
 
-  openEventDetails = () => {
-    this.context.router(`/event/details/${this.props.data.ref}`)
-  }
+  openEventDetails = () => this.context.router(`/event/details/${this.props.data.ref}`)
 
   render() {
     return (

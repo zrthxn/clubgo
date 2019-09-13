@@ -17,7 +17,10 @@ export default class Events extends Component<RouteComponentProps<URLParams>> {
   context!: React.ContextType<typeof Context>
 
   state = {
-    city: null
+    city: null,
+    events: {
+      nearby: []
+    }
   }
 
   componentDidMount() {  
@@ -49,9 +52,9 @@ export default class Events extends Component<RouteComponentProps<URLParams>> {
           <FlexContainer>
             <Flexbox flow="row">
               {
-                [1,2,3,4,5,6,7,8,9,0,1].map((event, index)=>{
+                this.state.events.nearby.map((event, index)=>{
                   return (
-                    <Event key={`event_${index}`}/>
+                    <Event key={`event_${index}`} data={event}/>
                   )
                 })
               }

@@ -23,6 +23,7 @@ export default class Home extends Component<RouteComponentProps<URLParams>> {
 
   state = {
     city: null,
+    searchQuery: null,
     events: {
       nearby: []
     }
@@ -106,8 +107,7 @@ export default class Home extends Component<RouteComponentProps<URLParams>> {
             }
           </Recommender>          
         </section>
-      </article>
-      
+      </article>      
     )
   }
 }
