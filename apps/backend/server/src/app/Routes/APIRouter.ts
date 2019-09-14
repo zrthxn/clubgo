@@ -1,6 +1,6 @@
 import express from 'express'
 import { conf } from '@clubgo/util'
-import { CRUDRouter } from '@clubgo/database'
+import { ModelledCRUDRouter } from '@clubgo/database'
 import { Event, Venue, User, Offer, Ticket } from '@clubgo/database'
 
 export const APIRouter = express.Router()
@@ -24,19 +24,19 @@ APIRouter.get('/', (req, res, next)=>{
 
 // CRUD Functions
 // --------------------------------------------------------
-const EventRouter = new CRUDRouter(Event).create()
+const EventRouter = new ModelledCRUDRouter(Event).create()
 APIRouter.use('/event', EventRouter)
 
-const VenueRouter = new CRUDRouter(Venue).create()
+const VenueRouter = new ModelledCRUDRouter(Venue).create()
 APIRouter.use('/venue', VenueRouter)
 
-const UserRouter = new CRUDRouter(User).create()
+const UserRouter = new ModelledCRUDRouter(User).create()
 APIRouter.use('/user', UserRouter)
 
-const OfferRouter = new CRUDRouter(Offer).create()
+const OfferRouter = new ModelledCRUDRouter(Offer).create()
 APIRouter.use('/offer', OfferRouter)
 
-const TicketRouter = new CRUDRouter(Ticket).create()
+const TicketRouter = new ModelledCRUDRouter(Ticket).create()
 APIRouter.use('/ticket', TicketRouter)
 
 // STOP ============================================== STOP

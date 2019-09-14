@@ -21,8 +21,8 @@ export const offerSchema = new mongoose.Schema(
 )
 
 export interface IOfferModel extends mongoose.Document {
-  name: string,
-  description: string,
+  name: string
+  description: string
   category: string
 }
 

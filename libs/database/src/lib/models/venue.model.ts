@@ -112,57 +112,51 @@ venueSchema.index({
 })
 
 export interface IVenueModel extends mongoose.Document {
-  ref: string,
-  venueTitle: string,
-  description: string,
-  categories?: [string],
-  city: string,
-  locality?: string,
-  address: string,
-  altAddress?: string,
-  nearestMetroStation?: string,
+  ref: string
+  venueTitle: string
+  description: string
+  categories?: Array<string>
+  city: string
+  locality?: string
+  address: string
+  altAddress?: string
+  nearestMetroStation?: string
   coordinates?: {
-    _lat: number,
+    _lat: number
     _lon: number
-  },
-  knownFor?: [string],
-  cuisines?: string,
-  facilities?: [string],
-  costForTwo?: number,
+  }
+  knownFor?: Array<string>
+  cuisines?: string
+  facilities?: Array<string>
+  costForTwo?: number
   settings: {
-    isPublished: boolean,
-    venuePriority?: number,
-    isFeatured?: boolean,
+    isPublished: boolean
+    venuePriority?: number
+    isFeatured?: boolean
     featured?: {
-      featuredText?: string,
+      featuredText?: string
       featuredPriority?: number
     }
-  },
-  defaultEntryType: ITicketModel,
-  timings: [
-    {
-      day: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
-      isOpen: boolean,
-      openTime: number,
-      closeTime: number,
-      busy?: number,
-    }
-  ],
-  offers: [
-    {
-      isActive: boolean,
-      offerName?: string,
-      offerDescription?: string,
-      action?: string, // RegExp // something like -15% or 1+1 or similar
-    }
-  ],
+  }
+  defaultEntryType?: ITicketModel
+  timings: Array<{
+    day: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
+    isOpen: boolean
+    openTime: number
+    closeTime: number
+    busy?: number
+  }>
+  offers: Array<{
+    isActive: boolean
+    offerName?: string
+    offerDescription?: string
+    action?: string // RegExp // something like -15% or 1+1 or similar
+  }>
   media: {
-    images: [
-      {
-        url: string,
-        tags?: [string],
-      }
-    ],
+    images: Array<{
+      url: string
+      tags?: Array<string>
+    }>
     videoURL: string
   }
 }

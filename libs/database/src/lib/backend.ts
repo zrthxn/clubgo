@@ -8,7 +8,7 @@ import { conf } from '@clubgo/util'
  * which handles all CRUD functions.
  */
 
-export class CRUDRouter {
+export class ModelledCRUDRouter {
   Object = null
   _CRUD = express.Router()
 

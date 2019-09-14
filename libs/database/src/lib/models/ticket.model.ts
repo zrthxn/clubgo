@@ -60,28 +60,28 @@ ticketSchema.index({
 })
 
 export interface ITicketModel extends mongoose.Document {
-  ticketTitle: string,
-  entryType: 'couple' | 'stag',
+  ticketTitle: string
+  entryType: 'couple' | 'stag'
   pricing: {
     couple?: {
-      admissionPrice: number,
-      bookingDescription?: string,
-      discount?: number,
-      malesPerCoupleRatio: number,
+      admissionPrice: number
+      bookingDescription?: string
+      discount?: number
+      malesPerCoupleRatio: number
       female: {
-        admissionPrice: number,
-        bookingDescription?: string,
+        admissionPrice: number
+        bookingDescription?: string
         discount?: number
-      },
+      }
       male: {
-        admissionPrice: number,
-        bookingDescription?: string,
+        admissionPrice: number
+        bookingDescription?: string
         discount?: number
-      },
-    },
+      }
+    }
     stag?: {
-      admissionPrice: number,
-      bookingDescription?: string,
+      admissionPrice: number
+      bookingDescription?: string
       discount?: number
     }
   }

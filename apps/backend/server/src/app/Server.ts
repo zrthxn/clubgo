@@ -55,7 +55,6 @@ const db = new DatabaseConnection({ database: 'clubgo' })
  * Handles all preflight requests 
  */
 _Server.use((req, res, next)=>{
-  console.log('PREFLIGHT')
   if(ServerConfig.policy.ALLOW_CORS)
     res.header('Access-Control-Allow-Origin', ServerConfig.policy.ALLOW_ORIGIN)
   res.header('Access-Control-Allow-Headers', ServerConfig.policy.ALLOW_HEADERS)

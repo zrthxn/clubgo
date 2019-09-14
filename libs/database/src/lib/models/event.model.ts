@@ -140,7 +140,14 @@ import { offerSchema, IOfferModel } from './offer.model'
       availableOffers: [ offerSchema ]
     },
     media: {
-      images: [String],
+      images: [
+        {
+          url: {
+            type: String, required: true
+          },
+          tags: [String]
+        }
+      ],
       videoURL: String
     }
   },
@@ -158,89 +165,90 @@ eventSchema.index({
 })
 
 export interface IEventModel extends mongoose.Document {
-  ref: string,
-  eventTitle: string,
-  description: string,
-  categories?: [string],
-  tagline?: string,
-  flashText?: string,
-  artists?: [ IArtistModel ],
-  music?: [string],
+  ref: string
+  eventTitle: string
+  description: string
+  categories?: Array<string>
+  tagline?: string
+  flashText?: string
+  artists?: Array<IArtistModel>
+  music?: Array<string>
   dressCode?: {
-    title: string,
-    images?: [string],
-  },
-  tags?: [string],
-  hasCutomDetails?: boolean,
-  customDetails?: [
+    title: string
+    images?: Array<string>
+  }
+  tags?: Array<string>
+  hasCutomDetails?: boolean
+  customDetails?: Array<
     {
-      detailName: string,
+      detailName: string
       detailData: string
     }
-  ],
+  >
   settings: {
-    isPublished: boolean,
-    eventPriority?: number,
-    isFeatured?: boolean,
+    isPublished: boolean
+    eventPriority?: number
+    isFeatured?: boolean
     featured?: {
-      featuredText?: string,
+      featuredText?: string
       featuredPriority?: number
     }
-  },
+  }
   venue: {
-    city: string,
-    venueId?: string,
-    title: string,
-    address?: string, 
-    isCustomVenue?: boolean,
+    city: string
+    venueId?: string
+    title: string
+    address?: string 
+    isCustomVenue?: boolean
     customVenueDetails?: {
-      locality?: string,
+      locality?: string
       coordinates?: {
-        _lat: number,
+        _lat: number
         _lon: number
       }
     }
-  },
+  }
   scheduling: {
-    startTime: Date,
-    endTime: Date,
-    isRecurring?: boolean,
-    recurringType?: 'daily' | 'weekly' | 'monthly' | 'custom',
-    isCustomRecurring?: boolean,
+    startTime: Date
+    endTime: Date
+    isRecurring?: boolean
+    recurringType?: 'daily' | 'weekly' | 'monthly' | 'custom'
+    isCustomRecurring?: boolean
     customRecurring: {
-      initial: Date,
-      final?: Date | number,
-      dates: [
-        {
-          date: Date,
-          startTime: Date,
-          endTime: Date
-        }
-      ]
+      initial: Date
+      final?: Date | number
+      dates: Array<{
+        date: Date
+        startTime: Date
+        endTime: Date
+      }>
     }
-  },
+  }
   bookings: {
-    isTakingOnsiteBookings?: boolean,
-    isTakingOnsitePayments?: boolean,
-    details: string,
-    taxPercent: number,
-    processingFeePercent: number,
-    tickets?: [
+    isTakingOnsiteBookings?: boolean
+    isTakingOnsitePayments?: boolean
+    details: string
+    taxPercent: number
+    processingFeePercent: number
+    tickets?: Array<
       {
-        entry: ITicketModel,
-        activate?: number,
-        deactivate?: number,
+        entry: ITicketModel
+        activate?: number
+        deactivate?: number
       }
-    ],
-    registrationURL?: string,
+    >
+    registrationURL?: string
     registrationPhone?: string
-  },
+  }
   offers?: {
-    maxOffers: number,
-    availableOffers: [ IOfferModel ]
-  },
+    maxOffers: number
+    availableOffers: Array<IOfferModel>
+  }
   media: {
-    images: [string],
+    images: Array<{
+      url: string
+      tags: Array<string>
+    }>
     videoURL: string
   }
 }

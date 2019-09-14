@@ -25,13 +25,11 @@ export const artistSchema = new mongoose.Schema(
 )
 
 export interface IArtistModel extends mongoose.Document {
-  artistTitle: string,
-  images: [
-    {
-      url: string,
-      tags?: [string]
-    }
-  ]
+  artistTitle: string
+  images: Array<{
+    url: string
+    tags?: Array<string>
+  }>
 }
 
 export const Artist = mongoose.model<IArtistModel>('Artist', artistSchema)

@@ -45,24 +45,24 @@ export const userSchema = new mongoose.Schema(
 )
 
 export interface IUserModel extends mongoose.Document {
-  email: string,
-  password: string,
-  name: string,
+  email: string
+  password: string
+  name: string
   phone?: string
-  age?: number,
-  city?: string,
-  gender?: 'male' | 'female' | 'other' | 'notspec',
+  age?: number
+  city?: string
+  gender?: 'male' | 'female' | 'other' | 'notspec'
   profile: {
-    photo?: string,
-    following?: [ ObjectID ],
-    followers?: [ ObjectID ],
+    photo?: string
+    following?: Array<ObjectID>
+    followers?: Array<ObjectID>
     wishlist?: {
-      venues?: [string],
-      events?: [string],
+      venues?: Array<string>
+      events?: Array<string>
     }
-  },
+  }
   useage?: {
-    eventsBooked?: [string]
+    eventsBooked?: Array<string>
   }
 }
 
