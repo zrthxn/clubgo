@@ -19,7 +19,7 @@ APIRouter.use((req, res, next)=>{
 // --------------------------------------------------------
 APIRouter.get('/', (req, res, next)=>{
   res.write('ClubGo API Backend. \n')
-  next()  
+  next()
 })
 
 // CRUD Functions
