@@ -3,6 +3,8 @@ import { Route } from 'react-router-dom'
 
 // Initial State
 const _istate = {
+  browserRouterLocation: '/',
+  city: null,
   story: {
     isOpen: false,
     image: String(),
@@ -15,6 +17,12 @@ const _istate = {
       },
       { 
         imageURL: "https://about.canva.com/wp-content/uploads/sites/3/2015/01/concert_poster.png"
+      },
+      {
+        imageURL: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/trivia-night-blue-poster-design-template-1a030c6c27293628028546c98cb525ed.jpg"
+      },
+      {
+        imageURL: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/trivia-night-blue-poster-design-template-1a030c6c27293628028546c98cb525ed.jpg"
       }
     ],
   }
@@ -31,9 +39,14 @@ export class ContextProvider extends Component {
     // Register new actions here
     _iactions = {
       openStory: this.openStory,
-      closeStory: this.closeStory
+      closeStory: this.closeStory,
+      setCity: this.setCity
     }
   }
+
+  componentDidMount() {
+    this.setCity()
+  }  
 
   openStory = (img) => {
     this.setState(()=>{
@@ -46,7 +59,7 @@ export class ContextProvider extends Component {
     })
   }
 
-  closeStory = (img) => {
+  closeStory = () => {
     this.setState(()=>{
       let { story } = this.state
       story.isOpen = false
@@ -54,6 +67,17 @@ export class ContextProvider extends Component {
         story
       }
     })
+  }
+
+  setCity = async (city?:string) => {
+    if((city===undefined || city===null) && localStorage.getItem('clubgo:city')!==null)
+      city = localStorage.getItem('clubgo:city')
+      
+    localStorage.setItem('clubgo:city', city)
+    this.setState({
+      city
+    })
+    return
   }
 
   render() {
@@ -64,7 +88,10 @@ export class ContextProvider extends Component {
             value={{
               state: this.state,
               actions: _iactions,
-              router: (path) => history.push(path),
+              router: (path) => {
+                history.push(path)
+                window.scrollTo(0, 0)
+              }
             }}
           >
             {

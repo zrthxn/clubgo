@@ -2,10 +2,11 @@ import React, { Component, InputHTMLAttributes, CSSProperties } from 'react'
 import './Textbox.scss'
 
 export interface TextboxProps extends InputHTMLAttributes<HTMLInputElement> {  
-  style?: CSSProperties,
-  color?: 'dark' | 'light',
-  variant?: 'outlined' | 'solid',
+  style?: CSSProperties
+  color?: 'dark' | 'light'
+  variant?: 'outlined' | 'solid'
   margins?: 'dense' | 'normal' | 'wide'
+  unconstrained?: boolean
 }
 export function Textbox(props:TextboxProps) {  
   var textboxStyle = "textbox"
@@ -19,9 +20,11 @@ export function Textbox(props:TextboxProps) {
   if(props.margins!==undefined)
     textboxStyle += " " + props.margins
 
+  if(props.unconstrained)
+    textboxStyle += " unconstrained"
+
   return (
-    <input className={textboxStyle} 
-      style={props.style} type={props.type} 
+    <input className={textboxStyle} style={props.style} type={props.type} 
       placeholder={props.placeholder}
       { ...props }
     />

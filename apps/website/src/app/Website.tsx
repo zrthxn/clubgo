@@ -1,21 +1,38 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { createMuiTheme } from '@material-ui/core/styles'
+import { ThemeProvider } from '@material-ui/styles'
+import { 
+  blue as primaryThemeColor, 
+  blueGrey as secondaryThemeColor,
+  red as errorThemeColor
+} from '@material-ui/core/colors'
+
 import './Global.scss'
 
 import { LoginService } from '@clubgo/features/api'
-import { ContextProvider } from './ContextProvider'
-import Context from './ContextProvider'
+import { ContextProvider, Context } from './ContextProvider'
 
 import Home from './views/Home/Home'
-import Events from './views/Events/Events'
-import Details from './views/Events/Details'
-import Search from './views/Events/Search'
+import EventListing from './views/Events/Events'
+import EventDetails from './views/Events/Details'
+import VenueDetails from './views/Venues/Details'
+import Search from './views/Search/Search'
 
 import Header from './partials/Header/Header'
 import Footer from './partials/Footer/Footer'
 import NotFound from './partials/Errors/NotFound'
 import Booking from './views/Bookings/Booking'
+
+const MaterialUITheme = createMuiTheme({
+  palette: {
+    primary: primaryThemeColor,
+    secondary: secondaryThemeColor,
+    error: errorThemeColor,
+    type: 'light'
+  }
+})
 
 export default class WebsiteController extends Component {
   static contextType = Context
@@ -26,7 +43,7 @@ export default class WebsiteController extends Component {
   }
 
   componentDidMount() {
-    this.validateApplication().then(()=>{
+    this.validateApplication().then(async ()=>{
       this.setState({
         appValidationFinished: true
       })
@@ -50,58 +67,58 @@ export default class WebsiteController extends Component {
     if(this.state.appValidationFinished)
       return (
         <Router>
-          <ContextProvider>
-            <Header/>
+          <ThemeProvider theme={MaterialUITheme}>
+            <ContextProvider>
+              <Header/>
 
-            <Context.Consumer>
-              {
-                appContext => (
-                  <Switch>
-                    <Route exact path="/" component={Home}/>
-                    <Route exact path="/events" component={Events}/>
+              <Context.Consumer>
+                {
+                  appContext => (
+                    <Switch>
+                      <Route exact path="/" component={Home}/>
+                      <Route path="/in/:city" render={(routeProps)=>{
+                        let { city, locality } = routeProps.match.params
+                        if(city==='delhi' || city==='mumbai') {
+                          city = city.substr(0,1).toUpperCase() + city.substr(1).toLowerCase()
+                          return (
+                            <Home city={city} { ...routeProps }/>
+                          )
+                        }
+                        else
+                          appContext.router('/notfound')
+                      }}/>
 
-                    <Route exact path="/404" component={NotFound}/>
+                      <Route path="/events/in/:city" render={(routeProps)=>(
+                        <EventListing { ...routeProps }/>
+                      )}/>
+                      <Route exact path="/events/detail/:id" render={(routeProps)=>(
+                        <EventDetails { ...routeProps }/>
+                      )}/>
+                      
+                      <Route path="/venues/in/:city" render={(routeProps)=>( 
+                        <EventListing { ...routeProps }/>
+                      )}/>
+                      <Route exact path="/venues/detail/:id" render={(routeProps)=>(
+                        <VenueDetails { ...routeProps }/> 
+                      )}/>
 
-                    <Route path="/search" render={(routeProps)=>(
-                      <Search { ...routeProps }/>
-                    )}/>
+                      <Route path="/bookings/:id" render={(routeProps)=>(
+                        <Booking { ...routeProps }/>
+                      )}/>
 
-                    <Route exact path="/:city" render={(routeProps)=>{
-                      let { city } = routeProps.match.params
-                      if(city==='delhi' || city==='mumbai')
-                        return (
-                          <Home { ...routeProps }/>
-                        )
-                      else
-                        appContext.router('/404')
-                    }}/>
+                      <Route path="/search" render={(routeProps)=>(
+                        <Search { ...routeProps }/>
+                      )}/>
 
-                    <Route exact path="/events/:city" render={(routeProps)=>{
-                      let { city } = routeProps.match.params
-                      if(city==='delhi' || city==='mumbai')
-                        return (
-                          <Events { ...routeProps }/>
-                        )
-                      else
-                        appContext.router('/404')
-                    }}/>
-
-                    <Route path="/event/details/:eventRef" render={(routeProps)=>(
-                      <Details { ...routeProps }/>
-                    )}/>
-
-                    <Route path="/event/booking/:eventRef" render={(routeProps)=>(
-                      <Booking { ...routeProps }/>
-                    )}/>
-
-                    <Route component={NotFound}/>
-                  </Switch>
-                )
-              }
-            </Context.Consumer>
-            
-            <Footer/>
-          </ContextProvider>
+                      <Route component={NotFound}/>
+                    </Switch>
+                  )
+                }
+              </Context.Consumer>
+              
+              <Footer/>
+            </ContextProvider>
+          </ThemeProvider>
         </Router>
       )
     else

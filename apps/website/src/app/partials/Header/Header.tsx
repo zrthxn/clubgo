@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { IconButton } from '@material-ui/core'
+import { Search, AccountCircle } from '@material-ui/icons'
 import { Banner, Textbox, Recommender } from '@clubgo/website/components'
 import { stringify as QueryBuilder } from 'query-string'
 
@@ -19,10 +21,12 @@ export default class Header extends Component {
     return (
       <header>
         <section className="container">
-          <Link to="/"><h1 id="site-title">ClubGo</h1></Link>
+          <Link className="no-decor" to="/" style={{ padding: '1rem' }}>
+            <h1 id="site-title">ClubGo</h1>
+          </Link>
 
-          <div style={{ margin: 'auto 0.5em auto auto' }}>
-            <Textbox spellCheck={false} placeholder="Search" margins="dense"
+          <div style={{ margin: 'auto 0 auto auto' }}>
+            {/* <Textbox spellCheck={false} placeholder="Search" margins="dense"
               onChange={({ target })=>{
                 this.setState(()=>{
                   if(target.value!=='')
@@ -39,7 +43,14 @@ export default class Header extends Component {
                 if(event.key==='Enter' && this.state.searchQuery!==null)
                   this.context.router(`/search?q=${this.state.searchQuery}`)
               }}
-            />
+            /> */}
+            <IconButton onClick={()=>{ this.context.router('/search') }}>
+              <Search/>
+            </IconButton>
+            
+            <IconButton onClick={()=>{ this.context.router('/account') }}>
+              <AccountCircle/>
+            </IconButton>
           </div>
         </section>
       </header>

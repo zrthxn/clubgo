@@ -55,9 +55,7 @@ export const ticketSchema = new mongoose.Schema(
   }
 )
 
-ticketSchema.index({
-  ticketTitle: 'text'
-})
+ticketSchema.index({ ticketTitle: 'text' })
 
 export interface ITicketModel extends mongoose.Document {
   ticketTitle: string

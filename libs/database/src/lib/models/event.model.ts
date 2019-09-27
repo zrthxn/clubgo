@@ -18,7 +18,7 @@ import { offerSchema, IOfferModel } from './offer.model'
       type: String, required: true
     },
     eventTitle: { 
-      type: String, required: true, index: true
+      type: String, required: true
     },
     description: { 
       type: String, required: true 
@@ -70,7 +70,7 @@ import { offerSchema, IOfferModel } from './offer.model'
       customVenueDetails: {
         locality: String,
         coordinates: {
-          _lat: { 
+          _lat: {
             type: Number, min: -180, max: 180 
           },
           _lon: { 
@@ -123,7 +123,47 @@ import { offerSchema, IOfferModel } from './offer.model'
       },
       tickets: [
         {
-          entry: ticketSchema,
+          entry: {
+            ticketTitle: {
+              type: String, required: true
+            },
+            entryType: {
+              type: String, required: true, enum: [ 'couple', 'stag' ]
+            },
+            pricing: {
+              couple: {
+                admissionPrice: Number,
+                bookingDescription: String,
+                discount: {
+                  type: Number, min: 0, max: 100
+                },
+                malesPerCoupleRatio: {
+                  type: Number, min: 1
+                },
+                female: {
+                  admissionPrice: Number,
+                  bookingDescription: String,
+                  discount: {
+                    type: Number, min: 0, max: 100, default: 0
+                  }
+                },
+                male: {
+                  admissionPrice: Number,
+                  bookingDescription: String,
+                  discount: {
+                    type: Number, min: 0, max: 100, default: 0
+                  }
+                },
+              },      
+              stag: {
+                admissionPrice: Number,
+                bookingDescription: String,
+                discount: {
+                  type: Number, min: 0, max: 100
+                }
+              }
+            }
+          },
           activate: {
             type: Number, min: 0
           },
@@ -156,12 +196,9 @@ import { offerSchema, IOfferModel } from './offer.model'
   }
 )
 
-eventSchema.index({
+eventSchema.index({ 
   eventTitle: 'text',
-  // description: 'text',
-  // categories: 'text',
-  // tagline: 'text',
-  // tags: 'text'
+  tagline: 'text'
 })
 
 export interface IEventModel extends mongoose.Document {

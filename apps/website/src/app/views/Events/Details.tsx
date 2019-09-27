@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Button, Banner } from '@clubgo/website/components'
+import { Button, Banner, Recommender, Event } from '@clubgo/website/components'
 import { Grid } from '@material-ui/core'
 
 import './Events.scss'
@@ -10,14 +10,14 @@ import { IEventModel, IVenueModel } from '@clubgo/database'
 import Context from '../../ContextProvider'
 
 type URLParams = {
-  eventRef: string
+  id: string
 }
 
 interface EventDetailProps {
   pr: string
 }
 
-export default class Details extends Component<RouteComponentProps<URLParams> & EventDetailProps> {
+export default class EventDetails extends Component<RouteComponentProps<URLParams> & EventDetailProps> {
   static contextType = Context
   context!: React.ContextType<typeof Context>
 
@@ -29,35 +29,50 @@ export default class Details extends Component<RouteComponentProps<URLParams> & 
   venue:IVenueModel
 
   state = {
-    loading: true
+    loading: true,
+    currentEventId: null,
+    recommendations: {
+      nearby: []
+    }
   }
   
   componentDidMount() {
-    let { eventRef } = this.props.match.params
-    this.eventService.searchBy({
-      ref: eventRef
-    }).then((event)=>{
-      this.event = event.data.results[0]
+    let { id } = this.props.match.params
+    this.fetchEventDetails(id)
+  }
+
+  componentDidUpdate() {
+    let { id } = this.props.match.params
+    if(id!==this.state.currentEventId && !this.state.loading) {
+      this.setState({ loading: true })
+      this.fetchEventDetails(id)
+    }
+  }
+
+  fetchEventDetails = (id) => {
+    this.eventService.findById(id).then((event)=>{
+      this.event = event.data.results
 
       this.venueService.findById(this.event.venue.venueId).then((venue)=>{
         this.venue = venue.data.results
-      })
-
-      this.setState({
-        loading: false
+        
+        this.setState({
+          loading: false,
+          currentEventId: id
+        })
       })
     })
   }
-
+  
   openBooking = () => {
-    this.context.router('/event/booking/' + this.event.ref)
+    this.context.router('/bookings/' + this.event._id + '/start')
   }
   
   render() {
     if(!this.state.loading)
       return (
         <article className="event-details">
-          <section className="container head">
+          <section>
             <Grid container spacing={3}>
               <Grid item md={8} xs={12}>
                 <Banner image={'https://i.guim.co.uk/img/media/843fe2c5546f7e50bb973e3ed3a00a1d2faf872c'+
@@ -86,42 +101,32 @@ export default class Details extends Component<RouteComponentProps<URLParams> & 
                         </span>
                       ))
                     }
-                    {/* <span>45+</span> */}
                   </div>
                 </div>
               </Grid>
 
               <Grid item md={8} xs={12}>
                 <div className="details">
-                  <p>
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye bye
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye be 
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye be
-                    Details page this that heelo hi bye be
-                  </p>
-
-                  <h2>Venue</h2>
-                  <p>
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye bye
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye be 
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye be
-                    Details page this that heelo hi bye be
-                  </p>
-                  <p>
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye bye
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye be 
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye be
-                    Details page this that heelo hi bye be
-                  </p>
-                  <p>
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye bye
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye be 
-                    Details page this that heelo hi bye be Details page this that heelo hi bye be Details page this that heelo hi bye be
-                    Details page this that heelo hi bye be
-                  </p>
+                  <h2>About</h2>
+                  <p>{ this.event.description }</p>
+  
+                  <div className="venue">
+                    <h2>Venue</h2>
+                    <p>{ this.venue.venueTitle }</p>
+                  </div>
                 </div>
               </Grid>
             </Grid>
+          </section>
+
+          <section>
+            <h2>Similar Events</h2>
+            <h4>Events recommended for you</h4>
+            <Recommender 
+              render={(eventProps:IEventModel)=>(
+                <Event data={eventProps}/>
+              )}
+            />
           </section>
         </article>
       )
@@ -129,7 +134,7 @@ export default class Details extends Component<RouteComponentProps<URLParams> & 
       return (
         <article>
           <section style={{ height: '100vh' }} className="center">
-            <h1 style={{ margin: '5em' }}>Loading</h1>
+            <h1 style={{ margin: '5em 0' }}>Loading</h1>
           </section>
         </article>
       )

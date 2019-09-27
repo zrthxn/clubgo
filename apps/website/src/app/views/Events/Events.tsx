@@ -12,19 +12,22 @@ type URLParams = {
   city: string
 }
 
-export default class Events extends Component<RouteComponentProps<URLParams>> {
+export default class EventListing extends Component<RouteComponentProps<URLParams>> {
   static contextType = Context
   context!: React.ContextType<typeof Context>
 
   state = {
     city: null,
     events: {
-      nearby: []
+      nearby: [
+        
+      ]
     }
   }
 
   componentDidMount() {  
     if(this.props.match.params.city!==undefined) {
+      this.context.actions.setCity(this.props.match.params.city)
       let { city } = this.props.match.params
       city = city.substr(0, 1).toUpperCase() + city.substr(1)
       this.setState({

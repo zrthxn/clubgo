@@ -59,7 +59,7 @@ export function StoriesContainer(props) {
           {
             appContext => (
               appContext.state.story.stories.map((story, index)=>(
-                <Story key={`story_${index}`}
+                <Story key={`story-${index}`}
                   story={story}
                 />
               ))

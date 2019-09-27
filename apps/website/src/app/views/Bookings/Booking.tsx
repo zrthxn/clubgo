@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
 type URLParams = {
-  eventRef: string
+  id: string
 }
 
 export default class Booking extends Component<RouteComponentProps<URLParams>> {

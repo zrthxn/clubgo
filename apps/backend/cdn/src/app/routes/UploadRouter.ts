@@ -2,8 +2,9 @@ import * as express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as bodyParser from 'body-parser'
-
 import multer from 'multer'
+
+import { APIEndpoints } from '@clubgo/features/api'
 import { 
   conf, 
   sortItemArrayByRef,
@@ -53,8 +54,8 @@ UploadRouter.post('/single/:collection', (req, res)=>{
 
     let genFileName = collection + parseInt((file.filename.split('upload_')[1]), 10).toString(36)
 
-    fs.readFile(file.path, (err, data)=>{
-      if (err) return res.status(500).send(err)
+    fs.readFile(file.path, (FileError, data)=>{
+      if (FileError) return res.status(500).send(FileError)
       
       // data = Buffer.from(data.toString())
       // let raw = decodeBase64Image(data.toString('base64'))
@@ -69,12 +70,12 @@ UploadRouter.post('/single/:collection', (req, res)=>{
         '.' + file.originalname.split('.')[file.originalname.split('.').length-1])
         
       // Write new image to root
-      fs.writeFile(writePath, raw.data, (err)=>{
-        if (err) res.status(500).send(err)
+      fs.writeFile(writePath, raw.data, (WriteFileError)=>{
+        if (WriteFileError) res.status(500).send(WriteFileError)
 
         // Remove temp file
-        fs.unlink(file.path, (err)=>{
-          if (err) res.status(500).send(err)
+        fs.unlink(file.path, (UnlinkError)=>{
+          if (UnlinkError) res.status(500).send(UnlinkError)
         })
 
         createLookupEntries(collection, [{
@@ -92,7 +93,7 @@ UploadRouter.post('/single/:collection', (req, res)=>{
     })
 
     res.send({
-      ref: collection + '/' + genFileName,
+      ref: APIEndpoints.cdn.url + '/i/' + collection + '/' + genFileName,
       ...file
     })
   })
@@ -116,14 +117,14 @@ UploadRouter.post('/multiple/:collection', (req, res)=>{
       if(collection==='root') {
         writePath = path.join(writePath, genFileName + getFileExtension(file.originalname))
         refs.push({
-          ref: genFileName,
+          ref: APIEndpoints.cdn.url + '/i/' + genFileName,
           ...file
         })
       }
       else {
         writePath = path.join(writePath, collection, genFileName + getFileExtension(file.originalname))
         refs.push({
-          ref: collection + '/' + genFileName,
+          ref: APIEndpoints.cdn.url + '/i/' + collection + '/' + genFileName,
           ...file
         })
       }
@@ -140,8 +141,8 @@ UploadRouter.post('/multiple/:collection', (req, res)=>{
         }
       })
       
-      fs.readFile(file.path, (err, data)=>{
-        if (err) return res.status(500).send(err)
+      fs.readFile(file.path, (ReadFileError, data)=>{
+        if (ReadFileError) return res.status(500).send(ReadFileError)
 
         // data = Buffer.from(data.toString('base64'))
         // let raw = decodeBase64Image(data.toString('base64'))
@@ -152,8 +153,8 @@ UploadRouter.post('/multiple/:collection', (req, res)=>{
           if (err) res.status(500).send(err)
 
           // Remove temp files
-          fs.unlink(file.path, (err)=>{
-            if (err) res.status(500).send(err)
+          fs.unlink(file.path, (UnlinkError)=>{
+            if (UnlinkError) res.status(500).send(UnlinkError)
           })
         })      
 
