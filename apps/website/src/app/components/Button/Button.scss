@@ -17,7 +17,7 @@
   border: none;
   border-radius: 10px;
   box-shadow: 1px 2px 5px #1c1c1c60;
-  transition: all 0.25s ease;
+  transition: all 0.5s ease;
   position: relative;
 }
 
@@ -34,6 +34,7 @@
 .button[class~="small"] {
   min-width: 4em;
   max-width: 6em;
+  font-size: 0.75rem;
 }
 
 .button[class~="medium"] {
@@ -44,8 +45,25 @@
 
 .button[class~="large"] {
   padding: 1.5em;
-  min-width: 12em;
-  max-width: 16em;
+  margin: 0;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+}
+
+// Button Variants -------------------------------------------
+.button[class~="outlined"] {
+  // outline: 
+}
+
+.button[class~="contained"] {
+  
+}
+
+.button[class~="text"] {
+  background: none;
+  box-shadow: none;
+  color: $primaryColor;
 }
 
 // Button Colors ------------------------------------------

@@ -71,9 +71,29 @@ p {
   margin: 1.5rem 0;
 }
 
+a {
+  text-decoration: none;
+  color: $primaryColor;
+  font-weight: 600;
+}
+
 a[class~="no-decor"] {
   text-decoration: none;
   color: unset;
+}
+
+.center {
+  text-align: center;
+}
+.right {
+  text-align: right;
+}
+.left {
+  text-align: left;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 // ========================================================
@@ -100,10 +120,6 @@ section {
 
 .container {
   padding: 1em;
-}
-
-.center {
-  text-align: center;
 }
 
 .scroll-view-area {

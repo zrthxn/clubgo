@@ -4,6 +4,8 @@ import './Recommender.scss'
 
 import { DatabaseService } from '@clubgo/features/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
+import Button from '../Button/Button'
+import Context from '../../ContextProvider'
 
 interface RecommenderComponentProps {
   render?: ((renderProps?)=>((typeof React.Component) | ReactElement))
@@ -16,6 +18,9 @@ interface RecommenderComponentProps {
 }
 
 export class Recommender extends Component<RecommenderComponentProps> {
+  static contextType = Context
+  context!: React.ContextType<typeof Context>
+  
   state = {
     loading: true,
     context: {
@@ -30,16 +35,10 @@ export class Recommender extends Component<RecommenderComponentProps> {
   recommendationService = new DatabaseService('/event')
 
   componentDidMount() {
-    this.readContext().then((context)=>{
-      this.fetchRecommendations(context).then(()=>{
-        this.buildRenderQueue()
-      })
+    let context = this.context.actions.getUserContext()
+    this.fetchRecommendations(context).then(()=>{
+      this.buildRenderQueue()
     })
-  }
-  
-  readContext = async () => {
-    let city = localStorage.getItem('clubgo:city')
-    return { city }
   }
 
   fetchRecommendations = async ({ city }) => {
@@ -56,10 +55,10 @@ export class Recommender extends Component<RecommenderComponentProps> {
   
   buildRenderQueue = async () => {
     let { recommendations, renderQueue } = this.state
-    for (const item of recommendations) {
-      renderQueue.push( this.props.render(item) )
-    }
-    // Consider switching to map for better performance
+    
+    renderQueue = recommendations.map((item, index)=>{
+      return this.props.render(item)
+    })
     
     this.setState({
       loading: false,
@@ -92,6 +91,8 @@ export class Recommender extends Component<RecommenderComponentProps> {
             )
           }
         </ScrollArea>
+        
+        {/* <Button className="float-right" size="small">More</Button> */}
       </div>
     )
   }

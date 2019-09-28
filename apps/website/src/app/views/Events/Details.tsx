@@ -122,9 +122,9 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
           <section>
             <h2>Similar Events</h2>
             <h4>Events recommended for you</h4>
-            <Recommender 
+            <Recommender maxItemCount={10}
               render={(eventProps:IEventModel)=>(
-                <Event data={eventProps}/>
+                <Event data={eventProps} key={`recom-item-${eventProps._id}`}/>
               )}
             />
           </section>

@@ -77,7 +77,7 @@ export default class WebsiteController extends Component {
                     <Switch>
                       <Route exact path="/" component={Home}/>
                       <Route path="/in/:city" render={(routeProps)=>{
-                        let { city, locality } = routeProps.match.params
+                        let { city } = routeProps.match.params
                         if(city==='delhi' || city==='mumbai') {
                           city = city.substr(0,1).toUpperCase() + city.substr(1).toLowerCase()
                           return (
@@ -85,7 +85,7 @@ export default class WebsiteController extends Component {
                           )
                         }
                         else
-                          appContext.router('/notfound')
+                          appContext.router('/404')
                       }}/>
 
                       <Route path="/events/in/:city" render={(routeProps)=>(
@@ -133,7 +133,7 @@ export default class WebsiteController extends Component {
             textAlign: 'center',
             margin: 'auto'
           }}>
-            Loading...
+            Loading
           </h1>
         </div>
       )

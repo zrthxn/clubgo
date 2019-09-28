@@ -28,30 +28,33 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   eventService = new DatabaseService('/event')
 
   state = {
-    city: null,
     searchQuery: null,
     events: {
       nearby: [
 
-      ],
-      recommended: [
-        
       ]
     }
   }
 
   componentDidMount() {
-    if(this.props.city!==undefined)
-      this.context.actions.setCity(this.props.city)
+    let { city } = this.context.actions.getUserContext()
+    if(this.props.city===undefined) {
+      if(city!==undefined)
+        this.context.router(`/in/${city.toLowerCase()}`)
+    }
+    else
+      this.context.actions.setUserContext({
+        city: this.props.city
+      })
+
     this.eventService.searchBy({
       venue: {
-        city: this.props.city
+        city
       }
     }).then(({ data })=>{
       let { events } = this.state
       events.nearby = data.results
       this.setState({
-        city: this.props.city,
         events
       })
     })
@@ -60,6 +63,10 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   render() {
     return (
       <article>
+        <section className="container">
+          <Banner image={'https://res.cloudinary.com/dwzmsvp7f/image/fetch/q_75,f_auto,w_800/https%3A%2F%2Fmedia.insider.in%2Fimage%2Fupload%2Fc_crop%2Cg_custom%2Fv1569404644%2Fxrgm5nkqrbbyexjupwv9.png'}/>
+        </section>
+        
         {
           // Highlights Section
           // ----------------------------------------------
@@ -68,19 +75,23 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
           <StoriesContainer/>
         </section>
 
-        <section className="container">
-          <Banner image={'https://i.guim.co.uk/img/media/843fe2c5546f7e50bb973e3ed3a00a1d2faf872c'+
-            '/15_100_813_488/master/813.jpg?width=1200&height=630&quality=85&auto=format&fit=crop'+
-            '&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc'+
-            '&enable=upscale&s=9a543f0c29ed8d437fcfee9a45377784'}/>
-        </section>
-
         {
           // Events Section
           // ----------------------------------------------
         }
         <section className="container">
           <h2>Featured Events</h2>
+          <h4>Our best featured events</h4>
+          <Recommender 
+            render={(eventProps:IEventModel)=>(
+              <Event size="large" data={eventProps}/>
+            )}
+          />
+        </section>
+
+        <section className="container">
+          <h2>Nearby</h2>
+          <h4>Events near you</h4>
           <Recommender 
             render={(eventProps:IEventModel)=>(
               <Event data={eventProps}/>
@@ -89,23 +100,8 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
-          <h2>Nearby</h2>
-          <h4>Events near you</h4>
-          <FlexContainer>
-            <Flexbox flow="row">
-              {
-                this.state.events.nearby.map((event, index)=>{
-                  return (
-                    <Event key={`nearby-event-${index}`} data={event}/>
-                  )
-                })
-              }
-            </Flexbox>
-          </FlexContainer>
-        </section>
-
-        <section className="container">
           <h2>Recommended</h2>
+          <h4>Events recommended for you</h4>
           <Recommender 
             render={(eventProps:IEventModel)=>(
               <Event data={eventProps}/>

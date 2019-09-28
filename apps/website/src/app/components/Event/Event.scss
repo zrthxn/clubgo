@@ -1,6 +1,7 @@
 .event {
   padding: 1em;
   margin: 1em;
+
   width: 100%;
   height: 20em;
   border-radius: 0.5em;
@@ -43,5 +44,33 @@
   }
   .event:last-of-type {
     margin-right: 0;
+  }
+}
+
+.flexbox {
+  @media (min-width: 600px) {
+    .event:first-of-type {
+      margin-left: 0;
+    }
+    .event:last-of-type {
+      margin-right: 0;
+    }
+  }
+}
+
+// Large Event Card ------------------------------
+.event[class~="large"] {
+  @media (min-width: 600px) {
+    & {
+      width: 20em;
+    }
+
+    .event-title {
+      font-size: 1.25em;
+    }
+
+    .event-venue {
+      font-size: 1.125em;
+    }
   }
 }

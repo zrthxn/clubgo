@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom'
 const _istate = {
   browserRouterLocation: '/',
   city: null,
+  locality: null,
   story: {
     isOpen: false,
     image: String(),
@@ -40,19 +41,26 @@ export class ContextProvider extends Component {
     _iactions = {
       openStory: this.openStory,
       closeStory: this.closeStory,
-      setCity: this.setCity
+      getUserContext: this.getUserContext,
+      setUserContext: this.setUserContext
     }
   }
 
   componentDidMount() {
-    this.setCity()
+    this.getUserContext()
   }  
 
-  openStory = (img) => {
+  openStory = (img, index) => {
     this.setState(()=>{
       let { story } = this.state
+      
       story.isOpen = true
       story.image = img
+      
+      // console.log(story.stories);
+      // story.stories.push( story.stories.splice(index, 1)[0] )
+      // console.log(story.stories);
+
       return {
         story
       }
@@ -69,15 +77,20 @@ export class ContextProvider extends Component {
     })
   }
 
-  setCity = async (city?:string) => {
-    if((city===undefined || city===null) && localStorage.getItem('clubgo:city')!==null)
-      city = localStorage.getItem('clubgo:city')
-      
-    localStorage.setItem('clubgo:city', city)
-    this.setState({
-      city
-    })
-    return
+  getUserContext = () => {
+    let usercontext = JSON.parse(atob(localStorage.getItem('cg::context')))
+    this.setState({ ...usercontext })
+    return usercontext
+  }
+
+  setUserContext = (setcontext) => {
+    let usercontext = this.getUserContext()
+    for (const key in setcontext)
+      if (setcontext.hasOwnProperty(key))
+        usercontext[key] = setcontext[key]
+
+    localStorage.setItem('cg::context', btoa(JSON.stringify(usercontext)))
+    this.getUserContext()
   }
 
   render() {
@@ -90,7 +103,6 @@ export class ContextProvider extends Component {
               actions: _iactions,
               router: (path) => {
                 history.push(path)
-                window.scrollTo(0, 0)
               }
             }}
           >

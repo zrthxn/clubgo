@@ -1,89 +1,126 @@
 @import "../../Global.scss";
 
-.textbox {
-  font-family: $montserratFont;
-  font-size: 16px;
-  width: 100%;
+.textbox-container {
+  padding: 0.75rem;
   margin: 0.5rem 0;
-  padding: 1em;
-  color: #FFF;
   background: #1C1C1C60;
-
-  max-width: 20em;
-
   border: 2px solid transparent;
   border-radius: 10px;
   transition: all 0.25s ease;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
+
+  .textbox {
+    font-family: $montserratFont;
+    font-size: 16px;
+    width: 100%;
+    color: #FFF;
+    background: transparent;
+    flex-grow: 1;
+  
+    max-width: 20em;
+    transition: all 0.25s ease;
+    border: none;
+
+    &::placeholder {
+      font-family: $montserratFont;
+      color: #FFFFFF80;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .input-adornment {
+    * {
+      margin: 0;
+    }
+  }
 }
 
-.textbox::placeholder {
-  font-family: $montserratFont;
-  color: #FFFFFF80;
-}
-.textbox:active, .textbox:focus {
+.textbox-container[class~="focussed"] {
   background: #1C1C1C80;
   transition: all 0.25s ease;
-  // border: 2px solid #1C1C1C40;
-  box-shadow: 0 0 8px #1C1C1C60;
   outline: none;
 }
 
 // Textbox Colors -----------------------------------------
-.textbox[class~="dark"] {
-  color: #FFF;
+.textbox-container[class~="dark"] {
   background: #1C1C1C60;
   border: 2px solid transparent;
+
+  .textbox {
+    color: #FFF;
+  }
 }
 
-.textbox[class~="light"] {
-  color: #1C1C1C;
+.textbox-container[class~="light"] {
   background: #FFF;
   border: 2px solid transparent;
 
-  &::placeholder {
-    color: #1C1C1C80;
-  }
-  
-  &::selection {
-    color: #FFF;
-    background: $primaryColor;
+  .textbox {
+    color: #1C1C1C;
+
+    &::placeholder {
+      color: #1C1C1C80;
+    }
+    
+    &::selection {
+      color: #FFF;
+      background: $primaryColor;
+    }
   }
 }
 
 // Textbox Variants ---------------------------------------
-.textbox[class~="solid"] {
-  background: #1C1C1C60;
+.textbox-container[class~="solid"] {
+  background: #1C1C1C20;
   border: 2px solid transparent;
+
+  .textbox {
+    color: #1C1C1C;
+
+    &::placeholder {
+      color: #1C1C1C;
+    }
+  }
 }
 
-.textbox[class~="unconstrained"] {
+.textbox-container[class~="unconstrained"] {
   max-width: 100% !important;
 }
 
-.textbox[class~="outlined"] {
+.textbox-container[class~="outlined"] {
   font-weight: 600;
-  color: #1C1C1C;
   background: transparent;
   border: 2px solid #1C1C1C60;
 
-  &::placeholder {
-    color: #1C1C1C80;
-  }
+  .textbox {  
+    color: #1C1C1C;
 
-  &::selection {
-    background: #1C1C1C;
+    &::placeholder {
+      color: #1C1C1C80;
+    }
+
+    &::selection {
+      background: #1C1C1C;
+    }
   }
 }
 
 // Textbox Margins ---------------------------------------
-.textbox[class~="dense"] {
+.textbox-container[class~="dense"] {
   padding: 0.75em
 }
 
-.textbox[class~="normal"] {
+.textbox-container[class~="normal"] {
   padding: 1em;
 }
 
-.textbox[class~="wide"] {
+.textbox-container[class~="wide"] {
   padding: 1.5em;
 }

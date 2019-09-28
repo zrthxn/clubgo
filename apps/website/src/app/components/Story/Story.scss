@@ -96,6 +96,10 @@ $storyMargin: 0.5em;
   }
 }
 
+.story[class~="viewed"] {
+  border: 3px solid  #1c1c1c80;
+}
+
 .scrollarea-content {
   .story:first-of-type {
     margin-left: 0;

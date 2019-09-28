@@ -36,7 +36,7 @@ export default class Search extends Component<RouteComponentProps> {
   componentDidMount() {
     this.queryParamSearch()
 
-    let city = localStorage.getItem('clubgo:city')
+    let { city } = this.context.actions.getUserContext()
     this.eventService.searchBy({
       venue: {
         city
@@ -55,9 +55,9 @@ export default class Search extends Component<RouteComponentProps> {
     if(queryParams.q!==null && queryParams.q!==undefined) {
 
       if(queryParams.city===undefined)
-        queryParams.city = localStorage.getItem('clubgo:city')
+        queryParams.city = this.context.actions.getUserContext().city
       
-      this.context.actions.setCity(queryParams.city)
+      this.context.actions.setUserContext({ city: queryParams.city })
 
       this.eventService.searchBy({
         venue: {
@@ -81,9 +81,9 @@ export default class Search extends Component<RouteComponentProps> {
     let { searchQuery } = this.state
     if(searchQuery!==null && searchQuery.q!==undefined) {
       if(searchQuery.city===undefined)
-        searchQuery.city = localStorage.getItem('clubgo:city')
+        searchQuery.city = this.context.actions.getUserContext().city
 
-      this.context.actions.setCity()
+      this.context.actions.setUserContext({ city: searchQuery.city })
       this.eventService.searchBy({
         venue: {
           city: searchQuery.city

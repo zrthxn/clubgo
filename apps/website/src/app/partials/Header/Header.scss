@@ -1,4 +1,6 @@
 header {
+  padding: 0.5em 1em;
+
   .container {
     padding: 0.5em 0;
   }
@@ -6,5 +8,9 @@ header {
   #site-title {
     margin: 0 !important;
     flex-grow: 0.40;
+  }
+
+  .MuiIconButton-root {
+    color: unset;
   }
 }
