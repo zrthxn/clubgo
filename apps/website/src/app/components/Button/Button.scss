@@ -53,11 +53,9 @@
 
 // Button Variants -------------------------------------------
 .button[class~="outlined"] {
-  // outline: 
-}
-
-.button[class~="contained"] {
-  
+  outline: 2px solid $primaryColor;
+  color: $accentLightColor;
+  background: transparent;
 }
 
 .button[class~="text"] {

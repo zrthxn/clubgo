@@ -85,9 +85,7 @@ export class Recommender extends Component<RecommenderComponentProps> {
             !this.state.loading ? (
               this.state.renderQueue
             ) : (
-              <div>
-                <h2>Loading</h2>
-              </div>
+              <h3 className="center">Loading</h3>
             )
           }
         </ScrollArea>
