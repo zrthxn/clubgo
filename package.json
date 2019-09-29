@@ -68,6 +68,7 @@
     "bson": "^4.0.2",
     "cookie-parser": "^1.4.4",
     "core-js": "^2.5.4",
+    "crypto": "^1.0.1",
     "date-fns": "^2.0.0-beta.3",
     "dayjs": "^1.8.15",
     "document-register-element": "1.13.1",
