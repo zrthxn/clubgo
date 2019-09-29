@@ -1,6 +1,7 @@
 import Interface from '../api'
 import { Observable, ErrorObserver } from 'rxjs'
 
+// Syntheic default import necessary 
 const FormData = require('form-data')
 
 export class UploadService extends Interface {
