@@ -19,7 +19,7 @@ import { render } from '../SSR/renderer'
 import { build, BUILD_PATH } from '../SSR/application'
 
 // tslint:disable: nx-enforce-module-boundaries
-import { Home } from '@clubgo/website/server'
+import { Home } from '@clubgo/website/ssr'
 
 WebRouter.get('^/$', (req, res)=>{
   const Application = build(Home)
