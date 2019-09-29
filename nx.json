@@ -34,6 +34,9 @@
     },
     "cdn": {
       "tags": ["app"]
+    },
+    "components": {
+      "tags": ["lib"]
     }
   }
 }

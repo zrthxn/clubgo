@@ -268,9 +268,7 @@
             "main": "apps/backend/server/src/main.ts",
             "tsConfig": "apps/backend/server/tsconfig.app.json",
             "assets": ["apps/backend/server/src/assets"],
-            "styles": [
-              "apps/website/src/app/partials/Footer/Footer.scss"
-            ]
+            "styles": ["apps/website/src/app/partials/Footer/Footer.scss"]
           },
           "configurations": {
             "production": {
@@ -436,6 +434,31 @@
           "options": {
             "jestConfig": "apps/backend/cdn/jest.config.js",
             "tsConfig": "apps/backend/cdn/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "components": {
+      "root": "libs/components",
+      "sourceRoot": "libs/components/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/components/tsconfig.lib.json",
+              "libs/components/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/components/jest.config.js",
+            "tsConfig": "libs/components/tsconfig.spec.json"
           }
         }
       }

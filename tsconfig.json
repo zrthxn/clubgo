@@ -20,7 +20,8 @@
       "@clubgo/util": ["libs/util/src/index.ts"],
       "@clubgo/database": ["libs/database/src/index.ts"],
       "@clubgo/website/components": ["apps/website/src/app/components/index.ts"],
-      "@clubgo/website/server": ["apps/website/src/server/index.ts"]
+      "@clubgo/website/ssr": ["apps/website/src/server/index.ts"],
+      "@clubgo/components": ["libs/components/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
