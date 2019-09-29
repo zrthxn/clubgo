@@ -39,12 +39,13 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   componentDidMount() {
     let { city } = this.props
     if(city===undefined) {
-      city = this.context.actions.getUserContext().city
-      if(city!==undefined)
+      try {
+        city = this.context.actions.getUserContext().city
         this.context.router(`/in/${city.toLowerCase()}`)
-      else
+      } catch (error) {
         this.context.router('/in/delhi')
-      // ^ open modal to select city here
+        // ^ open modal to select city here
+      }
     }
     else
       this.context.actions.setUserContext({
