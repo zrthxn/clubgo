@@ -1,6 +1,7 @@
 import Interface from '../api'
 import { Observable, ErrorObserver } from 'rxjs'
-import FormData from 'form-data'
+
+const FormData = require('form-data')
 
 export class UploadService extends Interface {
   constructor(uploaderProps:UploadServiceProps) {
