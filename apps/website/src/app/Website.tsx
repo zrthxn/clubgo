@@ -23,7 +23,7 @@ import Search from './views/Search/Search'
 import Header from './partials/Header/Header'
 import Footer from './partials/Footer/Footer'
 import NotFound from './partials/Errors/NotFound'
-import Booking from './views/Bookings/Booking'
+import BookingController from './views/Bookings/Booking'
 
 const MaterialUITheme = createMuiTheme({
   palette: {
@@ -103,7 +103,7 @@ export default class WebsiteController extends Component {
                       )}/>
 
                       <Route path="/bookings/:id" render={(routeProps)=>(
-                        <Booking { ...routeProps }/>
+                        <BookingController { ...routeProps }/>
                       )}/>
 
                       <Route path="/search" render={(routeProps)=>(

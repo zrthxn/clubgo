@@ -32,9 +32,9 @@ export function handleChangeById(event, state) {
   else
     _data[event.target.id] = payload
   
-  return ({
+  return {
     data: _data
-  })
+  }
 }
 
 export function verifyRequirements(event, state) {
@@ -72,7 +72,5 @@ export function verifyRequirements(event, state) {
   else
     truth = true
 
-  return ({
-    requiredFulfilled: truth
-  })
+  return truth
 }

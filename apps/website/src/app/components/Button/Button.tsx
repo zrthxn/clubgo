@@ -1,11 +1,12 @@
 import React, { Component, ReactChild, ReactNode, CSSProperties, ButtonHTMLAttributes } from 'react'
 import './Button.scss'
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: 'primary' | 'secondary' | 'default'
   size?: 'small' | 'medium' | 'large'
-  variant?: 'outlined' | 'contained' | 'text'
+  variant?: 'outlined' | 'contained' | 'text' | 'unconstrained'
 }
+
 export function Button(props:ButtonProps) {
   var buttonStyle = 'button'
   
@@ -21,10 +22,7 @@ export function Button(props:ButtonProps) {
   buttonStyle += ' ' + props.className
 
   return (
-    <button { ...props }
-      style={props.style}
-      className={buttonStyle}
-    >
+    <button { ...props } className={buttonStyle} style={props.style}>
       {
         props.children
       }

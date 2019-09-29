@@ -133,7 +133,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
     else
       return (
         <article>
-          <section style={{ height: '100vh' }} className="center">
+          <section style={{ height: '50vh' }} className="center">
             <h1 style={{ margin: '5em 0' }}>Loading</h1>
           </section>
         </article>

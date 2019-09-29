@@ -107,7 +107,7 @@ export default class Search extends Component<RouteComponentProps> {
       <article>
         <section className="center">
           <h1 className="light">Search</h1>
-          <Textbox style={{ maxWidth: '100%' }} placeholder="Find events near you" margins="normal"
+          <Textbox unconstrained placeholder="Find events near you" margins="normal"
             spellCheck={false} 
             onChange={({ target })=>{
               this.setState(()=>{

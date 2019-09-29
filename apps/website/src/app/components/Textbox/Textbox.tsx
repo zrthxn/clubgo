@@ -20,7 +20,7 @@ export class Textbox extends Component<TextboxProps> {
 
   textboxStyle = "textbox-container"
   
-  render() {   
+  render() {
     if(this.props.variant!==undefined)
       this.textboxStyle += " " + this.props.variant
 
@@ -48,17 +48,29 @@ export class Textbox extends Component<TextboxProps> {
           ) : null
         }
 
-        <input className="textbox" type={this.props.type} 
+        <input { ...this.props } className="textbox"
           placeholder={this.props.placeholder}
-          { ...this.props }
-          onFocus={()=>{
-            this.setState({
-              focussed: true
+          onChange={(event)=>{
+            event.persist()
+            if(this.props.onChange!==undefined)
+              this.props.onChange(event)
+          }}
+          onFocus={(event)=>{
+            this.setState(()=>{
+              if(this.props.onFocus!==undefined)
+                this.props.onFocus(event)
+              return {
+                focussed: true
+              }
             })
           }}
-          onBlur={()=>{
-            this.setState({
-              focussed: false
+          onBlur={(event)=>{
+            this.setState(()=>{
+              if(this.props.onBlur!==undefined)
+                this.props.onBlur(event)
+              return {
+                focussed: false
+              }
             })
           }}
         />
