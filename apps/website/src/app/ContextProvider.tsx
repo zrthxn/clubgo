@@ -78,6 +78,11 @@ export class ContextProvider extends Component {
   }
 
   getUserContext = () => {
+    if(localStorage.getItem('cg::context')===null)
+      return {
+        city: undefined
+      }
+      
     let usercontext = JSON.parse(atob(localStorage.getItem('cg::context')))
     this.setState({ ...usercontext })
     return usercontext
