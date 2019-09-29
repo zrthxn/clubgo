@@ -2,7 +2,7 @@
 server {
     server_name cg.zrthxn.com;
 
-    root /home/zrthxn/cgdemo/website;
+    root /home/zrthxn/clubgo/dist/apps/website;
     index index.html;
     
     location = /_authenticate {
