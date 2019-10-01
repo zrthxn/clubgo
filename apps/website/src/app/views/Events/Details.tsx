@@ -72,7 +72,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
     if(!this.state.loading)
       return (
         <article className="event-details">
-          <section>
+          <section className="container">
             <Grid container spacing={3}>
               <Grid item md={8} xs={12}>
                 <Banner image={'https://i.guim.co.uk/img/media/843fe2c5546f7e50bb973e3ed3a00a1d2faf872c'+
@@ -119,7 +119,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
             </Grid>
           </section>
 
-          <section>
+          <section className="container">
             <h2>Similar Events</h2>
             <h4>Events recommended for you</h4>
             <Recommender maxItemCount={10}

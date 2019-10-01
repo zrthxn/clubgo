@@ -6,25 +6,14 @@ const _istate = {
   browserRouterLocation: '/',
   city: null,
   locality: null,
+  user: {
+
+  },
   story: {
     isOpen: false,
     image: String(),
     stories: [
-      { 
-        imageURL: "https://about.canva.com/wp-content/uploads/sites/3/2015/01/concert_poster.png"
-      },
-      {
-        imageURL: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/trivia-night-blue-poster-design-template-1a030c6c27293628028546c98cb525ed.jpg"
-      },
-      { 
-        imageURL: "https://about.canva.com/wp-content/uploads/sites/3/2015/01/concert_poster.png"
-      },
-      {
-        imageURL: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/trivia-night-blue-poster-design-template-1a030c6c27293628028546c98cb525ed.jpg"
-      },
-      {
-        imageURL: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/trivia-night-blue-poster-design-template-1a030c6c27293628028546c98cb525ed.jpg"
-      }
+      
     ],
   }
 }
@@ -42,7 +31,8 @@ export class ContextProvider extends Component {
       openStory: this.openStory,
       closeStory: this.closeStory,
       getUserContext: this.getUserContext,
-      setUserContext: this.setUserContext
+      setUserContext: this.setUserContext,
+      setUserLogin: this.setUserLogin
     }
   }
 
@@ -57,9 +47,7 @@ export class ContextProvider extends Component {
       story.isOpen = true
       story.image = img
       
-      // console.log(story.stories);
-      // story.stories.push( story.stories.splice(index, 1)[0] )
-      // console.log(story.stories);
+      story.stories.push( story.stories.splice(index, 1)[0] )
 
       return {
         story
@@ -96,6 +84,12 @@ export class ContextProvider extends Component {
 
     localStorage.setItem('cg::context', btoa(JSON.stringify(usercontext)))
     this.getUserContext()
+  }
+
+  setUserLogin = (user) => {
+    this.setState({
+      user
+    })
   }
 
   render() {

@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
+import QueryString from 'query-string'
 
 import { handleChangeById as inputHandler, verifyRequirements } from '@clubgo/util'
 import { Textbox, Button } from '@clubgo/website/components'
+import Context from '../../../ContextProvider'
 
 interface DetailsProps {
   onComplete: Function
 }
 
 export class Details extends Component<DetailsProps> {
+  static contextType = Context
+  context!: React.Context<typeof Context>
+  
   state = {
     data: {
       name: null,
@@ -28,6 +33,10 @@ export class Details extends Component<DetailsProps> {
     }))
   }
 
+  finalize = () => {
+
+  }
+
   render() {
     return (
       <article>
@@ -39,16 +48,22 @@ export class Details extends Component<DetailsProps> {
           <section>
             <Textbox id="name" placeholder="Name" onChange={this.handleChangeById}/>
             <Textbox id="email" placeholder="Email" onChange={this.handleChangeById}/>
-            <Textbox id="phone" placeholder="phone" onChange={this.handleChangeById}/>
+            <Textbox id="phone" placeholder="Phone" onChange={this.handleChangeById}/>
           </section>
 
           <section>
-            <Button size="large" onClick={()=>{
-              // if(this.state.requiredFulfilled)
-                this.props.onComplete()
-            }}>
-              Submit
-            </Button>
+            <Context.Consumer>
+              {
+                appContext => (
+                  <Button size="large" onClick={()=>{
+                    appContext.actions.setUserLogin(this.state.data)
+                    this.props.onComplete()
+                  }}>
+                    Submit
+                  </Button>
+                )
+              }
+            </Context.Consumer>
           </section>
         </section>
       </article>

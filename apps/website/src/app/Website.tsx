@@ -19,6 +19,7 @@ import EventListing from './views/Events/Events'
 import EventDetails from './views/Events/Details'
 import VenueDetails from './views/Venues/Details'
 import Search from './views/Search/Search'
+import LoginManager from './views/Login/Login'
 
 import Header from './partials/Header/Header'
 import Footer from './partials/Footer/Footer'
@@ -108,6 +109,10 @@ export default class WebsiteController extends Component {
 
                       <Route path="/search" render={(routeProps)=>(
                         <Search { ...routeProps }/>
+                      )}/>
+
+                      <Route path="/login" render={(routeProps)=>(
+                        <LoginManager { ...routeProps }/>
                       )}/>
 
                       <Route component={NotFound}/>

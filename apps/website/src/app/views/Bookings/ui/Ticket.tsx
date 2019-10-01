@@ -2,16 +2,21 @@ import React, { Component } from 'react'
 import { RouteComponentProps, Link } from 'react-router-dom'
 import { Grid } from '@material-ui/core'
 
-import './Booking.scss'
+import '../Booking.scss'
 import { Button, Textbox } from '@clubgo/website/components'
 import { IEventModel, IVenueModel } from '@clubgo/database'
+import BookingContext from '../BookingContextProvider'
 
 interface TicketViewProps {
   event:IEventModel
   venue:IVenueModel
+  onComplete: Function
 }
 
 export class Ticket extends Component<TicketViewProps> {
+  static contextType = BookingContext
+  context!: React.Context<typeof BookingContext>
+
   state = {
     selectedDateIndex: 0,
     selectedTimeIndex: 0
@@ -109,7 +114,7 @@ export class Ticket extends Component<TicketViewProps> {
                             <div
                               style={{
                                 color: '#fff',
-                                padding: '0.5em 0.75em',
+                                padding: '0.5em',
                                 backgroundColor: '#1c1c1c40',
                                 borderRadius: '0.5em',
                                 marginRight: '0.5em',
@@ -123,7 +128,11 @@ export class Ticket extends Component<TicketViewProps> {
                         {
                           position: 'end',
                           element: (
-                            <Button size="small" variant="text">Apply</Button>
+                            <Button size="small" variant="text" onClick={()=>{
+                              console.log()
+                            }}>
+                              Apply
+                            </Button>
                           )
                         }
                       ]}
@@ -134,10 +143,17 @@ export class Ticket extends Component<TicketViewProps> {
                     <h3>To Pay</h3>
                     <h3 className="bold">{ '\u20B9' + '3,000' }</h3>
                   </div>
+                  
                   <p style={{ margin: 0 }}>All charges payable at venue</p>
 
                   <div style={{ margin: '2em auto', width: '100%' }}>
-                    <Button color="primary" variant="unconstrained">Book Now</Button>
+                    <Button color="primary" variant="unconstrained" 
+                      onClick={(event)=>{
+                        this.props.onComplete()
+                      }}
+                    >
+                      Book Now
+                    </Button>
                   </div>
 
                   <p className="center" style={{ opacity: 0.75, fontSize: '0.75em' }}>
