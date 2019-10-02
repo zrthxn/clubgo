@@ -4,29 +4,25 @@ import { Grid } from '@material-ui/core'
 import QueryString from 'query-string'
 
 import './Booking.scss'
-import { Button, Textbox } from '@clubgo/website/components'
+import { Button, Textbox, Lightbox } from '@clubgo/website/components'
 import { DatabaseService } from '@clubgo/features/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 
 import { Ticket } from './ui/Ticket'
 import { Details } from './ui/Details'
 import { BookingContext, BookingContextProvider } from './BookingContextProvider'
-import Context from '../../ContextProvider'
+import RootContext from '../../RootContextProvider'
 
 type URLParams = {
   id: string
 }
 
 export default class BookingController extends Component<RouteComponentProps<URLParams>> {
+  static contextType = RootContext
+  context!: React.ContextType<typeof RootContext>
+
   state = {
-    loading: true,
-    loginExists: false,
-    ticket: {
-
-    },
-    user: {
-
-    }
+    loading: true
   }
 
   eventService = new DatabaseService('/event')
@@ -38,11 +34,8 @@ export default class BookingController extends Component<RouteComponentProps<URL
 
   componentDidMount() {
     this.fetchEventDetails(this.props.match.params.id).then(()=>{
-      this.validateLogin().then(()=>{
-        this.setState({ 
-          loading: false,
-          loginExists: true 
-        })
+      this.setState({ 
+        loading: false
       })
     })
   }
@@ -58,41 +51,39 @@ export default class BookingController extends Component<RouteComponentProps<URL
   }
 
   validateLogin = async () => {
-    // Check if login exists, validate
-    // If fail, go to login
-    // .then(()=>{
-    // 
-    // })
+    this.context.router('/login?' + QueryString.stringify({
+      utm_source: 'bookings',
+      intent: 'basic',
+      return: '/bookings/' + this.event._id + '/start'
+    }))
     return
   }
 
   render() {
     if(!this.state.loading) {
       return (
-        <Context.Consumer>
+        <RootContext.Consumer>
           {
             appContext => (
               <BookingContextProvider>
-                <Ticket event={this.event} venue={this.venue}
-                  onComplete={(ticket)=>{
-                    this.setState({ ticket })
-                    appContext.router('/login?' + QueryString.stringify({
-                      utm_source: 'bookings',
-                      intent: 'basic',
-                      return: '/bookings/' + this.event._id + '/start'
-                    }))
-                  }}
-                />
-                
-                <p>
+                <BookingContext.Consumer>
                   {
-                    JSON.stringify(appContext.state.user)
+                    bookingContext => {
+                      return (
+                        <Ticket event={this.event} venue={this.venue}
+                          onComplete={(ticket)=>{
+                            bookingContext.actions.setTicket(ticket)
+                            this.validateLogin()
+                          }}
+                        />
+                      )
+                    }
                   }
-                </p>
+                </BookingContext.Consumer>
               </BookingContextProvider>
             )
           }
-        </Context.Consumer>
+        </RootContext.Consumer>
       )
     }
     else

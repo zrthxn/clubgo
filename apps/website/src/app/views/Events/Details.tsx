@@ -7,7 +7,7 @@ import './Events.scss'
 
 import { DatabaseService } from '@clubgo/features/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
-import Context from '../../ContextProvider'
+import RootContext from '../../RootContextProvider'
 
 type URLParams = {
   id: string
@@ -18,8 +18,8 @@ interface EventDetailProps {
 }
 
 export default class EventDetails extends Component<RouteComponentProps<URLParams> & EventDetailProps> {
-  static contextType = Context
-  context!: React.ContextType<typeof Context>
+  static contextType = RootContext
+  context!: React.ContextType<typeof RootContext>
 
   eventService = new DatabaseService('/event')
   venueService = new DatabaseService('/venue')
@@ -75,10 +75,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
           <section className="container">
             <Grid container spacing={3}>
               <Grid item md={8} xs={12}>
-                <Banner image={'https://i.guim.co.uk/img/media/843fe2c5546f7e50bb973e3ed3a00a1d2faf872c'+
-                  '/15_100_813_488/master/813.jpg?width=1200&height=630&quality=85&auto=format&fit=crop'+
-                  '&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc'+
-                  '&enable=upscale&s=9a543f0c29ed8d437fcfee9a45377784'}/>
+                <Banner image={ this.event.media.images[0].url }/>
               </Grid>
 
               <Grid item md={4} xs={12} style={{ position: 'relative' }}>

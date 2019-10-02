@@ -2,18 +2,20 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import './Event.scss'
 
-import Context from '../../ContextProvider'
+import RootContext from '../../RootContextProvider'
+import { Image } from '@clubgo/website/components'
 import { IEventModel } from '@clubgo/database'
 
 interface EventComponentProps {
   data: IEventModel
   size?: 'small' | 'large'
+  color?: 'default' | 'white'
   image?: string
 }
 
 export class Event extends Component<EventComponentProps> {
-  static contextType = Context
-  context!: React.ContextType<typeof Context>
+  static contextType = RootContext
+  context!: React.ContextType<typeof RootContext>
 
   detailsPageURL = `/events/detail/${this.props.data._id}`
 
@@ -23,9 +25,18 @@ export class Event extends Component<EventComponentProps> {
   }
 
   render() {
+    var eventCardStyle = 'event'
+
+    if(this.props.size!==undefined)
+      eventCardStyle += ' ' + this.props.size
+      
+    if(this.props.color!==undefined)
+      eventCardStyle += ' ' + this.props.color
+
     return (
-      <div className={ this.props.size==='large' ? 'event large' : 'event' } onClick={this.openEventDetails}>
-        <img alt="Image" src="http://cgsquad.in/backend/images/event/1559398045.png"/>
+      <div className={eventCardStyle} onClick={this.openEventDetails}>
+        {/* <Image alt="Image" src={ this.props.data.media.images[0].url }/> */}
+        <img alt="Image" src={ this.props.data.media.images[0].url }/>
         
         <Link to={this.detailsPageURL}>
           <h3 className="event-title">{ this.props.data.eventTitle }</h3>

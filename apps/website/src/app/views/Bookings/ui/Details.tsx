@@ -3,15 +3,15 @@ import QueryString from 'query-string'
 
 import { handleChangeById as inputHandler, verifyRequirements } from '@clubgo/util'
 import { Textbox, Button } from '@clubgo/website/components'
-import Context from '../../../ContextProvider'
+import RootContext from '../../../RootContextProvider'
 
 interface DetailsProps {
   onComplete: Function
 }
 
 export class Details extends Component<DetailsProps> {
-  static contextType = Context
-  context!: React.Context<typeof Context>
+  static contextType = RootContext
+  context!: React.Context<typeof RootContext>
   
   state = {
     data: {
@@ -52,7 +52,7 @@ export class Details extends Component<DetailsProps> {
           </section>
 
           <section>
-            <Context.Consumer>
+            <RootContext.Consumer>
               {
                 appContext => (
                   <Button size="large" onClick={()=>{
@@ -63,7 +63,7 @@ export class Details extends Component<DetailsProps> {
                   </Button>
                 )
               }
-            </Context.Consumer>
+            </RootContext.Consumer>
           </section>
         </section>
       </article>

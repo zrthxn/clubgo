@@ -3,9 +3,9 @@ import { Route } from 'react-router-dom'
 
 // Initial State
 const _istate = {
-  browserRouterLocation: '/',
   city: null,
   locality: null,
+  openCityLightbox: false,
   user: {
 
   },
@@ -20,7 +20,7 @@ const _istate = {
 
 var _iactions = Object()
 
-export class ContextProvider extends Component {
+export class RootContextProvider extends Component {
   state = _istate
 
   constructor(props) {
@@ -32,7 +32,8 @@ export class ContextProvider extends Component {
       closeStory: this.closeStory,
       getUserContext: this.getUserContext,
       setUserContext: this.setUserContext,
-      setUserLogin: this.setUserLogin
+      setUserLogin: this.setUserLogin,
+      toggleCityLightbox: this.toggleCityLightbox
     }
   }
 
@@ -92,11 +93,17 @@ export class ContextProvider extends Component {
     })
   }
 
+  toggleCityLightbox = () => {
+    this.setState({
+      openCityLightbox: !this.state.openCityLightbox
+    })
+  }
+
   render() {
     return (
       <Route render={({ history })=>{
         return (
-          <Context.Provider
+          <RootContext.Provider
             value={{
               state: this.state,
               actions: _iactions,
@@ -108,20 +115,20 @@ export class ContextProvider extends Component {
             {
               this.props.children
             }
-          </Context.Provider>
+          </RootContext.Provider>
         )
       }}/>
     )
   }
 }
 
-export const Context = React.createContext({
+export const RootContext = React.createContext({
   state: _istate,
   router: Function(),
   actions: (()=>{
-    const _Context = new ContextProvider({})
+    const _Context = new RootContextProvider({})
     return _iactions
   })()
 })
 
-export default Context
+export default RootContext

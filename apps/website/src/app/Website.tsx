@@ -12,7 +12,7 @@ import {
 import './Global.scss'
 
 import { LoginService } from '@clubgo/features/api'
-import { ContextProvider, Context } from './ContextProvider'
+import { RootContextProvider, RootContext } from './RootContextProvider'
 
 import Home from './views/Home/Home'
 import EventListing from './views/Events/Events'
@@ -36,8 +36,8 @@ const MaterialUITheme = createMuiTheme({
 })
 
 export default class WebsiteController extends Component {
-  static contextType = Context
-  context!: React.ContextType<typeof Context>
+  static contextType = RootContext
+  context!: React.ContextType<typeof RootContext>
 
   state = {
     appValidationFinished: false
@@ -69,24 +69,20 @@ export default class WebsiteController extends Component {
       return (
         <Router>
           <ThemeProvider theme={MaterialUITheme}>
-            <ContextProvider>
+            <RootContextProvider>
               <Header/>
 
-              <Context.Consumer>
+              <RootContext.Consumer>
                 {
                   appContext => (
                     <Switch>
                       <Route exact path="/" component={Home}/>
                       <Route path="/in/:city" render={(routeProps)=>{
                         let { city } = routeProps.match.params
-                        if(city==='delhi' || city==='mumbai') {
-                          city = city.substr(0,1).toUpperCase() + city.substr(1).toLowerCase()
-                          return (
-                            <Home city={city} { ...routeProps }/>
-                          )
-                        }
-                        else
-                          appContext.router('/404')
+                        city = city.substr(0,1).toUpperCase() + city.substr(1).toLowerCase()
+                        return (
+                          <Home city={city} { ...routeProps }/>
+                        )
                       }}/>
 
                       <Route path="/events/in/:city" render={(routeProps)=>(
@@ -119,10 +115,10 @@ export default class WebsiteController extends Component {
                     </Switch>
                   )
                 }
-              </Context.Consumer>
+              </RootContext.Consumer>
               
               <Footer/>
-            </ContextProvider>
+            </RootContextProvider>
           </ThemeProvider>
         </Router>
       )

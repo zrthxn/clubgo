@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 
 // Initial State
 const _istate = {
-  user: {
+  loginExists: false,
+  ticketSelectionDone: false,
+  ticket: {
 
   }
 }
@@ -17,13 +19,40 @@ export class BookingContextProvider extends Component {
 
     // Register new actions here
     _iactions = {
-      
+      getTicket: this.getTicket,
+      setTicket: this.setTicket
     }
   }
 
   componentDidMount() {
-    
-  }  
+    this.getTicket()
+  }
+
+  getTicket = () => {
+    if(localStorage.getItem('cg::ticket:dump')===null) return undefined
+      
+    let ticket = JSON.parse(atob(localStorage.getItem('cg::ticket:dump')))
+    this.setState({ loginExists: true, ticket })
+    return ticket
+  }
+
+  setTicket = (_setTicket) => {
+    let ticket = this.getTicket()
+    for (const key in _setTicket)
+      if (_setTicket.hasOwnProperty(key))
+        ticket[key] = _setTicket[key]
+
+    localStorage.setItem('cg::ticket:dump', btoa(JSON.stringify(ticket)))
+    this.getTicket()
+  }
+
+  // getTicket = () => this.state.ticket
+  
+  // setTicket = (ticket) => {
+  //   this.setState({
+  //     ticket
+  //   })
+  // }
 
   render() {
     return (

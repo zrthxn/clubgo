@@ -7,10 +7,11 @@ import './Home.scss'
 import { Story, StoriesContainer } from '@clubgo/website/components'
 import { Banner, Textbox, Recommender } from '@clubgo/website/components'
 import { Event, Flexbox, FlexContainer } from '@clubgo/website/components'
-import Context from '../../ContextProvider'
+import RootContext from '../../RootContextProvider'
 
 import { DatabaseService } from '@clubgo/features/api'
 import { IEventModel } from '@clubgo/database'
+import { SelectCity } from '@clubgo/website/components'
 
 type URLParams = { 
   city: string
@@ -22,8 +23,8 @@ interface HomeProps {
 }
 
 export default class Home extends Component<HomeProps & RouteComponentProps<URLParams>> {
-  static contextType = Context
-  context!: React.ContextType<typeof Context>
+  static contextType = RootContext
+  context!: React.ContextType<typeof RootContext>
 
   eventService = new DatabaseService('/event')
 
@@ -88,9 +89,10 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         <section className="container">
           <h2>Featured Events</h2>
           <h4>Our best featured events</h4>
-          <Recommender 
+          <Recommender
+            context="featured" 
             render={(eventProps:IEventModel)=>(
-              <Event size="large" data={eventProps}/>
+              <Event size="large" color="white" data={eventProps}/>
             )}
           />
         </section>

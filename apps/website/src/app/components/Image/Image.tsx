@@ -48,7 +48,7 @@ export class Image extends Component<ImageProps> {
               textAlign: 'center', width: '100%', height: '100%',
               display: 'flex', flexDirection: 'column'
             }}>
-              <p style={{ margin: 'auto' }}>
+              <p style={{ margin: 'auto', color: '#000' }}>
                 Loading
               </p>
             </div>

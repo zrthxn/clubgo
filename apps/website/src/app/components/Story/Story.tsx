@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ScrollArea from 'react-scrollbar'
 import './Story.scss'
 
-import Context from '../../ContextProvider';
+import RootContext from '../../RootContextProvider';
 
 interface StoryProps {
   index: number
@@ -12,8 +12,8 @@ interface StoryProps {
   }
 }
 export class Story extends Component<StoryProps> {
-  static contextType = Context
-  context!: React.ContextType<typeof Context>
+  static contextType = RootContext
+  context!: React.ContextType<typeof RootContext>
 
   state = {
     hasBeenOpened: false,
@@ -38,7 +38,7 @@ export class Story extends Component<StoryProps> {
 
   render(){
     return (
-      <Context.Consumer>
+      <RootContext.Consumer>
         {
           appContext => (
             <div className={ this.state.hasBeenOpened ? 'story viewed' : 'story' } onClick={this.openStory}>
@@ -48,7 +48,7 @@ export class Story extends Component<StoryProps> {
             </div>
           )
         }
-      </Context.Consumer>
+      </RootContext.Consumer>
     )
   }
 }
@@ -72,7 +72,7 @@ export function StoriesContainer(props) {
         smoothScrolling= {true}
         minScrollSize={40}
       >
-        <Context.Consumer>
+        <RootContext.Consumer>
           {
             appContext => (
               appContext.state.story.stories.map((story, index)=>(
@@ -82,10 +82,10 @@ export function StoriesContainer(props) {
               ))
             )
           }
-        </Context.Consumer>
+        </RootContext.Consumer>
       </ScrollArea>
 
-      <Context.Consumer>
+      <RootContext.Consumer>
         {
           appContext => (
             <div className={ appContext.state.story.isOpen ? "story open" : "story" }
@@ -100,7 +100,7 @@ export function StoriesContainer(props) {
             </div>
           )
         }
-      </Context.Consumer>
+      </RootContext.Consumer>
     </div>
   )
 }

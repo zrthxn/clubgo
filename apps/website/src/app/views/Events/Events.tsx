@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import './Events.scss'
 
 import { Story, StoriesContainer, FlexContainer, Flexbox, Event } from '@clubgo/website/components'
-import Context from '../../ContextProvider'
+import RootContext from '../../RootContextProvider'
 
 import { Advert } from '@clubgo/website/components'
 import { Lightbox, Button } from '@clubgo/website/components'
@@ -13,8 +13,8 @@ type URLParams = {
 }
 
 export default class EventListing extends Component<RouteComponentProps<URLParams>> {
-  static contextType = Context
-  context!: React.ContextType<typeof Context>
+  static contextType = RootContext
+  context!: React.ContextType<typeof RootContext>
 
   state = {
     city: null,
@@ -25,11 +25,11 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
     }
   }
 
-  componentDidMount() {  
-    if(this.props.match.params.city!==undefined) {
-      this.context.actions.setCity(this.props.match.params.city)
-      let { city } = this.props.match.params
+  componentDidMount() {
+    let { city } = this.props.match.params
+    if(city!==undefined) {
       city = city.substr(0, 1).toUpperCase() + city.substr(1)
+      this.context.actions.setUserContext({ city })
       this.setState({
         city
       })

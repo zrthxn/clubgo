@@ -44,8 +44,8 @@ export class Ticket extends Component<TicketViewProps> {
 
           <section className="booking">
             <Grid container>
-              <Grid item xs={1}/>
-              <Grid item md={5} xs={12}>
+              <Grid item md={1}/>
+              <Grid item md={6} xs={12}>
                 <section className="ticket">
                   <div className="event-details">
                     <h2 className="event-name">{ this.event.eventTitle }</h2>
@@ -98,7 +98,7 @@ export class Ticket extends Component<TicketViewProps> {
                 </section>
               </Grid>
 
-              <Grid item md={5} xs={12}>
+              <Grid item md={4} xs={12}>
                 <section className="payment">
                   <h3 className="bold">Payment</h3>
 
@@ -162,7 +162,7 @@ export class Ticket extends Component<TicketViewProps> {
                   </p>
                 </section>
               </Grid>
-              <Grid item xs={1}/>
+              <Grid item md={1}/>
             </Grid>
           </section>
         </section>

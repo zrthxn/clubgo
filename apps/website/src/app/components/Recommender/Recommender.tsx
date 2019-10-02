@@ -5,7 +5,7 @@ import './Recommender.scss'
 import { DatabaseService } from '@clubgo/features/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 import Button from '../Button/Button'
-import Context from '../../ContextProvider'
+import RootContext from '../../RootContextProvider'
 
 interface RecommenderComponentProps {
   render?: ((renderProps?)=>((typeof React.Component) | ReactElement))
@@ -18,8 +18,8 @@ interface RecommenderComponentProps {
 }
 
 export class Recommender extends Component<RecommenderComponentProps> {
-  static contextType = Context
-  context!: React.ContextType<typeof Context>
+  static contextType = RootContext
+  context!: React.ContextType<typeof RootContext>
   
   state = {
     loading: true,
@@ -43,6 +43,9 @@ export class Recommender extends Component<RecommenderComponentProps> {
 
   fetchRecommendations = async ({ city }) => {
     let { data } = await this.recommendationService.searchBy({
+      settings: this.props.context!=="featured" ? undefined : {
+        isFeatured: true
+      },
       venue: {
         city
       }

@@ -1,3 +1,5 @@
+@import "../../Global.scss";
+
 .event {
   padding: 1em;
   margin: 1em;
@@ -37,6 +39,12 @@
 .scrollarea-content {
   .event {
     width: 16em;
+    transition: all 0.25s ease;
+
+    &:hover {
+      transition: all 0.25s ease;
+      transform: scale(1.03125);
+    }
   }
 
   .event:first-of-type {
@@ -58,11 +66,36 @@
   }
 }
 
+// White Event Card ------------------------------
+.event[class~="white"] {
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 5px #00000080;
+
+  img {
+    margin: -1em;
+    margin-bottom: 1em;
+    border-radius: unset;
+    width: unset;
+    max-width: unset;
+  }
+
+  .event-title {
+    font-weight: 600;
+  }
+
+  .event-venue {
+    // font-size: 1.125em;
+    color: $primaryColor;
+  }
+}
+
 // Large Event Card ------------------------------
 .event[class~="large"] {
   @media (min-width: 600px) {
     & {
       width: 20em;
+      height: 22em;
     }
 
     .event-title {

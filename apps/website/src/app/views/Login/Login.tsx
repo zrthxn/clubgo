@@ -3,11 +3,11 @@ import { RouteComponentProps } from 'react-router-dom'
 import QueryString from 'query-string'
 
 import { Details } from '../Bookings/ui/Details'
-import Context from '../../ContextProvider'
+import RootContext from '../../RootContextProvider'
 
 export default class LoginManager extends Component<RouteComponentProps> {
-  static contextType = Context
-  context!: React.Context<typeof Context>
+  static contextType = RootContext
+  context!: React.Context<typeof RootContext>
 
   state = {
     intent: null,
@@ -28,7 +28,7 @@ export default class LoginManager extends Component<RouteComponentProps> {
   render() {
     if(this.state.intent==='basic')
       return (
-        <Context.Consumer>
+        <RootContext.Consumer>
           {
             appContext => (
               <Details onComplete={()=>{
@@ -36,7 +36,7 @@ export default class LoginManager extends Component<RouteComponentProps> {
               }}/>
             )
           }
-        </Context.Consumer>
+        </RootContext.Consumer>
       )
     else
       return (

@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { parse as QueryParser } from 'query-string'
 
-import Context from '../../ContextProvider'
+import RootContext from '../../RootContextProvider'
 import { IEventModel } from '@clubgo/database'
 
 import { DatabaseService } from '@clubgo/features/api'
 import { Event, Textbox, StoriesContainer, Flexbox, FlexContainer, Recommender } from '@clubgo/website/components'
 
 export default class Search extends Component<RouteComponentProps> {
-  static contextType = Context
-  context!: React.ContextType<typeof Context>
+  static contextType = RootContext
+  context!: React.ContextType<typeof RootContext>
 
   eventService = new DatabaseService('/event')
   venueService = new DatabaseService('/venue')
@@ -109,6 +109,7 @@ export default class Search extends Component<RouteComponentProps> {
           <h1 className="light">Search</h1>
           <Textbox unconstrained placeholder="Find events near you" margins="normal"
             spellCheck={false} 
+            style={{ textAlign: 'center' }}
             onChange={({ target })=>{
               this.setState(()=>{
                 if(target.value!=='')
@@ -134,7 +135,7 @@ export default class Search extends Component<RouteComponentProps> {
         
         {
           !this.state.loading ? (
-            <Context.Consumer>
+            <RootContext.Consumer>
               {
                 appContext => (
                   <section>
@@ -161,7 +162,7 @@ export default class Search extends Component<RouteComponentProps> {
                   </section>
                 )
               }
-            </Context.Consumer>
+            </RootContext.Consumer>
           ) : (
             <section className="container"> 
               <StoriesContainer/>
@@ -169,7 +170,7 @@ export default class Search extends Component<RouteComponentProps> {
           )
         }
 
-        <section>
+        <section className="container">
           <h2>Recommended Events</h2>
           <h4>Selected Events for you</h4>
           <Recommender 

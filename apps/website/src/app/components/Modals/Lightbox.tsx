@@ -1,6 +1,8 @@
 import React, { Component, ReactChildren, ReactElement } from 'react'
 import { Modal, Paper } from '@material-ui/core'
 
+import './Modal.scss'
+
 interface LightboxProps {
   open: boolean
   children: ReactElement<HTMLElement> | Array<ReactElement<HTMLElement>>
