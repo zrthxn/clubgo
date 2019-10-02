@@ -200,9 +200,7 @@ export class Image extends Component<ImageProps> {
         boxShadow: '0 0 5px #1c1c1c80',
         position: 'relative'
       }}>
-        <img width="150px" style={{ borderRadius: '0.5em' }} src={
-          APIEndpoints.cdn.url + `/i/${this.props.src}`
-        } alt="Image"/>
+        <img width="150px" style={{ borderRadius: '0.5em' }} src={this.props.src} alt="Image"/>
 
         <Fab color="default" size="small" style={{ 
           position: 'absolute',
