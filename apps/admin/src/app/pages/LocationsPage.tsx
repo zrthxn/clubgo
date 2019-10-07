@@ -1,20 +1,15 @@
 import React, { Component } from 'react'
-import { Button } from 'reactstrap'
+import { Nav, NavItem, NavLink, Button } from 'reactstrap'
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 
 import './scss/Pages.scss'
 
-import { TicketListing } from '../components/Tickets/TicketListing'
-
-export class TicketsPage extends Component {
-  state = {
-
-  }
-
+export class LocationsPage extends Component {
   render() {
     return (
       <div className="page">
         <article className="page-header">
-          <h1 className="title">Tickets</h1>
+          <h1 className="title">Locations</h1>
 
           <div className="page-nav clearfix">
             <p>
@@ -25,11 +20,12 @@ export class TicketsPage extends Component {
         </article>
 
         <article className="page-content">
-          <TicketListing/>
+          {/* <Location/> */}
+          fcghjbklm
         </article>
       </div>
     )
   }
 }
 
-export default TicketsPage
+export default LocationsPage

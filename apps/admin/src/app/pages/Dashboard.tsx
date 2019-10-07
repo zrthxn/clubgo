@@ -14,7 +14,7 @@ export class Dashboard extends Component {
     return (
       <div className="page">
         <article className="page-header">
-          <h2 className="title">Dashboard</h2>
+          <h1 className="title">Dashboard</h1>
         </article>
 
         <article className="page-content">

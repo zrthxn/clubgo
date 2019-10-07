@@ -69,34 +69,25 @@ export class Ticket extends Component<TicketProps> {
           </IconButton>
         </div>
 
-        <Modal open={this.state.openEditModal}
-          style={{
-            margin: 'auto',
-            width: 800,
-            position: 'absolute',
-            textAlign: 'center'
-          }}
-        >
-          <TicketEditor
-            populate={true}
-            data={this.props.data}
-            onFinalize={(updateBody:ITicketModel)=>{
-              this.ticketService.update(this.props.data._id, updateBody).then(()=>{
-                if(this.props.onEdit!==undefined)
-                  this.props.onEdit(updateBody)
-                  
-                this.setState({
-                  openEditModal: false
-                })
-              })
-            }}
-            onCancel={()=>{
+        <TicketEditor open={this.state.openEditModal}
+          populate={true}
+          data={this.props.data}
+          onFinalize={(updateBody:ITicketModel)=>{
+            this.ticketService.update(this.props.data._id, updateBody).then(()=>{
+              if(this.props.onEdit!==undefined)
+                this.props.onEdit(updateBody)
+                
               this.setState({
                 openEditModal: false
               })
-            }}
-          />
-        </Modal>
+            })
+          }}
+          onCancel={()=>{
+            this.setState({
+              openEditModal: false
+            })
+          }}
+        />
       </div>
     )
   }

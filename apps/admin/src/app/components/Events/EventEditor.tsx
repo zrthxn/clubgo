@@ -132,7 +132,7 @@ export class EventEditor extends Component<EventEditorProps> {
     if(!this.state.loading) return (
       <div className="create-form">
         <div>
-          <div className="clearfix" style={{ padding: '2em 1em' }}>            
+          <div className="clearfix">
             {
               this.props.intent==='create' ? (
                 <span className="form-title">Create Event</span>

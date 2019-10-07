@@ -77,54 +77,60 @@ export class VenueListing extends Component<VenueListingProps> {
   render() {
     return (
       <div className="listings">
-        <span className="table-title">Venues Listing</span>
-          {
-            this.state.loading ? <p>Loading...</p> : null
-          }
+        <p className="table-title">Venues Listing</p>
 
-          <Filters 
-            filters={[
-              {
-                key: 'city',
-                placeholder: 'City',
-                suggestions: [
-                  {
-                    label: 'Delhi',
-                    value: 'Delhi'
-                  },
-                  {
-                    label: 'Mumbai',
-                    value: 'Mumbai'
-                  }
-                ]
-              }
-            ]}
-            onChange={(filters)=>{
-              this.loadListings({
-                query: filters
-              })
-            }}
-          />
-
-          <p style={{ color: '#ff0000', margin: '1em' }}>{ this.state.errorText }</p>
-
-          <div className="listing-table">
+        <Filters 
+          filters={[
             {
-              !this.state.loading && this.state.listing!==undefined ? (
-                this.state.listing.map((item, index)=>{
-                  return (
-                    <VenueListItem data={ item } key={ `venueListing_${index}` }
-                      onDelete={()=>{
-                        this.deleteVenue(item._id)
-                      }}
-                    />
-                  )
-                })
-              ) : (
-                null
-              )
-            }    
-          </div>
+              key: 'city',
+              placeholder: 'City',
+              suggestions: [
+                {
+                  label: 'Delhi',
+                  value: 'Delhi'
+                },
+                {
+                  label: 'Mumbai',
+                  value: 'Mumbai'
+                }
+              ]
+            }
+          ]}
+          onChange={(filters)=>{
+            this.loadListings({
+              query: filters
+            })
+          }}
+        />
+        
+        { 
+          this.state.loading ? (
+            <div>
+              <div className="spinner"></div>
+              <p>Loading</p>
+            </div>
+          ) : null 
+        }
+
+        <p style={{ color: '#ff0000', margin: '1em 0' }}>{ this.state.errorText }</p>
+
+        <div className="listing-table">
+          {
+            !this.state.loading && this.state.listing!==undefined ? (
+              this.state.listing.map((item, index)=>{
+                return (
+                  <VenueListItem data={ item } key={ `venueListing_${index}` }
+                    onDelete={()=>{
+                      this.deleteVenue(item._id)
+                    }}
+                  />
+                )
+              })
+            ) : (
+              null
+            )
+          }    
+        </div>
       </div>
     )
   }

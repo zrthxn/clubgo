@@ -1,28 +1,23 @@
-.listings {
-  padding: 2em;
-  
+.listings {  
   .table-title {
     width: fit-content;
     font-weight: 600;
     font-size: 1.5em;
-    margin: 2em 0.75em;
+    margin: 0 0 1em 0;
   }
-}
+  
+  .listing-table {
+    margin: 2em 0;
 
-.listing-table {
-  margin: 2em 0;
-  padding: 1em;
-  // background-color: #fff;
-}
+    .list-item {
+      display: flex;
+      flex-direction: row;
+      margin: 0.5em 0;
+      padding: 1em;
+      background-color: #fff;
 
-.list-item {
-  display: flex;
-  flex-direction: row;
-  margin: 0.5em;
-  padding: 1em;
-  background-color: #fff;
-
-  border: 1.5px solid #1c1c1c40;
-  // box-shadow: 0 0 2px #1c1c1c80;
-  border-radius: 5px;
+      border: 1.5px solid #1c1c1c40;
+      border-radius: 5px;
+    }
+  }
 }

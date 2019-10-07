@@ -7,12 +7,12 @@ import { ThemeProvider } from '@material-ui/styles'
 import { 
   blue as primaryThemeColor, 
   blueGrey as secondaryThemeColor,
-  red as errorThemeColor
-   
+  red as errorThemeColor,
+  green, red
 } from '@material-ui/core/colors'
 
-import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
-import { AccountCircle, MenuRounded, MessageRounded, Notifications } from '@material-ui/icons'
+import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Snackbar, SnackbarContent, Tooltip } from '@material-ui/core'
+import { AccountCircle, MenuRounded, MessageRounded, Notifications, Close, Help } from '@material-ui/icons'
 
 import { LoginService } from '@clubgo/features/api'
 
@@ -24,7 +24,11 @@ import EventsPage from './pages/EventsPage'
 import VenuesPage from './pages/VenuesPage'
 import TicketsPage from './pages/TicketsPage'
 import OffersPage from './pages/OffersPage'
+import LocationsPage from './pages/LocationsPage'
 import SettingsPage from './pages/SettingsPage'
+
+import AdminContextProvider from './AdminContextProvider'
+import { AdminContext } from './AdminContext'
 
 const theme = createMuiTheme({
   palette: {
@@ -38,6 +42,7 @@ const theme = createMuiTheme({
 export class Admin extends Component {
   state = {
     authenticated: false,
+    sidebarOpen: false,
     notificationsOpen: false,
     messagesOpen: false,
     userAccountMenuOpen: false
@@ -63,30 +68,36 @@ export class Admin extends Component {
     }
   }
 
-  openMessages = () => {
+  toggleMessages = () => {
     this.setState({
-      messagesOpen: true
+      messagesOpen: !this.state.messagesOpen
     })
   }
 
-  openNotifications = () => {
+  toggleNotifications = () => {
     this.setState({
-      notificationsOpen: true
+      notificationsOpen: !this.state.notificationsOpen
     })
   }
 
-  openUserAccountMenu = () => {
+  toggleUserAccountMenu = () => {
     this.setState({
-      userAccountMenuOpen: true
+      userAccountMenuOpen: !this.state.userAccountMenuOpen
+    })
+  }
+
+  toggleSidebar = () => {
+    this.setState({
+      sidebarOpen: !this.state.sidebarOpen
     })
   }
 
   onAuthenticate = () => {
     return (
       <div id="admin-panel-root">
-        <section id="panel">          
+        <section id="panel">
           <Router>
-            <input type="checkbox" id="sidebar-toggle" hidden/>
+            <input type="checkbox" checked={this.state.sidebarOpen} id="sidebar-toggle" hidden readOnly/>
 
             <div id="sidebar">
               <div className="title">
@@ -96,39 +107,37 @@ export class Admin extends Component {
                 <hr/>
               </div>
 
-              <Link to="/dashboard"> Dashboard </Link>
-              <Link to="/events"> Events </Link>
-              <Link to="/venues"> Venues </Link>
-              <Link to="/tickets"> Tickets </Link>
-              <Link to="/offers"> Offers </Link>
-              <Link to="/users"> Users </Link>
-              <Link to="/artists"> Artists </Link>
-              <Link to="/locations"> Locations </Link>
-              <Link to="/settings"> Settings </Link>
+              <Link onClick={this.toggleSidebar} to="/dashboard"> Dashboard </Link>
+              <Link onClick={this.toggleSidebar} to="/events"> Events </Link>
+              <Link onClick={this.toggleSidebar} to="/venues"> Venues </Link>
+              <Link onClick={this.toggleSidebar} to="/tickets"> Tickets </Link>
+              <Link onClick={this.toggleSidebar} to="/offers"> Offers </Link>
+              <Link onClick={this.toggleSidebar} to="/users"> Users </Link>
+              <Link onClick={this.toggleSidebar} to="/artists"> Artists </Link>
+              <Link onClick={this.toggleSidebar} to="/locations"> Locations </Link>
+              <Link onClick={this.toggleSidebar} to="/settings"> Settings </Link>
             </div>
+
+            <div id="sidebar-shadow" onClick={this.toggleSidebar}/>
 
             <div id="section-root">
               <AppBar position="static">
                 <Toolbar>
-                  <IconButton edge="start" color="inherit" aria-label="Menu" style={{ zIndex: 11 }}
-                    onClick={()=>{
-                      document.getElementById("sidebar-toggle")['checked'] = !document.getElementById("sidebar-toggle")['checked']
-                    }}
-                  >
+                  <IconButton edge="start" color="inherit" aria-label="Menu" style={{ zIndex: 11 }} onClick={this.toggleSidebar}>
                     <MenuRounded />
                   </IconButton>
 
                   <Typography variant="h6" style={{ flexGrow: 1 }}>Admin</Typography>
 
-                  <IconButton color="inherit" onClick={this.openMessages}>
+                  <IconButton color="inherit" onClick={this.toggleMessages}>
                     <MessageRounded />
                   </IconButton>
                   
-                  <IconButton color="inherit" onClick={this.openNotifications}>
+                  <IconButton color="inherit" onClick={this.toggleNotifications}>
                     <Notifications />
                   </IconButton>
 
-                  <IconButton color="inherit" onClick={this.openUserAccountMenu}>
+                  <IconButton color="inherit" onClick={this.toggleUserAccountMenu}>
                     <AccountCircle />
                     <Menu id="appbarUserAccountMenu" keepMounted
                       open={ this.state.userAccountMenuOpen }
@@ -147,20 +156,72 @@ export class Admin extends Component {
                 </Toolbar>
               </AppBar>
 
-              <section id="content">
-                <Switch>
-                  <Route exact path="/" component={ Dashboard } />
-                  <Route path="/dashboard" component={ Dashboard } />
-                  <Route path="/events" component={ EventsPage } />
-                  <Route path="/venues" component={ VenuesPage } />
-                  <Route path="/tickets" component={ TicketsPage } />
-                  <Route path="/offers" component={ OffersPage } />
-                  <Route path="/users" component={ Dashboard } />
-                  <Route path="/artists" component={ Dashboard } />
-                  <Route path="/locations" component={ Dashboard } />
-                  <Route path="/settings" component={ SettingsPage } />
-                </Switch>
-              </section>
+              <AdminContext.Consumer>
+                {
+                  adminContext => (
+                    <section id="content">
+                      <Switch>
+                        <Route exact path="/" component={ Dashboard } />
+                        <Route path="/dashboard" component={ Dashboard } />
+                        <Route path="/events" component={ EventsPage } />
+                        <Route path="/venues" component={ VenuesPage } />
+                        <Route path="/tickets" component={ TicketsPage } />
+                        <Route path="/offers" component={ OffersPage } />
+                        <Route path="/users" component={ Dashboard } />
+                        <Route path="/artists" component={ Dashboard } />
+                        <Route path="/locations" component={ LocationsPage } />
+                        <Route path="/settings" component={ SettingsPage } />
+                      </Switch>
+
+                      <Snackbar open={ adminContext.state.openSuccessFeedback }
+                          // SUCCESS
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                          }}
+                          autoHideDuration={5000}
+                          onClose={adminContext.actions.closeSuccessFeedback}
+                        >
+                          <SnackbarContent
+                            style={{ backgroundColor: green[600] }}
+                            message={ <span>{ adminContext.state.feedbackMessage.message }</span> }
+                            action={[
+                              <IconButton key="close" color="inherit" onClick={adminContext.actions.closeSuccessFeedback}>
+                                <Close/>
+                              </IconButton>,
+                            ]}
+                          />
+                        </Snackbar>
+
+                        <Snackbar open={ adminContext.state.openErrorFeedback }
+                          // ERROR
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                          }}
+                          autoHideDuration={5000}
+                          onClose={adminContext.actions.closeErrorFeedback}
+                        >
+                          <SnackbarContent
+                            style={{ backgroundColor: red[600] }}
+                            message={ <span>{ adminContext.state.feedbackMessage.message }</span> }
+                            action={[
+                              <Tooltip title={adminContext.state.feedbackMessage.details} style={{ maxWidth: 500, fontSize: '2em' }}>
+                                <IconButton key="close" color="inherit" onClick={adminContext.actions.closeErrorFeedback}>
+                                  <Help/>
+                                </IconButton>
+                              </Tooltip>,
+
+                              <IconButton key="close" color="inherit" onClick={adminContext.actions.closeErrorFeedback}>
+                                <Close/>
+                              </IconButton>
+                            ]}
+                          />
+                        </Snackbar>
+                    </section>
+                  )
+                }
+              </AdminContext.Consumer>
             </div>
           </Router>
         </section>
@@ -171,19 +232,21 @@ export class Admin extends Component {
   render() {
     return (
       <ThemeProvider theme={ theme }>
-        <div className="admin-root">
-          {
-            this.state.authenticated ? (
-              this.onAuthenticate()
-            ) : (
-              <LoginPage onAuthenticate={()=>{
-                this.setState({
-                  authenticated: true
-                })
-              }} />
-            )
-          }
-        </div>
+        <AdminContextProvider>
+          <div className="admin-root">
+            {
+              this.state.authenticated ? (
+                this.onAuthenticate()
+              ) : (
+                <LoginPage onAuthenticate={()=>{
+                  this.setState({
+                    authenticated: true
+                  })
+                }} />
+              )
+            }
+          </div>
+        </AdminContextProvider>
       </ThemeProvider>      
     )
   }

@@ -88,34 +88,25 @@ export class TicketListing extends Component {
           </div>
         </section>
 
-        <Modal open={this.state.openCreateModal}
-          style={{
-            margin: 'auto',
-            width: 800,
-            position: 'absolute',
-            textAlign: 'center'
-          }}
-        >
-          <TicketEditor
-            populate={this.state.populateDataFromParent}
-            data={this.state.populateData}
-            onFinalize={(createBody:ITicketModel)=>{
-              this.ticketService.create(createBody).then((res)=>{
-                let { listing } = this.state
-                listing.push(createBody)
-                this.setState({
-                  openCreateModal: false,
-                  listing
-                })
-              })
-            }}
-            onCancel={()=>{
+        <TicketEditor open={this.state.openCreateModal}
+          populate={this.state.populateDataFromParent}
+          data={this.state.populateData}
+          onFinalize={(createBody:ITicketModel)=>{
+            this.ticketService.create(createBody).then((res)=>{
+              let { listing } = this.state
+              listing.push(createBody)
               this.setState({
-                openCreateModal: false
+                openCreateModal: false,
+                listing
               })
-            }}
-          />
-        </Modal>
+            })
+          }}
+          onCancel={()=>{
+            this.setState({
+              openCreateModal: false
+            })
+          }}
+        />
       </div>
     )
   }

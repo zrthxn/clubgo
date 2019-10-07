@@ -8,7 +8,7 @@ export default class SettingsPage extends Component {
     return (
       <div className="page">
         <article className="page-header">
-          <h2 className="title">Settings</h2>
+          <h1 className="title">Settings</h1>
 
           <p>hg</p>
         </article>
@@ -16,21 +16,7 @@ export default class SettingsPage extends Component {
         <article className="page-content">
           <Grid container spacing={3}>
             <Grid item xs={6}>
-              <Paper>
-                <h3>Categories</h3>
-              </Paper>
-            </Grid>
-            
-            <Grid item xs={6}>
-              <Paper>
-                <h3>Tags</h3>
-              </Paper>
-            </Grid>
-            
-            <Grid item xs={6}>
-              <Paper>
-                <h3>Localities</h3>
-              </Paper>
+              
             </Grid>
           </Grid>
         </article>

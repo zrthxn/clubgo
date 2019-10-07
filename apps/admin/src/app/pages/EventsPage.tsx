@@ -14,7 +14,7 @@ export class EventsPage extends Component {
       <EventContextProvider>
         <div className="page">
           <article className="page-header">
-            <h2 className="title">Events</h2>
+            <h1 className="title">Events</h1>
 
             <EventContext.Consumer>
               {

@@ -52,7 +52,7 @@ UploadRouter.post('/single/:collection', (req, res)=>{
     
     const file = req['file']
 
-    let genFileName = collection + parseInt((file.filename.split('upload_')[1]), 10).toString(36)
+    let genFileName = parseInt((file.filename.split('upload_')[1]), 10).toString(36)
 
     fs.readFile(file.path, (FileError, data)=>{
       if (FileError) return res.status(500).send(FileError)
@@ -66,7 +66,7 @@ UploadRouter.post('/single/:collection', (req, res)=>{
       if(collection!=='root')
         writePath = path.join(writePath, collection)
 
-      writePath = path.join(writePath, collection + genFileName + 
+      writePath = path.join(writePath, genFileName + 
         '.' + file.originalname.split('.')[file.originalname.split('.').length-1])
         
       // Write new image to root
@@ -166,23 +166,43 @@ UploadRouter.post('/multiple/:collection', (req, res)=>{
   })
 })
 
+// Utility Functions
+// --------------------------------------------------------
+const getFileExtension = (name) => ('.' + name.split('.')[name.split('.').length-1])
+
 function createLookupEntries(collection:string, lookupEntries) {
   let lookupPath = path.join(__storagedir, 'root', 'lookup.json')
-  let cdndata = fs.readFileSync(lookupPath)
-  let lookupTable = JSON.parse(cdndata.toString())
-  let redundantTable = lookupTable
+  let backupPath = path.join(__storagedir, 'root', 'lookup.backup.json')
 
-  lookupTable = lookupTable[collection].files
-  lookupTable.push( ...lookupEntries )
+  fs.readFile(lookupPath, (error, cdndata)=>{
+    let lookupTable
+    
+    if(error) {
+      cdndata = fs.readFileSync(backupPath)
+      console.error('CDN Lookup Error Found, Using Backup', error)
+    }
 
-  lookupTable = sortItemArrayByRef(lookupTable)
+    try {
+      lookupTable = JSON.parse(cdndata.toString())
+    } catch (error) {
+      cdndata = fs.readFileSync(backupPath)
+      console.error('CDN Lookup Error Found, Using Backup', error)
+      lookupTable = JSON.parse(cdndata.toString())
+    }
 
-  redundantTable[collection].files = lookupTable
-  redundantTable.lockfile = false
+    let redundantTable = lookupTable
 
-  fs.writeFileSync(lookupPath, JSON.stringify(redundantTable, null, 2))
-}
+    // Create Backup Lookup
+    fs.writeFile(backupPath, JSON.stringify(redundantTable, null, 2), ()=>{})
 
-function getFileExtension(originalname) {
-  return ('.' + originalname.split('.')[originalname.split('.').length-1])
+    lookupTable = lookupTable[collection].files
+    lookupTable.push( ...lookupEntries )
+
+    lookupTable = sortItemArrayByRef(lookupTable)
+
+    redundantTable[collection].files = lookupTable
+    redundantTable.lockfile = false
+
+    fs.writeFile(lookupPath, JSON.stringify(redundantTable, null, 2), ()=>{})
+  })
 }

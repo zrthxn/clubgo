@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Button, IconButton, Modal, Paper } from '@material-ui/core'
+import { Grid, Button, IconButton, Modal, Paper, Tooltip } from '@material-ui/core'
 import { red, blue, green } from '@material-ui/core/colors'
 import { Edit, Delete } from '@material-ui/icons'
 import { IVenueModel } from '@clubgo/database'
@@ -28,15 +28,7 @@ export class VenueListItem extends Component<VenueListItemProps> {
                 <Grid item md={6} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
                   <div>
                     <h4>{ this.props.data.venueTitle }</h4>
-                    <span>
-                      { 
-                        this.props.data.description.length < 25 ? (
-                          this.props.data.description
-                        ) : ( 
-                          this.props.data.description.substr(0, 25) + '...'
-                        )
-                      }
-                    </span>
+                    <span>{ this.props.data.locality }</span>
                   </div>
                 </Grid>
 
@@ -52,19 +44,23 @@ export class VenueListItem extends Component<VenueListItemProps> {
 
                 <Grid item md={4} xs={12}>
                   <div className="action clearfix">
-                    <IconButton className="float-right" onClick={()=>{
-                      this.setState({
-                        openDeleteModal: true
-                      })
-                    }}>
-                      <Delete/> 
-                    </IconButton>
+                    <Tooltip title="Delete">
+                      <IconButton className="float-right" onClick={()=>{
+                        this.setState({
+                          openDeleteModal: true
+                        })
+                      }}>
+                        <Delete/> 
+                      </IconButton>
+                    </Tooltip>
 
-                    <IconButton className="float-right" onClick={()=>{
-                      venueContext.actions.openVenueEditor('edit', this.props.data)
-                    }}>
-                      <Edit/>
-                    </IconButton>
+                    <Tooltip title="Delete">
+                      <IconButton className="float-right" onClick={()=>{
+                        venueContext.actions.openVenueEditor('edit', this.props.data)
+                      }}>
+                        <Edit/>
+                      </IconButton>
+                    </Tooltip>
 
                     <ConfirmDelete isOpen={this.state.openDeleteModal}
                       confirm={()=>{

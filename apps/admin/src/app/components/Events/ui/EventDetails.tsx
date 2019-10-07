@@ -229,7 +229,7 @@ export class EventDetails extends Component<EventDetailsProps> {
           </Grid>
         </Paper>
         
-        <div>
+        <div className="create-block">
           <h5 className="title">
             Custom Details
             <Fab style={{ margin: '1em' }} color="primary"

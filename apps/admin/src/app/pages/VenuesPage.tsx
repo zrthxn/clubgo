@@ -14,7 +14,7 @@ export class VenuesPage extends Component {
       <VenueContextProvider>
         <div className="page">
           <article className="page-header">
-            <h2 className="title">Venues</h2>
+            <h1 className="title">Venues</h1>
             
             <VenueContext.Consumer>
               {

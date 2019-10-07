@@ -10,7 +10,7 @@ export default class OffersPage extends Component {
     return (
       <div className="page">
         <article className="page-header">
-          <h2 className="title">Offers</h2>
+          <h1 className="title">Offers</h1>
         </article>
 
         <article className="page-content">

@@ -30,7 +30,7 @@ export class Filters extends Component<FilterProps> {
 
   render() {
     return (
-      <div style={{ padding: '1em' }}>
+      <div>
         <Grid container spacing={2}>
           <Grid item xs={3}>
             <TextField label="Search Text" fullWidth variant="outlined" 

@@ -1,23 +1,15 @@
 $section-content-bg: #bdbdbd40;
 
-.section-content {
-  // background-color: $section-content-bg;
-}
-
-.create-form {
-  padding: 2em;
-  border-radius: 5px;
-  border: 1.5px solid #1c1c1c40;
-  box-shadow: 0 0 5px #1c1c1c40;
-  
+.create-form {  
   .form-title {
     width: fit-content;
     font-weight: 600;
     font-size: 1.5em;
+    padding: 1em;
   }
   
   .create-block {
-    margin: 1em 0;
+    margin: 1em;
     padding: 2em;
     border: 1.5px solid #1c1c1c40;
     box-shadow: none;
@@ -25,7 +17,6 @@ $section-content-bg: #bdbdbd40;
     .title {
       text-transform: uppercase;
       color: #1c1c1c;
-      // background: linear-gradient(#1d6aaa,#fff);
       font-size: 1em;
       font-weight: 600;
 
@@ -34,18 +25,7 @@ $section-content-bg: #bdbdbd40;
       border-top-left-radius: 0.5em;
       border-top-right-radius: 0.5em;
     }
-
-    .MuiGrid-root {
-      grid-gap: 1em;
-    }
   }
-  // .create-block::before {
-  //   display: block;
-  //   content: '';
-  //   padding: 1em;
-  //   margin: -2em;
-  //   background: linear-gradient(#00aeff, transparent);
-  // }
 }
 
 .form-group {

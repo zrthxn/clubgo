@@ -143,7 +143,7 @@ export class VenueEditor extends Component<VenueEditorProps> {
     return (
       <div className="create-form">
         <div>
-          <div className="clearfix" style={{ padding: '1em' }}>
+          <div className="clearfix">
             {
               this.props.intent==='create' ? (
                 <span className="form-title">Create Venue</span>

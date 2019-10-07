@@ -38,7 +38,8 @@ export class EventListing extends Component<EventListingProps> {
     this.loadListings(this.state.search)
   }
 
-  async loadListings(search) {
+  loadListings = async (search) => {
+    this.setState({ loading: true })
     let { query } = search, listing, errorText
     try {
       let { data } = await this.service.searchBy(query)
@@ -77,10 +78,7 @@ export class EventListing extends Component<EventListingProps> {
   render() {
     return (
       <div className="listings">
-        <span className="table-title">Events Listing</span>
-        {
-          this.state.loading ? <p>Loading...</p> : null
-        }
+        <p className="table-title">Events Listing</p>
 
         <Filters 
           filters={[
@@ -110,7 +108,16 @@ export class EventListing extends Component<EventListingProps> {
           }}
         />
 
-        <p style={{ color: '#ff0000', margin: '1em' }}>{ this.state.errorText }</p>
+        { 
+          this.state.loading ? (
+            <div>
+              <div className="spinner"></div>
+              <p>Loading</p>
+            </div>
+          ) : null 
+        }
+
+        <p style={{ color: '#ff0000', margin: '1em 0' }}>{ this.state.errorText }</p>
 
         <div className="listing-table">
           {

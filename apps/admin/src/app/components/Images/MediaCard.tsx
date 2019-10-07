@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import * as Rs from 'reactstrap'
-
+import { Label } from 'reactstrap'
 import { Grid, Paper, Modal, Fab } from '@material-ui/core'
 import { TextField, Button, Switch, Checkbox } from '@material-ui/core'
 import { InputAdornment } from '@material-ui/core'
@@ -10,15 +9,16 @@ import { ImageUploader } from './ImageUploader'
 import { APIEndpoints } from '@clubgo/features/api'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
-export interface MediaCardProps {
-  name: string,
-  syncParentData?: Function,
-  syncData?: boolean,
-  includeVideoURL?: boolean,
-  tag?: string,
-  populate?: boolean,
+interface MediaCardProps {
+  name: string
+  syncParentData?: Function
+  syncData?: boolean
+  includeVideoURL?: boolean
+  tag?: string
+  populate?: boolean
   data?: any
 }
+
 export class MediaCard extends Component<MediaCardProps> {
   state = {
     openImageUploadModal: false,
@@ -79,7 +79,7 @@ export class MediaCard extends Component<MediaCardProps> {
           <Grid item xs={12}>
             {
               this.state.data.images.length===0 ? (
-                <p>No Images</p>
+                <p style={{ margin: 0 }}>No Images</p>
               ) : null
             }
             <div style={{
@@ -121,52 +121,41 @@ export class MediaCard extends Component<MediaCardProps> {
               </Button>
             </div>
 
-            <Modal style={{ 
-              margin: 'auto',
-              padding: '2em 0',
-              position: 'absolute',
-              width: 600
-            }}
-              open={this.state.openImageUploadModal}
-            >
-              <Paper style={{ width: '50em', padding: '2em' }}>
-                <ImageUploader type="multiple" env="prod"
-                  onUploadComplete={(uploadData)=>{
-                    let { images } = this.state.data
-                    for (const img of uploadData)
-                      images.push({
-                        url: img.ref,
-                        tags: [ this.props.tag ]
-                      })
-                    
-                    let { data } = this.state
-                    data.images = images
-                    
-                    this.setState((prevState, props)=>{
-                      return {
-                        openImageUploadModal: false,
-                        data
-                      }
-                    })
-                  }}
-                />
-                <Button color="secondary" variant="contained" 
-                  onClick={()=>{
-                    this.setState({
-                      openImageUploadModal: false
-                    })
-                  }}
-                >
-                  Close
-                </Button>
-              </Paper>
-            </Modal>
+            <ImageUploader open={this.state.openImageUploadModal}
+              type="single" collection="images"
+              onUploadComplete={(uploadData)=>{
+                let { images } = this.state.data
+                for (const img of uploadData)
+                  images.push({
+                    url: img,
+                    tags: [ this.props.tag ]
+                  })
+                
+                let { data } = this.state
+                data.images = images
+                
+                this.setState((prevState, props)=>{
+                  return {
+                    openImageUploadModal: false,
+                    data
+                  }
+                })
+              }}
+              onUploadError={()=>{
+                
+              }}
+              onClose={()=>{
+                this.setState({
+                  openImageUploadModal: false
+                })
+              }}
+            />
           </Grid>
 
           {
             this.props.includeVideoURL!==null && this.props.includeVideoURL ? (
               <Grid item xs={12}>
-                <Rs.Label>Video URL</Rs.Label>
+                <Label>Video URL</Label>
                 <TextField id="videoURL" fullWidth variant="outlined" 
                   margin="dense" placeholder="https://example.com/video"
                   InputProps={{
@@ -196,9 +185,11 @@ export class Image extends Component<ImageProps> {
         margin: '0.5em',
         width: 'fit-content',
         height: 'fit-content',
+        maxHeight: '15em',
         borderRadius: '0.5em',
         boxShadow: '0 0 5px #1c1c1c80',
-        position: 'relative'
+        position: 'relative',
+        overflow: 'hidden'
       }}>
         <img width="150px" style={{ borderRadius: '0.5em' }} src={this.props.src} alt="Image"/>
 
