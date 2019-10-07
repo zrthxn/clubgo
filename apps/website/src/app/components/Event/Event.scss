@@ -13,15 +13,20 @@
   overflow: hidden;
 
   img {
-    width: 100%;
     height: 65%;
-    border-radius: inherit;
+    margin: -1em;
+    margin-bottom: 0.5em;
+    border-radius: 0;
     object-fit: cover;
     transition: all 0.25s ease;
   }
 
   p {
     margin: 1rem 0;
+  }
+  
+  .event-venue {
+    font-size: 0.85em;
   }
 
   @media (min-width: 600px) {
@@ -103,7 +108,7 @@
     }
 
     .event-venue {
-      font-size: 1.125em;
+      font-size: 1em;
     }
   }
 }
