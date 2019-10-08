@@ -55,14 +55,14 @@ export class MediaCard extends Component<MediaCardProps> {
     ))
   }
 
-  componentDidUpdate() {    
+  componentDidUpdate() {
     if(this.props.syncData!==this.state.synchronized) { 
       if(this.props.syncData) {
         this.props.syncParentData(this.state.data, this.props.name)
         this.setState({
           synchronized: this.props.syncData
         })
-      }        
+      }
     }
   }
 
@@ -90,18 +90,20 @@ export class MediaCard extends Component<MediaCardProps> {
               {
                 this.state.data.images.map((image, index)=>{
                   return (
-                    <Image key={index} src={image.url} onDelete={(src)=>{
-                      let { images } = this.state.data
-                      images = images.filter((img)=>{
-                        if(img.url===src) return false
-                        return true
-                      })
-                      let { data } = this.state
-                      data.images = images
-                      this.setState({
-                        data
-                      })
-                    }}/> 
+                    <Image key={index} src={image.url} 
+                      onDelete={(src)=>{
+                        let { images } = this.state.data
+                        images = images.filter((img)=>{
+                          if(img.url===src) return false
+                          return true
+                        })
+                        let { data } = this.state
+                        data.images = images
+                        this.setState({
+                          data
+                        })
+                      }}
+                    /> 
                   )
                 })
               }
@@ -193,12 +195,13 @@ export class Image extends Component<ImageProps> {
       }}>
         <img width="150px" style={{ borderRadius: '0.5em' }} src={this.props.src} alt="Image"/>
 
-        <Fab color="default" size="small" style={{ 
-          position: 'absolute',
-          top: '0',
-          right: '0',
-          margin: '0.5em' 
-        }}
+        <Fab color="default" size="small" 
+          style={{ 
+            position: 'absolute',
+            top: '0',
+            right: '0',
+            margin: '0.5em' 
+          }}
           onClick={()=>{
             if(this.props.onDelete!==undefined)
               this.props.onDelete(this.props.src)

@@ -75,8 +75,7 @@ export class Recommender extends Component<RecommenderComponentProps> {
       <div className="recommender">
         <ScrollArea
           speed={1}
-          horizontal={true}
-          vertical={false}
+          horizontal
           className="scroll-view-area"
           contentClassName="scroll-container-row"
           horizontalScrollbarStyle={{ borderRadius: 5 }}

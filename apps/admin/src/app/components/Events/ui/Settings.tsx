@@ -71,13 +71,13 @@ export class Settings extends Component<SettingsProps> {
 
             <Grid item container xs={12} spacing={3}>
               <Grid item xs={6}>
-                <Switch id="isPublished" color="primary" 
+                <Switch id="settings.isPublished" color="primary" 
                   defaultChecked={this.state.data.isPublished} onChange={this.handleChangeById}/>  
                 <Label>Published</Label>
               </Grid>
 
               <Grid item xs={6}>
-                <Switch id="isFeatured" color="primary" 
+                <Switch id="settings.isFeatured" color="primary" 
                   defaultChecked={this.state.data.isFeatured} onChange={this.handleChangeById}/>
                 <Label>Featured</Label>
               </Grid>
@@ -87,7 +87,7 @@ export class Settings extends Component<SettingsProps> {
                   !this.state.data.isFeatured ? (
                     <div></div>
                   ) : (
-                    <TextField id="featured/featuredText" fullWidth label="Featured Text" 
+                    <TextField id="settings.featured/featuredText" fullWidth label="Featured Text" 
                       variant="outlined" margin="dense" onChange={this.handleChangeById}
                       value={this.state.data.featured.featuredText}/>
                   )
@@ -103,7 +103,7 @@ export class Settings extends Component<SettingsProps> {
 
             <Grid item container xs={12} spacing={3}>
               <Grid item xs={12}>
-                <TextField id="eventPriority" fullWidth label="Event Priority (num)" 
+                <TextField id="settings.eventPriority" fullWidth label="Event Priority (num)" 
                   variant="outlined" margin="dense" onChange={this.handleChangeById}
                   value={this.state.data.eventPriority}/>
 
@@ -111,7 +111,7 @@ export class Settings extends Component<SettingsProps> {
                   !this.state.data.isFeatured ? (
                     <div></div>
                   ) : (
-                    <TextField id="featured/featuredPriority" fullWidth label="Featured Priority (num)" 
+                    <TextField id="settings.featured/featuredPriority" fullWidth label="Featured Priority (num)" 
                       variant="outlined" margin="dense" onChange={this.handleChangeById}
                       value={this.state.data.featured.featuredPriority}/>
                   )

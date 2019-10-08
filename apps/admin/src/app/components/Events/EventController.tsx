@@ -42,7 +42,7 @@ export class EventController extends Component<EventControllerProps> {
             }
             else throw result
           }).catch((EventServiceError) => {
-            this.context.actions.openErrorFeedback(EventServiceError.data._message, EventServiceError.data.message)
+            this.handleEventServiceError(EventServiceError)
           })
         }}/>
       )
@@ -56,7 +56,7 @@ export class EventController extends Component<EventControllerProps> {
             this.context.actions.openSuccessFeedback('Event Deleted')
             return
           } catch(EventServiceError) {
-            this.context.actions.openErrorFeedback(EventServiceError.data._message)
+            this.handleEventServiceError(EventServiceError)
           }
         }}/>
       )
@@ -72,7 +72,7 @@ export class EventController extends Component<EventControllerProps> {
             }
             else throw result
           }).catch((EventServiceError) => {
-            this.context.actions.openErrorFeedback(EventServiceError.data._message, EventServiceError.data.message)
+            this.handleEventServiceError(EventServiceError)
           })
         }}/>
       )
@@ -83,6 +83,15 @@ export class EventController extends Component<EventControllerProps> {
           <p>{ uiType }</p>
         </section>
       )
+  }
+
+  handleEventServiceError = (EventServiceError) => {
+    console.error(EventServiceError)
+    
+    this.context.actions.openErrorFeedback(
+      EventServiceError.data.error._message, 
+      EventServiceError.data.error.message
+    )
   }
 
   render() {

@@ -32,7 +32,7 @@ export class Filters extends Component<FilterProps> {
     return (
       <div>
         <Grid container spacing={2}>
-          <Grid item xs={3}>
+          <Grid item md={3} xs={12}>
             <TextField label="Search Text" fullWidth variant="outlined" 
               margin="dense" style={{ margin: 0 }}
               onChange={({ target })=>{
@@ -56,7 +56,7 @@ export class Filters extends Component<FilterProps> {
             this.props.filters!==undefined ? (
               this.props.filters.map((filter, index)=>{
                 return (
-                  <Grid item xs={2} key={filter.key}>
+                  <Grid item md={2} xs={4} key={filter.key}>
                     <Select 
                       inputId={filter.key}
                       options={filter.suggestions}

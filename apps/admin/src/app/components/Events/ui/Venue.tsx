@@ -165,7 +165,7 @@ export class Venue extends Component<VenueProps> {
             <Grid item container xs={12} spacing={3}>
               <Grid item xs={6}>
                 <Select
-                  inputId="city"
+                  inputId="venue.city"
                   placeholder="Select City"
                   value={this.state.selectCity}
                   options={this.state.suggestions.city}
@@ -182,7 +182,7 @@ export class Venue extends Component<VenueProps> {
 
               <Grid item xs={6}>
                 <Select
-                  inputId="venueCategory"
+                  inputId="venue.venueCategory"
                   placeholder="Venue Catgory"
                   value={this.state.selectVenueCategory}
                   options={this.state.suggestions.venueCategory}
@@ -272,7 +272,7 @@ export class Venue extends Component<VenueProps> {
             <Grid item container xs={12} spacing={3}>
               <Grid item xs={6}>
                 <Select
-                  inputId="city"
+                  inputId="venue.city"
                   placeholder="Select City"
                   value={this.state.selectCity}
                   options={this.state.suggestions.city}
@@ -288,20 +288,20 @@ export class Venue extends Component<VenueProps> {
               </Grid>
               
               <Grid item xs={6}>
-                <TextField  id="customVenueDetails/locality" fullWidth label="Locality" style={{ margin: 0 }}
+                <TextField  id="venue.customVenueDetails/locality" fullWidth label="Locality" style={{ margin: 0 }}
                   variant="outlined" margin="dense" onChange={this.handleChangeById}
                   value={this.state.data.customVenueDetails.locality}/>
               </Grid>
 
               <Grid item xs={12}>
-                <TextField id="title" fullWidth label="Venue Name" variant="outlined" 
+                <TextField id="venue.title" fullWidth label="Venue Name" variant="outlined" 
                   onChange={this.handleChangeById} value={this.state.data.title}/>
 
-                <TextField id="address" fullWidth multiline label="Address" 
+                <TextField id="venue.address" fullWidth multiline label="Address" 
                   variant="outlined" margin="dense" onChange={this.handleChangeById}
                   value={this.state.data.address}/>
 
-                <TextField id="customVenueDetails/coordinates" fullWidth multiline label="Coordinates (map)" 
+                <TextField id="venue.customVenueDetails/coordinates" fullWidth multiline label="Coordinates (map)" 
                   variant="outlined" margin="dense"/>
               </Grid>
             </Grid>

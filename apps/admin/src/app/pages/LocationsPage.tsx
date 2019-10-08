@@ -16,6 +16,12 @@ export class LocationsPage extends Component {
               Select one of the options. <br/>
               Other details will come here.
             </p>
+
+            <Button color="primary" size="lg" onClick={()=>{
+              // eventContext.actions.openEventEditor('create')
+            }}>
+              Create New Location
+            </Button>
           </div>
         </article>
 

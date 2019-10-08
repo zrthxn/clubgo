@@ -9,6 +9,14 @@ import { EventContext } from '../components/Events/EventContext'
 import { EventContextProvider } from '../components/Events/EventContextProvider'
 
 export class EventsPage extends Component {
+  componentDidMount() {
+    
+  }
+
+  validateAccess = () => {
+    
+  }
+  
   render() {
     return (
       <EventContextProvider>

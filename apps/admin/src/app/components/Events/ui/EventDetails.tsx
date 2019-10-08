@@ -6,14 +6,15 @@ import Select from 'react-select'
 import CreateableSelect from 'react-select/creatable'
 import { Add, Delete } from '@material-ui/icons'
 
-import { handleChangeById as inputHandler } from '@clubgo/util'
+import { handleChangeById as inputHandler, verifyRequirements } from '@clubgo/util'
 
-export interface EventDetailsProps {
+interface EventDetailsProps {
   syncParentData?: Function
-  syncData?: boolean,
-  populate?: boolean,
+  syncData?: boolean
+  populate?: boolean
   data?: any
 }
+
 export class EventDetails extends Component<EventDetailsProps> {
   state = {
     loading: true,
@@ -38,21 +39,27 @@ export class EventDetails extends Component<EventDetailsProps> {
     selectCategories: [],
     synchronized: false,
     data: {
-      eventTitle: undefined,
-      description: undefined,
+      eventTitle: null,
+      description: null,
       categories: [ ],
-      tagline: undefined,
-      flashText: undefined,
+      tagline: null,
+      flashText: null,
       artists: [ ],
       music: [ ],
       dressCode: {
-        title: undefined,
+        title: null,
         images: [ ]
       },
       tags: [ ],
       hasCutomDetails: false,
       customDetails: [ ],
-    }
+    },
+    requiredFulfilled: false,
+    required: [
+      'eventTitle'
+    ],
+    iterableMembers: [ ],
+    unfulfilled: [ ]
   }
 
   handleChangeById = (event) => {
@@ -110,21 +117,21 @@ export class EventDetails extends Component<EventDetailsProps> {
         <Paper className="create-block">
           <h3 className="title">Event</h3>
           
-          <Grid item container spacing={3}>                
+          <Grid item container spacing={3}>
             <Grid item xs={12}>
               <Label>Details</Label>
               <TextField id="eventTitle" required fullWidth label="Event Name" 
                 variant="outlined" onChange={this.handleChangeById} 
-                value={this.state.data.eventTitle}/>
+                defaultValue={this.state.data.eventTitle}/>
               <TextField id="description" required multiline fullWidth label="Description" 
                 variant="outlined" margin="dense" onChange={this.handleChangeById} 
-                value={this.state.data.description}/>
+                defaultValue={this.state.data.description}/>
               
               <Select
                 inputId="category"
                 placeholder="Category"
                 backspaceRemovesValue
-                value={this.state.selectCategories}
+                defaultValue={this.state.selectCategories}
                 options={this.state.suggestions.category}
                 isMulti
                 onChange={ selected => {
@@ -147,10 +154,10 @@ export class EventDetails extends Component<EventDetailsProps> {
               <Label>Tagline</Label>
               <TextField id="tagline" fullWidth label="Tagline" 
                 variant="outlined" margin="dense" onChange={this.handleChangeById} 
-                value={this.state.data.tagline}/>
+                defaultValue={this.state.data.tagline}/>
               <TextField id="flashText" fullWidth label="Flash Text" 
                 variant="outlined" margin="dense" onChange={this.handleChangeById}
-                value={this.state.data.flashText}/>
+                defaultValue={this.state.data.flashText}/>
             </Grid>
 
             <Grid item md={6} xs={12}>
@@ -187,7 +194,7 @@ export class EventDetails extends Component<EventDetailsProps> {
                   inputId="dressCode"
                   placeholder="Dress Code"
                   backspaceRemovesValue
-                  value={this.state.selectDressCode}
+                  defaultValue={this.state.selectDressCode}
                   options={this.state.suggestions.dressCode}
                   onChange={ selected => {
                     let { data } = this.state
@@ -278,9 +285,11 @@ export class EventDetails extends Component<EventDetailsProps> {
                       
                       <Grid item xs={12}>
                         <TextField id={'customDetails#'+index+'/detailName'} fullWidth label="Custom Name" 
-                          variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                          variant="outlined" margin="dense" onChange={this.handleChangeById}
+                          defaultValue={item.detailName}/>
                         <TextField id={'customDetails#'+index+'/detailData'} fullWidth label="Custom Data" 
-                          variant="outlined" margin="dense" onChange={this.handleChangeById}/>
+                          variant="outlined" margin="dense" onChange={this.handleChangeById}
+                          defaultValue={item.detailData}/>
                       </Grid>
                     </Grid>
                   </Paper>

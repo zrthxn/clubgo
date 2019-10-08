@@ -9,10 +9,11 @@ import '../../scss/Listing.scss'
 import { EventContext } from '../EventContext'
 import { ConfirmDelete } from '../../Modals/ConfirmDelete'
 
-export interface EventListItemProps {
+interface EventListItemProps {
   data?: IEventModel,
   onDelete?: Function
 }
+
 export class EventListItem extends Component<EventListItemProps> {
   state = {
     openDeleteModal: false
@@ -24,7 +25,6 @@ export class EventListItem extends Component<EventListItemProps> {
         {
           eventContext => (
             <div className="list-item">
-              
               <Grid container spacing={1}>
                 <Grid item md={6} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
                   <div style={{ maxWidth: '200px', overflow: 'hidden' }}>
@@ -41,17 +41,17 @@ export class EventListItem extends Component<EventListItemProps> {
                   </div>
                 </Grid>
 
-                <Grid item xs={2} style={{ display: 'flex', flexDirection: 'row' }}>
+                <Grid item md={2} xs={6} style={{ display: 'flex', flexDirection: 'row' }}>
                   {
                     this.props.data.settings.isPublished ? (
-                      <span style={{ margin: 'auto 1em', color: green[400] }}><b>Published</b></span>
+                      <span style={{ margin: 'auto 0', color: green[400] }}><b>Published</b></span>
                     ) : (
-                      <span style={{ margin: 'auto 1em', color: '#1c1c1c' }}>Unpublished</span>
+                      <span style={{ margin: 'auto 0', color: '#1c1c1c' }}>Unpublished</span>
                     )
                   }
                 </Grid>
 
-                <Grid item md={4} xs={12}>
+                <Grid item md={4} xs={6}>
                   <div className="action clearfix">
                     <Tooltip title="Delete">
                       <IconButton className="float-right" onClick={()=>{

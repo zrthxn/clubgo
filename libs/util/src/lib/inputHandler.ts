@@ -16,6 +16,8 @@ export function handleChangeById(event, state) {
       break
   }
 
+  event.target.id = event.target.id.split('.')[ event.target.id.split('.').length - 1 ]
+
   if(event.target.id.includes('/')) {
     if(event.target.id.split('/')[0].includes('#')) {
       let parentKey = event.target.id.split('/')[0].split('#')[0]
@@ -38,39 +40,66 @@ export function handleChangeById(event, state) {
 }
 
 export function verifyRequirements(event, state) {
-  const { iterableMembers } = state
+  const { iterableMembers } = state, unfulfilled = []
   let payload = null, truth = true
+
+  switch (event.target.type) {
+    case 'checkbox':
+      payload = event.target.checked
+      break
+
+    case 'text':
+      if(event.target.value!=='')
+        payload = event.target.value
+      break
   
-  if(state.required.length!==0) {
-    for(let field of state.required) {
-      if(field.includes('/')) {
-        let parentKey = field.split('/')[0]
-        let childKey = field.split('/')[1]
+    default:
+      payload = event.target.value
+      break
+  }
 
-        if(field[0].includes('#')) {
-          parentKey = parentKey.split('#')[0]
-          let requiredIndex = parseInt(parentKey.split('#')[1], 10)
+  event.target.id = event.target.id.split('.')[ event.target.id.split('.').length - 1 ]
+  
+  if(state.required!==null && state.required!==undefined)  {
+    if(state.required.length!==0) {
+      for(let field of state.required) {
+        if(field.includes('/')) {
+          let parentKey = field.split('/')[0]
+          let childKey = field.split('/')[1]
 
-          if(iterableMembers.length!==0)
-            for(let itratedKey of iterableMembers)
-              if(itratedKey===parentKey)
-                for(let [memberIndex, iteratedMember] of state.data[itratedKey].entries())
-                  if(memberIndex===requiredIndex)
-                    if(iteratedMember[childKey]===null || (event.target.id.split('/')[1]===field[1] && payload===null))
-                      truth = false
+          if(field[0].includes('#')) {
+            parentKey = parentKey.split('#')[0]
+            let requiredIndex = parseInt(parentKey.split('#')[1], 10)
+
+            if(iterableMembers.length!==0)
+              for(let itratedKey of iterableMembers)
+                if(itratedKey===parentKey)
+                  for(let [memberIndex, iteratedMember] of state.data[itratedKey].entries())
+                    if(memberIndex===requiredIndex)
+                      if(iteratedMember[childKey]===null || (event.target.id.split('/')[1]===field[1] && payload===null)) {
+                        truth = false
+                        unfulfilled.push(parentKey + '/' + childKey + '#' + memberIndex)
+                      }
+          }
+          else {
+            if(state.data[parentKey][childKey]===null || (event.target.id.split('/')[1]===childKey && payload===null)) {
+              truth = false
+              unfulfilled.push(parentKey + '/' + childKey)
+            }
+          }
         }
-        else {
-          if(state.data[parentKey][childKey]===null || (event.target.id.split('/')[1]===childKey && payload===null))
+        else
+          if(state.data[field]===null || (event.target.id===field && payload===null)) {
             truth = false
-        }
+            unfulfilled.push(field)
+          }
       }
-      else
-        if(state.data[field]===null || (event.target.id===field && payload===null))
-          truth = false
     }
+    else
+      truth = true
   }
   else
     truth = true
 
-  return truth
+  return { requiredFulfilled: truth, unfulfilled }
 }
