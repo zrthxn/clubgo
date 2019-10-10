@@ -1,60 +1,22 @@
-import Interface from '../api'
-import { APIEndpoints, APIProps } from '../api'
+import { Interface } from '../api'
 
 export class LoginService extends Interface {
-  accessLevel = null
-
-  constructor(endpoint:APIProps['endpoint']) {
-    super({ endpoint })
+  constructor(loginAs: 'webmaster' | 'user') {
+    super({ endpoint: 'login' })
+    this.addPathRoute(`/${loginAs}`)
   }
 
-  /**
-   * Authenticate with the backend server to get CSRF tokens and headers.
-   */
-  async authenticate() {
-    const APIKEY = 'qWertT2uiOp2lkjhgfD5Sa2zxcvBn831'
-    // const APIKEY = process.env.APIKEY
-
-    try {
-      let authResponse = await this.request.post(
-        this.endpoint, {
-          shared: APIKEY
-        }
-      )
-      
-      let { token } = authResponse.data
-      localStorage.setItem('X-Request-Validation', token)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      return
-    }
-  }
-
-  async login(loginId, password) {
+  async webmasterLogin(loginId, password) {
     if(loginId==='admin' && password==='admin')
       return { data: {} }
     else
       return Promise.reject()
-    // Send login request with login ID & password
-    // GET Login Auth Headers specific to API level
-    // let loginResponse = await this.request.post(
-    //   this.endpoint, {
-    //   loginAccessLevel: this.accessLevel,
-    //   login: {
-    //     loginId,
-    //     password
-    //   }
-    // }, {
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     ...this.auth.headers
-    //   },
-    //   xsrfCookieName: null
-    // })
+  }
 
-    // this.auth.headers = {
-    //   ...loginResponse.headers
-    // }
+  async userLogin(loginId, password) {
+    if(loginId==='user' && password==='user')
+      return { data: {} }
+    else
+      return Promise.reject()
   }
 }

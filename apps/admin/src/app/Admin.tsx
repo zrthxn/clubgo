@@ -11,10 +11,10 @@ import {
   green, red
 } from '@material-ui/core/colors'
 
-import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Snackbar, SnackbarContent, Tooltip } from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Snackbar, SnackbarContent, Tooltip, Button } from '@material-ui/core'
 import { AccountCircle, MenuRounded, MessageRounded, Notifications, Close, Help } from '@material-ui/icons'
 
-import { LoginService } from '@clubgo/features/api'
+import { Interface } from '@clubgo/features/api'
 
 import './Admin.scss'
 
@@ -41,24 +41,35 @@ const theme = createMuiTheme({
 
 export class Admin extends Component {
   state = {
+    validatedApplication: false,
     sidebarOpen: false,
     notificationsOpen: false,
     messagesOpen: false,
     userAccountMenuOpen: false
   }
 
+  authService = new Interface({ endpoint: 'api' })
+
   constructor(props) {
     super(props)
+
+    if(process.env.NODE_ENV!=='production') {
+      this.state.validatedApplication = true
+    }
   }
 
   componentDidMount() {
-    this.validateApplication()
+    this.validateApplication().then(()=>{
+      this.setState({
+        validatedApplication: true
+      })
+    })
   }
 
   async validateApplication() {
-    const appAuthentication = new LoginService('auth')
     try {
-      await appAuthentication.authenticate()
+      await this.authService.authenticate()
+      return
     } catch (error) {
       console.error(error)
     }
@@ -149,6 +160,12 @@ export class Admin extends Component {
                       <MenuItem>My account</MenuItem>
                     </Menu>
                   </IconButton>
+
+                  <Button variant="text" color="inherit" onClick={()=>{
+                    adminContext.actions.logout()
+                  }}>
+                    Logout
+                  </Button>
                 </Toolbar>
               </AppBar>
 
@@ -223,28 +240,41 @@ export class Admin extends Component {
     return (
       <ThemeProvider theme={ theme }>
         <AdminContextProvider>
-            <AdminContext.Consumer>
-              {
-                adminContext => (
-                  <div className="admin-root">
-                    {
-                      adminContext.state.authenticated ? (
-                        this.onAuthenticate(adminContext)
-                      ) : (
-                        <LoginPage 
-                          onAuthenticate={()=>{
-                            adminContext.actions.authenticateLogin({})
-                            this.setState({
-                              authenticated: true
-                            })
-                          }} 
-                        />
-                      )
-                    }
+          {
+            this.state.validatedApplication ? (
+              <AdminContext.Consumer>
+                {
+                  adminContext => (
+                    <div className="admin-root">
+                      {
+                        adminContext.state.authenticated ? (
+                          this.onAuthenticate(adminContext)
+                        ) : (
+                          <LoginPage 
+                            onAuthenticate={()=>{
+                              adminContext.actions.authenticateLogin({})
+                              this.setState({
+                                authenticated: true
+                              })
+                            }} 
+                          />
+                        )
+                      }
+                    </div>
+                  )
+                }
+              </AdminContext.Consumer>
+            ) : (
+              <article>
+                <section>
+                  <div>
+                    <span className="spinner large"/>
+                    <h2>Loading</h2>
                   </div>
-                )
-              }
-            </AdminContext.Consumer>
+                </section>
+              </article>
+            )
+          }
         </AdminContextProvider>
       </ThemeProvider>      
     )

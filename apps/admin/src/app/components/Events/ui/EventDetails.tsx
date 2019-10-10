@@ -236,8 +236,8 @@ export class EventDetails extends Component<EventDetailsProps> {
           </Grid>
         </Paper>
         
-        <div className="create-block">
-          <h5 className="title">
+        <div>
+          <h5 className="title" style={{ margin: '1em' }}>
             Custom Details
             <Fab style={{ margin: '1em' }} color="primary"
               onClick={()=>{

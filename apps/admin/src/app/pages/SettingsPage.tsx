@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, TextField } from '@material-ui/core'
 
 import './scss/Pages.scss'
 
@@ -9,8 +9,6 @@ export default class SettingsPage extends Component {
       <div className="page">
         <article className="page-header">
           <h1 className="title">Settings</h1>
-
-          <p>hg</p>
         </article>
 
         <article className="page-content">

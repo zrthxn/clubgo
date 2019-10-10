@@ -1,4 +1,4 @@
-import Interface from '../api'
+import { Interface } from '../api'
 import ErrorsAPI from '../errors'
 import { Observable, ErrorObserver } from 'rxjs'
 import { serialize } from '@clubgo/util'

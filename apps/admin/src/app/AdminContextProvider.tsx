@@ -4,6 +4,15 @@ import { AdminContext } from './AdminContext'
 export class AdminContextProvider extends Component {
   state = {
     authenticated: false,
+    admin: {
+      role: null,
+      username: null,
+      name: null,
+      email: null,
+      profile: {
+        avatar: null,
+      }
+    },
 
     openSuccessFeedback: false,
     openErrorFeedback: false,
@@ -17,6 +26,7 @@ export class AdminContextProvider extends Component {
 
   constructor(props) {
     super(props)
+    this.role = this.state.admin.role
     
     if(process.env.NODE_ENV!=='production') {
       this.state.authenticated = true
@@ -25,7 +35,23 @@ export class AdminContextProvider extends Component {
 
   authenticateLogin = (data) => {
     this.setState({
-      authenticated: true
+      authenticated: true,
+      admin: data
+    })
+  }
+
+  logout = (data) => {
+    this.setState({
+      authenticated: false,
+      admin: {
+        role: null,
+        username: null,
+        name: null,
+        email: null,
+        profile: {
+          avatar: null,
+        }
+      }
     })
   }
 
@@ -81,7 +107,8 @@ export class AdminContextProvider extends Component {
             openErrorFeedback: this.openErrorFeedback,
             closeErrorFeedback: this.closeErrorFeedback,
 
-            authenticateLogin: this.authenticateLogin
+            authenticateLogin: this.authenticateLogin,
+            logout: this.logout
           }
         }}
       >

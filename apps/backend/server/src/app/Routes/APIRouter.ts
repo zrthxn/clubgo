@@ -1,7 +1,7 @@
 import express from 'express'
 import { conf } from '@clubgo/util'
 import { ModelledCRUDRouter } from '@clubgo/database'
-import { Event, Venue, User, Offer, Ticket } from '@clubgo/database'
+import { Event, Venue, User, Offer, Ticket, Location } from '@clubgo/database'
 
 export const APIRouter = express.Router()
 export default APIRouter
@@ -38,5 +38,8 @@ APIRouter.use('/offer', OfferRouter)
 
 const TicketRouter = new ModelledCRUDRouter(Ticket).create()
 APIRouter.use('/ticket', TicketRouter)
+
+const LocationRouter = new ModelledCRUDRouter(Location).create()
+APIRouter.use('/location', LocationRouter)
 
 // STOP ============================================== STOP

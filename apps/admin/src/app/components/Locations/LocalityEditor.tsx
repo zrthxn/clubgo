@@ -56,9 +56,13 @@ export default class LocalityEditor extends Component<LocalityEditorProps> {
               <Button variant="outlined" color="primary" onClick={()=>{this.props.close()}}>Close</Button>
             </Grid>
             <Grid item md={6} xs={12}>
-              <Button variant="contained" color="primary" onClick={()=>{this.props.onComplete({
-                name: this.state.name
-              })}}>Confirm</Button>
+              <Button variant="contained" color="primary" onClick={()=>{
+                this.props.onComplete({
+                  name: this.state.name
+                })
+              }}>
+                Confirm
+              </Button>
             </Grid>
           </Grid>
         </Paper>

@@ -1,4 +1,4 @@
-import Interface from '../api'
+import { Interface } from '../api'
 import { Observable, ErrorObserver } from 'rxjs'
 
 // Syntheic default import necessary 
@@ -6,7 +6,7 @@ const FormData = require('form-data')
 
 export class UploadService extends Interface {
   constructor(uploaderProps:UploadServiceProps) {
-    super({ endpoint: 'cdn', path: '/_upload', accessLevel: 'admin' })
+    super({ endpoint: 'cdn', path: '/_upload' })
 
     let collection = 'root'
     if(uploaderProps.collection!==null && uploaderProps.collection!==undefined)

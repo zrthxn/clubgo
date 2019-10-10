@@ -19,11 +19,15 @@ export class LoginPage extends Component<LoginPageProps> {
     showPasswordResetValidation: true,
   }
 
-  loginService = new LoginService('login')
+  loginService = new LoginService('webmaster')
+
+  componentDidMount() {
+    this.loginService.authenticate()
+  }
 
   loginWithCredentials = async () => {
     try {
-      let { data } = await this.loginService.login('admin', 'admin')
+      let { data } = await this.loginService.webmasterLogin('admin', 'admin')
       this.props.onAuthenticate(data)
     } catch (error) {
       alert('Invalid Login')

@@ -3,6 +3,15 @@ import React from 'react'
 export const AdminContext = React.createContext({
   state: {
     authenticated: false,
+    admin: {
+      role: null,
+      username: null,
+      name: null,
+      email: null,
+      profile: {
+        avatar: null,
+      }
+    },
 
     openSuccessFeedback: false,
     openErrorFeedback: false,
@@ -13,6 +22,9 @@ export const AdminContext = React.createContext({
   },
   actions: {
     authenticateLogin: (data) => {
+      console.log()
+    },
+    logout: (data) => {
       console.log()
     },
     openSuccessFeedback: (message?:string) => {

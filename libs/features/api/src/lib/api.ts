@@ -10,7 +10,7 @@ export const APIEndpoints = process.env.NODE_ENV==='production' ? (
 export interface APIProps {
   endpoint: 'api' | 'cdn' | 'login' | 'auth'
   path?: string
-  accessLevel?: 'admin' | 'user'
+  accessLevel?: 'webmaster' | 'user'
 }
 
 /**
@@ -21,7 +21,7 @@ export interface APIProps {
  * 
  * @description Base API Interface Class.
  */
-export default class Interface {
+export class Interface {
   protected endpoint = APIEndpoints.api.url
 
   private auth = {
@@ -86,9 +86,7 @@ export default class Interface {
   /**
    * @returns `endpoint`
    */
-  getEndpoint() { 
-    return this.endpoint
-  }
+  getEndpoint = () => this.endpoint
 
   /**
    * @param setPath `string` path to add to endpoint
@@ -107,6 +105,30 @@ export default class Interface {
         this.auth.headers += 
           key + '~' + element.toString() + ';'
       }
+    }
+  }
+
+  /**
+   * Authenticate application with the backend 
+   * to get CSRF headers.
+   */
+  async authenticate() {
+    const APIKEY = 'qWertT2uiOp2lkjhgfD5Sa2zxcvBn831'
+    // const APIKEY = process.env.APIKEY
+
+    try {
+      let authResponse = await this.request.post(
+        this.endpoint, {
+          shared: APIKEY
+        }
+      )
+      
+      let { token } = authResponse.data
+      localStorage.setItem('X-Request-Validation', token)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      return
     }
   }
 }
