@@ -33,7 +33,7 @@ export class LoginService extends Interface {
 
   async login(loginId, password) {
     if(loginId==='admin' && password==='admin')
-      return
+      return { data: {} }
     else
       return Promise.reject()
     // Send login request with login ID & password

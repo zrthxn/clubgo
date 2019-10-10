@@ -28,7 +28,7 @@ export class VenueListItem extends Component<VenueListItemProps> {
                 <Grid item md={6} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
                   <div>
                     <h4>{ this.props.data.venueTitle }</h4>
-                    <span>{ this.props.data.locality }</span>
+                    <span>{ this.props.data.locality }, { this.props.data.city }</span>
                   </div>
                 </Grid>
 
@@ -54,7 +54,7 @@ export class VenueListItem extends Component<VenueListItemProps> {
                       </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Delete">
+                    <Tooltip title="Edit">
                       <IconButton className="float-right" onClick={()=>{
                         venueContext.actions.openVenueEditor('edit', this.props.data)
                       }}>

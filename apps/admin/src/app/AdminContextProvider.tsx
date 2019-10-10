@@ -2,23 +2,31 @@ import React, { Component } from 'react'
 import { AdminContext } from './AdminContext'
 
 export class AdminContextProvider extends Component {
-  static contextType = AdminContext
-
   state = {
-    uiType: null,
+    authenticated: false,
+
     openSuccessFeedback: false,
     openErrorFeedback: false,
     feedbackMessage: {
       message: 'Success',
       details: undefined
-    },
-    venueData: {
-      
     }
   }
 
+  readonly role = null
+
   constructor(props) {
     super(props)
+    
+    if(process.env.NODE_ENV!=='production') {
+      this.state.authenticated = true
+    }
+  }
+
+  authenticateLogin = (data) => {
+    this.setState({
+      authenticated: true
+    })
   }
 
   openSuccessFeedback = (message?:string) => {
@@ -71,7 +79,9 @@ export class AdminContextProvider extends Component {
             closeSuccessFeedback: this.closeSuccessFeedback,
             
             openErrorFeedback: this.openErrorFeedback,
-            closeErrorFeedback: this.closeErrorFeedback
+            closeErrorFeedback: this.closeErrorFeedback,
+
+            authenticateLogin: this.authenticateLogin
           }
         }}
       >

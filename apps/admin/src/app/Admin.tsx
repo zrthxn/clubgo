@@ -41,7 +41,6 @@ const theme = createMuiTheme({
 
 export class Admin extends Component {
   state = {
-    authenticated: false,
     sidebarOpen: false,
     notificationsOpen: false,
     messagesOpen: false,
@@ -50,9 +49,6 @@ export class Admin extends Component {
 
   constructor(props) {
     super(props)
-    if(process.env.NODE_ENV!=='production') {
-      this.state.authenticated = true
-    }
   }
 
   componentDidMount() {
@@ -92,7 +88,7 @@ export class Admin extends Component {
     })
   }
 
-  onAuthenticate = () => {
+  onAuthenticate = (adminContext) => {
     return (
       <div id="admin-panel-root">
         <section id="panel">
@@ -156,72 +152,66 @@ export class Admin extends Component {
                 </Toolbar>
               </AppBar>
 
-              <AdminContext.Consumer>
-                {
-                  adminContext => (
-                    <section id="content">
-                      <Switch>
-                        <Route exact path="/" component={ Dashboard } />
-                        <Route path="/dashboard" component={ Dashboard } />
-                        <Route path="/events" component={ EventsPage } />
-                        <Route path="/venues" component={ VenuesPage } />
-                        <Route path="/tickets" component={ TicketsPage } />
-                        <Route path="/offers" component={ OffersPage } />
-                        <Route path="/users" component={ Dashboard } />
-                        <Route path="/artists" component={ Dashboard } />
-                        <Route path="/locations" component={ LocationsPage } />
-                        <Route path="/settings" component={ SettingsPage } />
-                      </Switch>
+              <section id="content">
+                <Switch>
+                  <Route exact path="/" component={ Dashboard } />
+                  <Route path="/dashboard" component={ Dashboard } />
+                  <Route path="/events" component={ EventsPage } />
+                  <Route path="/venues" component={ VenuesPage } />
+                  <Route path="/tickets" component={ TicketsPage } />
+                  <Route path="/offers" component={ OffersPage } />
+                  <Route path="/users" component={ Dashboard } />
+                  <Route path="/artists" component={ Dashboard } />
+                  <Route path="/locations" component={ LocationsPage } />
+                  <Route path="/settings" component={ SettingsPage } />
+                </Switch>
 
-                      <Snackbar open={ adminContext.state.openSuccessFeedback }
-                          // SUCCESS
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                          }}
-                          autoHideDuration={5000}
-                          onClose={adminContext.actions.closeSuccessFeedback}
-                        >
-                          <SnackbarContent
-                            style={{ backgroundColor: green[600] }}
-                            message={ <span>{ adminContext.state.feedbackMessage.message }</span> }
-                            action={[
-                              <IconButton key="close" color="inherit" onClick={adminContext.actions.closeSuccessFeedback}>
-                                <Close/>
-                              </IconButton>,
-                            ]}
-                          />
-                        </Snackbar>
+                <Snackbar open={ adminContext.state.openSuccessFeedback }
+                    // SUCCESS
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    autoHideDuration={5000}
+                    onClose={adminContext.actions.closeSuccessFeedback}
+                  >
+                    <SnackbarContent
+                      style={{ backgroundColor: green[600] }}
+                      message={ <span>{ adminContext.state.feedbackMessage.message }</span> }
+                      action={[
+                        <IconButton key="close" color="inherit" onClick={adminContext.actions.closeSuccessFeedback}>
+                          <Close/>
+                        </IconButton>,
+                      ]}
+                    />
+                  </Snackbar>
 
-                        <Snackbar open={ adminContext.state.openErrorFeedback }
-                          // ERROR
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                          }}
-                          autoHideDuration={5000}
-                          onClose={adminContext.actions.closeErrorFeedback}
-                        >
-                          <SnackbarContent
-                            style={{ backgroundColor: red[600] }}
-                            message={ <span>{ adminContext.state.feedbackMessage.message }</span> }
-                            action={[
-                              <Tooltip title={adminContext.state.feedbackMessage.details} style={{ maxWidth: 500, fontSize: '2em' }}>
-                                <IconButton key="close" color="inherit" onClick={adminContext.actions.closeErrorFeedback}>
-                                  <Help/>
-                                </IconButton>
-                              </Tooltip>,
+                  <Snackbar open={ adminContext.state.openErrorFeedback }
+                    // ERROR
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    autoHideDuration={5000}
+                    onClose={adminContext.actions.closeErrorFeedback}
+                  >
+                    <SnackbarContent
+                      style={{ backgroundColor: red[600] }}
+                      message={ <span>{ adminContext.state.feedbackMessage.message }</span> }
+                      action={[
+                        <Tooltip title={adminContext.state.feedbackMessage.details} style={{ maxWidth: 500, fontSize: '2em' }}>
+                          <IconButton key="close" color="inherit" onClick={adminContext.actions.closeErrorFeedback}>
+                            <Help/>
+                          </IconButton>
+                        </Tooltip>,
 
-                              <IconButton key="close" color="inherit" onClick={adminContext.actions.closeErrorFeedback}>
-                                <Close/>
-                              </IconButton>
-                            ]}
-                          />
-                        </Snackbar>
-                    </section>
-                  )
-                }
-              </AdminContext.Consumer>
+                        <IconButton key="close" color="inherit" onClick={adminContext.actions.closeErrorFeedback}>
+                          <Close/>
+                        </IconButton>
+                      ]}
+                    />
+                  </Snackbar>
+              </section>
             </div>
           </Router>
         </section>
@@ -233,19 +223,28 @@ export class Admin extends Component {
     return (
       <ThemeProvider theme={ theme }>
         <AdminContextProvider>
-          <div className="admin-root">
-            {
-              this.state.authenticated ? (
-                this.onAuthenticate()
-              ) : (
-                <LoginPage onAuthenticate={()=>{
-                  this.setState({
-                    authenticated: true
-                  })
-                }} />
-              )
-            }
-          </div>
+            <AdminContext.Consumer>
+              {
+                adminContext => (
+                  <div className="admin-root">
+                    {
+                      adminContext.state.authenticated ? (
+                        this.onAuthenticate(adminContext)
+                      ) : (
+                        <LoginPage 
+                          onAuthenticate={()=>{
+                            adminContext.actions.authenticateLogin({})
+                            this.setState({
+                              authenticated: true
+                            })
+                          }} 
+                        />
+                      )
+                    }
+                  </div>
+                )
+              }
+            </AdminContext.Consumer>
         </AdminContextProvider>
       </ThemeProvider>      
     )

@@ -29,15 +29,7 @@ export class EventListItem extends Component<EventListItemProps> {
                 <Grid item md={6} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
                   <div style={{ maxWidth: '200px', overflow: 'hidden' }}>
                     <h4>{ this.props.data.eventTitle }</h4>
-                    <span>
-                      { 
-                        this.props.data.venue.title.length < 25 ? (
-                          this.props.data.venue.title
-                        ) : ( 
-                          this.props.data.venue.title.substr(0, 25) + '...'
-                        )
-                      }
-                    </span>
+                    <span>{ this.props.data.venue.title }, { this.props.data.venue.city }</span>
                   </div>
                 </Grid>
 
