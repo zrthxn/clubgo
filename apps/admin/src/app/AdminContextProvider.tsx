@@ -28,9 +28,8 @@ export class AdminContextProvider extends Component {
     super(props)
     this.role = this.state.admin.role
     
-    if(process.env.NODE_ENV!=='production') {
+    if(process.env.NODE_ENV!=='production')
       this.state.authenticated = true
-    }
   }
 
   authenticateLogin = (data) => {
@@ -54,6 +53,10 @@ export class AdminContextProvider extends Component {
       }
     })
   }
+
+  getAdminUsername = () => this.state.admin.username
+
+  getAdminRole = () => this.state.admin.role
 
   openSuccessFeedback = (message?:string) => {
     this.setState((prevState, props)=>{
@@ -108,7 +111,10 @@ export class AdminContextProvider extends Component {
             closeErrorFeedback: this.closeErrorFeedback,
 
             authenticateLogin: this.authenticateLogin,
-            logout: this.logout
+            logout: this.logout,
+
+            getAdminUsername: this.getAdminUsername,
+            getAdminRole: this.getAdminRole
           }
         }}
       >

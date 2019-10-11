@@ -5,7 +5,7 @@ import { parse as QueryParser } from 'query-string'
 import RootContext from '../../RootContextProvider'
 import { IEventModel } from '@clubgo/database'
 
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 import { Event, Textbox, StoriesContainer, Flexbox, FlexContainer, Recommender } from '@clubgo/website/components'
 
 export default class Search extends Component<RouteComponentProps> {

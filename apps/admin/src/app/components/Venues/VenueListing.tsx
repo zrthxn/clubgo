@@ -3,7 +3,7 @@ import { Paper } from '@material-ui/core'
 
 import '../scss/Listing.scss'
 
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 
 import { Filters } from '../Filters/Filters'
 import { VenueListItem } from './ui/VenueListItem'
@@ -82,17 +82,19 @@ export class VenueListing extends Component<VenueListingProps> {
         <Filters 
           filters={[
             {
+              key: 'settings.isPublished',
+              placeholder: 'Published',
+              suggestions: [
+                { label: 'Published', value: true },
+                { label: 'Unpublished', value: false }
+              ]
+            },
+            { 
               key: 'city',
               placeholder: 'City',
               suggestions: [
-                {
-                  label: 'Delhi',
-                  value: 'Delhi'
-                },
-                {
-                  label: 'Mumbai',
-                  value: 'Mumbai'
-                }
+                { label: 'Delhi', value: 'Delhi' },
+                { label: 'Mumbai', value: 'Mumbai' }
               ]
             }
           ]}

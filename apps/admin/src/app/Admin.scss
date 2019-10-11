@@ -232,13 +232,4 @@ $sidebar-hover-bg: #0e74fa;
   textarea::placeholder {
     opacity: 0.5 !important;
   }
-
-  .MuiInputLabel-outlined {
-    z-index: 0 !important;
-    font-family: $font, sans-serif !important;
-  }
-
-  .MuiButtonBase-root, .MuiButtonBase-root:active, .MuiButtonBase-root:focus {
-    outline: none !important;
-  }
 }

@@ -24,7 +24,7 @@ export interface APIProps {
 export class Interface {
   protected endpoint = APIEndpoints.api.url
 
-  private auth = {
+  protected auth = {
     csrf: null,
     headers: null
   }
@@ -50,8 +50,7 @@ export class Interface {
       config.xsrfHeaderName = 'X-Request-Validation'
       config.headers = {
         [config.xsrfHeaderName] : this.auth.csrf,
-        Authorization: this.auth.headers,
-        // Host: this.endpoint
+        Authorization: this.auth.headers
       }
       return config
     })
@@ -118,7 +117,7 @@ export class Interface {
 
     try {
       let authResponse = await this.request.post(
-        this.endpoint, {
+        APIEndpoints.auth.url, {
           shared: APIKEY
         }
       )

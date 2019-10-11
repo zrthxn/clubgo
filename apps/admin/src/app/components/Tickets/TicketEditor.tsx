@@ -329,16 +329,18 @@ export class TicketEditor extends Component<TicketEditorProps> {
             }
             </Grid>
 
-            <Grid item xs={12}>
-              <Button variant="outlined" color="primary" style={{ margin: '1em' }}
+            <Grid item xs={6}>
+              <Button
                 onClick={()=>{ 
                   this.props.onCancel() 
                 }}
               >
                 Close
               </Button>
-              
-              <Button variant="contained" color="primary" style={{ margin: '1em' }}
+            </Grid>  
+
+            <Grid item xs={6}>
+              <Button color="primary"
                 onClick={()=>{ 
                   this.confirm() 
                 }}

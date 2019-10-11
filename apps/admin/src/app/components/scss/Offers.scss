@@ -1,15 +1,20 @@
 .offer-block {
   padding: 2em;
+  border: 2px solid #1c1c1c80;
 
-  .offer-category-chip {
-    padding: 0.5em;
-    font-size: 0.75em;
-    background-color: #1c1c1c40;
-    margin: 0.25em;
-    border-radius: 5px;
+  .offer-name {
+    margin: 0;
   }
-}
 
-.create-offer-modal {
-  padding: 1em;
+  .description {
+    margin: 0;
+    opacity: 0.5;
+  }
+
+  .category {
+    padding: 0.5em 1em;
+    font-size: 0.75em;
+    border-radius: 5px;
+    margin-right: 1em;
+  }
 }

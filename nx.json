@@ -23,7 +23,7 @@
     "server": {
       "tags": ["app"]
     },
-    "features-api": {
+    "api": {
       "tags": ["lib"]
     },
     "util": {

@@ -5,7 +5,7 @@ import QueryString from 'query-string'
 
 import './Booking.scss'
 import { Button, Textbox, Lightbox } from '@clubgo/website/components'
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 
 import { Ticket } from './ui/Ticket'

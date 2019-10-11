@@ -4,7 +4,7 @@ import { Input, InputGroup, InputGroupAddon, Button } from 'reactstrap'
 
 import './scss/LoginPage.scss'
 
-import { LoginService } from '@clubgo/features/api'
+import { LoginService } from '@clubgo/api'
 
 interface LoginPageProps {
   onAuthenticate: Function

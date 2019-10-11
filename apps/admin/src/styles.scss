@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+.MuiButtonBase-root, .MuiButtonBase-root:active, .MuiButtonBase-root:focus {
+  outline: none !important;
+}
+
+.MuiInputLabel-outlined {
+  z-index: 0 !important;
+}
+
+.css-2b097c-container {
+  margin-top: 0.55em;
+}

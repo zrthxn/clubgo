@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Modal, Paper, Grid, Fab, IconButton } from '@material-ui/core'
 import { Add, Delete, Edit } from '@material-ui/icons'
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 import { ITicketModel } from '@clubgo/database'
 
 import '../scss/Ticket.scss'
@@ -14,15 +14,15 @@ export interface TicketProps {
   onEdit?: Function
 }
 export class Ticket extends Component<TicketProps> {
-  ticketService = new DatabaseService('/ticket')
-
   state = {
     openEditModal: false
   }
+  
+  ticketService = new DatabaseService('/ticket')
 
   render() {
     return (
-      <div className="ticket clearfix">
+      <Paper className="ticket clearfix">
         <div className="ticket-item">
           <p className="ticket-title">{ this.props.data.ticketTitle }</p>
 
@@ -49,7 +49,7 @@ export class Ticket extends Component<TicketProps> {
 
           {
             this.props.onDelete!==undefined ? (
-              <IconButton className="float-right" onClick={()=>{
+              <IconButton size="small" className="float-right" onClick={()=>{
                 if(this.props.onDelete!==undefined)
                   this.props.onDelete()
               }}>
@@ -60,7 +60,7 @@ export class Ticket extends Component<TicketProps> {
             )
           }
 
-          <IconButton className="float-right" onClick={()=>{
+          <IconButton size="small" className="float-right" onClick={()=>{
             this.setState({
               openEditModal: true
             })
@@ -88,7 +88,7 @@ export class Ticket extends Component<TicketProps> {
             })
           }}
         />
-      </div>
+      </Paper>
     )
   }
 }

@@ -9,7 +9,7 @@ import { Banner, Textbox, Recommender } from '@clubgo/website/components'
 import { Event, Flexbox, FlexContainer } from '@clubgo/website/components'
 import RootContext from '../../RootContextProvider'
 
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 import { IEventModel } from '@clubgo/database'
 import { SelectCity } from '@clubgo/website/components'
 

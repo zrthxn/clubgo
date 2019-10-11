@@ -6,7 +6,7 @@ import { InputAdornment } from '@material-ui/core'
 import { Link, Delete } from '@material-ui/icons'
 
 import { ImageUploader } from './ImageUploader'
-import { APIEndpoints } from '@clubgo/features/api'
+import { APIEndpoints } from '@clubgo/api'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 interface MediaCardProps {

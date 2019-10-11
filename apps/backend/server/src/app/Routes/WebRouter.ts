@@ -8,24 +8,17 @@ export const WebRouter = express.Router()
 export default WebRouter
 // ========================================================
 
-// Security Functions
-// --------------------------------------------------------
-WebRouter.use((req, res, next)=>{
-  // Maybe
-  next()
-})
-
 import { render } from '../SSR/renderer'
 import { build, BUILD_PATH } from '../SSR/application'
 
-// tslint:disable: nx-enforce-module-boundaries
-import { Home } from '@clubgo/website/ssr'
+WebRouter.use(express.static( path.join(BUILD_PATH) ))
+
+import Website from '../SSR/website/Website'
 
 WebRouter.get('^/$', (req, res)=>{
-  const Application = build(Home)
+  const Application = build(Website)
   render(Application, req, res)
 })
 
-WebRouter.use(express.static( path.join(BUILD_PATH) ))
 
 // STOP ============================================== STOP

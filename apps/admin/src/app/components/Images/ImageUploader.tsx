@@ -5,7 +5,7 @@ import { Add } from '@material-ui/icons'
 import '../scss/ImageUploader.scss'
 
 import { Image } from './ui/Image'
-import { UploadService, IUploadFile } from '@clubgo/features/api'
+import { UploadService, IUploadFile } from '@clubgo/api'
 
 interface ImageUploaderProps{
   open: boolean

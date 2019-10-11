@@ -101,17 +101,13 @@ export class LocationsPage extends Component {
                   this.state.cities.map((city, index)=>(
                     <Grid item xs={12}
                       style={
-                        this.state.cities[this.state.selectedCity].name===city.name ? (
-                          { 
-                            borderRadius: '5px', border: '2px solid #0080ff', 
-                            margin: '0.5em', padding: '1em', color: '#0080ff' 
-                          }
-                        ) : (
-                          { 
-                            borderRadius: '5px', border: '2px solid #1c1c1c40', 
-                            margin: '0.5em', padding: '1em' 
-                          }
-                        )
+                        this.state.cities[this.state.selectedCity].name===city.name ? { 
+                          borderRadius: '5px', border: '2px solid #0080ff', backgroundColor: '#0080ff0f',
+                          margin: '0.5em', padding: '1em', color: '#0080ff' 
+                        } : { 
+                          borderRadius: '5px', border: '2px solid #1c1c1c40', 
+                          margin: '0.5em', padding: '1em' 
+                        }
                       }
                       onClick={()=>{
                         this.setState({

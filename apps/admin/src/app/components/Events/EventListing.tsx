@@ -3,7 +3,7 @@ import { Grid, Paper } from '@material-ui/core'
 
 import '../scss/Listing.scss'
 
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 
 import { Filters } from '../Filters/Filters'
 import { EventListItem } from './ui/EventListItem'

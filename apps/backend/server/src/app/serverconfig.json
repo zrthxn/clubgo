@@ -5,11 +5,5 @@
     "ALLOW_ORIGIN": "*",
     "ALLOW_HEADERS": "*",
     "ALLOW_METHODS": "*"
-  },
-  "access": {
-    "apiKeys": [
-      "", "", ""
-    ],
-    "clientSecretKey": ""
   }
 }

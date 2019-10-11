@@ -1,35 +1,13 @@
-$cutoutRadius: 15px;
-
 .ticket {
   padding: 1em;
-  margin: 1em auto;
-  background: linear-gradient(#185ead10, #185ead40);
+  border-radius: 5px;
+  border: 2px solid #1c1c1c80;
   position: relative;
 
   width: 100%;
   // height: fit-content;
   height: 10em;
   max-width: 18em;
-
-  &:after {
-    content: "";
-    position: absolute !important;
-    top: 0;
-    left: 0;
-    border-right: #fff $cutoutRadius solid;
-    border-bottom: #fff $cutoutRadius solid;
-    border-radius: 0 0 20px 0;
-  }
-  
-  &:before {
-    content: "";
-    position: absolute !important;
-    top: 0;
-    right: 0;
-    border-left: #fff $cutoutRadius solid;
-    border-bottom: #fff $cutoutRadius solid;
-    border-radius: 0 0 0 20px;
-  }
 }
 // ----------------------------------------------
 
@@ -46,25 +24,5 @@ $cutoutRadius: 15px;
   .price {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.5em;
-  }
-
-  &:after {
-    content: "";
-    position: absolute !important;
-    bottom: 0;
-    left: 0;
-    border-right: #fff $cutoutRadius solid;
-    border-top: #fff $cutoutRadius solid;
-    border-radius: 0 20px 0 0;
-  }
-  
-  &:before {
-    content: "";
-    position: absolute !important;
-    bottom: 0;
-    right: 0;
-    border-left: #fff $cutoutRadius solid;
-    border-top: #fff $cutoutRadius solid;
-    border-radius: 20px 0 0 0;
   }
 }

@@ -34,7 +34,7 @@ export class Filters extends Component<FilterProps> {
         <Grid container spacing={2}>
           <Grid item md={3} xs={12}>
             <TextField label="Search Text" fullWidth variant="outlined" 
-              margin="dense" style={{ margin: 0 }}
+              margin="dense"
               onChange={({ target })=>{
                 let { appliedFilters } = this.state
                 this.setState(()=>{
@@ -67,6 +67,8 @@ export class Filters extends Component<FilterProps> {
                           let { appliedFilters } = this.state
                           if(selected!==null)
                             appliedFilters[filter.key] = selected.value
+                          else
+                            appliedFilters[filter.key] = undefined
                           return {
                             appliedFilters
                           }
@@ -82,11 +84,9 @@ export class Filters extends Component<FilterProps> {
           }
 
           <Grid item xs={3}>
-            <Button variant="outlined"
-              onClick={()=>{
-                this.props.onChange(this.state.appliedFilters)
-              }}
-            >
+            <Button variant="outlined" style={{ margin: '0.55em 0' }} onClick={()=>{
+              this.props.onChange(this.state.appliedFilters)
+            }}>
               Search
             </Button>
           </Grid>

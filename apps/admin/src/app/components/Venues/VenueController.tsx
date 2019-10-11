@@ -11,7 +11,7 @@ import { VenueEditor } from './VenueEditor'
 import { VenueListing } from './VenueListing'
 import { VenueContext } from './VenueContext'
 import { IVenueModel } from '@clubgo/database'
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 
 export interface VenueControllerProps {
   mount?: 'create' | 'list'

@@ -30,7 +30,7 @@ export class VenuesPage extends Component {
                         <Button color="primary" size="lg" onClick={()=>{
                           venueContext.actions.openVenueEditor('create')
                         }}>
-                          Create Venue
+                          Create New Venue
                         </Button>
                       )
                     }

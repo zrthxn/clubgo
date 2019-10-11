@@ -21,6 +21,23 @@ export class DatabaseService extends Interface {
     
     if(DatabaseModel!==undefined)
       this.model = DatabaseModel
+
+    this.request.interceptors.request.use((config)=>{
+      config.xsrfHeaderName = 'X-Request-Validation'
+      config.headers = {
+        [config.xsrfHeaderName] : this.auth.csrf,
+        Authorization: this.auth.headers
+      }
+      
+      config.data = {
+        ...config.data,
+        owner: 'admin'
+      }
+
+      console.log(config.data)
+
+      return config
+    })
   }
 
   /**

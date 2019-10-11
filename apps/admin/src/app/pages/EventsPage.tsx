@@ -38,7 +38,7 @@ export class EventsPage extends Component {
                         <Button color="primary" size="lg" onClick={()=>{
                           eventContext.actions.openEventEditor('create')
                         }}>
-                          Create Event
+                          Create New Event
                         </Button>
                       )
                     }

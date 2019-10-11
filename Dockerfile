@@ -1,7 +1,21 @@
-FROM node:12.0.0
+FROM node AS installer
 
-# Set the working directory to /clubgo
-WORKDIR /clubgo
+# --- CONTAINER ENVIRONMENT --- #
+# WORKDIR /backend
+ENV NODE_ENV=production
 
-# Copy the current directory contents into the container at /clubgo
-COPY . /clubgo
+# --- INSTALL --- #
+COPY ./package.json /
+RUN npm install
+
+# --- BUILD --- #
+FROM installer AS builder
+
+WORKDIR /backend
+COPY ./backend /backend
+COPY ./backend/.env /backend
+RUN npm run build
+
+# --- RUN --- #
+EXPOSE 3600
+CMD [ "node", "build/Server.js" ]

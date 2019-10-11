@@ -80,22 +80,20 @@ import { offerSchema, IOfferModel } from './offer.model'
       }
     },
     scheduling: {
+      isRecurring: {
+        type: Boolean, required: true
+      },
+      recurringType: { 
+        type: String, enum: [ 'none', 'daily', 'weekly', 'monthly', 'custom' ]
+      },
       startTime: { 
         type: Date, //required: true 
       },
       endTime: { 
         type: Date, //required: true 
       },
-      isRecurring: Boolean,
-      recurringType: { 
-        type: String, enum: ['daily', 'weekly', 'monthly', 'custom']
-      },
       isCustomRecurring: Boolean,
       customRecurring: {
-        initial: {
-          type: Date, //required: true
-        },
-        final: Date || Infinity,
         dates: [
           {
             date: { 
@@ -165,10 +163,10 @@ import { offerSchema, IOfferModel } from './offer.model'
             }
           },
           activate: {
-            type: Number, min: 0
+            type: Number, min: 0, max: 720
           },
           deactivate: {
-            type: Number, min: 0
+            type: Number, min: 0, max: 720
           }
         }
       ],
@@ -177,7 +175,26 @@ import { offerSchema, IOfferModel } from './offer.model'
     },
     offers: {
       maxOffers: Number,
-      availableOffers: [ offerSchema ]
+      availableOffers: [
+        {
+          owner: { 
+            type: String, required: true
+          },
+          offerTitle: {
+            type: String, required: true, unique: true
+          },
+          description: {
+            type: String, required: true, maxlength: 250
+          },
+          category: {
+            type: String, required: true, enum: [ 'flat', 'payment', 'coupon', 'platform' ]
+          },
+          discountPercent: {
+            type: Number, min: 0, max: 100, default: 0, required: true
+          },
+          terms: String
+        }
+      ]
     },
     media: {
       images: [
@@ -216,12 +233,10 @@ export interface IEventModel extends mongoose.Document {
   }
   tags?: Array<string>
   hasCutomDetails?: boolean
-  customDetails?: Array<
-    {
-      detailName: string
-      detailData: string
-    }
-  >
+  customDetails?: Array<{
+    detailName: string
+    detailData: string
+  }>
   settings: {
     isPublished: boolean
     eventPriority?: number
@@ -246,14 +261,12 @@ export interface IEventModel extends mongoose.Document {
     }
   }
   scheduling: {
+    isRecurring: boolean
+    recurringType?: 'none' | 'daily' | 'weekly' | 'monthly' | 'custom'
     startTime: Date
     endTime: Date
-    isRecurring?: boolean
-    recurringType?: 'daily' | 'weekly' | 'monthly' | 'custom'
     isCustomRecurring?: boolean
     customRecurring: {
-      initial: Date
-      final?: Date | number
       dates: Array<{
         date: Date
         startTime: Date
@@ -267,13 +280,11 @@ export interface IEventModel extends mongoose.Document {
     details: string
     taxPercent: number
     processingFeePercent: number
-    tickets?: Array<
-      {
-        entry: ITicketModel
-        activate?: number
-        deactivate?: number
-      }
-    >
+    tickets?: Array<{
+      entry: ITicketModel
+      activate?: number
+      deactivate?: number
+    }>
     registrationURL?: string
     registrationPhone?: string
   }

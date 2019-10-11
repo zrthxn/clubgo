@@ -21,23 +21,15 @@ export const AdminContext = React.createContext({
     }
   },
   actions: {
-    authenticateLogin: (data) => {
-      console.log()
-    },
-    logout: (data) => {
-      console.log()
-    },
-    openSuccessFeedback: (message?:string) => {
-      console.log()
-    },
-    closeSuccessFeedback: () => {
-      console.log()
-    },    
-    openErrorFeedback: (message?:string, details?:string) => {
-      console.log()
-    },
-    closeErrorFeedback: () => {
-      console.log()
-    }
+    authenticateLogin: (data) => {},
+    logout: (data) => {},
+    getAdminUsername: () => String(),
+    getAdminRole: () => String(),
+    openSuccessFeedback: (message?:string) => {},
+    closeSuccessFeedback: () => {},    
+    openErrorFeedback: (message?:string, details?:string) => {},
+    closeErrorFeedback: () => {}
   }
 })
+
+export default AdminContext

@@ -4,7 +4,7 @@ import { TextField, Button, Switch, Checkbox, Chip } from '@material-ui/core'
 import Select from 'react-select'
 
 import { handleChangeById as inputHandler } from '@clubgo/util'
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 import { IVenueModel } from '@clubgo/database'
 import { Delete } from '@material-ui/icons'
 

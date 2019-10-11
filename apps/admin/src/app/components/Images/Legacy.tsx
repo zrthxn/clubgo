@@ -14,9 +14,6 @@ import {
 import '../scss/ImageUpload.scss'
 import 'react-image-crop/dist/ReactCrop.css'
 
-export interface ImageUploadProps {
-
-}
 export class ImageUpload extends Component {
   state = {
     imgSrc: null,

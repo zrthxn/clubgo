@@ -14,7 +14,7 @@ import {
 import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Snackbar, SnackbarContent, Tooltip, Button } from '@material-ui/core'
 import { AccountCircle, MenuRounded, MessageRounded, Notifications, Close, Help } from '@material-ui/icons'
 
-import { Interface } from '@clubgo/features/api'
+import { Interface } from '@clubgo/api'
 
 import './Admin.scss'
 
@@ -28,7 +28,7 @@ import LocationsPage from './pages/LocationsPage'
 import SettingsPage from './pages/SettingsPage'
 
 import AdminContextProvider from './AdminContextProvider'
-import { AdminContext } from './AdminContext'
+import AdminContext from './AdminContext'
 
 const theme = createMuiTheme({
   palette: {
@@ -53,9 +53,8 @@ export class Admin extends Component {
   constructor(props) {
     super(props)
 
-    if(process.env.NODE_ENV!=='production') {
+    if(process.env.NODE_ENV!=='production')
       this.state.validatedApplication = true
-    }
   }
 
   componentDidMount() {
@@ -72,6 +71,7 @@ export class Admin extends Component {
       return
     } catch (error) {
       console.error(error)
+      return Promise.reject(error)
     }
   }
 
@@ -265,12 +265,17 @@ export class Admin extends Component {
                 }
               </AdminContext.Consumer>
             ) : (
-              <article>
-                <section>
-                  <div>
-                    <span className="spinner large"/>
-                    <h2>Loading</h2>
+              <article style={{ width: '100%', height: '100%', padding: '5em' }}>
+                <section style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+                  <div style={{ maxWidth: '50%', margin: 'auto' }}>
+                    <span className="spinner large"/><br/><br/><br/>
                   </div>
+                  <h2>Loading</h2>
+                  <h4>Authenticating Application</h4>
+                  <p style={{ opacity: 0.5 }}>
+                    Verifying that this app is a genuine version of <br/>
+                    the ClubGo<sup>TM</sup> Admin Panel
+                  </p>
                 </section>
               </article>
             )

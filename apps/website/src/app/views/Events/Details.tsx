@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core'
 
 import './Events.scss'
 
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 import RootContext from '../../RootContextProvider'
 

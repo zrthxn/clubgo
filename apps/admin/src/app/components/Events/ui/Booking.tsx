@@ -6,7 +6,7 @@ import { TextField, Button, Switch, InputAdornment, Tooltip} from '@material-ui/
 import { Slider } from '@material-ui/lab'
 import { Link, Phone } from '@material-ui/icons'
 import { ITicketModel } from '@clubgo/database'
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 
 import { Ticket } from '../../Tickets/Ticket'
 

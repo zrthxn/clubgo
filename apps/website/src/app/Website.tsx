@@ -11,7 +11,7 @@ import {
 
 import './Global.scss'
 
-import { LoginService } from '@clubgo/features/api'
+import { LoginService } from '@clubgo/api'
 import { RootContextProvider, RootContext } from './RootContextProvider'
 
 import Home from './views/Home/Home'
@@ -54,7 +54,7 @@ export default class WebsiteController extends Component {
   }
 
   async validateApplication() {
-    const appAuthentication = new LoginService('auth')
+    const appAuthentication = new LoginService('user')
     try {
       await appAuthentication.authenticate()
     } catch (error) {

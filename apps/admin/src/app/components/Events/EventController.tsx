@@ -11,7 +11,7 @@ import { EventEditor } from './EventEditor'
 import { EventListing } from './EventListing'
 import { EventContext } from './EventContext'
 import { IEventModel } from '@clubgo/database'
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 
 export interface EventControllerProps {
   mount?: 'create' | 'list'
