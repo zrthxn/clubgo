@@ -41,7 +41,7 @@ import LoginRouter from './Routes/LoginRouter'
 // Middleware
 import { generateRequestAuthentication } from './Auth/Authentication'
 
-import { APIEndpoints } from '@clubgo/features/api'
+import { APIEndpoints } from '@clubgo/api'
 const ServerConfig = require('./serverconfig.json')
 
 // MongoDB Connection

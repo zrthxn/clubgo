@@ -78,11 +78,11 @@ export class Booking extends Component<BookingProps> {
   render() {
     if(!this.state.loading) return (
       <Paper className="create-block">
-        <h3 className="title">
+        <h3 className="title clearfix">
           Booking
           <div className="float-right">
             <span className="inline-text-label">On-Site</span>
-            <Switch color="primary" defaultChecked
+            <Switch color="primary" defaultChecked={this.state.data.isTakingOnsiteBookings}
               onChange={()=>{
                 this.setState(()=>{
                   let { data } = this.state
@@ -102,7 +102,7 @@ export class Booking extends Component<BookingProps> {
               <Grid item xs={12}>
                 <Grid item xs={6}>
                   <span className="inline-text-label">ON-SITE PAYMENTS</span>
-                  <Switch color="primary"
+                  <Switch color="primary" defaultChecked={this.state.data.isTakingOnsitePayments}
                     onChange={()=>{
                       this.setState(()=>{
                         let { data } = this.state

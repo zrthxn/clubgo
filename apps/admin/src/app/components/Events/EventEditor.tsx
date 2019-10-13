@@ -32,7 +32,7 @@ export class EventEditor extends Component<EventEditorProps> {
       ref: Date.now().toString(36),
       owner: 'admin',
       settings: {
-
+        isPublished: true
       },
       venue: {
 
@@ -129,7 +129,8 @@ export class EventEditor extends Component<EventEditorProps> {
       collectChildData: false
     })
 
-    // if(publish) createBody.settings.isPublished = true
+    if(publish)
+      createBody.settings.isPublished = true
     this.props.onFinalize(createBody)
   }
 
@@ -178,26 +179,22 @@ export class EventEditor extends Component<EventEditorProps> {
               <Grid item container spacing={3}>
                 <Grid item md={7} xs={12}>
                   <EventDetails populate={this.state.populateDataFromParent} data={this.state.data}
-                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                  />
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
                 </Grid>
 
                 <Grid item md={5} xs={12}>
                   <Settings populate={this.state.populateDataFromParent} data={this.state.data.settings}
-                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                  />
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
 
                   <Offers populate={this.state.populateDataFromParent} data={this.state.data.offers}
-                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                  />
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
                 </Grid>
 
                 <Grid item md={12} xs={12}><hr/></Grid>
 
                 <Grid item md={6} xs={12}>
                   <Venue populate={this.state.populateDataFromParent} data={this.state.data.venue}
-                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                  />
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
                 </Grid>
 
                 <Grid item md={6} xs={12}>
@@ -205,20 +202,17 @@ export class EventEditor extends Component<EventEditorProps> {
                     tag="event" name="event" includeVideoURL={true}
                     syncData={this.state.collectChildData} syncParentData={(data)=>{
                       this.syncDataChanges(data, 'media')
-                    }}
-                  />
+                    }} />
                 </Grid>
                 
                 <Grid item md={6} xs={12}>
                   <Booking populate={this.state.populateDataFromParent} data={this.state.data.bookings}
-                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                  />
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
                 </Grid>
 
                 <Grid item md={6} xs={12}>
                   <Scheduling populate={this.state.populateDataFromParent} data={this.state.data.scheduling}
-                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                  />
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
                 </Grid>                
               </Grid>
             ) : (

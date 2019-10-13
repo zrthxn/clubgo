@@ -30,15 +30,6 @@ import SettingsPage from './pages/SettingsPage'
 import AdminContextProvider from './AdminContextProvider'
 import AdminContext from './AdminContext'
 
-const theme = createMuiTheme({
-  palette: {
-    primary: primaryThemeColor,
-    secondary: secondaryThemeColor,
-    error: errorThemeColor,
-    type: 'light'
-  }
-})
-
 export class Admin extends Component {
   state = {
     validatedApplication: false,
@@ -238,8 +229,20 @@ export class Admin extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={ theme }>
-        <AdminContextProvider>
+      <AdminContextProvider>
+        <ThemeProvider theme={ 
+          createMuiTheme({
+            palette: {
+              primary: primaryThemeColor,
+              secondary: secondaryThemeColor,
+              error: errorThemeColor,
+              type: 'light'
+            },
+            spacing: (() => {
+              return 3
+            })()
+          }) 
+        }>
           {
             this.state.validatedApplication ? (
               <AdminContext.Consumer>
@@ -280,8 +283,8 @@ export class Admin extends Component {
               </article>
             )
           }
-        </AdminContextProvider>
-      </ThemeProvider>      
+        </ThemeProvider>      
+      </AdminContextProvider>
     )
   }
 }

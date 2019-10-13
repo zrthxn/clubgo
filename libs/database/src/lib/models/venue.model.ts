@@ -68,24 +68,12 @@ export const venueSchema = new mongoose.Schema(
           type: Boolean, required: true
         },
         openTime: {
-          type: Number, required: true, min: 0, max: 720
+          type: Number, required: true, min: 0, max: 1440
         },
         closeTime: {
-          type: Number, required: true, min: 0, max: 720
+          type: Number, required: true, min: 0, max: 1440
         },
         busy: Number
-      }
-    ],
-    offers: [
-      {
-        isActive: {
-          type: Boolean, required: true
-        },
-        offerName: {
-          type: String, required: true
-        },
-        offerDescription: String,
-        action: String, // RegExp // something like -15% or 1+1 or similar
       }
     ],
     media: {
@@ -141,12 +129,6 @@ export interface IVenueModel extends mongoose.Document {
     openTime: number
     closeTime: number
     busy?: number
-  }>
-  offers: Array<{
-    isActive: boolean
-    offerName?: string
-    offerDescription?: string
-    action?: string // RegExp // something like -15% or 1+1 or similar
   }>
   media: {
     images: Array<{

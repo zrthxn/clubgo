@@ -7,7 +7,6 @@ import Images from './ui/Images'
 import Settings from './ui/Settings'
 import VenueDetails from './ui/VenueDetails'
 import Hours from './ui/Hours'
-import Offers from './ui/Offers'
 
 import { VenueContext } from './VenueContext'
 
@@ -135,7 +134,8 @@ export class VenueEditor extends Component<VenueEditorProps> {
       collectChildData: false
     })
 
-    // if(publish) createBody.settings.isPublished = true
+    if(publish) 
+      createBody.settings.isPublished = true
     this.props.onFinalize(createBody)
   }
 
@@ -184,29 +184,24 @@ export class VenueEditor extends Component<VenueEditorProps> {
               <Grid item container spacing={3}>
                 <Grid item md={7} xs={12}>
                   <VenueDetails populate={this.state.populateDataFromParent} data={this.state.data}
-                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                  />
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
                 </Grid>
 
                 <Grid item md={5} xs={12}>
                   <Settings populate={this.state.populateDataFromParent} data={this.state.data.settings}
-                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                  />
-                  <Offers/>
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
                 </Grid>
 
                 <Grid item xs={12}><hr/></Grid>
 
                 <Grid item xs={12}>
                   <Images populate={this.state.populateDataFromParent} data={this.state.data.media}  
-                    syncParentData={this.syncDataChanges}
-                  />
+                    syncParentData={this.syncDataChanges} />
                 </Grid>
 
                 <Grid item xs={12}>
                   <Hours populate={this.state.populateDataFromParent} data={this.state.data.timings}  
-                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges}
-                  />
+                    syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
                 </Grid>
               </Grid>
             ) : (

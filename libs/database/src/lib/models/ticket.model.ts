@@ -3,10 +3,10 @@ import { ObjectID } from 'bson'
 
 export const ticketSchema = new mongoose.Schema(
   {
-    ticketTitle: {
+    owner: { 
       type: String, required: true
     },
-    owner: { 
+    ticketTitle: {
       type: String, required: true
     },
     entryType: {

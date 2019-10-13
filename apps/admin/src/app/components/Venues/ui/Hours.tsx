@@ -3,17 +3,18 @@ import MomentUtils from '@date-io/moment'
 import { Grid, Paper } from '@material-ui/core'
 import { TextField, Button, Switch } from '@material-ui/core'
 import { Slider } from '@material-ui/lab'
-import { MuiPickersUtilsProvider, KeyboardTimePicker, TimePicker } from '@material-ui/pickers'
+import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers'
 
 import { handleChangeById as inputHandler } from '@clubgo/util'
 import { Label } from 'reactstrap';
 
-export interface HoursProps {
+interface HoursProps {
   syncParentData?: Function,
   syncData?: boolean,
   populate?: boolean,
   data?: object
 }
+
 export class Hours extends Component<HoursProps> {
   state = {
     synchronized: false,
@@ -109,15 +110,15 @@ export class Hours extends Component<HoursProps> {
                         />
                       </span>
                       
-                      <KeyboardTimePicker
+                      <TimePicker
                         disabled={!this.state.data.timings[index].isOpen}
                         style={{ margin: '0 1em' }}
                         margin="dense"
                         id={`timings#${index}/openTime`}
                         label="Opening Time"
                         value={{
-                          hour: (this.state.data.timings[index].openTime/60).toFixed(0),
-                          minute: this.state.data.timings[index].openTime%60
+                          hour: ((this.state.data.timings[index].openTime - (this.state.data.timings[index].openTime % 60)) / 60),
+                          minute: this.state.data.timings[index].openTime % 60
                         }}
                         onChange={(d)=>{
                           let time = d.hours()*60 + d.minutes()
@@ -132,15 +133,15 @@ export class Hours extends Component<HoursProps> {
                         }}
                       />
 
-                      <KeyboardTimePicker
+                      <TimePicker
                         disabled={!this.state.data.timings[index].isOpen}
                         style={{ margin: '0 1em' }}
                         margin="dense"
                         id={`timings#${index}/closeTime`}
                         label="Closing Time"
                         value={{
-                          hour: (this.state.data.timings[index].closeTime/60).toFixed(0),
-                          minute: this.state.data.timings[index].closeTime%60
+                          hour: ((this.state.data.timings[index].closeTime - (this.state.data.timings[index].closeTime % 60)) / 60),
+                          minute: this.state.data.timings[index].closeTime % 60
                         }}
                         onChange={(d)=>{
                           let time = d.hours()*60 + d.minutes()

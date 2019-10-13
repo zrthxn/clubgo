@@ -9,7 +9,11 @@ import { offerSchema, IOfferModel } from './offer.model'
  * * Update the interface changing schema
  */
 
- export const eventSchema = new mongoose.Schema(
+export const timeSchema = {
+  type: Number, min: 0, max: 1440
+}
+
+export const eventSchema = new mongoose.Schema(
   {
     ref: { 
       type: String, required: true, unique: true
@@ -29,21 +33,15 @@ import { offerSchema, IOfferModel } from './offer.model'
     artists: [ artistSchema ],
     music: [String],
     dressCode: {
-      title: {
-        type: String, //required: true
-      },
+      title: String,
       images: [String]
     },
     tags: [String],
     hasCutomDetails: Boolean,
     customDetails: [
       {
-        detailName: {
-          type: String
-        },
-        detailData: {
-          type: String
-        }
+        detailName: String,
+        detailData: String
       }
     ],
     settings: {
@@ -80,48 +78,44 @@ import { offerSchema, IOfferModel } from './offer.model'
       }
     },
     scheduling: {
-      isRecurring: {
-        type: Boolean, required: true
+      type: {
+        type: String, enum: [ 'once', 'daily', 'weekly', 'monthly', 'custom' ], required: true
       },
-      recurringType: { 
-        type: String, enum: [ 'none', 'daily', 'weekly', 'monthly', 'custom' ]
+      isRecurring: Boolean,
+      isCustomDates: Boolean,
+      recurring: {
+        date: [ Number ] || undefined,
+        day: [ String ] || undefined,
+        month: [ String ] || undefined
       },
-      startTime: { 
-        type: Date, //required: true 
-      },
-      endTime: { 
-        type: Date, //required: true 
-      },
-      isCustomRecurring: Boolean,
-      customRecurring: {
-        dates: [
-          {
-            date: { 
-              type: Date, //required: true 
-            },
-            startTime: { 
-              type: Date, //required: true 
-            },
-            endTime: { 
-              type: Date, //required: true
-            }
+      customDates: [ Date ],
+      noShowDates: [ Date ],
+      timing: {
+        type: {
+          startTime: {
+            type: Number, min: 0, max: 1440, required: true
+          },
+          endTime: {
+            type: Number, min: 0, max: 2880, required: true
           }
-        ]
+        },
+        required: true
       }
     },
     bookings: {
       isTakingOnsiteBookings: Boolean,
       isTakingOnsitePayments: Boolean,
-      details: String,
+      allowPreBookingUptoDays: Number,
       taxPercent: {
         type: Number, min: 0, max: 100, default: 18
       },
       processingFeePercent: {
-        type: Number, min: 0, max: 100, default: 0
+        type: Number, min: 0, max: 100, default: 3
       },
       tickets: [
         {
           entry: {
+            owner: String,
             ticketTitle: {
               type: String, required: true
             },
@@ -163,10 +157,10 @@ import { offerSchema, IOfferModel } from './offer.model'
             }
           },
           activate: {
-            type: Number, min: 0, max: 720
+            type: Number, min: 0, max: 1440
           },
           deactivate: {
-            type: Number, min: 0, max: 720
+            type: Number, min: 0, max: 1440
           }
         }
       ],
@@ -177,9 +171,7 @@ import { offerSchema, IOfferModel } from './offer.model'
       maxOffers: Number,
       availableOffers: [
         {
-          owner: { 
-            type: String, required: true
-          },
+          owner: String,
           offerTitle: {
             type: String, required: true, unique: true
           },
@@ -261,25 +253,26 @@ export interface IEventModel extends mongoose.Document {
     }
   }
   scheduling: {
+    type: 'once' | 'daily' | 'weekly' | 'monthly' | 'custom'
     isRecurring: boolean
-    recurringType?: 'none' | 'daily' | 'weekly' | 'monthly' | 'custom'
-    startTime: Date
-    endTime: Date
-    isCustomRecurring?: boolean
-    customRecurring: {
-      dates: Array<{
-        date: Date
-        startTime: Date
-        endTime: Date
-      }>
+    recurring?: {
+      date: Array<number> | undefined
+      day: Array<string> | undefined
+      month: Array<string> | undefined
+    }
+    customDates?: Array<Date>
+    noShowDates?: Array<Date>
+    timing: {
+      startTime: number
+      endTime: number
     }
   }
   bookings: {
-    isTakingOnsiteBookings?: boolean
-    isTakingOnsitePayments?: boolean
-    details: string
-    taxPercent: number
-    processingFeePercent: number
+    isTakingOnsiteBookings: boolean
+    isTakingOnsitePayments: boolean
+    allowPreBookingUptoDays: number
+    taxPercent?: number
+    processingFeePercent?: number
     tickets?: Array<{
       entry: ITicketModel
       activate?: number
