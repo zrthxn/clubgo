@@ -10,3 +10,8 @@ export * from './lib/models/offer.model'
 export * from './lib/models/ticket.model'
 export * from './lib/models/location.model'
 export * from './lib/models/webmaster.model'
+export * from './lib/models/booking.model'
+
+// Controllers 
+export * from './lib/controllers/controller'
+export * from './lib/controllers/event.controller'

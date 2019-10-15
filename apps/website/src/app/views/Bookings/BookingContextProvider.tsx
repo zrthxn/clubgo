@@ -31,7 +31,13 @@ export class BookingContextProvider extends Component {
   getTicket = () => {
     if(localStorage.getItem('cg::ticket:dump')===null) return undefined
       
-    let ticket = JSON.parse(atob(localStorage.getItem('cg::ticket:dump')))
+    let ticket
+    try {
+      ticket = JSON.parse(atob(localStorage.getItem('cg::ticket:dump')))
+    } catch (error) {
+      return undefined
+    }
+    
     this.setState({ loginExists: true, ticket })
     return ticket
   }

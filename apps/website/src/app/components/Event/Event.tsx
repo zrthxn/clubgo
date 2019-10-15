@@ -36,7 +36,13 @@ export class Event extends Component<EventComponentProps> {
     return (
       <div className={eventCardStyle} onClick={this.openEventDetails}>
         {/* <Image alt="Image" src={ this.props.data.media.images[0].url }/> */}
-        <img alt="Image" src={ this.props.data.media.images[0].url }/>
+        {
+          this.props.data.media.images.length!==0 ? (
+            <img alt="Image" src={ this.props.data.media.images[0].url }/>
+          ) : (
+            <img alt="Image" src="/assets/clubgo.png"/>
+          )
+        }
         
         <Link to={this.detailsPageURL}>
           <h3 className="event-title">{ this.props.data.eventTitle }</h3>

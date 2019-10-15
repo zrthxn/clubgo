@@ -2,7 +2,7 @@ import React, { Component, ReactElement } from 'react'
 import ScrollArea from 'react-scrollbar'
 import './Recommender.scss'
 
-import { DatabaseService } from '@clubgo/features/api'
+import { DatabaseService } from '@clubgo/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 import Button from '../Button/Button'
 import RootContext from '../../RootContextProvider'

@@ -46,7 +46,7 @@ export class Scheduling extends Component<SchedulingProps> {
               onChange={({ target })=>{
                 this.setState(()=>{
                   let { data } = this.state
-                  data.isRecurring = !data.isRecurring
+                  // data.isRecurring = !data.isRecurring
                   
                   if(target.checked)
                     data.type = 'daily'

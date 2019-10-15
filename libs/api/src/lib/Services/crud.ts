@@ -34,8 +34,6 @@ export class DatabaseService extends Interface {
         owner: 'admin'
       }
 
-      console.log(config.data)
-
       return config
     })
   }

@@ -113,11 +113,9 @@ export class Ticket extends Component<TicketViewProps> {
                           element: (
                             <div
                               style={{
-                                color: '#fff',
-                                padding: '0.5em',
-                                backgroundColor: '#1c1c1c40',
+                                color: '#1c1c1c80',
+                                padding: '0.5em 0.75em',
                                 borderRadius: '0.5em',
-                                marginRight: '0.5em',
                                 fontWeight: 900,
                               }}
                             >

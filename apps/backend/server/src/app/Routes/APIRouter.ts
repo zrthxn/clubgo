@@ -1,7 +1,7 @@
 import express from 'express'
 import { conf } from '@clubgo/util'
-import { ModelledCRUDRouter } from '@clubgo/database'
-import { Event, Venue, User, Offer, Ticket, Location } from '@clubgo/database'
+import { ModelController, EventController } from '@clubgo/database'
+import { Event, Venue, User, Offer, Ticket, Location, Booking } from '@clubgo/database'
 
 export const APIRouter = express.Router()
 export default APIRouter
@@ -24,22 +24,25 @@ APIRouter.get('/', (req, res, next)=>{
 
 // CRUD Functions
 // --------------------------------------------------------
-const EventRouter = new ModelledCRUDRouter(Event).create()
-APIRouter.use('/event', EventRouter)
+const EventRouter = new EventController()
+APIRouter.use('/event', EventRouter.router())
 
-const VenueRouter = new ModelledCRUDRouter(Venue).create()
-APIRouter.use('/venue', VenueRouter)
+const VenueRouter = new ModelController(Venue)
+APIRouter.use('/venue', VenueRouter.router())
 
-const UserRouter = new ModelledCRUDRouter(User).create()
-APIRouter.use('/user', UserRouter)
+const BookingRouter = new ModelController(Booking)
+APIRouter.use('/booking', BookingRouter.router())
 
-const OfferRouter = new ModelledCRUDRouter(Offer).create()
-APIRouter.use('/offer', OfferRouter)
+const UserRouter = new ModelController(User)
+APIRouter.use('/user', UserRouter.router())
 
-const TicketRouter = new ModelledCRUDRouter(Ticket).create()
-APIRouter.use('/ticket', TicketRouter)
+const OfferRouter = new ModelController(Offer)
+APIRouter.use('/offer', OfferRouter.router())
 
-const LocationRouter = new ModelledCRUDRouter(Location).create()
-APIRouter.use('/location', LocationRouter)
+const TicketRouter = new ModelController(Ticket)
+APIRouter.use('/ticket', TicketRouter.router())
+
+const LocationRouter = new ModelController(Location)
+APIRouter.use('/location', LocationRouter.router())
 
 // STOP ============================================== STOP

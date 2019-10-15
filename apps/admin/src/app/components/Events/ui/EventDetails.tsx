@@ -22,7 +22,9 @@ export class EventDetails extends Component<EventDetailsProps> {
     openMusicModal: false,
     suggestions: {
       dressCode: [
-        { label: '101 Formal' }
+        { label: 'Formal' },
+        { label: 'Casual' },
+        { label: 'Party' }
       ].map(item=>({
         label: item.label, value: item.label
       })),
@@ -162,7 +164,18 @@ export class EventDetails extends Component<EventDetailsProps> {
 
             <Grid item md={6} xs={12}>
               <Label>Performers</Label>
-              <div style={{ padding: '0.5em' }}>
+              <TextField id="artist" fullWidth label="Artist" 
+                variant="outlined" margin="dense" onChange={({ target })=>{
+                  let { data } = this.state
+                  this.setState(()=>{
+                    data.artists[0] = target.value
+                    return {
+                      data
+                    }
+                  })
+                }} 
+                defaultValue={this.state.data.artists[0]}/>
+              {/* <div style={{ padding: '0.5em' }}>
                 <Button variant="contained" color="primary"
                   onClick={()=>{
                     this.setState({
@@ -172,9 +185,20 @@ export class EventDetails extends Component<EventDetailsProps> {
                 >
                   Select Artist
                 </Button>
-              </div>
+              </div> */}
 
-              <div style={{ padding: '0.5em' }}>
+              <TextField id="music" fullWidth label="Music" 
+                variant="outlined" margin="dense" onChange={({ target })=>{
+                  let { data } = this.state
+                  this.setState(()=>{
+                    data.music[0] = target.value
+                    return {
+                      data
+                    }
+                  })
+                }} 
+                defaultValue={this.state.data.music[0]}/>
+              {/* <div style={{ padding: '0.5em' }}>
                 <Button variant="contained" color="primary"
                   onClick={()=>{
                     this.setState({
@@ -184,7 +208,7 @@ export class EventDetails extends Component<EventDetailsProps> {
                 >
                   Select Music
                 </Button>
-              </div>
+              </div> */}
             </Grid>
 
             <Grid item md={4} xs={12}>
