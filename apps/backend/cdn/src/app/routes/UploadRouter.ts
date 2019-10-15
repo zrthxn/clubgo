@@ -4,7 +4,7 @@ import * as path from 'path'
 import * as bodyParser from 'body-parser'
 import multer from 'multer'
 
-import { APIEndpoints } from '@clubgo/features/api'
+import { APIEndpoints } from '@clubgo/api'
 import { 
   conf, 
   sortItemArrayByRef,
