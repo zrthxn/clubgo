@@ -2,7 +2,7 @@ import express from 'express'
 import path from 'path'
 import { Event, Venue, User, Offer } from '@clubgo/database'
 import { conf } from '@clubgo/util'
-import { ModelledCRUDRouter } from '@clubgo/database'
+// import { ModelledCRUDRouter } from '@clubgo/database'
 
 export const WebRouter = express.Router()
 export default WebRouter
