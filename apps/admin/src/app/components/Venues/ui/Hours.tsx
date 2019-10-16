@@ -45,6 +45,23 @@ export class Hours extends Component<HoursProps> {
     })
   }
 
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.populate) {
+        return {
+          loading: false,
+          data: {
+            timings: this.props.data
+          }
+        }
+      }
+      else
+        return {
+          loading: false
+        }
+    })
+  }
+
   componentDidUpdate() {    
     if(this.props.syncData!==this.state.synchronized) {
       if(this.props.syncData) {
@@ -52,7 +69,7 @@ export class Hours extends Component<HoursProps> {
         this.setState({
           synchronized: this.props.syncData
         })
-      }        
+      }
     }
   }
 

@@ -10,7 +10,8 @@
       "@clubgo/admin/assets": ["apps/admin/src/assets"],
       "@clubgo/api": ["libs/api/src/index.ts"],
       "@clubgo/util": ["libs/util/src/index.ts"],
-      "@clubgo/database": ["libs/database/src/index.ts"]
+      "@clubgo/database": ["libs/database/src/index.ts"],
+      "@clubgo/components": ["libs/components/src/index.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"]

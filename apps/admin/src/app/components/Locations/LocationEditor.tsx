@@ -9,14 +9,27 @@ interface LocationEditorProps {
   open: boolean
   close: Function
   onComplete: Function
+  data?: any
 }
 
 export default class LocationEditor extends Component<LocationEditorProps> {
   state = {
     openLocalityEditor: false,
+    data: {
+      city: null
+    },
     localities: [
       
     ]
+  }
+
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.data!==undefined)
+        return {
+          data: this.props.data
+        }
+    })
   }
 
   render() {
@@ -41,7 +54,18 @@ export default class LocationEditor extends Component<LocationEditorProps> {
             </Grid>
 
             <Grid item xs={12}>
-              <TextField fullWidth variant="outlined" label="Name of City"/>
+              <TextField fullWidth variant="outlined" label="Name of City" 
+                defaultValue={this.state.data.city}
+                onChange={({ target })=>{
+                  let { data } = this.state
+                  data.city = target.value
+                  this.setState(()=>{
+                    return {
+                      data
+                    }
+                  })
+                }}
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -79,7 +103,7 @@ export default class LocationEditor extends Component<LocationEditorProps> {
 
             <Grid item xs={6}>
               <Button color="primary" onClick={()=>{
-                this.props.onComplete()
+                this.props.onComplete(this.state.data)
               }}>
                 Confirm
               </Button>

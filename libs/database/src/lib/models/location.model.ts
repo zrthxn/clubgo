@@ -12,7 +12,7 @@ export const locationSchema = new mongoose.Schema(
     localities: [
       {
         name: {
-          type: String, required: true
+          type: String
         },
         coordinates: {
           _lat: Number,

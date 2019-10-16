@@ -8,6 +8,7 @@ interface LocalityEditorProps {
   close: Function
   onComplete: Function
   city?: string
+  data?: any
   initCoordinates?: {
     _lat: number
     _lon: number
@@ -17,6 +18,15 @@ interface LocalityEditorProps {
 export default class LocalityEditor extends Component<LocalityEditorProps> {
   state = {
     name: null
+  }
+
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.data!==undefined)
+        return {
+          name: this.props.data.name
+        }
+    })
   }
 
   render() {
@@ -41,11 +51,14 @@ export default class LocalityEditor extends Component<LocalityEditorProps> {
             </Grid>
 
             <Grid item xs={12}>
-              <TextField fullWidth margin="dense" variant="outlined" label="Name of Locality" onChange={({ target })=>{
-                this.setState({
-                  name: target.value
-                })
-              }}/>
+              <TextField fullWidth margin="dense" variant="outlined" label="Name of Locality" 
+                defaultValue={this.state.name}
+                onChange={({ target })=>{
+                  this.setState({
+                    name: target.value
+                  })
+                }}
+              />
             </Grid>
 
             <Grid item xs={12}>

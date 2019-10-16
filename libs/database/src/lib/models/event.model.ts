@@ -30,7 +30,7 @@ export const eventSchema = new mongoose.Schema(
     categories: [String],
     tagline: String,
     flashText: String,
-    artists: [ artistSchema ],
+    artists: [String], //[ artistSchema ],
     music: [String],
     dressCode: {
       title: String,
