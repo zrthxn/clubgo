@@ -1,12 +1,6 @@
 import express from 'express'
-import * as mongoose from 'mongoose'
 import { conf } from '@clubgo/util'
-
-export interface IRouteItem {
-  method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head' | 'use'
-  path: string
-  handler: express.RequestHandler
-}
+import * as mongoose from 'mongoose'
 
 /**
  * @description CRUD Router.
@@ -24,31 +18,30 @@ export class ModelController {
     this.Model = DatabaseDocumentModel
   }
 
-  currentRoutes:IRouteItem[]
-
-  defaultRoutes:IRouteItem[] = [
-    { method: 'get', path: '/_list', handler: this.list },
-    { method: 'get', path: '/_get/:objectid', handler: this.get },
-    { method: 'post', path: '/_search', handler: this.search },
-    { method: 'post', path: '/_group', handler: this.group },
-    { method: 'post', path: '/_create', handler: this.create },
-    { method: 'put', path: '/_update/:objectid', handler: this.update },
-    { method: 'delete', path: '/_delete/:objectid', handler: this.delete }
-  ]
-
   /**
    * Returns the controlled instance of `express.Router()`
    * @returns `express.Router()`
    */
-  router = () => this.addRoutes(this.defaultRoutes)
+  router = () => this.addRoutes()
 
   /**
    * Adds the given routes to 
    * @returns `express.Router()`
    */
   addRoutes = (routes?:IRouteItem[]) => {
-    for (const route of routes)
-      this._router[route.method](route.path, route.handler)
+    if(routes!==undefined)
+      for (const route of routes)
+        this._router[route.method](route.path, route.handler)
+    else {
+      // Default Routes
+      this._router.get('/_list', this.list)
+      this._router.get('/_get/:objectid', this.get)
+      this._router.post('/_search', this.search)
+      this._router.post('/_group', this.group)
+      this._router.post('/_create', this.create)
+      this._router.put('/_update/:objectid', this.update)
+      this._router.delete('/_delete/:objectid', this.delete)
+    }
     return this._router
   }
 
@@ -56,19 +49,19 @@ export class ModelController {
   // --------------------------------------------------------
   
   // Read all Objects :: /_list
-  async list(req, res) {
+  list = async (req, res) => {
     const objectStream = await this.Model.find({})
     res.send({ results: objectStream })
   }
 
   // Read a Object by ID :: /_get/:Objectid
-  async get(req, res) {
+  get = async (req, res) => {
     const searchResult = await this.Model.findOne({ _id: req.params.objectid })
     res.send({ message: 'Found', results: searchResult })
   }
 
   // Search for venues :: /_search
-  async search(req, res) {
+  search = async (req, res) => {
     const { query } = req.body
     const searchResult = await this.Model.find({ ...query })
 
@@ -79,7 +72,7 @@ export class ModelController {
   }
 
   // Read a group of Objects by ID :: /_group
-  async group(req, res) {
+  group = async (req, res) => {
     const { searchIds } = req.body
     for (let id of searchIds) id = mongoose.Types.ObjectId(id)
     
@@ -96,7 +89,7 @@ export class ModelController {
   }
 
   // Create a Object :: /_create
-  async create(req, res) {
+  create = async (req, res) => {
     const { createBody } = req.body
     const createObject = new this.Model(createBody)
 
@@ -114,7 +107,7 @@ export class ModelController {
   }
 
   // Update a Object by ID :: /_update/:objectid
-  async update(req, res) {
+  update = async (req, res) => {
     const { updateBody } = req.body
     const result = await this.Model.findOneAndUpdate(
       { 
@@ -131,7 +124,7 @@ export class ModelController {
   }
 
   // Delete a Object by ID :: /_delete/:objectid
-  async delete(req, res) {
+  delete = async (req, res) => {
     const results = await this.Model.findOneAndDelete(
       { 
         _id: req.params.objectid 
@@ -142,9 +135,13 @@ export class ModelController {
       message: 'Deleted', 
       results
     })
-  }
+  } 
 }
 
-export default ModelController
-
 // STOP ============================================== STOP
+
+export interface IRouteItem {
+  method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head' | 'use'
+  path: string
+  handler: express.RequestHandler
+}

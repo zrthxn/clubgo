@@ -14,7 +14,7 @@ export class EventController extends ModelController {
   /**
    * @override Default Search
    */
-  async search(req, res) {
+  search = async (req, res) => {
     const { query } = req.body
     const searchResult = await Event.find({ ...query })
 

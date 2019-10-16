@@ -1,6 +1,6 @@
-// export * from './lib/backend'
 export * from './lib/database'
 export * from './lib/firebase'
+export * from './lib/backend'
 
 // Models
 export * from './lib/models/user.model'
