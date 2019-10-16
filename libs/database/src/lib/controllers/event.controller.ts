@@ -16,7 +16,7 @@ export class EventController extends ModelController {
    */
   async search(req, res) {
     const { query } = req.body
-    const searchResult = await this.Model.find({ ...query })
+    const searchResult = await Event.find({ ...query })
 
     res.send({ 
       message: `Found ${searchResult.length} matching records`,
