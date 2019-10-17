@@ -85,9 +85,11 @@ export class TicketsPage extends Component {
                         })
                       }}
                       onDelete={()=>{
-                        let { listing } = this.state
-                        listing = listing.filter(item => (item._id!==ticket._id))
-                        this.setState({ listing })
+                        this.ticketService.delete(ticket._id).then(()=>{
+                          let { listing } = this.state
+                          listing = listing.filter(item => (item._id!==ticket._id))
+                          this.setState({ listing })
+                        })
                       }}
                     />
                   </Grid>

@@ -40,7 +40,7 @@ export class Ticket extends Component<TicketProps> {
             }
           </div>
 
-          <p className="price float-left">
+          <p style={{ margin: 'auto 0' }} className="price float-left">
             {
               (
                 () => {
@@ -55,11 +55,9 @@ export class Ticket extends Component<TicketProps> {
 
           {
             this.props.onDelete!==undefined ? (
-              <IconButton size="small" className="float-right" onClick={()=>{
-                this.ticketService.delete(this.props.data._id).then(()=>{
-                  if(this.props.onDelete!==undefined)
-                    this.props.onDelete()
-                })
+              <IconButton className="float-right" onClick={()=>{
+                if(this.props.onDelete!==undefined)
+                  this.props.onDelete()
               }}>
                 <Delete/>
               </IconButton>
@@ -68,7 +66,7 @@ export class Ticket extends Component<TicketProps> {
             )
           }
 
-          <IconButton size="small" className="float-right" onClick={()=>{
+          <IconButton className="float-right" onClick={()=>{
             this.setState({
               openEditModal: true
             })

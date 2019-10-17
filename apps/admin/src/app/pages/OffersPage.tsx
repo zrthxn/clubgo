@@ -68,9 +68,11 @@ export default class OffersPage extends Component {
                         })
                       }}
                       onDelete={()=>{
-                        let { offers } = this.state
-                        offers = offers.filter(item => (item._id!==offer._id))
-                        this.setState({ offers })
+                        this.offerService.delete(offer._id).then(()=>{  
+                          let { offers } = this.state
+                          offers = offers.filter(item => (item._id!==offer._id))
+                          this.setState({ offers })
+                        })
                       }}
                     />
                   </Grid>

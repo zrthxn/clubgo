@@ -68,10 +68,8 @@ export class Offer extends Component<OfferProps> {
             </IconButton>
             
             <IconButton size="small" onClick={()=>{
-              this.offerService.delete(this.props.data._id).then(()=>{
-                if(this.props.onDelete!==undefined)
-                  this.props.onDelete()
-              })
+              if(this.props.onDelete!==undefined)
+                this.props.onDelete()
             }}>
               <Delete/>
             </IconButton>
