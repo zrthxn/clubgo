@@ -5,7 +5,7 @@ import { Grid, Paper } from '@material-ui/core'
 import './scss/Pages.scss'
 
 import { Offer } from '../components/Offers/Offer'
-import { CreateOffer } from '../components/Offers/CreateOffer'
+import { OfferEditor } from '../components/Offers/OfferEditor'
 import { DatabaseService } from '@clubgo/api'
 
 import AdminContext from '../AdminContext'
@@ -17,7 +17,7 @@ export default class OffersPage extends Component {
   
   state = {
     loading: true,
-    openOfferEditor: false,
+    openCreateModal: false,
     offers: [
 
     ]
@@ -45,7 +45,7 @@ export default class OffersPage extends Component {
           <div>
             <Button color="primary" size="lg" onClick={()=>{
               this.setState({
-                openOfferEditor: true
+                openCreateModal: true
               })
             }}>
               Create New Offer
@@ -58,23 +58,19 @@ export default class OffersPage extends Component {
             {
               !this.state.loading ? (
                 this.state.offers.map((offer, index)=>(
-                  <Grid item xs={12} md={4} key={`offer-${index}`}>
+                  <Grid item xs={12} md={4} key={`offerList-${index}`}>
                     <Offer data={offer}
                       onEdit={(editedOffer:IOfferModel)=>{
                         let { offers } = this.state
                         offers[index] = editedOffer
-                        this.offerService.update(offer._id, editedOffer).then(()=>{
-                          this.setState({
-                            offers
-                          })
+                        this.setState({
+                          offers
                         })
                       }}
                       onDelete={()=>{
-                        this.offerService.delete(offer._id).then(()=>{
-                          let { offers } = this.state
-                          offers = offers.filter(item => (item._id!==offer._id))
-                          this.setState({ offers })
-                        })
+                        let { offers } = this.state
+                        offers = offers.filter(item => (item._id!==offer._id))
+                        this.setState({ offers })
                       }}
                     />
                   </Grid>
@@ -88,24 +84,29 @@ export default class OffersPage extends Component {
           </Grid>
         </article>
 
-        <CreateOffer open={this.state.openOfferEditor}
-          onCancel={()=>{
-            this.setState({
-              openOfferEditor: false
-            })
-          }}
-          onConfirm={(offer:IOfferModel)=>{
-            this.offerService.create(offer).then((res)=>{
-              let { offers } = this.state
-              offers.push(offer)
-              this.setState({
-                loading: false,
-                openOfferEditor: false,
-                offers
-              })
-            })            
-          }}
-        />
+        {
+          this.state.openCreateModal ? (
+            <OfferEditor open={this.state.openCreateModal}
+              onCancel={()=>{
+                this.setState({
+                  openOfferEditor: false
+                })
+              }}
+              onFinalize={(createBody:IOfferModel)=>{
+                this.offerService.create(createBody).then((res)=>{
+                  let { offers } = this.state
+                  createBody._id = res.data.results
+                  offers.push(createBody)
+                  this.setState({
+                    loading: false,
+                    openCreateModal: false,
+                    offers
+                  })
+                })            
+              }}
+            />
+          ) : null 
+        }
       </div>
     )
   }

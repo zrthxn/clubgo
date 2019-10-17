@@ -5,7 +5,7 @@ import { Edit, Delete } from '@material-ui/icons'
 import '../scss/Offers.scss'
 
 import { IOfferModel } from '@clubgo/database'
-import { CreateOffer } from './CreateOffer'
+import { OfferEditor } from './OfferEditor'
 import { DatabaseService } from '@clubgo/api'
 
 interface OfferProps {
@@ -68,8 +68,10 @@ export class Offer extends Component<OfferProps> {
             </IconButton>
             
             <IconButton size="small" onClick={()=>{
-              if(this.props.onDelete!==undefined)
-                this.props.onDelete()
+              this.offerService.delete(this.props.data._id).then(()=>{
+                if(this.props.onDelete!==undefined)
+                  this.props.onDelete()
+              })
             }}>
               <Delete/>
             </IconButton>
@@ -77,10 +79,10 @@ export class Offer extends Component<OfferProps> {
           
           {
             this.state.openOfferEditor ? (
-              <CreateOffer open={this.state.openOfferEditor}
+              <OfferEditor open={this.state.openOfferEditor}
                 data={this.props.data}
                 populate={true}
-                onConfirm={(offer:IOfferModel)=>{
+                onFinalize={(offer:IOfferModel)=>{
                   this.offerService.update(this.props.data._id, offer).then(()=>{
                     if(this.props.onEdit!==undefined)
                       this.props.onEdit(offer)

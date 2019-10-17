@@ -75,7 +75,7 @@ export class TicketsPage extends Component {
             {
               !this.state.loading && this.state.listing.map((ticket, index)=>{
                 return (
-                  <Grid item md={3} xs={6} key={`ticketlist_${index}`}>
+                  <Grid item md={3} xs={6} key={`ticketlist-${index}`}>
                     <Ticket data={ticket}
                       onEdit={(editedTicket:ITicketModel)=>{
                         let { listing } = this.state
@@ -85,11 +85,9 @@ export class TicketsPage extends Component {
                         })
                       }}
                       onDelete={()=>{
-                        this.ticketService.delete(ticket._id).then(()=>{
-                          let { listing } = this.state
-                          listing = listing.filter(item => (item._id!==ticket._id))
-                          this.setState({ listing })
-                        })
+                        let { listing } = this.state
+                        listing = listing.filter(item => (item._id!==ticket._id))
+                        this.setState({ listing })
                       }}
                     />
                   </Grid>
@@ -99,25 +97,30 @@ export class TicketsPage extends Component {
           </Grid>
         </article>
 
-        <TicketEditor open={this.state.openCreateModal}
-          populate={this.state.populateDataFromParent}
-          data={this.state.populateData}
-          onFinalize={(createBody:ITicketModel)=>{
-            this.ticketService.create(createBody).then((res)=>{
-              let { listing } = this.state
-              listing.push(createBody)
-              this.setState({
-                openCreateModal: false,
-                listing
-              })
-            })
-          }}
-          onCancel={()=>{
-            this.setState({
-              openCreateModal: false
-            })
-          }}
-        />
+        {
+          this.state.openCreateModal ? (
+            <TicketEditor open={this.state.openCreateModal}
+              populate={this.state.populateDataFromParent}
+              data={this.state.populateData}
+              onCancel={()=>{
+                this.setState({
+                  openCreateModal: false
+                })
+              }}
+              onFinalize={(createBody:ITicketModel)=>{
+                this.ticketService.create(createBody).then((res)=>{
+                  let { listing } = this.state
+                  createBody._id = res.data.results
+                  listing.push(createBody)
+                  this.setState({
+                    openCreateModal: false,
+                    listing
+                  })
+                })
+              }}
+            />
+          ) : null
+        }
       </div>
     )
   }

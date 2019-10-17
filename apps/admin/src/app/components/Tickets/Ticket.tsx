@@ -6,6 +6,7 @@ import { ITicketModel } from '@clubgo/database'
 import '../scss/Ticket.scss'
 
 import { TicketEditor } from './TicketEditor'
+import { DatabaseService } from '@clubgo/api'
 
 export interface TicketProps {
   data: ITicketModel,
@@ -16,6 +17,8 @@ export class Ticket extends Component<TicketProps> {
   state = {
     openEditModal: false
   }
+
+  ticketService = new DatabaseService('/ticket')
 
   render() {
     return (
@@ -53,8 +56,10 @@ export class Ticket extends Component<TicketProps> {
           {
             this.props.onDelete!==undefined ? (
               <IconButton size="small" className="float-right" onClick={()=>{
-                if(this.props.onDelete!==undefined)
-                  this.props.onDelete()
+                this.ticketService.delete(this.props.data._id).then(()=>{
+                  if(this.props.onDelete!==undefined)
+                    this.props.onDelete()
+                })
               }}>
                 <Delete/>
               </IconButton>
@@ -78,12 +83,14 @@ export class Ticket extends Component<TicketProps> {
               populate={true}
               data={this.props.data}
               onFinalize={(updateBody:ITicketModel)=>{
-                this.setState({
-                  openEditModal: false
+                this.ticketService.update(this.props.data._id, updateBody).then(()=>{  
+                  if(this.props.onEdit!==undefined)
+                    this.props.onEdit(updateBody)
+                  
+                  this.setState({
+                    openEditModal: false
+                  })
                 })
-
-                if(this.props.onEdit!==undefined)
-                  this.props.onEdit(updateBody)
               }}
               onCancel={()=>{
                 this.setState({

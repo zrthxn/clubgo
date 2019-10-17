@@ -7,15 +7,15 @@ import '../scss/Offers.scss'
 import { handleChangeById as inputHandler, verifyRequirements } from '@clubgo/util'
 import AdminContext from '../../AdminContext'
 
-interface CreateOfferProps {
+interface OfferEditorProps {
   open: boolean
-  onConfirm: Function
+  onFinalize: Function
   onCancel: Function
   populate?: boolean
   data?: any
 }
 
-export class CreateOffer extends Component<CreateOfferProps> {
+export class OfferEditor extends Component<OfferEditorProps> {
   static contextType = AdminContext
   context!: React.ContextType<typeof AdminContext>
 
@@ -144,7 +144,7 @@ export class CreateOffer extends Component<CreateOfferProps> {
 
             <Grid item xs={6}>
               <Button color="primary"  onClick={(e)=>{
-                this.props.onConfirm(this.state.data)
+                this.props.onFinalize(this.state.data)
               }}>
                 Confirm
               </Button>

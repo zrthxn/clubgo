@@ -75,12 +75,6 @@ export class TicketEditor extends Component<TicketEditorProps> {
     ))
   }
 
-  confirm = async () => {
-    await this.ticketService.update(this.props.data._id, this.state.data)
-    this.setState({ openEditModal: false })
-    this.props.onFinalize(this.state.data)
-  }
-
   render() {
     return (
       <Modal open={this.props.open}
@@ -348,7 +342,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
             <Grid item xs={6}>
               <Button color="primary"
                 onClick={()=>{ 
-                  this.confirm() 
+                  this.props.onFinalize(this.state.data) 
                 }}
               >
                 Confirm
