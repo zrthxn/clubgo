@@ -111,7 +111,7 @@ export class OfferEditor extends Component<OfferEditorProps> {
 
             <Grid item xs={6}>
               <TextField fullWidth label="Discount" variant="outlined" margin="dense" 
-                defaultValue={this.state.data.discountPercent}
+                defaultValue={this.state.data.discountPercent} type="number"
                 onChange={({ target })=>{
                   let { data } = this.state
                   if(target.value!=='')

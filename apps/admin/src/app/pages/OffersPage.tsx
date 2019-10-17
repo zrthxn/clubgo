@@ -91,7 +91,7 @@ export default class OffersPage extends Component {
             <OfferEditor open={this.state.openCreateModal}
               onCancel={()=>{
                 this.setState({
-                  openOfferEditor: false
+                  openCreateModal: false
                 })
               }}
               onFinalize={(createBody:IOfferModel)=>{

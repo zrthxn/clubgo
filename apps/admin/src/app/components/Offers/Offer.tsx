@@ -19,7 +19,7 @@ export class Offer extends Component<OfferProps> {
     openOfferEditor: false
   }
   
-  offerService = new DatabaseService('/ticket')
+  offerService = new DatabaseService('/offer')
   
   render() {
     return (
@@ -54,12 +54,12 @@ export class Offer extends Component<OfferProps> {
             }
           </span>
 
-          <span style={{ margin: 'auto' }}>
-            { this.props.data.discountPercent }% OFF
+          <span style={{ margin: 'auto 0' }}>
+            { this.props.data.discountPercent }% off
           </span>
 
           <div className="float-right">
-            <IconButton size="small" onClick={()=>{
+            <IconButton onClick={()=>{
               this.setState({
                 openOfferEditor: true
               })
@@ -67,7 +67,7 @@ export class Offer extends Component<OfferProps> {
               <Edit/>
             </IconButton>
             
-            <IconButton size="small" onClick={()=>{
+            <IconButton onClick={()=>{
               if(this.props.onDelete!==undefined)
                 this.props.onDelete()
             }}>
