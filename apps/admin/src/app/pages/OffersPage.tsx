@@ -63,8 +63,10 @@ export default class OffersPage extends Component {
                       onEdit={(editedOffer:IOfferModel)=>{
                         let { offers } = this.state
                         offers[index] = editedOffer
-                        this.setState({
-                          offers
+                        this.offerService.update(offer._id, editedOffer).then(()=>{
+                          this.setState({
+                            offers
+                          })
                         })
                       }}
                       onDelete={()=>{

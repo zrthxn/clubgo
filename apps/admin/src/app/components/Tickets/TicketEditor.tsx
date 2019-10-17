@@ -76,7 +76,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
   }
 
   confirm = async () => {
-    await this.ticketService.update(this.props.data._id, this.state.data)      
+    await this.ticketService.update(this.props.data._id, this.state.data)
     this.setState({ openEditModal: false })
     this.props.onFinalize(this.state.data)
   }
