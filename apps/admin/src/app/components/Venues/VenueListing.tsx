@@ -48,7 +48,9 @@ export class VenueListing extends Component<VenueListingProps> {
       else
         errorText = 'No results found for this query!'
     } catch (err) {
-      this.context.actions.openErrorFeedback(err)
+      if(!err)
+        err = 'Connection error to the API'
+      this.context.actions.openErrorFeedback(err, 'Check your internet connection')
       errorText = err
     }
 

@@ -58,9 +58,13 @@ export class DatabaseService extends Interface {
    */
   async findById(id:string) {
     // cRud
-    return await this.request.get(
-      this.endpoint + '/_get/' + id
-    )
+    try {
+      return await this.request.get(
+        this.endpoint + '/_get/' + id
+      )
+    } catch (HTTPError) {
+      return Promise.reject(HTTPError)
+    }
   }
 
   /**
@@ -69,11 +73,15 @@ export class DatabaseService extends Interface {
    */
   async searchBy(search:object) {
     // cRud
-    return await this.request.post(
-      this.endpoint + '/_search', {
-        query: serialize(search)
-      }
-    )
+    try {
+      return await this.request.post(
+        this.endpoint + '/_search', {
+          query: serialize(search)
+        }
+      )
+    } catch (HTTPError) {
+      return Promise.reject(HTTPError)
+    }    
   }
 
   /**
@@ -82,11 +90,15 @@ export class DatabaseService extends Interface {
    */
   async findGroupById(ids:Array<string>) {
     // cRud
-    return await this.request.post(
-      this.endpoint + '/_group/', {
-        searchIds: ids
-      }
-    )
+    try {
+      return await this.request.post(
+        this.endpoint + '/_group/', {
+          searchIds: ids
+        }
+      )
+    } catch (HTTPError) {
+      return Promise.reject(HTTPError)
+    }
   }
 
   /**

@@ -105,7 +105,9 @@ export const eventSchema = new mongoose.Schema(
     bookings: {
       isTakingOnsiteBookings: Boolean,
       isTakingOnsitePayments: Boolean,
+      onsitePaymentRequired: Boolean,
       allowPreBookingUptoDays: Number,
+      maximumBookingUpto: Number,
       taxPercent: {
         type: Number, min: 0, max: 100, default: 18
       },
@@ -114,13 +116,20 @@ export const eventSchema = new mongoose.Schema(
       },
       tickets: [
         {
+          activate: {
+            type: Number, min: 0, max: 1440
+          },
+          deactivate: {
+            type: Number, min: 0, max: 1440
+          },
+          ticketMaximumUses: Number,
           entry: {
             owner: String,
             ticketTitle: {
               type: String, required: true
             },
             entryType: {
-              type: String, required: true, enum: [ 'couple', 'stag' ]
+              type: String, required: true, enum: [ 'couple', 'single' ]
             },
             pricing: {
               couple: {
@@ -147,7 +156,7 @@ export const eventSchema = new mongoose.Schema(
                   }
                 },
               },      
-              stag: {
+              single: {
                 admissionPrice: Number,
                 bookingDescription: String,
                 discount: {
@@ -155,12 +164,6 @@ export const eventSchema = new mongoose.Schema(
                 }
               }
             }
-          },
-          activate: {
-            type: Number, min: 0, max: 1440
-          },
-          deactivate: {
-            type: Number, min: 0, max: 1440
           }
         }
       ],
@@ -270,11 +273,14 @@ export interface IEventModel extends mongoose.Document {
   bookings: {
     isTakingOnsiteBookings: boolean
     isTakingOnsitePayments: boolean
+    onsitePaymentRequired: boolean
     allowPreBookingUptoDays: number
+    maximumBookingUpto: number
     taxPercent?: number
     processingFeePercent?: number
     tickets?: Array<{
       entry: ITicketModel
+      ticketMaximumUses?: number
       activate?: number
       deactivate?: number
     }>

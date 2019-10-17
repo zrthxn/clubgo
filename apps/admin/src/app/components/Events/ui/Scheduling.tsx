@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Label } from 'reactstrap'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, Fab, IconButton } from '@material-ui/core'
 import { TextField, Button, Switch, Checkbox } from '@material-ui/core'
 import { TimePicker, DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import Select from 'react-select'
 import MultipleDatesPicker from '@randex/material-ui-multiple-dates-picker'
 import MomentUtils from '@date-io/moment'
 import { ThemeProvider } from '@material-ui/styles'
+import { Add, Delete } from '@material-ui/icons'
 
 interface SchedulingProps {
   syncParentData?: Function
@@ -20,7 +21,7 @@ export class Scheduling extends Component<SchedulingProps> {
     endTimeBleedToNextDay: false,
     synchronized: false,
     data: {
-      type: 'once',
+      type: 'custom',
       isRecurring: false,
       recurring: {
         date: undefined,
@@ -41,7 +42,8 @@ export class Scheduling extends Component<SchedulingProps> {
       if(this.props.populate) {
         return {
           loading: false,
-          data: this.props.data
+          data: this.props.data,
+          endTimeBleedToNextDay: this.props.data.timing.endTime > 1440
         }
       }
       else
@@ -160,27 +162,60 @@ export class Scheduling extends Component<SchedulingProps> {
                   </Grid>
                 </Grid>
               ) : (
-                <Grid item xs={12}>
-                  <DatePicker
-                    label="Event Date"
-                    value={
-                      this.state.data.customDates[0]!==undefined ?  (
-                        new Date( this.state.data.customDates[0] )
-                      ) : new Date()
-                    }
-                    onChange={(d)=>{
-                      let date = d.toJSON()
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Fab onClick={()=>{
                       let { data } = this.state
                       this.setState(()=>{
-                        data.customDates = [
-                          date
-                        ]
+                        data.customDates.push( (new Date()).toJSON() )
                         return {
                           data
                         }
                       })
-                    }}
-                  />
+                    }}>
+                      <Add/>
+                    </Fab>
+                  </Grid>
+
+                  <Grid item xs={12}></Grid>
+                  <Grid item xs={12}></Grid>
+
+                  {
+                    this.state.data.customDates.map((customDate, index)=>(
+                      <Grid item xs={12}>
+                        <DatePicker
+                          label="Event Date"
+                          value={
+                            this.state.data.customDates[index]!==undefined ?  (
+                              new Date( this.state.data.customDates[index] )
+                            ) : new Date()
+                          }
+                          onChange={(d)=>{
+                            let date = d.toJSON()
+                            let { data } = this.state
+                            this.setState(()=>{
+                              data.customDates[index] = date
+                              return {
+                                data
+                              }
+                            })
+                          }}
+                        />
+
+                        <IconButton onClick={()=>{
+                          this.setState(()=>{
+                            let { data } = this.state
+                            data.customDates.splice(index, 1)
+                            return {
+                              data
+                            }
+                          })
+                        }}>
+                          <Delete/>
+                        </IconButton>
+                      </Grid>
+                    ))
+                  }
                 </Grid>
               )
             }

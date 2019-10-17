@@ -5,6 +5,8 @@ import Select from 'react-select'
 import CreateableSelect from 'react-select/creatable'
 
 import { handleChangeById as inputHandler } from '@clubgo/util'
+import { DatabaseService } from '@clubgo/api'
+import { Map } from '@clubgo/components'
 
 export interface VenueDetailsProps {
   syncParentData?: Function,
@@ -19,6 +21,13 @@ export class VenueDetails extends Component<VenueDetailsProps> {
     selectCategories: [],
     selectCity: undefined,
     selectLocality: undefined,
+    suggestions: {
+      cities: [],
+      category: [
+        { label: 'Nightclubs' },
+        { label: 'Clubs and Bars' }
+      ]
+    },
     synchronized: false,
     data: {
       venueTitle: undefined,
@@ -40,32 +49,18 @@ export class VenueDetails extends Component<VenueDetailsProps> {
     }
   }
 
-  suggestions = {
-    city: [
-      { label: 'Delhi' },
-      { label: 'Gurgaon' },
-      { label: 'Mumbai' },
-      { label: 'Bangalore' },
-    ].map(item=>({
-      label: item.label, value: item.label
-    })),
-    locality: [
-      { label: 'Locality 1' },
-      { label: 'Locality 2' },
-      { label: 'Locality 3' }
-    ].map(item=>({
-      label: item.label, value: item.label
-    })),
-    category: [
-      { label: 'Nightclubs' },
-      { label: 'Clubs and Bars' }
-    ].map(item=>({
-      label: item.label, value: item.label
-    }))
-  }
+  locationService = new DatabaseService('/location')
 
   constructor(props) {
     super(props)
+
+    this.locationService.list().then(({ data })=>{
+      let { suggestions } = this.state
+      suggestions.cities = data.results
+      this.setState({
+        suggestions
+      })
+    })
   } 
 
   componentDidMount() {
@@ -79,7 +74,7 @@ export class VenueDetails extends Component<VenueDetailsProps> {
         return {
           selectCategories,
           selectLocality: { 
-            label: this.props.data.locality, 
+            label: this.props.data.locality,
             value: this.props.data.locality
           },
           selectCity: { 
@@ -139,7 +134,9 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                   inputId="category"
                   placeholder="Category"
                   value={this.state.selectCategories}
-                  options={this.suggestions.category}
+                  options={this.state.suggestions.category.map(item=>({
+                    label: item.label, value: item.label
+                  }))}
                   isMulti
                   onChange={ selected => {
                     let { data } = this.state
@@ -158,8 +155,57 @@ export class VenueDetails extends Component<VenueDetailsProps> {
               </Grid>
 
               <Grid item xs={12}>
-                <p>Location</p>
+                <p><b>Location</b></p>
+              </Grid>
 
+              <Grid item xs={6}>
+                <Select
+                  inputId="city"
+                  placeholder="City"
+                  value={this.state.selectCity}
+                  options={this.state.suggestions.cities.map((item)=>({ 
+                    label: item.city, value: item 
+                  }))}
+                  onChange={ selected => {
+                    let { data } = this.state
+                    data.city = selected.value.city
+                    this.setState((prevState, props)=>{
+                      return {
+                        data,
+                        selectCity: selected,
+                        selectLocality: null
+                      }
+                    })
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <Select
+                  inputId="locality"
+                  placeholder="Locality"
+                  value={this.state.selectLocality}
+                  options={
+                    this.state.selectCity!==undefined ? (
+                      this.state.selectCity.value.localities.map((item)=>({ 
+                        label: item.name, value: item 
+                      }))
+                    ) : []
+                  }
+                  onChange={ selected => {
+                    let { data } = this.state
+                    data.locality = selected.value.name
+                    this.setState((prevState, props)=>{
+                      return {
+                        data,
+                        selectLocality: selected
+                      }
+                    })
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
                 <TextField id="address" required multiline fullWidth label="Address" 
                   variant="outlined" margin="dense" onChange={this.handleChangeById}
                   value={this.state.data.address}
@@ -170,44 +216,6 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                   value={this.state.data.altAddress}
                 />
 
-                <div style={{ padding: '0.5em' }}></div>
-
-                <Select
-                  inputId="city"
-                  placeholder="City"
-                  value={this.state.selectCity}
-                  options={this.suggestions.city}
-                  onChange={ selected => {
-                    let { data } = this.state
-                    data.city = selected.value
-                    this.setState((prevState, props)=>{
-                      return {
-                        data,
-                        selectCity: selected
-                      }
-                    })
-                  }}
-                />
-
-                <div style={{ padding: '0.5em' }}></div>
-
-                <Select
-                  inputId="locality"
-                  placeholder="Locality"
-                  value={this.state.selectLocality}
-                  options={this.suggestions.locality}
-                  onChange={ selected => {
-                    let { data } = this.state
-                    data.locality = selected.value
-                    this.setState((prevState, props)=>{
-                      return {
-                        data,
-                        selectLocality: selected
-                      }
-                    })
-                  }}
-                />
-
                 <TextField id="nearestMetroStation" fullWidth label="Nearest Metro Station" 
                   variant="outlined" margin="dense" onChange={this.handleChangeById}
                   value={this.state.data.nearestMetroStation}
@@ -215,20 +223,7 @@ export class VenueDetails extends Component<VenueDetailsProps> {
               </Grid>
 
               <Grid item xs={12}>
-                <span>Venue Coordinates</span>
-                <Button variant="contained" color="primary" style={{ margin: '1em' }}
-                  onClick={()=>{
-                    this.setState({
-                      openMapModal: true
-                    })
-                  }}
-                >
-                  Open Map
-                </Button>
-
-                <Modal open={false}>
-                  <div></div>
-                </Modal>
+                <Map/>
               </Grid>
             </Grid>
           </Paper>

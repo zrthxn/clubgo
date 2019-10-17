@@ -42,7 +42,7 @@ export class VenueController extends Component<VenueControllerProps> {
             }
             else throw result
           }).catch((VenueServiceError) => {
-            this.context.actions.openErrorFeedback(VenueServiceError.data._message, VenueServiceError.data.message)
+            this.handleVenueServiceError(VenueServiceError)
           })
         }}/>
       )
@@ -54,7 +54,7 @@ export class VenueController extends Component<VenueControllerProps> {
             this.context.actions.openSuccessFeedback('Venue Deleted')
             return
           } catch(VenueServiceError) {
-            this.context.actions.openErrorFeedback(VenueServiceError.data._message)
+            this.handleVenueServiceError(VenueServiceError)
           }
         }}/>
       )
@@ -68,7 +68,7 @@ export class VenueController extends Component<VenueControllerProps> {
             }
             else throw result
           }).catch((VenueServiceError) => {
-            this.context.actions.openErrorFeedback(VenueServiceError.data._message, VenueServiceError.data.message)
+            this.handleVenueServiceError(VenueServiceError)
           })
         }}/>
       )
@@ -79,6 +79,15 @@ export class VenueController extends Component<VenueControllerProps> {
           <p>{ uiType }</p>
         </section>
       )
+  }
+
+  handleVenueServiceError = (VenueServiceError) => {
+    console.error(VenueServiceError)
+    
+    this.context.actions.openErrorFeedback(
+      VenueServiceError.data.error._message, 
+      VenueServiceError.data.error.message
+    )
   }
 
   render() {
@@ -95,10 +104,7 @@ export class VenueController extends Component<VenueControllerProps> {
 
               <Snackbar open={ venueContext.state.openSuccessFeedback }
                 // SUCCESS
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 autoHideDuration={5000}
                 onClose={venueContext.actions.closeSuccessFeedback}
               >
@@ -127,7 +133,7 @@ export class VenueController extends Component<VenueControllerProps> {
                   message={ <span>{ venueContext.state.feedbackMessage.message }</span> }
                   action={[
                     <Tooltip title={venueContext.state.feedbackMessage.details} style={{ maxWidth: 500, fontSize: '2em' }}>
-                      <IconButton key="close" color="inherit" onClick={venueContext.actions.closeErrorFeedback}>
+                      <IconButton key="help" color="inherit" onClick={venueContext.actions.closeErrorFeedback}>
                         <Help/>
                       </IconButton>
                     </Tooltip>,

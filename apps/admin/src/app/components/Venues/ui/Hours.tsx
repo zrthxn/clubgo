@@ -23,28 +23,6 @@ export class Hours extends Component<HoursProps> {
     }
   }
 
-  constructor(props) {
-    super(props)
-    let { timings } = this.state.data
-    let days = [
-      { label: 'Monday' },
-      { label: 'Tuesday' },
-      { label: 'Wednesday' },
-      { label: 'Thursday' },
-      { label: 'Friday' },
-      { label: 'Saturday' },
-      { label: 'Sunday' },
-    ].map(day => {
-      timings.push({
-        day: day.label,
-        isOpen: true,
-        openTime: 60,
-        closeTime: 720,
-        busy: 50,
-      })
-    })
-  }
-
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
@@ -60,6 +38,26 @@ export class Hours extends Component<HoursProps> {
           loading: false
         }
     })
+    
+    let days = [
+      'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' 
+    ]
+
+    let { data } = this.state
+    let timings = []
+    for (const day of days) {
+      timings.push({
+        day,
+        isOpen: false,
+        openTime: 720,
+        closeTime: 1440,
+        busy: 0,
+      })
+    }
+    data.timings = timings
+    this.setState(()=>({
+      data
+    }))
   }
 
   componentDidUpdate() {    
@@ -80,17 +78,6 @@ export class Hours extends Component<HoursProps> {
     ))
   }
 
-  getBusynessLabel = (busy) => {
-    if(busy<=25)
-      return 'Empty'
-    else if(busy>25 && busy<=50)
-      return 'Mild'
-    else if(busy>50 && busy<=75)
-      return 'Busy'
-    else if(busy>75)
-      return 'Very Busy'
-  }
-
   render() {
     return (
       <Paper className="create-block">
@@ -100,22 +87,23 @@ export class Hours extends Component<HoursProps> {
           <MuiPickersUtilsProvider utils={MomentUtils}>
             {
               this.state.data.timings.map((day, index) => {
-                return (
-                  <Grid item xs={12} key={ day.day } style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                  }}>
-                    <p
-                      style={{
-                        margin: '1em'
-                      }}
-                    ><b>{ day.day }</b></p>
+                let busynessLabel
+                if(day.busy<=25)
+                  busynessLabel = 'Empty'
+                else if(day.busy>25 && day.busy<=50)
+                  busynessLabel = 'Mild'
+                else if(day.busy>50 && day.busy<=75)
+                  busynessLabel = 'Busy'
+                else if(day.busy>75)
+                  busynessLabel = 'Very Busy'
 
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      margin: 'auto'
-                    }}>
+                return (
+                  <Grid item xs={12} key={ day.day } style={{ display: 'flex', flexDirection: 'row' }}>
+                    <p style={{ margin: '1em' }}>
+                      <b>{ day.day }</b>
+                    </p>
+
+                    <div style={{ display: 'flex', flexDirection: 'row', margin: 'auto' }}>
                       <span style={{ margin: '1em' }}>
                         <span>
                           {
@@ -138,7 +126,7 @@ export class Hours extends Component<HoursProps> {
                           minute: this.state.data.timings[index].openTime % 60
                         }}
                         onChange={(d)=>{
-                          let time = d.hours()*60 + d.minutes()
+                          let time = (d.hours() * 60) + d.minutes()
                           let { timings } = this.state.data, { data } = this.state
                           timings[index].openTime = time
                           data.timings = timings
@@ -161,7 +149,7 @@ export class Hours extends Component<HoursProps> {
                           minute: this.state.data.timings[index].closeTime % 60
                         }}
                         onChange={(d)=>{
-                          let time = d.hours()*60 + d.minutes()
+                          let time = (d.hours() * 60) + d.minutes()
                           let { timings } = this.state.data, { data } = this.state
                           timings[index].closeTime = time
                           data.timings = timings
@@ -174,11 +162,7 @@ export class Hours extends Component<HoursProps> {
                       />
 
                       <span style={{ width: '10em' }}>
-                        <Label>
-                          {
-                            this.getBusynessLabel(this.state.data.timings[index].busy)
-                          }
-                        </Label>
+                        <Label>{ busynessLabel }</Label>
                         <Slider max={100}
                           disabled={!this.state.data.timings[index].isOpen}
                           value={this.state.data.timings[index].busy}
@@ -193,6 +177,26 @@ export class Hours extends Component<HoursProps> {
                             })
                           }}
                         />
+                      </span>
+
+                      <span style={{ margin: 'auto 1em' }}>
+                        <Button size="small" onClick={()=>{
+                          let { data } = this.state
+                          for (let i=0; i<this.state.data.timings.length; i++) {
+                            data.timings[i] = {
+                              day: data.timings[i].day,
+                              isOpen: this.state.data.timings[index].isOpen,
+                              openTime: this.state.data.timings[index].openTime,
+                              closeTime: this.state.data.timings[index].closeTime,
+                              busy: this.state.data.timings[index].busy
+                            }
+                          }
+                          this.setState(()=>({
+                            data
+                          }))
+                        }}>
+                          Apply to All
+                        </Button>
                       </span>
                     </div>
                   </Grid>

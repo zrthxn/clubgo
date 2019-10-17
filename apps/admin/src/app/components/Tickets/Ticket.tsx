@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, Paper, Grid, Fab, IconButton } from '@material-ui/core'
 import { Add, Delete, Edit } from '@material-ui/icons'
-import { DatabaseService } from '@clubgo/api'
 import { ITicketModel } from '@clubgo/database'
 
 import '../scss/Ticket.scss'
@@ -17,8 +16,6 @@ export class Ticket extends Component<TicketProps> {
   state = {
     openEditModal: false
   }
-  
-  ticketService = new DatabaseService('/ticket')
 
   render() {
     return (
@@ -28,8 +25,8 @@ export class Ticket extends Component<TicketProps> {
 
           <div style={{ color: '#1c1c1c80' }}>
             {
-              this.props.data.entryType==="stag" ? (
-                'Stag Ticket'
+              this.props.data.entryType==="single" ? (
+                'Single Ticket'
               ) : (
                 this.props.data.entryType==="couple" ? (
                   'Couple Ticket'
@@ -40,12 +37,18 @@ export class Ticket extends Component<TicketProps> {
             }
           </div>
 
-          <p className="price float-left">{(()=>{
-            if(this.props.data.entryType==="stag")
-              return '\u20B9' + this.props.data.pricing.stag.admissionPrice
-            if(this.props.data.entryType==="couple")
-              return '\u20B9' + this.props.data.pricing.couple.admissionPrice
-          })()}</p>
+          <p className="price float-left">
+            {
+              (
+                () => {
+                  if(this.props.data.entryType==="single")
+                    return '\u20B9' + this.props.data.pricing.single.admissionPrice
+                  if(this.props.data.entryType==="couple")
+                    return '\u20B9' + this.props.data.pricing.couple.admissionPrice
+                }
+              )()
+            }
+          </p>
 
           {
             this.props.onDelete!==undefined ? (
@@ -69,25 +72,27 @@ export class Ticket extends Component<TicketProps> {
           </IconButton>
         </div>
 
-        <TicketEditor open={this.state.openEditModal}
-          populate={true}
-          data={this.props.data}
-          onFinalize={(updateBody:ITicketModel)=>{
-            this.ticketService.update(this.props.data._id, updateBody).then(()=>{
-              if(this.props.onEdit!==undefined)
-                this.props.onEdit(updateBody)
-                
-              this.setState({
-                openEditModal: false
-              })
-            })
-          }}
-          onCancel={()=>{
-            this.setState({
-              openEditModal: false
-            })
-          }}
-        />
+        {
+          this.state.openEditModal ? (
+            <TicketEditor open={this.state.openEditModal}
+              populate={true}
+              data={this.props.data}
+              onFinalize={(updateBody:ITicketModel)=>{
+                this.setState({
+                  openEditModal: false
+                })
+
+                if(this.props.onEdit!==undefined)
+                  this.props.onEdit(updateBody)
+              }}
+              onCancel={()=>{
+                this.setState({
+                  openEditModal: false
+                })
+              }}
+            />
+          ) : null
+        }
       </Paper>
     )
   }

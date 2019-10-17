@@ -74,26 +74,30 @@ export class Offer extends Component<OfferProps> {
               <Delete/>
             </IconButton>
           </div>
-
-          <CreateOffer open={this.state.openOfferEditor}
-            data={this.props.data}
-            populate={true}
-            onConfirm={(offer:IOfferModel)=>{
-              this.offerService.update(this.props.data._id, offer).then(()=>{
-                if(this.props.onEdit!==undefined)
-                  this.props.onEdit(offer)
-                  
-                this.setState({
-                  openOfferEditor: false
-                })
-              })
-            }}
-            onCancel={()=>{
-              this.setState({
-                openOfferEditor: false
-              })
-            }}
-          />
+          
+          {
+            this.state.openOfferEditor ? (
+              <CreateOffer open={this.state.openOfferEditor}
+                data={this.props.data}
+                populate={true}
+                onConfirm={(offer:IOfferModel)=>{
+                  this.offerService.update(this.props.data._id, offer).then(()=>{
+                    if(this.props.onEdit!==undefined)
+                      this.props.onEdit(offer)
+                      
+                    this.setState({
+                      openOfferEditor: false
+                    })
+                  })
+                }}
+                onCancel={()=>{
+                  this.setState({
+                    openOfferEditor: false
+                  })
+                }}
+              />
+            ) : null
+          }
         </div>
       </Paper>
     )

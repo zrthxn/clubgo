@@ -10,7 +10,7 @@ export const ticketSchema = new mongoose.Schema(
       type: String, required: true
     },
     entryType: {
-      type: String, required: true, enum: [ 'couple', 'stag' ]
+      type: String, required: true, enum: [ 'couple', 'single' ]
     },
     pricing: {
       couple: {
@@ -37,7 +37,7 @@ export const ticketSchema = new mongoose.Schema(
           }
         },
       },      
-      stag: {
+      single: {
         admissionPrice: Number,
         bookingDescription: String,
         discount: {
@@ -59,7 +59,7 @@ ticketSchema.index({ ticketTitle: 'text' })
 
 export interface ITicketModel extends mongoose.Document {
   ticketTitle: string
-  entryType: 'couple' | 'stag'
+  entryType: 'couple' | 'single'
   pricing: {
     couple?: {
       admissionPrice: number
@@ -77,7 +77,7 @@ export interface ITicketModel extends mongoose.Document {
         discount?: number
       }
     }
-    stag?: {
+    single?: {
       admissionPrice: number
       bookingDescription?: string
       discount?: number

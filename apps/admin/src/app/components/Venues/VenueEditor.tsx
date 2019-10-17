@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Form, Button } from 'reactstrap'
-import { Grid } from '@material-ui/core'
-import { IVenueModel } from '@clubgo/database'
+import { Grid, Paper } from '@material-ui/core'
+import { IVenueModel, ITicketModel } from '@clubgo/database'
+import Select from 'react-select'
 
 import Images from './ui/Images'
 import Settings from './ui/Settings'
@@ -9,12 +10,16 @@ import VenueDetails from './ui/VenueDetails'
 import Hours from './ui/Hours'
 
 import { VenueContext } from './VenueContext'
+import { TicketEditor } from '../Tickets/TicketEditor'
+import { Ticket } from '../Tickets/Ticket'
+import { DatabaseService } from '@clubgo/api'
 
-export interface VenueEditorProps {
-  intent: string,
-  onFinalize: Function,
+interface VenueEditorProps {
+  intent: string
+  onFinalize: Function
   populateData?: IVenueModel
 }
+
 export class VenueEditor extends Component<VenueEditorProps> {
   static contextType = VenueContext
   context!: React.ContextType<typeof VenueContext>
@@ -53,14 +58,23 @@ export class VenueEditor extends Component<VenueEditorProps> {
           featuredPriority: undefined
         }
       },
+      defaultEntryType: null,
       timings: [],
       offers: [],
       media: {
         images: [],
         videoURL: undefined
       }
+    },
+    openTicketEditor: false,
+    suggestions: {
+      tickets: [].map((item:ITicketModel)=>({
+        label: item.ticketTitle, value: item
+      }))
     }
   }
+
+  auxTicketService = new DatabaseService('/ticket')
 
   componentDidMount() {
     this.setState(()=>{
@@ -75,6 +89,20 @@ export class VenueEditor extends Component<VenueEditorProps> {
           loading: false
         }
     })      
+
+    this.auxTicketService.searchBy({}).then((response)=>{
+      let apiResponse = response.data
+      if (apiResponse.results.length!==0) {
+        let { suggestions } = this.state
+        suggestions.tickets = apiResponse.results.map((item:ITicketModel)=>({
+          label: item.ticketTitle, value: item
+        }))
+  
+        this.setState({
+          suggestions
+        })
+      }
+    })
   }
 
   syncDataChanges = (childData:object, key:string) => {
@@ -190,6 +218,86 @@ export class VenueEditor extends Component<VenueEditorProps> {
                 <Grid item md={5} xs={12}>
                   <Settings populate={this.state.populateDataFromParent} data={this.state.data.settings}
                     syncData={this.state.collectChildData} syncParentData={this.syncDataChanges} />
+
+                  <Paper className="create-block">
+                    <h3 className="title">Default Ticket</h3>
+
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}></Grid><Grid item xs={12}></Grid>
+                      <Grid item xs={4} style={{ display: 'flex', flexDirection: 'column' }}>
+                        <Button style={{ margin: 'auto 0' }} onClick={()=>{
+                          this.setState({
+                            openTicketEditor: true
+                          })
+                        }}>
+                          Create Ticket
+                        </Button>
+
+                        <TicketEditor open={this.state.openTicketEditor}
+                          onCancel={()=>{
+                            this.setState({
+                              openTicketEditor: false
+                            })
+                          }}
+                          onFinalize={async (ticket)=>{
+                            try {
+                              let apiResponse = await this.auxTicketService.create(ticket)
+                              let { data } = this.state
+                              data.defaultEntryType = ticket
+                              this.setState(()=>({
+                                data,
+                                openTicketEditor: false
+                              }))
+                            } catch (HTTPError) {
+                              alert(HTTPError)
+                            }
+                          }}
+                        />
+                      </Grid>
+
+                      <Grid item xs={8}>
+                        <Select
+                          inputId="searchTicketName"
+                          placeholder="Search Ticket"
+                          backspaceRemovesValue
+                          value={null}
+                          options={this.state.suggestions.tickets}
+                          onChange={({ value }:{ value:ITicketModel })=>{
+                            let { data } = this.state
+                            data.defaultEntryType = value
+                            this.setState({
+                              data
+                            })
+                          }}
+                        />
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        {
+                          this.state.data.defaultEntryType!==null ? (
+                            <div>
+                              <Ticket data={this.state.data.defaultEntryType}
+                                onDelete={()=>{
+                                  let { data } = this.state
+                                  data.defaultEntryType = null
+                                  this.setState(()=>({
+                                    data
+                                  }))
+                                }}
+                                onEdit={(updateBody)=>{
+                                  let { data } = this.state
+                                  data.defaultEntryType = updateBody
+                                  this.setState({
+                                    data
+                                  })
+                                }}
+                              />
+                            </div>
+                          ) : null
+                        }
+                      </Grid>
+                    </Grid>
+                  </Paper>
                 </Grid>
 
                 <Grid item xs={12}><hr/></Grid>

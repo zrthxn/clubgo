@@ -75,8 +75,8 @@ export class TicketsPage extends Component {
             {
               !this.state.loading && this.state.listing.map((ticket, index)=>{
                 return (
-                  <Grid item md={3} xs={6}>
-                    <Ticket key={`ticketlist_${index}`} data={ticket}
+                  <Grid item md={3} xs={6} key={`ticketlist_${index}`}>
+                    <Ticket data={ticket}
                       onEdit={(editedTicket:ITicketModel)=>{
                         let { listing } = this.state
                         listing[index] = editedTicket

@@ -10,7 +10,7 @@ export interface IFileItem {
   }
 }
 
-export function findItemIndexByRef(array, item:number, high=0, low=0){
+export function findItemIndexByRef(array:Array<any>, item:number, high=0, low=0){
   // Binary Search Algorithm
   if(high >= low) {
     var mid = Math.floor((low + high) / 2)

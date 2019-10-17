@@ -56,7 +56,7 @@ export class Interface {
     })
 
     this.request.interceptors.response.use(
-      (response) => response,
+      (response) => Promise.resolve(response),
       (error) => Promise.reject(error.response)
     )
   }

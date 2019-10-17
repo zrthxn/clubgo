@@ -36,7 +36,6 @@ const storage = multer.diskStorage({
 // --------------------------------------------------------
 UploadRouter.use((req, res, next)=>{
   // CDN API Auth
-  console.log('CDN AUTH')
   next()
 })
 
@@ -66,8 +65,7 @@ UploadRouter.post('/single/:collection', (req, res)=>{
       if(collection!=='root')
         writePath = path.join(writePath, collection)
 
-      writePath = path.join(writePath, genFileName + 
-        '.' + file.originalname.split('.')[file.originalname.split('.').length-1])
+      writePath = path.join(writePath, genFileName + '.' + file.originalname.split('.')[file.originalname.split('.').length-1])
         
       // Write new image to root
       fs.writeFile(writePath, raw.data, (WriteFileError)=>{

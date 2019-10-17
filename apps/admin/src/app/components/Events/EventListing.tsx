@@ -49,8 +49,10 @@ export class EventListing extends Component<EventListingProps> {
       else
         errorText = 'No results found for this query!'
     } catch (err) {
-      this.context.actions.openErrorFeedback(err.toString())
-      errorText = err.toString()
+      if(!err)
+        err = 'Connection error to the API'
+      this.context.actions.openErrorFeedback(err, 'Check your internet connection')
+      errorText = err
     }
 
     this.setState(()=>{

@@ -41,7 +41,6 @@ export class CreateOffer extends Component<CreateOfferProps> {
   componentDidMount() {
     this.setState(()=>{
       let { data } = this.props
-      // data.owner = this.context.actions.getAdminUsername()
       if(this.props.populate) {
         return {    
           data,

@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import { Label } from 'reactstrap'
 import { Grid, Paper, TextField, Button, Switch } from '@material-ui/core'
-import { Modal, RadioGroup, Radio } from '@material-ui/core'
+import { Modal } from '@material-ui/core'
 
 import { handleChangeById as inputHandler } from '@clubgo/util'
+import { DatabaseService } from '@clubgo/api'
 
-export interface TicketEditorProps {
+interface TicketEditorProps {
   open: boolean
   onFinalize: Function
   onCancel: Function
   populate?: boolean
   data?: any
 }
+
 export class TicketEditor extends Component<TicketEditorProps> {
   state = {
     loading: true,
@@ -37,7 +39,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
             discount: 0
           },
         },        
-        stag: {
+        single: {
           admissionPrice: undefined,
           bookingDescription: undefined,
           discount: 0
@@ -49,10 +51,12 @@ export class TicketEditor extends Component<TicketEditorProps> {
     iterableMembers: []
   }
 
+  ticketService = new DatabaseService('/ticket')
+
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
-        return {    
+        return {
           data: this.props.data,
           loading: false,
         }
@@ -71,7 +75,9 @@ export class TicketEditor extends Component<TicketEditorProps> {
     ))
   }
 
-  confirm = () => {
+  confirm = async () => {
+    await this.ticketService.update(this.props.data._id, this.state.data)      
+    this.setState({ openEditModal: false })
     this.props.onFinalize(this.state.data)
   }
 
@@ -107,8 +113,8 @@ export class TicketEditor extends Component<TicketEditorProps> {
                 onChange={()=>{
                   this.setState(()=>{
                     let { data } = this.state
-                    if(data.entryType==='stag') data.entryType = 'couple'
-                    else if(data.entryType==='couple') data.entryType = 'stag'
+                    if(data.entryType==='single') data.entryType = 'couple'
+                    else if(data.entryType==='couple') data.entryType = 'single'
                     return {
                       data
                     }
@@ -121,7 +127,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
               this.state.data.entryType==='couple' ? (
                 <Grid item md={6} xs={12}>
                   <TextField id="malesPerCoupleRatio" required fullWidth label="Males Per Couple"
-                    disabled={(this.state.data.entryType!=='couple')}
+                    disabled={(this.state.data.entryType!=='couple')}  type="number"
                     defaultValue={this.state.data.pricing.couple.malesPerCoupleRatio}
                     variant="outlined" margin="dense" onChange={({ target })=>{
                       this.setState(()=>{
@@ -148,7 +154,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
                       <Grid item xs={2}><b>Couple</b></Grid>
                       <Grid item xs={10}><hr/></Grid>
                       <Grid item xs={8}>
-                        <TextField multiline fullWidth label="Price" 
+                        <TextField fullWidth label="Price" 
                           type="number" defaultValue={this.state.data.pricing.couple.admissionPrice}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
@@ -162,7 +168,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
                       </Grid>
 
                       <Grid item xs={4}>
-                        <TextField multiline fullWidth label="Discount %" 
+                        <TextField fullWidth label="Discount %" 
                           type="number" defaultValue={this.state.data.pricing.couple.discount}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
@@ -176,8 +182,8 @@ export class TicketEditor extends Component<TicketEditorProps> {
                       </Grid>
 
                       <Grid item xs={12}>
-                        <TextField multiline fullWidth label="Booking Description" 
-                          type="number" defaultValue={this.state.data.pricing.couple.bookingDescription}
+                        <TextField multiline fullWidth label="Booking Description"
+                          defaultValue={this.state.data.pricing.couple.bookingDescription}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
                             data.pricing.couple.bookingDescription = target.value
@@ -193,7 +199,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
                       <Grid item xs={4}><b>Female</b></Grid>
                       <Grid item xs={8}><hr/></Grid>
                       <Grid item xs={6}>
-                        <TextField multiline fullWidth label="Price" 
+                        <TextField fullWidth label="Price" 
                           type="number" defaultValue={this.state.data.pricing.couple.female.admissionPrice}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
@@ -207,7 +213,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
                       </Grid>
 
                       <Grid item xs={6}>
-                        <TextField multiline fullWidth label="Discount %" 
+                        <TextField fullWidth label="Discount %" 
                           type="number" defaultValue={this.state.data.pricing.couple.female.discount}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
@@ -222,7 +228,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
 
                       <Grid item xs={12}>
                         <TextField multiline fullWidth label="Booking Description" 
-                          type="number" defaultValue={this.state.data.pricing.couple.female.bookingDescription}
+                          defaultValue={this.state.data.pricing.couple.female.bookingDescription}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
                             data.pricing.couple.female.bookingDescription = target.value
@@ -238,7 +244,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
                       <Grid item xs={4}><b>Male</b></Grid>
                       <Grid item xs={8}><hr/></Grid>
                       <Grid item xs={6}>
-                        <TextField multiline fullWidth label="Price" 
+                        <TextField fullWidth label="Price" 
                           type="number" defaultValue={this.state.data.pricing.couple.male.admissionPrice}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
@@ -252,7 +258,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
                       </Grid>
 
                       <Grid item xs={6}>
-                        <TextField multiline fullWidth label="Discount %" 
+                        <TextField fullWidth label="Discount %" 
                           type="number" defaultValue={this.state.data.pricing.couple.male.discount}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
@@ -267,7 +273,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
 
                       <Grid item xs={12}>
                         <TextField multiline fullWidth label="Booking Description" 
-                          type="number" defaultValue={this.state.data.pricing.couple.male.bookingDescription}
+                          defaultValue={this.state.data.pricing.couple.male.bookingDescription}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
                             data.pricing.couple.male.bookingDescription = target.value
@@ -282,31 +288,31 @@ export class TicketEditor extends Component<TicketEditorProps> {
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
                     <Grid container spacing={1}>
-                      <Grid item xs={2}><b>Stag</b></Grid>
+                      <Grid item xs={2}><b>Single</b></Grid>
                       <Grid item xs={10}><hr/></Grid>
                       <Grid item xs={8}>
-                        <TextField multiline fullWidth label="Price" 
-                          type="number" defaultValue={this.state.data.pricing.stag.admissionPrice}
+                        <TextField fullWidth label="Price" 
+                          type="number" defaultValue={this.state.data.pricing.single.admissionPrice}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
                             if(target.value!=='')
-                              data.pricing.stag.admissionPrice = target.value
+                              data.pricing.single.admissionPrice = target.value
                             else
-                              data.pricing.stag.admissionPrice = 0
+                              data.pricing.single.admissionPrice = 0
                             this.setState({ data }) 
                           }}
                         />
                       </Grid>
 
                       <Grid item xs={4}>
-                        <TextField multiline fullWidth label="Discount %" 
-                          type="number" defaultValue={this.state.data.pricing.stag.discount}
+                        <TextField fullWidth label="Discount %" 
+                          type="number" defaultValue={this.state.data.pricing.single.discount}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
                             if(target.value!=='')
-                              data.pricing.stag.discount = parseInt(target.value, 10)
+                              data.pricing.single.discount = parseInt(target.value, 10)
                             else
-                              data.pricing.stag.discount = 0
+                              data.pricing.single.discount = 0
                             this.setState({ data })
                           }}
                         />
@@ -314,10 +320,10 @@ export class TicketEditor extends Component<TicketEditorProps> {
 
                       <Grid item xs={12}>
                         <TextField multiline fullWidth label="Booking Description" 
-                          type="number" defaultValue={this.state.data.pricing.stag.bookingDescription}
+                          defaultValue={this.state.data.pricing.single.bookingDescription}
                           variant="outlined" margin="dense" onChange={({target})=>{ 
                             let { data } = this.state
-                            data.pricing.stag.bookingDescription = target.value
+                            data.pricing.single.bookingDescription = target.value
                             this.setState({ data }) 
                           }}
                         />

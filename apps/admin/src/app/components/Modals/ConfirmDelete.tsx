@@ -1,15 +1,13 @@
-import React, { ReactChildren, CSSProperties, ReactChild, ReactNode } from 'react'
+import React, { HTMLAttributes } from 'react'
 import { Modal, Paper, Button } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 
-export interface DeleteModalProps {
-  isOpen: boolean,
-  confirm: Function,
-  close: Function,
-  children?: ReactChild | ReactNode | HTMLElement,
-  style?: CSSProperties,
-  className?: string
+interface DeleteModalProps extends HTMLAttributes<HTMLElement> {
+  isOpen: boolean
+  confirm: Function
+  close: Function
 }
+
 export function ConfirmDelete(props:DeleteModalProps) {
   return (
     <Modal open={props.isOpen}

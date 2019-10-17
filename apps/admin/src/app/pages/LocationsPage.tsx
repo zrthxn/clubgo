@@ -113,7 +113,7 @@ export class LocationsPage extends Component {
             }}
             onComplete={(locality)=>{
               let { locations } = this.state
-              locations[this.state.selectedCity].localities.push(locality)
+              locations[this.state.selectedCity]['localities'].push(locality)
               this.locationService.update(
                 locations[this.state.selectedCity]._id,
                 locations[this.state.selectedCity]
@@ -248,10 +248,10 @@ export class LocationsPage extends Component {
       )
     else
       return (
-        <article>
-          <section>
+        <article style={{ padding: '4em' }}>
+          <section style={{ margin: 'auto' }}> 
             <h2>
-              Loading
+              <span className="spinner"/> Loading
             </h2>
           </section>
         </article>

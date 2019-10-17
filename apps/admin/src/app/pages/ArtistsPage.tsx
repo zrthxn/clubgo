@@ -3,8 +3,12 @@ import React, { Component } from 'react'
 export default class ArtistsPage extends Component {
   render() {
     return (
-      <div>
-        
+      <div className="page">
+        <article className="page-header">
+          <h1 className="title">
+            Artists and Music
+          </h1>
+        </article>
       </div>
     )
   }

@@ -95,7 +95,10 @@ export class ImageUploader extends Component<ImageUploaderProps> {
                     display: 'flex',
                     flexDirection: 'row'
                   }}>
-                    <h3 style={{ width: '60%', textAlign: 'left', fontWeight: 600, flexGrow: 1 }}>
+                    <h3 style={{ 
+                      width: '60%', textAlign: 'left', 
+                      fontWeight: 600, flexGrow: 1 
+                    }}>
                       Upload Images
                     </h3>
                   
@@ -109,7 +112,6 @@ export class ImageUploader extends Component<ImageUploaderProps> {
                       Close
                     </Button>
                   </div>
-                  
                 </div>
 
                 <div className="uploader-images-holder">
@@ -124,7 +126,7 @@ export class ImageUploader extends Component<ImageUploaderProps> {
                   {
                     this.state.files.map((file, index)=>{
                       return (
-                        <Image key={'imgUpload'+index}
+                        <Image key={`imgUpload-${index}`}
                           index={index}
                           filename={file.filename}
                           injectFileData={{
@@ -135,7 +137,7 @@ export class ImageUploader extends Component<ImageUploaderProps> {
                             let { files } = this.state
                             files[index] = {
                               data: imgData, ext: imgSrcExt, contentType,
-                              filename: files[index].filename + `.${imgSrcExt}`
+                              filename: files[index].filename + '.' + imgSrcExt
                             }
                             this.setState({ files })
                             this.addFile()
@@ -166,8 +168,13 @@ export class ImageUploader extends Component<ImageUploaderProps> {
                 </div>
               </div>
             ) : (
-              <div style={{ padding: '5em', textAlign: 'center' }}>
-                Uploading { this.state.uploadFileNumber } of { this.state.files.length - 1 }
+              <div style={{ padding: '5em', textAlign: 'center', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ margin: '1em auto' }}>
+                  <span className="spinner"/>
+                </div>
+                <p>
+                  Uploading { this.state.uploadFileNumber } of { this.state.files.length - 1 }
+                </p>
               </div>
             )
           }
