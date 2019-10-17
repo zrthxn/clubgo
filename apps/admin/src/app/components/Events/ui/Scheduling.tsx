@@ -9,15 +9,16 @@ import MomentUtils from '@date-io/moment'
 import { ThemeProvider } from '@material-ui/styles'
 
 interface SchedulingProps {
-  syncParentData?: Function,
-  syncData?: boolean,
-  populate?: boolean,
+  syncParentData?: Function
+  syncData?: boolean
+  populate?: boolean
   data?: any
 }
 
 export class Scheduling extends Component<SchedulingProps> {
   state = {
     endTimeBleedToNextDay: false,
+    synchronized: false,
     data: {
       type: 'once',
       isRecurring: false,
@@ -31,6 +32,32 @@ export class Scheduling extends Component<SchedulingProps> {
       timing: {
         startTime: 0,
         endTime: 720
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.populate) {
+        return {
+          loading: false,
+          data: this.props.data
+        }
+      }
+      else
+        return {
+          loading: false
+        }
+    })
+  }
+
+  componentDidUpdate() {    
+    if(this.props.syncData!==this.state.synchronized) {
+      if(this.props.syncData) {
+        this.props.syncParentData(this.state.data, 'scheduling')
+        this.setState({
+          synchronized: this.props.syncData
+        })
       }
     }
   }
