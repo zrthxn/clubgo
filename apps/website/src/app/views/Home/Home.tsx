@@ -70,22 +70,10 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   render() {
     return (
       <article>
-        <section className="container">
-          <Banner image={'https://res.cloudinary.com/dwzmsvp7f/image/fetch/q_75,f_auto,w_800/https%3A%2F%2Fmedia.insider.in%2Fimage%2Fupload%2Fc_crop%2Cg_custom%2Fv1569404644%2Fxrgm5nkqrbbyexjupwv9.png'}/>
-        </section>
-        
-        {
-          // Highlights Section
-          // ----------------------------------------------
-        }
         <section className="container"> 
           <StoriesContainer/>
         </section>
 
-        {
-          // Events Section
-          // ----------------------------------------------
-        }
         <section className="container">
           <h2>Featured Events</h2>
           <h4>Our best featured events</h4>
@@ -102,7 +90,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
           <h4>Events near you</h4>
           <Recommender 
             render={(eventProps:IEventModel)=>(
-              <Event data={eventProps}/>
+              <Event color="white" data={eventProps}/>
             )}
           />
         </section>
@@ -112,7 +100,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
           <h4>Events recommended for you</h4>
           <Recommender 
             render={(eventProps:IEventModel)=>(
-              <Event data={eventProps}/>
+              <Event color="white" data={eventProps}/>
             )}
           />        
         </section>

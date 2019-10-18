@@ -53,8 +53,12 @@ export class Booking extends Component<BookingProps> {
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
+        let { data } = this.state
+        for (const key in this.props.data)
+          if (data.hasOwnProperty(key))
+            data[key] = this.props.data[key]
         return {
-          data: this.props.data,
+          data,
           loading: false,
         }
       }

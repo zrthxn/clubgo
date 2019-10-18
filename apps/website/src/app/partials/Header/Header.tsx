@@ -19,48 +19,50 @@ export default class Header extends Component {
 
   render() {
     return (
-      <header>
-        <SelectCity 
-          onComplete={()=>{
-            this.context.actions.toggleCityLightbox()
-          }}
-        />
-        
-        <section className="container">
-          <Link className="no-decor" to="/" style={{ padding: '1rem' }}>
-            <h1 id="site-title">ClubGo</h1>
-          </Link>
+      <RootContext.Consumer>
+        {
+          appContext => (
+            <header>
+              <SelectCity onComplete={()=>{
+                  this.context.actions.toggleCityLightbox()
+                }}
+              />
+              
+              <section className="container">
+                <Link className="no-decor" to="/" style={{ padding: '1rem' }}>
+                  <h1 id="site-title">ClubGo</h1>
+                </Link>
 
-          <div className="nav-links">
-            <Link className="no-decor" to="/events/in/delhi"><h4>Events</h4></Link>
-            <Link className="no-decor" to="/venues/in/delhi"><h4>Venues</h4></Link>
-          </div>
+                <div className="nav-links">
+                  <Link className="no-decor" to={`/events/in/${appContext.state.city}`}>
+                    <h4>Events</h4>
+                  </Link>
+                  
+                  <Link className="no-decor" to={`/venues/in/${appContext.state.city}`}>
+                    <h4>Venues</h4>
+                  </Link>
+                </div>
 
-          <div style={{ margin: 'auto 0 auto auto' }}>
-            <RootContext.Consumer>
-              {
-                appContext => (
-                  <div className="set-city"
-                    onClick={()=>{
-                      appContext.actions.toggleCityLightbox()
-                    }}
-                  >
+                <div style={{ margin: 'auto 0 auto auto' }}>
+                  <div className="set-city" onClick={()=>{
+                    appContext.actions.toggleCityLightbox()
+                  }}>
                     { appContext.state.city }
                   </div>
-                )
-              }
-            </RootContext.Consumer>
 
-            <IconButton onClick={()=>{ this.context.router('/search') }}>
-              <Search/>
-            </IconButton>
-            
-            {/* <IconButton onClick={()=>{ this.context.router('/account') }}>
-              <AccountCircle/>
-            </IconButton> */}
-          </div>
-        </section>
-      </header>
+                  <IconButton onClick={()=>{ this.context.router('/search') }}>
+                    <Search/>
+                  </IconButton>
+                  
+                  <IconButton onClick={()=>{ this.context.router('/account') }}>
+                    <AccountCircle/>
+                  </IconButton>
+                </div>
+              </section>
+            </header>
+          )
+        }
+      </RootContext.Consumer>
     )
   }
 }

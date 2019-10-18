@@ -29,8 +29,12 @@ export class Settings extends Component<SettingsProps> {
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
+        let { data } = this.state
+        for (const key in this.props.data)
+          if (data.hasOwnProperty(key))
+            data[key] = this.props.data[key]
         return {
-          data: this.props.data,
+          data,
           loading: false,
         }
       }
@@ -41,10 +45,7 @@ export class Settings extends Component<SettingsProps> {
     }) 
   }
 
-  componentDidUpdate() { 
-    // if(this.state.synchronized)
-    //   this.setState({ synchronized: false })
-         
+  componentDidUpdate() {
     if(this.props.syncData!==this.state.synchronized) { 
       if(this.props.syncData) {
         this.props.syncParentData(this.state.data, 'settings')

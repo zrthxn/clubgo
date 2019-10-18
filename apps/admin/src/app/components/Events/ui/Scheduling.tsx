@@ -40,9 +40,13 @@ export class Scheduling extends Component<SchedulingProps> {
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
+        let { data } = this.state
+        for (const key in this.props.data)
+          if (data.hasOwnProperty(key))
+            data[key] = this.props.data[key]
         return {
+          data,
           loading: false,
-          data: this.props.data,
           endTimeBleedToNextDay: this.props.data.timing.endTime > 1440
         }
       }

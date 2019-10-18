@@ -17,6 +17,7 @@ import { RootContextProvider, RootContext } from './RootContextProvider'
 import Home from './views/Home/Home'
 import EventListing from './views/Events/Events'
 import EventDetails from './views/Events/Details'
+import VenueListing from './views/Venues/Venues'
 import VenueDetails from './views/Venues/Details'
 import Search from './views/Search/Search'
 import LoginManager from './views/Login/Login'
@@ -93,7 +94,7 @@ export default class WebsiteController extends Component {
                       )}/>
                       
                       <Route path="/venues/in/:city" render={(routeProps)=>( 
-                        <EventListing { ...routeProps }/>
+                        <VenueListing { ...routeProps }/>
                       )}/>
                       <Route exact path="/venues/detail/:id" render={(routeProps)=>(
                         <VenueDetails { ...routeProps }/> 
@@ -124,16 +125,8 @@ export default class WebsiteController extends Component {
       )
     else
       return (
-        <div style={{
-          height: '100vh',
-          padding: '4em',
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
-          <h1 style={{ 
-            textAlign: 'center',
-            margin: 'auto'
-          }}>
+        <div style={{ height: '100vh', padding: '4em', display: 'flex', flexDirection: 'column' }}>
+          <h1 style={{ textAlign: 'center', margin: 'auto' }}>
             Loading
           </h1>
         </div>

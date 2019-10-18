@@ -71,9 +71,13 @@ export class Venue extends Component<VenueProps> {
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
+        let { data } = this.state
+        for (const key in this.props.data)
+          if (data.hasOwnProperty(key))
+            data[key] = this.props.data[key]
         let venue = this.props.data
         return {
-          data: venue,
+          data,
           loading: false,
           selectCity: { label: venue.city, value: venue.city },
           selectVenue: { label: venue.title, value: venue }

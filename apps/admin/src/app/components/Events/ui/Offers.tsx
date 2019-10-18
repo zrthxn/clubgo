@@ -42,8 +42,12 @@ export class Offers extends Component<OffersProps> {
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
-        return {    
-          data: this.props.data,
+        let { data } = this.state
+        for (const key in this.props.data)
+          if (data.hasOwnProperty(key))
+            data[key] = this.props.data[key]
+        return {
+          data,
           loading: false,
         }
       }

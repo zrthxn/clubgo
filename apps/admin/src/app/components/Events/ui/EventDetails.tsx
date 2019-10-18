@@ -79,6 +79,11 @@ export class EventDetails extends Component<EventDetailsProps> {
           label: cat, value: cat
         }))
 
+        let { data } = this.state
+        for (const key in this.props.data)
+          if (data.hasOwnProperty(key))
+            data[key] = this.props.data[key]
+
         return {
           selectCategories,
           selectDressCode: { 
@@ -86,7 +91,7 @@ export class EventDetails extends Component<EventDetailsProps> {
             value: this.props.data.dressCode.title 
           },
     
-          data: this.props.data,
+          data,
           loading: false,
         }
       }
