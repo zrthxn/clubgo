@@ -106,7 +106,6 @@ export class Venue extends Component<VenueProps> {
 
   assignVenue = (venue:IVenueModel) => {
     let { data } = this.state
-                    
     this.setState(()=>{
       data.venueId = venue._id
       data.title = venue.venueTitle

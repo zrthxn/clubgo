@@ -176,7 +176,7 @@ export const eventSchema = new mongoose.Schema(
         {
           owner: String,
           offerTitle: {
-            type: String, required: true, unique: true
+            type: String, required: true
           },
           description: {
             type: String, required: true, maxlength: 250
