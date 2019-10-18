@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link, Route } from 'react-router-dom'
 import { Grid, Button, IconButton, Modal, Paper, Tooltip } from '@material-ui/core'
 import { red, blue, green } from '@material-ui/core/colors'
 import { Edit, Delete } from '@material-ui/icons'
@@ -10,7 +11,7 @@ import { EventContext } from '../EventContext'
 import { ConfirmDelete } from '../../Modals/ConfirmDelete'
 
 interface EventListItemProps {
-  data?: IEventModel,
+  data: IEventModel,
   onDelete?: Function
 }
 
@@ -43,7 +44,17 @@ export class EventListItem extends Component<EventListItemProps> {
                   }
                 </Grid>
 
-                <Grid item md={4} xs={6}>
+                <Grid item md={2} xs={6} style={{ display: 'flex', flexDirection: 'row' }}>
+                  <Route render={({ history })=>(
+                    <Button size="small" onClick={()=>{    
+                      history.push(`/bookings/${this.props.data._id}`)
+                    }}>
+                      View Bookings
+                    </Button>
+                  )}/>
+                </Grid>
+
+                <Grid item md={2} xs={6}>
                   <div className="action clearfix">
                     <Tooltip title="Delete">
                       <IconButton className="float-right" onClick={()=>{

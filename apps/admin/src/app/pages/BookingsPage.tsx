@@ -5,9 +5,10 @@ import { Checkbox, Grid, Button } from '@material-ui/core'
 import './scss/Pages.scss'
 
 import { DatabaseService } from '@clubgo/api'
+import { exportAsCSV } from '@clubgo/util'
 import BookingDetails from '../components/Bookings/BookingDetails'
 import { BookingListItem } from '../components/Bookings/BookingListItem'
-import { IEventModel } from '@clubgo/database'
+import { IEventModel, ITicketModel, IBookingModel } from '@clubgo/database'
 
 // tslint:disable-next-line: interface-over-type-literal
 type URLParams = {
@@ -16,20 +17,14 @@ type URLParams = {
 
 export default class BookingsPage extends Component<RouteComponentProps<URLParams>> {
   state = {
-    loading: false, //true,
-    selectedEventId: 2, //undefined,
+    loading: true,
+    selectedEventId: undefined,
     selectedEvent: null,
-    selectedBookings: [
-
-    ],
-
+    selectedBookings: [],
     suggestions: {
       events: []
     },
-
-    listing: [
-      1,2,3,4
-    ]
+    listing: []
   }
 
   bookingService = new DatabaseService('/booking')
@@ -71,6 +66,14 @@ export default class BookingsPage extends Component<RouteComponentProps<URLParam
     })
   }
 
+  convertBookingToCSVEntry = () => {
+    exportAsCSV(this.state.selectedBookings, 'hello.csv', [
+      'Event', 'Event ID', 'Venue', 'City', 'Venue ID', 'Created On', 
+      'Amount', 'TXNID', 'PAID', 'Price', 'Processing', 'Tax', 'Total', 
+      'Booking ID', 'Created On', 'REF', 'Name', 'Email', 'Phone', 'Applied Offer'
+    ])
+  }
+
   render() {
     return (
       <div className="page">
@@ -101,40 +104,6 @@ export default class BookingsPage extends Component<RouteComponentProps<URLParam
                         suggestions.events = apiResponse.results.map((item:IEventModel)=>({
                           label: item.eventTitle, value: item
                         }))
-
-                        // -------------------
-                        this.bookingService.create({
-                          createdOn: (new Date()).toJSON(),
-                          bookingReference: 'FGYHHY67UHGFR56YGVBHUIJ',
-                          name: 'Alisamar Husain',
-                          email: 'zrthxn@gmail.com',
-                          phone: '+91 9971521167',
-                          event: {
-                            eventTitle: suggestions.events[0].value.eventTitle,
-                            eventId: suggestions.events[0].value._id
-                          },
-                          venue: {
-                            venueTitle: suggestions.events[0].value.venue.title,
-                            city: suggestions.events[0].value.venue.city,
-                            locality: suggestions.events[0].value.venue.locality,
-                            venueId: suggestions.events[0].value.venue.venueId
-                          },
-                          schedule: {
-                            date: (new Date()).toJSON(),
-                            time: 500
-                          },
-                          appliedOffers: [],
-                          payments: {
-                            transactionId: '987UYFGIUY8UOHVGTI7UGHVKBJLH',
-                            bookingAmountPaid: false,
-                            amount: 100,
-                            processingFee: 50,
-                            tax: 10,
-                            totalBookingAmount: 168
-                          }
-                        })
-                        // -------------------
-                  
                         this.setState({
                           suggestions
                         })
@@ -152,36 +121,39 @@ export default class BookingsPage extends Component<RouteComponentProps<URLParam
               />
             </Grid>
 
-            <Grid item md={2} style={{ display: 'flex', flexDirection: 'row' }}>
+            <Grid item md={4} style={{ display: 'flex', flexDirection: 'row' }}>
               <Button style={{ margin: 'auto 0' }} variant="outlined" onClick={()=>{
                 this.setState({
-                  loading: false, //true,
-                  selectedEventId: 2, //undefined,
+                  loading: true,
+                  selectedEventId: undefined,
                   selectedEvent: null,
-                  selectedBookings: [
-
-                  ],
-
+                  selectedBookings: [],
                   suggestions: {
                     events: []
                   },
-
-                  listing: [
-                    1,2,3,4
-                  ]
+                  listing: []
                 })
               }}>
                 Clear
               </Button>
+
+              <Button style={{ margin: 'auto 1em' }} variant="outlined" onClick={()=>{
+                this.setState({
+                  loading: true
+                })
+                this.fetchBookings(this.state.selectedEventId)
+              }}>
+                Reload
+              </Button>
             </Grid>
-            
-            <Grid item md={6}></Grid>
+
+            <Grid item md={4}></Grid>
 
             {
               this.state.selectedEvent!==null ? (
                 <Grid item md={8}>
                   <div>
-                    <h3>Selected Event</h3>
+                    <h3>Selected Event</h3><br/>
 
                     <h2>{ this.state.selectedEvent.eventTitle }</h2>
                     <p>{ this.state.selectedEvent.venue.title }</p>
@@ -195,13 +167,46 @@ export default class BookingsPage extends Component<RouteComponentProps<URLParam
         {
           this.state.selectedEventId!==undefined ? (
             <article className="page-content">
+              <Checkbox color="primary" defaultChecked={false}
+                onChange={({ target })=>{
+                  let { selectedBookings, listing } = this.state
+                  selectedBookings = []
+                  if(target.checked)
+                    for (const booking of listing)
+                      selectedBookings.push(booking)
+                  this.setState(()=>({
+                    selectedBookings
+                  }))
+                }}
+              />
+              <label htmlFor="">Select All</label>
+
+              <p style={{ display: 'inline', margin: '0 2em' }}>
+                { this.state.selectedBookings.length } selected out of { this.state.listing.length }
+              </p>
+
+              <Button variant="outlined" onClick={this.convertBookingToCSVEntry}>
+                Export
+              </Button>
+
+              <br/><br/>
+
               {
                 !this.state.loading ? (
-                  this.state.listing.map((booking, index)=>(
+                  this.state.listing.map((booking:IBookingModel, index)=>(
                     <div style={{ display: 'flex', flexDirection: 'row', margin: '0.5em 0' }}>
-                      <Checkbox color="primary" onChange={()=>{
-
-                      }}/>
+                      <Checkbox color="primary" checked={this.state.selectedBookings.includes(booking)}
+                        onChange={({ target })=>{
+                          let { selectedBookings } = this.state
+                          if(target.checked)
+                            selectedBookings.push(booking)
+                          else
+                            selectedBookings = selectedBookings.filter((sel)=>( booking._id!==sel._id ))
+                          this.setState(()=>({
+                            selectedBookings
+                          }))
+                        }}
+                      />
 
                       <BookingListItem data={booking} />
                     </div>

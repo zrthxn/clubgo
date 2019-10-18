@@ -87,9 +87,9 @@ export class TicketEditor extends Component<TicketEditorProps> {
         <Paper style={{ 
           marginTop: '4em',
           marginLeft: '50%',
-          left: '-14em',
+          left: '-18em',
           padding: '2em',
-          width: '28em',
+          width: '36em',
           position: 'absolute'
         }}>
           <Grid container spacing={3}>

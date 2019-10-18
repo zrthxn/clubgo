@@ -36,6 +36,15 @@ export class DatabaseConnection {
 
     this.connect().then(()=>{
       console.log('Mongoose connected to', conf.Green(`${config.protocol}://${config.url}/${this.db}`))
+    }).catch(()=>{
+      console.log('Connection Error, retrying in 10 seconds...')
+      let retry = setInterval(()=>{
+        this.connect().then(()=>{
+          clearInterval(retry)
+        }).catch(()=>{
+          console.log('Connection Error, retrying in 10 seconds...')
+        })
+      }, 10000)
     })
   }
 
@@ -46,6 +55,7 @@ export class DatabaseConnection {
    * @returns `Promise`
    */
   async connect() {    
+    console.log('Connecting...')
     try {
       await mongoose.connect( this.url, { ...this.mongooseOptions })
 
