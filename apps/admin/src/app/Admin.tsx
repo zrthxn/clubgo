@@ -20,6 +20,8 @@ import './Admin.scss'
 
 import LoginPage from './pages/LoginPage'
 import Dashboard from './pages/Dashboard'
+import ArtistsPage from './pages/ArtistsPage'
+import BookingsPage from './pages/BookingsPage'
 import EventsPage from './pages/EventsPage'
 import VenuesPage from './pages/VenuesPage'
 import TicketsPage from './pages/TicketsPage'
@@ -29,7 +31,6 @@ import SettingsPage from './pages/SettingsPage'
 
 import AdminContextProvider from './AdminContextProvider'
 import AdminContext from './AdminContext'
-import ArtistsPage from './pages/ArtistsPage'
 
 export class Admin extends Component {
   state = {
@@ -107,12 +108,13 @@ export class Admin extends Component {
               </div>
 
               <Link onClick={this.toggleSidebar} to="/dashboard"> Dashboard </Link>
+              <Link onClick={this.toggleSidebar} to="/bookings"> Bookings </Link>
               <Link onClick={this.toggleSidebar} to="/events"> Events </Link>
               <Link onClick={this.toggleSidebar} to="/venues"> Venues </Link>
               <Link onClick={this.toggleSidebar} to="/tickets"> Tickets </Link>
               <Link onClick={this.toggleSidebar} to="/offers"> Offers </Link>
-              <Link onClick={this.toggleSidebar} to="/users"> Users </Link>
               <Link onClick={this.toggleSidebar} to="/artists"> Artists and Music </Link>
+              <Link onClick={this.toggleSidebar} to="/users"> Users </Link>
               <Link onClick={this.toggleSidebar} to="/locations"> Locations </Link>
               <Link onClick={this.toggleSidebar} to="/settings"> Settings </Link>
             </div>
@@ -165,6 +167,10 @@ export class Admin extends Component {
                 <Switch>
                   <Route exact path="/" component={ Dashboard } />
                   <Route path="/dashboard" component={ Dashboard } />
+                  <Route path="/bookings/:eventId" render={(routeProps)=>(
+                    <BookingsPage { ...routeProps } />
+                  )} />
+                  <Route path="/bookings" component={ BookingsPage } />
                   <Route path="/events" component={ EventsPage } />
                   <Route path="/venues" component={ VenuesPage } />
                   <Route path="/tickets" component={ TicketsPage } />

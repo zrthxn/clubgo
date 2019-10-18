@@ -70,7 +70,7 @@ export default class OffersPage extends Component {
                       onDelete={()=>{
                         this.offerService.delete(offer._id).then(()=>{  
                           let { offers } = this.state
-                          offers = offers.filter(item => (item._id!==offer._id))
+                          offers.splice(index, 1)
                           this.setState({ offers })
                         })
                       }}

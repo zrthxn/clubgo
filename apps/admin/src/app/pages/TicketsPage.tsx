@@ -87,7 +87,7 @@ export class TicketsPage extends Component {
                       onDelete={()=>{
                         this.ticketService.delete(ticket._id).then(()=>{
                           let { listing } = this.state
-                          listing = listing.filter(item => (item._id!==ticket._id))
+                          listing.splice(index, 1)
                           this.setState({ listing })
                         })
                       }}

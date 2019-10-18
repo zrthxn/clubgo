@@ -15,3 +15,4 @@ export * from './lib/models/booking.model'
 // Controllers 
 export * from './lib/controllers/controller'
 export * from './lib/controllers/event.controller'
+export * from './lib/controllers/booking.controller'

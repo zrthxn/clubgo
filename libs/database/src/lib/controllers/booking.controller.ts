@@ -1,13 +1,13 @@
 import { ModelController, IRouteItem } from './controller'
-import Event from '../models/event.model'
+import Booking from '../models/booking.model'
 
-export class EventController extends ModelController {
+export class BookingController extends ModelController {
   xroutes:IRouteItem[] = [
     
   ]
 
   constructor() {
-    super(Event)
+    super(Booking)
   }
 
   /**
@@ -15,13 +15,13 @@ export class EventController extends ModelController {
    */
   search = async (req, res) => {
     const { query } = req.body
-    const searchResult = await Event.find({ ...query })
+    const searchResult = await Booking.find({ ...query })
 
     res.send({ 
-      message: `Found ${searchResult.length} events`,
+      message: `Found ${searchResult.length} matching records`,
       results: searchResult 
     })
   }
 }
 
-export default EventController
+export default BookingController

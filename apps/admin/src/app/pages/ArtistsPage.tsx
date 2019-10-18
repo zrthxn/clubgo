@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import './scss/Pages.scss'
+
 export default class ArtistsPage extends Component {
   render() {
     return (

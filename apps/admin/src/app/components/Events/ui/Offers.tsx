@@ -39,10 +39,22 @@ export class Offers extends Component<OffersProps> {
     ))
   }
 
-  componentDidUpdate() {    
-    // if(this.state.synchronized)
-    //   this.setState({ synchronized: false })
-      
+  componentDidMount() {
+    this.setState(()=>{
+      if(this.props.populate) {
+        return {    
+          data: this.props.data,
+          loading: false,
+        }
+      }
+      else
+        return {
+          loading: false,
+        }
+    })
+  }
+
+  componentDidUpdate() {
     if(this.props.syncData!==this.state.synchronized) {
       if(this.props.syncData) {
         this.props.syncParentData(this.state.data, 'offers')
@@ -108,7 +120,7 @@ export class Offers extends Component<OffersProps> {
                 }}
                 onDelete={()=>{
                   let { data } = this.state
-                  data.availableOffers = data.availableOffers.filter(item => (item._id!==offer._id))
+                  data.availableOffers.splice(index, 1)
                   this.setState({ data })
                 }}
               />

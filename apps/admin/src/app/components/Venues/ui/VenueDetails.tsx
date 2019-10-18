@@ -53,15 +53,17 @@ export class VenueDetails extends Component<VenueDetailsProps> {
 
   constructor(props) {
     super(props)
-
-    this.locationService.list().then(({ data })=>{
-      let { suggestions } = this.state
-      suggestions.cities = data.results
-      this.setState({
-        suggestions
-      })
-    })
   } 
+
+  fetchCities = async () => {
+    let { data } = await this.locationService.list()
+    let { suggestions } = this.state
+    suggestions.cities = data.results
+    this.setState({
+      suggestions
+    })
+    return
+  }
 
   componentDidMount() {
     this.setState(()=>{
@@ -78,8 +80,11 @@ export class VenueDetails extends Component<VenueDetailsProps> {
             value: this.props.data.locality
           },
           selectCity: { 
-            label: this.props.data.city, 
-            value: this.props.data.city
+            label: this.props.data.city,
+            value: {
+              city: this.props.data.city,
+              localities: []
+            }
           },
     
           data: this.props.data,
