@@ -7,7 +7,7 @@ export class LoginService extends Interface {
   }
 
   async webmasterLogin(loginId, password) {
-    if(loginId==='admin' && password==='admin')
+    if(loginId==='ajit@clubgo' && password==='Ajit@Yadav123')
       return { data: {} }
     else
       return Promise.reject()

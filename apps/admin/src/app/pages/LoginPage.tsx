@@ -27,7 +27,7 @@ export class LoginPage extends Component<LoginPageProps> {
 
   loginWithCredentials = async () => {
     try {
-      let { data } = await this.loginService.webmasterLogin('admin', 'admin')
+      let { data } = await this.loginService.webmasterLogin(this.state.username, this.state.password)
       this.props.onAuthenticate(data)
     } catch (error) {
       alert('Invalid Login')
