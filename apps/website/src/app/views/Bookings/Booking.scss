@@ -108,7 +108,7 @@
     * {
       margin: 0;
     }
-
+    
     .people-label {
       width: 25%;
       font-weight: 600;
@@ -121,49 +121,57 @@
       }
     }
 
-    .people-add {
-      // margin: 0 1em;
-      background-color: #1c1c1c40;
-      border-radius: 50%;
-      padding: 0.25em;
-      cursor: pointer;
-      transition: 0.25s all ease;
-
+    .people-controls {
       display: flex;
       flex-direction: row;
-      * {
-        margin: auto;
-      }
-
-      &:hover {
+      margin: 0 2em;
+      background-color: #1c1c1c20;
+      border-radius: 5em;
+  
+      .people-add {
+        // margin: 0 1em;
+        background-color: #1c1c1c40;
+        border-radius: 50%;
+        padding: 0.25em;
+        cursor: pointer;
         transition: 0.25s all ease;
-        background-color: #1c1c1c60;
+  
+        display: flex;
+        flex-direction: row;
+        * {
+          margin: auto;
+        }
+  
+        &:hover {
+          transition: 0.25s all ease;
+          background-color: #1c1c1c60;
+        }
       }
-    }
-    .people-count {
-      margin: auto 0;
-      width: 2em;
-      text-align: center;
-      font-size: 1.125em;
-      font-weight: 800;
-    }
-    .people-remove {
-      // margin: 0 1em;
-      background-color: #1c1c1c40;
-      border-radius: 50%;
-      padding: 0.25em;
-      cursor: pointer;
-      transition: 0.25s all ease;
-
-      display: flex;
-      flex-direction: row;
-      * {
-        margin: auto;
+      .people-count {
+        margin: auto 0;
+        width: 2em;
+        text-align: center;
+        font-size: 1.125em;
+        font-weight: 800;
       }
-
-      &:hover {
+      .people-remove {
+        // margin: 0 1em;
+        background-color: #1c1c1c40;
+        border-radius: 50%;
+        padding: 0.25em;
+        cursor: pointer;
         transition: 0.25s all ease;
-        background-color: #1c1c1c60;
+  
+        display: flex;
+        flex-direction: row;
+        * {
+          margin: auto;
+        }
+  
+        &:hover {
+          transition: 0.25s all ease;
+          background-color: #1c1c1c60;
+        }
       }
     }
   }

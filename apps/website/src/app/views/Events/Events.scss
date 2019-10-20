@@ -4,6 +4,35 @@
   .action {
     position: relative;
 
+    .book {
+      position: fixed;
+        
+      width: 100%;
+      padding: 1em 1.5em;
+      left: 0;
+      bottom: 0;
+      z-index: 10000;
+
+      button {  
+        width: 100%;
+        border: none;
+        color: $primaryColor;
+        font-size: 1.125em;
+        font-weight: 900;
+        font-family: $poppinsFont;
+        padding: 1em;
+
+        box-shadow: 0 0 15px #1c1c1c80;
+        background-color: #fff;
+        border-radius: 0.45em;
+        text-transform: uppercase;
+  
+        &:focus, &:active {
+          outline: none;
+        }
+      }
+    }
+
     .floater {
       background: #fff;
       border-radius: 0.5em;
@@ -12,24 +41,6 @@
       .block {
         padding: 1.5em;
         color: #000;
-      }
-      
-      button {
-        width: 100%;
-        padding: 1em 1.5em;
-
-        border: none;
-        color: #fff;
-        font-size: 1.125em;
-        font-family: $poppinsFont;
-        background: linear-gradient(45deg, $primaryColor, $secondaryColor);;
-        
-        border-bottom-left-radius: 0.45em;
-        border-bottom-right-radius: 0.45em;
-
-        &:focus, &:active {
-          outline: none;
-        }
       }
   
       .event-name {

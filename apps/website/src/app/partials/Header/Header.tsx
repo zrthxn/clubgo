@@ -44,11 +44,9 @@ export default class Header extends Component {
                   this.state.openSidebar ? (
                     <div className="sidebar">
                       <nav className="sidebar-nav">
-                        <Link onClick={this.toggleSidebar} to={'/'}>About</Link>
-                        <Link onClick={this.toggleSidebar} to={'/speakers'}>Speakers</Link>
-                        <Link onClick={this.toggleSidebar} to={'/team'}>Team</Link>
-                        <Link onClick={this.toggleSidebar} to={'/contact'}>Contact</Link>
-                        <Link onClick={this.toggleSidebar} to={'/register'}>Register</Link>
+                        <Link onClick={this.toggleSidebar} to={'/'}>Home</Link>
+                        <Link onClick={this.toggleSidebar} to={'/events'}>Events</Link>
+                        <Link onClick={this.toggleSidebar} to={'/venues'}>Venues</Link>
                       </nav>
                     </div>
                   ) : null

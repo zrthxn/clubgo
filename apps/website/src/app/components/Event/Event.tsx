@@ -18,9 +18,7 @@ export class Event extends Component<EventComponentProps> {
   context!: React.ContextType<typeof RootContext>
 
   state = {
-    calculatedPrices: {
-      lowest: 0
-    }
+    calculatedLowestPrices: 0
   }
 
   detailsPageURL = `/event/${this.props.data._id}`
@@ -30,7 +28,49 @@ export class Event extends Component<EventComponentProps> {
   }
 
   calculatePrice = () => {
+    let lowest = 999999999
+    for (const ticket of this.props.data.bookings.tickets) {
+      if(ticket.entry.entryType==='couple') {
+        if(ticket.entry.pricing.couple.admissionPrice < lowest)
+          lowest = ticket.entry.pricing.couple.admissionPrice
+      }
+      else if(ticket.entry.entryType==='single') {
+        if(ticket.entry.pricing.single.admissionPrice < lowest)
+          lowest = ticket.entry.pricing.single.admissionPrice
+      }
+    }
 
+    this.setState({
+      calculatedLowestPrices: lowest
+    })
+  }
+
+  formatTime = (time) => {
+    return ((time - (time % 60)) / 60) > 12 ? (
+      (
+        (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
+          (((time - (time % 60)) / 60) - 12).toString()
+        )
+      ) + ':' + (
+        (time % 60).toString().length < 2 ? (
+          '0' + (time % 60).toString()
+        ) : (
+          (time % 60).toString()
+        ) 
+      ) + 'PM'
+    ) : (
+      (
+        (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
+          (((time - (time % 60)) / 60)).toString()
+        )
+      ) + ':' + (
+        (time % 60).toString().length < 2 ? (
+          '0' + (time % 60).toString()
+        ) : (
+          (time % 60).toString()
+        ) 
+      ) + 'AM'
+    )
   }
 
   openEventDetails = () => {
@@ -49,7 +89,6 @@ export class Event extends Component<EventComponentProps> {
 
     return (
       <div className={eventCardStyle} onClick={this.openEventDetails}>
-        {/* <Image alt="Image" src={ this.props.data.media.images[0].url }/> */}
         <div className="image-container">
           {
             this.props.data.media.images.length!==0 ? (
@@ -66,10 +105,15 @@ export class Event extends Component<EventComponentProps> {
 
         <h4 className="event-venue">{ this.props.data.venue.title }</h4>
 
-        <p style={{ margin: '0.75em 0 0.5em 0', fontSize: '0.85em' }}>Friday, 20 October | 1:00 AM</p>
+        <p style={{ margin: '0.75em 0 0.5em 0', fontSize: '0.85em' }}>
+          { 
+            (new Date(this.props.data.scheduling.customDates[0])).toDateString() + '|' + 
+              this.formatTime(this.props.data.scheduling.timing.startTime) 
+          }
+        </p>
 
         <p style={{ margin: 0, fontWeight: 600, fontSize: '0.85em' }}>
-          Starting from { '\u20B9 ' + this.state.calculatedPrices.lowest }
+          Starting from { '\u20B9 ' + this.state.calculatedLowestPrices }
         </p>
       </div>
     )

@@ -22,6 +22,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
   context!: React.ContextType<typeof RootContext>
 
   eventService = new DatabaseService('/event')
+  bookingService = new DatabaseService('/booking')
   venueService = new DatabaseService('/venue')
   
   event:IEventModel
@@ -31,6 +32,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
   state = {
     loading: true,
     currentEventId: null,
+    attendees: 0,
     recommendations: {
       nearby: []
     }
@@ -49,18 +51,19 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
     }
   }
 
-  fetchEventDetails = (id) => {
-    this.eventService.findById(id).then((event)=>{
-      this.event = event.data.results
+  fetchEventDetails = async (id) => {
+    let event = await this.eventService.findById(id)
+    this.event = event.data.results
 
-      this.venueService.findById(this.event.venue.venueId).then((venue)=>{
-        this.venue = venue.data.results
-        
-        this.setState({
-          loading: false,
-          currentEventId: id
-        })
-      })
+    let venue = await this.venueService.findById(this.event.venue.venueId)
+    this.venue = venue.data.results
+
+    let attendees = await this.bookingService.searchBy({ event: { eventId: this.event._id } })
+    
+    this.setState({
+      loading: false,
+      currentEventId: id,
+      attendees: attendees.data.results.length
     })
   }
   
@@ -84,20 +87,16 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                     <div className="block">
                       <h2 className="event-name">{ this.event.eventTitle }</h2>
                       <h3 className="venue-name">{ this.event.venue.title }</h3>
-                      <span>Dates | Offers</span>
+                      <span>{ (new Date(this.event.scheduling.customDates[0])).toDateString() }</span>
                     </div>
-                    <button onClick={this.openBooking}>Book Now</button>
                   </div>
                   
                   <div className="attendees">
-                    <p>Attending</p>
-                    {
-                      [1,2,3,4].map((user, index)=>(
-                        <span key={`attendee-${index}`}>
-                          <img src="" alt="" hidden/>
-                        </span>
-                      ))
-                    }
+                    <p>{ this.state.attendees } Attending</p>
+                  </div>
+                  
+                  <div className="book">
+                    <button onClick={this.openBooking}>Book Now</button>
                   </div>
                 </div>
               </Grid>

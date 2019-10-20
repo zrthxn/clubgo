@@ -121,14 +121,12 @@ export class TicketSelector extends Component<TicketViewProps> {
     else if(this.event.bookings.tickets[this.state.selectedTimeIndex].entry.entryType==='single')
       subtotal += people.single * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.single.admissionPrice
 
-    total = subtotal * (1 + (this.event.bookings.processingFeePercent/100))
-    total = total * (1 + (this.event.bookings.taxPercent/100))     
+    let processingFee = subtotal * (this.event.bookings.processingFeePercent/100)
+    let tax = processingFee * (this.event.bookings.taxPercent/100)
 
-    return { 
-      subtotal, total, 
-      processingFee: (subtotal * (1 + (this.event.bookings.processingFeePercent/100))) - subtotal,
-      tax: (total * (1 + (this.event.bookings.taxPercent/100))) - total
-    }
+    total = subtotal + processingFee + tax
+
+    return { subtotal, total, processingFee, tax }
   }
 
   onFinalize = () => {
@@ -223,17 +221,20 @@ export class TicketSelector extends Component<TicketViewProps> {
                               }
                             </p>
                           </div>
-                          <span className="people-add" onClick={()=>{
-                            this.incrementPeople('couple')
-                          }}>
-                            <Add/>
-                          </span>
-                          <span className="people-count">{ this.state.people.couple }</span>
-                          <span className="people-remove" onClick={()=>{
-                            this.decrementPeople('couple')
-                          }}>
-                            <Remove/>
-                          </span>
+                            
+                          <div className="people-controls">
+                            <span className="people-add" onClick={()=>{
+                              this.incrementPeople('couple')
+                            }}>
+                              <Add/>
+                            </span>
+                            <span className="people-count">{ this.state.people.couple }</span>
+                            <span className="people-remove" onClick={()=>{
+                              this.decrementPeople('couple')
+                            }}>
+                              <Remove/>
+                            </span>
+                          </div>
                         </div>
 
                         <div className="people-block">
@@ -245,17 +246,20 @@ export class TicketSelector extends Component<TicketViewProps> {
                               }
                             </p>
                           </div>
-                          <span className="people-add" onClick={()=>{
-                            this.incrementPeople('female')
-                          }}>
-                            <Add/>
-                          </span>
-                          <span className="people-count">{ this.state.people.female }</span>
-                          <span className="people-remove" onClick={()=>{
-                            this.decrementPeople('female')
-                          }}>
-                            <Remove/>
-                          </span>
+                          
+                          <div className="people-controls">
+                            <span className="people-add" onClick={()=>{
+                              this.incrementPeople('female')
+                            }}>
+                              <Add/>
+                            </span>
+                            <span className="people-count">{ this.state.people.female }</span>
+                            <span className="people-remove" onClick={()=>{
+                              this.decrementPeople('female')
+                            }}>
+                              <Remove/>
+                            </span>
+                          </div>
                         </div>
 
                         <div className="people-block">
@@ -267,17 +271,20 @@ export class TicketSelector extends Component<TicketViewProps> {
                               }
                             </p>
                           </div>
-                          <span className="people-add" onClick={()=>{
-                            this.incrementPeople('male')
-                          }}>
-                            <Add/>
-                          </span>
-                          <span className="people-count">{ this.state.people.male }</span>
-                          <span className="people-remove" onClick={()=>{
-                            this.decrementPeople('male')
-                          }}>
-                            <Remove/>
-                          </span>
+                          
+                          <div className="people-controls">
+                            <span className="people-add" onClick={()=>{
+                              this.incrementPeople('male')
+                            }}>
+                              <Add/>
+                            </span>
+                            <span className="people-count">{ this.state.people.male }</span>
+                            <span className="people-remove" onClick={()=>{
+                              this.decrementPeople('male')
+                            }}>
+                              <Remove/>
+                            </span>
+                          </div>
                         </div>
                       </div>
                     ) : (
@@ -291,17 +298,20 @@ export class TicketSelector extends Component<TicketViewProps> {
                               }
                             </p>
                           </div>
-                          <span className="people-add" onClick={()=>{
-                            this.incrementPeople('single')
-                          }}>
-                            <Add/>
-                          </span>
-                          <span className="people-count">{ this.state.people.single }</span>
-                          <span className="people-remove" onClick={()=>{
-                            this.decrementPeople('single')
-                          }}>
-                            <Remove/>
-                          </span>
+                          
+                          <div className="people-controls">
+                            <span className="people-add" onClick={()=>{
+                              this.incrementPeople('single')
+                            }}>
+                              <Add/>
+                            </span>
+                            <span className="people-count">{ this.state.people.single }</span>
+                            <span className="people-remove" onClick={()=>{
+                              this.decrementPeople('single')
+                            }}>
+                              <Remove/>
+                            </span>
+                          </div>
                         </div>
                       </div>
                     )

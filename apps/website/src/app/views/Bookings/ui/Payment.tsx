@@ -22,16 +22,39 @@ export class Payment extends Component<PaymentProps> {
   render() {
     return (
       <article>
-        <section>
-          <Grid container spacing={3}>
-            <Grid>
-              <Button onClick={()=>{
-                this.props.onComplete(this.state)
-              }}>
-                Confirm
-              </Button>
-            </Grid>
-          </Grid>
+        <section className="center" style={{ display: 'flex', flexDirection: 'column' }}>
+          <h1>Review Payment</h1>
+          <h3>Please confirm your Booking</h3>
+
+          <div style={{
+            display: 'flex', flexDirection: 'row',
+            width: '75%', margin: 'auto',
+            fontSize: '1.5em'
+          }}>
+            <div style={{
+              textAlign: 'left', flexGrow: 1
+            }}>
+              <p>Entry Fee</p>
+              <p>Processing Fee</p>
+              <p>Taxes</p>
+
+              <h3>Total</h3>
+            </div>
+
+            <div style={{ textAlign: 'right' }}>
+              <p>{ '\u20B9' + this.state.amount }</p>
+              <p>{ '\u20B9' + this.state.processingFee.toFixed(2) }</p>
+              <p>{ '\u20B9' + this.state.tax.toFixed(2) }</p>
+
+              <h3>{ '\u20B9' + this.state.totalBookingAmount.toFixed(2) }</h3>
+            </div>
+          </div>
+
+          <Button size="large" style={{ margin: '2em auto' }} onClick={()=>{
+            this.props.onComplete(this.state)
+          }}>
+            Confirm
+          </Button>
         </section>
       </article>
     )

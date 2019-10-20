@@ -77,6 +77,7 @@ export default class BookingController extends Component<RouteComponentProps<URL
     let { event, venue } = this
     try {
       let booking = await this.bookingService.create({ ticket, user, txn, event, venue })
+      booking = booking.data.results
       this.setState({
         booking, bookingComplete: true
       })

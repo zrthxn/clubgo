@@ -57,7 +57,7 @@ BookingRouter.post('/_create', async (req, res) => {
 
   let createBooking = new Booking({
     createdOn: (new Date()).toJSON(),
-    bookingReference: Date.now().toString(36),
+    bookingReference: Date.now().toString(36).toUpperCase(),
     ...user,
     people: ticket.people,
     payment: txn,
@@ -89,7 +89,7 @@ BookingRouter.post('/_create', async (req, res) => {
 
     res.status(201).send({ 
       message: 'Created',
-      results: result._id
+      results: result
     })
   } catch (err) {
     console.log(conf.Red(err))

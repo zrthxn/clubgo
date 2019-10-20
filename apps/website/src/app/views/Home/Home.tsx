@@ -76,7 +76,6 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
 
         <section className="container">
           <h2>Featured Events</h2>
-          <h4>Our best featured events</h4>
           <Recommender query={{
             settings: {
               isFeatured: true
@@ -92,8 +91,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
-          <h2>Nearby</h2>
-          <h4>Events near you</h4>
+          <h2>Events Near You</h2>
           <Recommender query={{
             venue: {
               city: this.props.city,
@@ -108,7 +106,6 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
 
         <section className="container">
           <h2>Recommended</h2>
-          <h4>Events recommended for you</h4>
           <Recommender query={{
             venue: {
               city: this.props.city

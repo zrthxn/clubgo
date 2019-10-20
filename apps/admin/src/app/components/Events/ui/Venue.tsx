@@ -46,6 +46,7 @@ export class Venue extends Component<VenueProps> {
 
   constructor(props) {
     super(props)
+    this.fetchCities()
   }
 
   locationService = new DatabaseService('/location')

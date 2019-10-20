@@ -53,6 +53,7 @@ export class VenueDetails extends Component<VenueDetailsProps> {
 
   constructor(props) {
     super(props)
+    this.fetchCities()
   } 
 
   fetchCities = async () => {

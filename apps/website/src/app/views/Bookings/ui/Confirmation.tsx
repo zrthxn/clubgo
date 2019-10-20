@@ -8,9 +8,21 @@ interface ConfirmationProps {
 export default class Confirmation extends Component<ConfirmationProps> {
   render() {
     return (
-      <div>
-        <h1>Confirmation</h1>
-      </div>
+      <article>
+        <section className="center">
+          <h1>Confirmation</h1>
+          <h2>Thank You</h2>
+
+          <section>
+            <p>
+              Your booking was successsful. Your booking reference number is given below.
+            </p>
+
+            {/* <img src={`${this.props.booking.bookingReference}`} alt=""/> */}
+            <h3>{ this.props.booking.bookingReference }</h3>
+          </section>
+        </section>
+      </article>
     )
   }
 }
