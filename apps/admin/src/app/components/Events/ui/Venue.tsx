@@ -214,7 +214,7 @@ export class Venue extends Component<VenueProps> {
                     if(action==="input-change" && value.length>3) {
                       let { selectCity, selectVenueCategory } = this.state
                       this.venueService.searchBy({
-                        city: selectCity!==null ? selectCity.value : undefined,
+                        city: selectCity!==null ? selectCity.value.city : undefined,
                         categories: selectVenueCategory!==null ? selectVenueCategory.value : undefined,
                         $text: {
                           $search: value
