@@ -23,10 +23,12 @@ export class TicketSelector extends Component<TicketViewProps> {
       couple: 0,
       single: 0
     },
-    appliedOffers: null,
+    appliedOffers: [ ],
     payment: {
       subtotal: 0,
-      total: 0
+      total: 0,
+      processingFee: 0,
+      tax: 0,
     }
   }
   
@@ -38,6 +40,34 @@ export class TicketSelector extends Component<TicketViewProps> {
     super(props)
     this.event = this.props.event
     this.venue = this.props.venue
+  }
+
+  formatTime = (time) => {
+    return ((time - (time % 60)) / 60) > 12 ? (
+      (
+        (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
+          (((time - (time % 60)) / 60) - 12).toString()
+        )
+      ) + ':' + (
+        (time % 60).toString().length < 2 ? (
+          '0' + (time % 60).toString()
+        ) : (
+          (time % 60).toString()
+        ) 
+      ) + 'PM'
+    ) : (
+      (
+        (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
+          (((time - (time % 60)) / 60)).toString()
+        )
+      ) + ':' + (
+        (time % 60).toString().length < 2 ? (
+          '0' + (time % 60).toString()
+        ) : (
+          (time % 60).toString()
+        ) 
+      ) + 'AM'
+    )
   }
   
   incrementPeople = (key) => {
@@ -82,15 +112,33 @@ export class TicketSelector extends Component<TicketViewProps> {
 
   calculatePayment = (people) => {
     let subtotal = 0, total = 0
-    subtotal += people.couple * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.admissionPrice
-    subtotal += people.female * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.female.admissionPrice
-    subtotal += people.male * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.male.admissionPrice
-    subtotal += people.single * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.single.admissionPrice
+    
+    if(this.event.bookings.tickets[this.state.selectedTimeIndex].entry.entryType==='couple') {
+      subtotal += people.couple * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.admissionPrice
+      subtotal += people.female * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.female.admissionPrice
+      subtotal += people.male * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.male.admissionPrice
+    }
+    else if(this.event.bookings.tickets[this.state.selectedTimeIndex].entry.entryType==='single')
+      subtotal += people.single * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.single.admissionPrice
 
     total = subtotal * (1 + (this.event.bookings.processingFeePercent/100))
     total = total * (1 + (this.event.bookings.taxPercent/100))     
 
-    return { subtotal, total }
+    return { 
+      subtotal, total, 
+      processingFee: (subtotal * (1 + (this.event.bookings.processingFeePercent/100))) - subtotal,
+      tax: (total * (1 + (this.event.bookings.taxPercent/100))) - total
+    }
+  }
+
+  onFinalize = () => {
+    this.props.onComplete({
+      date: this.event.scheduling.customDates[this.state.selectedDateIndex],
+      time: this.event.bookings.tickets[this.state.selectedTimeIndex].activate,
+      people: this.state.people,
+      appliedOffers: this.state.appliedOffers,
+      payment: this.state.payment,
+    })
   }
   
   render() {
@@ -144,7 +192,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                                 couple: 0,
                                 single: 0
                               },
-                              appliedOffers: null,
+                              appliedOffers: [ ],
                               payment: {
                                 subtotal: 0,
                                 total: 0
@@ -153,31 +201,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                           }}
                         >
                           {
-                            ((item.activate - (item.activate % 60)) / 60) > 12 ? (
-                              (
-                                (((item.activate - (item.activate % 60)) / 60) - 12).toString()==='0' ? '12' : (
-                                  (((item.activate - (item.activate % 60)) / 60) - 12).toString()
-                                )
-                              ) + ':' + (
-                                (item.activate % 60).toString().length < 2 ? (
-                                  '0' + (item.activate % 60).toString()
-                                ) : (
-                                  (item.activate % 60).toString()
-                                ) 
-                              ) + 'PM'
-                            ) : (
-                              (
-                                (((item.activate - (item.activate % 60)) / 60)).toString()==='0' ? '12' : (
-                                  (((item.activate - (item.activate % 60)) / 60)).toString()
-                                )
-                              ) + ':' + (
-                                (item.activate % 60).toString().length < 2 ? (
-                                  '0' + (item.activate % 60).toString()
-                                ) : (
-                                  (item.activate % 60).toString()
-                                ) 
-                              ) + 'AM'
-                            )
+                            this.formatTime(item.activate)
                           }
                         </div>
                       ))
@@ -359,12 +383,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                   <div style={{ margin: '2em auto', width: '100%' }}>
                     <Button color="primary" variant="unconstrained" 
                       onClick={(event)=>{
-                        this.props.onComplete({
-                          date: {},
-                          people: this.state.people,
-                          payment: this.state.payment,
-                          appliedOffers: {}
-                        })
+                        this.onFinalize()
                       }}
                     >
                       Book Now

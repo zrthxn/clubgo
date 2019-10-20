@@ -99,9 +99,14 @@ export default class BookingController extends Component<RouteComponentProps<URL
                     )
                   else
                     return (
-                      <Payment ticket={this.state.ticket} onComplete={(txn)=>{
-                        this.createBooking(txn)
-                      }}/>
+                      <Payment payment={this.state.ticket.payment} 
+                        options={{
+                          
+                        }}
+                        onComplete={(txn)=>{
+                          this.createBooking(txn)
+                        }}
+                      />
                     )
                 else
                   return (

@@ -59,7 +59,7 @@ export const bookingSchema = new mongoose.Schema(
       },
       required: true
     },
-    payments: {
+    payment: {
       transactionId: String,
       bookingAmountPaid: {
         type: Boolean, required: true
@@ -116,7 +116,7 @@ export interface IBookingModel extends mongoose.Document {
     female?: number
     male?: number
   }
-  payments: {
+  payment: {
     transactionId?: string
     bookingAmountPaid: boolean
     amount?: number

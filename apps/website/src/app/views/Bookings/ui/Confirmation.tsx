@@ -9,7 +9,7 @@ export default class Confirmation extends Component<ConfirmationProps> {
   render() {
     return (
       <div>
-        
+        <h1>Confirmation</h1>
       </div>
     )
   }

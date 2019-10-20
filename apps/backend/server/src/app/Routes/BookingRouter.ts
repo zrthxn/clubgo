@@ -59,8 +59,8 @@ BookingRouter.post('/_create', async (req, res) => {
     createdOn: (new Date()).toJSON(),
     bookingReference: Date.now().toString(36),
     ...user,
-    ...ticket.people,
-    ...ticket.txn,
+    people: ticket.people,
+    payment: txn,
     event: {
       eventTitle: event.eventTitle,
       eventId: event._id
