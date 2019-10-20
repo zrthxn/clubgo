@@ -7,7 +7,7 @@ import './Events.scss'
 
 import { DatabaseService } from '@clubgo/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
-import RootContext from '../../RootContextProvider'
+import RootContext from '../../RootContext'
 
 type URLParams = {
   id: string
@@ -107,7 +107,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                   <h2>About</h2>
                   <p>{ this.event.description }</p>
   
-                  <div className="venue">
+                  <div>
                     <h2>Venue</h2>
                     <p>{ this.venue.venueTitle }</p>
                   </div>
@@ -120,8 +120,13 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
             <h2>Similar Events</h2>
             <h4>Events recommended for you</h4>
             <Recommender maxItemCount={10}
+              query={{
+                venue: {
+                  city: this.props.city
+                }
+              }}
               render={(eventProps:IEventModel)=>(
-                <Event data={eventProps} key={`recom-item-${eventProps._id}`}/>
+                <Event key={eventProps._id} data={eventProps} />
               )}
             />
           </section>

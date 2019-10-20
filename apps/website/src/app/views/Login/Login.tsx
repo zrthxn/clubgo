@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import QueryString from 'query-string'
 
 import { Details } from '../Bookings/ui/Details'
-import RootContext from '../../RootContextProvider'
+import RootContext from '../../RootContext'
 
 export default class LoginManager extends Component<RouteComponentProps> {
   static contextType = RootContext

@@ -12,33 +12,134 @@ header {
   #site-title {
     margin: 0 !important;
     flex-grow: 0.40;
-  }
-
-  .MuiIconButton-root {
-    color: unset;
-  }
-
-  .nav-links {
-    margin: auto 1em;
-    display: flex;
-    flex-direction: row;
-
-    a {
-      margin: 1em;
-    }   
-  }
-  
-  @media (max-width: 600px) {
-    .nav-links {
-      display: none;
-    }
+    z-index: 110;
   }
 
   .set-city {
+    cursor: pointer;
     margin: 1em;
     display: inline;
     font-weight: 600;
-    // text-decoration: underline;
-    cursor: pointer;
   }
+
+  .desktop-nav {
+    display: none;
+  }
+  
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    margin: 8em 4em;
+    width: 50%;
+    height: fit-content;
+    text-align: left;
+    transition: all 0.5s ease;
+    
+    a {
+      color: #fff;
+      margin: 1em;
+      font-weight: 400;
+      text-decoration: none;
+    }
+  }
+  
+  @media (min-width: 600px) {
+    .sidebar-nav {
+      display: none;
+    } 
+    .hamburger {
+      display: none;
+    }
+    .desktop-nav {
+      display: flex;
+      flex-direction: row;
+
+      a {
+        margin: auto 1em;
+      }      
+    }
+  } 
+
+  // @Overrides
+  .MuiIconButton-root {
+    color: unset;
+  }
+}
+
+.hamburger {
+  display: block;
+  margin: auto 0 auto 1em;
+  height: 100%;
+  padding: 1em 0;
+  justify-self: center;
+  align-self: flex-end;
+  z-index: 110;
+}
+.hamburger span,
+.hamburger span::before,
+.hamburger span::after {
+  display: block;
+  position: relative;
+  background: #fff;
+  height: 2px;
+  width: 25px;
+  transition: all 0.25s ease;
+}
+.hamburger span::before,
+.hamburger span::after {
+  content: '';
+  position: absolute;
+}
+.hamburger span::before {
+  bottom: 7px;
+}
+.hamburger span::after {
+  top: 7px;
+}
+
+#sidebar-toggle:checked ~ .hamburger span::before {
+  bottom: 0;
+  transform: rotate(-45deg);
+} #sidebar-toggle:checked ~ .hamburger span {
+  background: transparent;
+} #sidebar-toggle:checked ~ .hamburger span::after {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+// SIDEBAR MENU ---------------------
+.sidebar {
+  position: fixed;
+  height: 100vh;
+  width: 0;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 100;
+  max-width: 300px;
+  background: linear-gradient(#ff0000, #aa0000);
+  transition: all 0.25s ease;
+} #sidebar-toggle:checked ~ .sidebar {
+  opacity: 1;
+  width: 60%;
+}
+
+// SIDEBAR SHADOW ---------------------
+.sidebar-shadow {
+  position: fixed;
+  display: none;
+  opacity: 0;
+  animation: show 0.25s ease reverse;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 90;
+} #sidebar-toggle:checked ~ .sidebar-shadow {
+  display: block;
+  opacity: 0.6;
+  background-color: #000;
+  animation: show 0.5s ease;
+} @keyframes show {
+  from { opacity: 0 } to { opacity: 0.6 }
 }

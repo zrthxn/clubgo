@@ -6,7 +6,7 @@ import { stringify as QueryBuilder } from 'query-string'
 
 import './Header.scss'
 
-import RootContext from '../../RootContextProvider'
+import RootContext from '../../RootContext'
 import { SelectCity } from '@clubgo/website/components'
 
 export default class Header extends Component {
@@ -14,7 +14,13 @@ export default class Header extends Component {
   context!: React.ContextType<typeof RootContext>
 
   state = {
-    searchQuery: null
+    openSidebar: false
+  }
+
+  toggleSidebar = () => {
+    this.setState(()=>({
+      openSidebar: !this.state.openSidebar
+    }))
   }
 
   render() {
@@ -29,16 +35,39 @@ export default class Header extends Component {
               />
               
               <section className="container">
+                <input type="checkbox" checked={this.state.openSidebar} id="sidebar-toggle" hidden readOnly/>
+                <label htmlFor="sidebar-toggle" className="hamburger" onClick={this.toggleSidebar}><span></span></label>
+                
+                <div className="sidebar-shadow" id="sidebar-shadow" onClick={this.toggleSidebar}/>
+
+                <div className="sidebar">
+                  <nav className="sidebar-nav">
+                    <Link onClick={this.toggleSidebar} to={'/'}>About</Link>
+                    <Link onClick={this.toggleSidebar} to={'/speakers'}>Speakers</Link>
+                    <Link onClick={this.toggleSidebar} to={'/team'}>Team</Link>
+                    <Link onClick={this.toggleSidebar} to={'/contact'}>Contact</Link>
+                    <Link onClick={this.toggleSidebar} to={'/register'}>Register</Link>
+                  </nav>
+                </div>
+
                 <Link className="no-decor" to="/" style={{ padding: '1rem' }}>
                   <h1 id="site-title">ClubGo</h1>
                 </Link>
 
-                <div className="nav-links">
-                  <Link className="no-decor" to={`/events/in/${appContext.state.city}`}>
+                <div className="desktop-nav">
+                  <Link className="no-decor" to={
+                    appContext.state.city!==undefined ? (
+                      `/events/in/${appContext.state.city.toLowerCase()}`
+                    ) : '/events/in/delhi'
+                  }>
                     <h4>Events</h4>
                   </Link>
                   
-                  <Link className="no-decor" to={`/venues/in/${appContext.state.city}`}>
+                  <Link className="no-decor" to={
+                    appContext.state.city!==undefined ? (
+                      `/venues/in/${appContext.state.city.toLowerCase()}`
+                    ) : '/venues/in/delhi'
+                  }>
                     <h4>Venues</h4>
                   </Link>
                 </div>
@@ -47,7 +76,7 @@ export default class Header extends Component {
                   <div className="set-city" onClick={()=>{
                     appContext.actions.toggleCityLightbox()
                   }}>
-                    { appContext.state.city }
+                    { appContext.state.city } <label htmlFor=""/>
                   </div>
 
                   <IconButton onClick={()=>{ this.context.router('/search') }}>

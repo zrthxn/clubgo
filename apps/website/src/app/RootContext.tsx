@@ -3,17 +3,18 @@ import { Route } from 'react-router-dom'
 
 // Initial State
 const _istate = {
-  city: null,
-  locality: null,
+  city: undefined,
+  locality: undefined,
   openCityLightbox: false,
-  user: {
-
-  },
   story: {
     isOpen: false,
     image: String(),
     stories: [
-      
+      { imageURL: '' }, 
+      { imageURL: '' }, 
+      { imageURL: '' }, 
+      { imageURL: '' }, 
+      { imageURL: '' }, 
     ],
   }
 }
@@ -68,13 +69,15 @@ export class RootContextProvider extends Component {
 
   getUserContext = () => {
     if(localStorage.getItem('cg::context')===null)
-      return {
-        city: undefined
-      }
+      return { city: undefined }
       
-    let usercontext = JSON.parse(atob(localStorage.getItem('cg::context')))
-    this.setState({ ...usercontext })
-    return usercontext
+    try {
+      let usercontext = JSON.parse(atob(localStorage.getItem('cg::context')))
+      this.setState({ ...usercontext })
+      return usercontext 
+    } catch (error) {
+      return { city: undefined }
+    }
   }
 
   setUserContext = (setcontext) => {

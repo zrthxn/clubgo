@@ -66,6 +66,8 @@ export class VenueDetails extends Component<VenueDetailsProps> {
   }
 
   componentDidMount() {
+    this.fetchCities()
+    
     this.setState(()=>{
       if(this.props.populate) {
         let { selectCategories } = this.state

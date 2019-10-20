@@ -12,7 +12,7 @@ import {
 import './Global.scss'
 
 import { LoginService } from '@clubgo/api'
-import { RootContextProvider, RootContext } from './RootContextProvider'
+import { RootContextProvider, RootContext } from './RootContext'
 
 import Home from './views/Home/Home'
 import EventListing from './views/Events/Events'
@@ -45,7 +45,8 @@ export default class WebsiteController extends Component {
   }
 
   componentDidMount() {
-    this.validateApplication().then(async ()=>{
+    this.context.actions.getUserContext()
+    this.validateApplication().then(()=>{
       this.setState({
         appValidationFinished: true
       })
@@ -86,17 +87,19 @@ export default class WebsiteController extends Component {
                         )
                       }}/>
 
+                      <Route exact path="/events" component={EventListing} />
                       <Route path="/events/in/:city" render={(routeProps)=>(
                         <EventListing { ...routeProps }/>
                       )}/>
-                      <Route exact path="/events/detail/:id" render={(routeProps)=>(
+                      <Route exact path="/event/:id" render={(routeProps)=>(
                         <EventDetails { ...routeProps }/>
                       )}/>
                       
+                      <Route exact path="/venues" component={VenueListing} />
                       <Route path="/venues/in/:city" render={(routeProps)=>( 
                         <VenueListing { ...routeProps }/>
                       )}/>
-                      <Route exact path="/venues/detail/:id" render={(routeProps)=>(
+                      <Route exact path="/venue/:id" render={(routeProps)=>(
                         <VenueDetails { ...routeProps }/> 
                       )}/>
 

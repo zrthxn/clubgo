@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import ScrollArea from 'react-scrollbar'
 import './Story.scss'
 
-import RootContext from '../../RootContextProvider';
+import RootContext from '../../RootContext';
+import Recommender from '../Recommender/Recommender';
 
 interface StoryProps {
   index: number

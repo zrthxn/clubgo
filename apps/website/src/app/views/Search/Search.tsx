@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { parse as QueryParser } from 'query-string'
 
-import RootContext from '../../RootContextProvider'
+import RootContext from '../../RootContext'
 import { IEventModel } from '@clubgo/database'
 
 import { DatabaseService } from '@clubgo/api'
@@ -56,8 +56,6 @@ export default class Search extends Component<RouteComponentProps> {
 
       if(queryParams.city===undefined)
         queryParams.city = this.context.actions.getUserContext().city
-      
-      this.context.actions.setUserContext({ city: queryParams.city })
 
       this.eventService.searchBy({
         venue: {
@@ -83,7 +81,6 @@ export default class Search extends Component<RouteComponentProps> {
       if(searchQuery.city===undefined)
         searchQuery.city = this.context.actions.getUserContext().city
 
-      this.context.actions.setUserContext({ city: searchQuery.city })
       this.eventService.searchBy({
         venue: {
           city: searchQuery.city
@@ -173,9 +170,13 @@ export default class Search extends Component<RouteComponentProps> {
         <section className="container">
           <h2>Recommended Events</h2>
           <h4>Selected Events for you</h4>
-          <Recommender 
+          <Recommender query={{
+            venue: {
+              city: this.props.city
+            }
+          }}
             render={(eventProps:IEventModel)=>(
-              <Event data={eventProps}/>
+              <Event key={eventProps._id} data={eventProps} />
             )}
           />
         </section>

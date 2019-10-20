@@ -7,7 +7,7 @@ import './Home.scss'
 import { Story, StoriesContainer } from '@clubgo/website/components'
 import { Banner, Textbox, Recommender } from '@clubgo/website/components'
 import { Event, Flexbox, FlexContainer } from '@clubgo/website/components'
-import RootContext from '../../RootContextProvider'
+import RootContext from '../..//RootContext'
 
 import { DatabaseService } from '@clubgo/api'
 import { IEventModel } from '@clubgo/database'
@@ -77,10 +77,16 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         <section className="container">
           <h2>Featured Events</h2>
           <h4>Our best featured events</h4>
-          <Recommender
-            context="featured" 
+          <Recommender query={{
+            settings: {
+              isFeatured: true
+            },
+            venue: {
+              city: this.props.city
+            }
+          }}
             render={(eventProps:IEventModel)=>(
-              <Event size="large" color="white" data={eventProps}/>
+              <Event key={eventProps._id} size="large" data={eventProps} />
             )}
           />
         </section>
@@ -88,9 +94,14 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         <section className="container">
           <h2>Nearby</h2>
           <h4>Events near you</h4>
-          <Recommender 
+          <Recommender query={{
+            venue: {
+              city: this.props.city,
+              locality: undefined
+            }
+          }}
             render={(eventProps:IEventModel)=>(
-              <Event color="white" data={eventProps}/>
+              <Event key={eventProps._id} data={eventProps} />
             )}
           />
         </section>
@@ -98,9 +109,13 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         <section className="container">
           <h2>Recommended</h2>
           <h4>Events recommended for you</h4>
-          <Recommender 
+          <Recommender query={{
+            venue: {
+              city: this.props.city
+            }
+          }}
             render={(eventProps:IEventModel)=>(
-              <Event color="white" data={eventProps}/>
+              <Event key={eventProps._id} data={eventProps} />
             )}
           />        
         </section>

@@ -20,10 +20,9 @@ export class Venue extends Component<VenueProps> {
   state = {
     loading: true,
     suggestions:{
-      city: [ ],
+      cities: [ ],
       venueCategory: [ ],
-      venue: [ ],
-      locality: [ ]
+      venue: [ ]
     },
     selectCity: null,
     selectVenue: null,
@@ -47,25 +46,18 @@ export class Venue extends Component<VenueProps> {
 
   constructor(props) {
     super(props)
+  }
 
+  locationService = new DatabaseService('/location')
+
+  fetchCities = async () => {
+    let { data } = await this.locationService.list()
     let { suggestions } = this.state
-    suggestions.city = [
-      { label: 'Delhi' },
-      { label: 'Mumbai' },
-      { label: 'Bangalore' },
-      { label: 'Gurgaon' },
-    ].map(item=>({
-      value: item.label, label: item.label,
-    }))
-
-    suggestions.venueCategory = [
-      { label: 'Nightclubs' },
-      { label: 'Clubs and Bars' }
-    ].map(item=>({
-      value: item.label, label: item.label,
-    }))
-
-    this.state.suggestions = suggestions
+    suggestions.cities = data.results
+    this.setState({
+      suggestions
+    })
+    return
   }
 
   componentDidMount() {
@@ -171,7 +163,9 @@ export class Venue extends Component<VenueProps> {
                   inputId="venue.city"
                   placeholder="Select City"
                   value={this.state.selectCity}
-                  options={this.state.suggestions.city}
+                  options={this.state.suggestions.cities.map((item, index)=>({
+                    label: item.city, value: item
+                  }))}
                   onChange={ selected => {
                     let { data } = this.state
                     data.city = selected.value
@@ -278,7 +272,9 @@ export class Venue extends Component<VenueProps> {
                   inputId="venue.city"
                   placeholder="Select City"
                   value={this.state.selectCity}
-                  options={this.state.suggestions.city}
+                  options={this.state.suggestions.cities.map((item, index)=>({
+                    label: item.city, value: item
+                  }))}
                   onChange={ selected => {
                     let { data } = this.state
                     data.city = selected.value

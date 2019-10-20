@@ -11,7 +11,7 @@ import { IEventModel, IVenueModel } from '@clubgo/database'
 import { Ticket } from './ui/Ticket'
 import { Details } from './ui/Details'
 import { BookingContext, BookingContextProvider } from './BookingContextProvider'
-import RootContext from '../../RootContextProvider'
+import RootContext from '../../RootContext'
 
 type URLParams = {
   id: string

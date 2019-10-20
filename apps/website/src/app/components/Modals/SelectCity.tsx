@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { RootContext } from '../../RootContextProvider'
+import { RootContext } from '../../RootContext'
 import { Lightbox } from './Lightbox'
 
 interface ComponentProps {

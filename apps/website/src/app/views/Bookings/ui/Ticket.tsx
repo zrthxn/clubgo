@@ -71,10 +71,10 @@ export class Ticket extends Component<TicketViewProps> {
                   <hr/>
 
                   <h3 className="bold">Timings</h3>
-                  <p style={{ margin: 0, opacity: 0.75 }}>Last entry time is <b>1:00 AM</b></p>
+                  {/* <p style={{ margin: 0, opacity: 0.75 }}>Last entry time is <b>1:00 AM</b></p> */}
                   <div className="timings">
                     {
-                      [1,2].map((item, index)=>(
+                      this.event.bookings.tickets.map((item, index)=>(
                         <div className={this.state.selectedTimeIndex===index ? 'select-pill selected' : 'select-pill'}
                           onClick={()=>{
                             this.setState({
@@ -82,7 +82,9 @@ export class Ticket extends Component<TicketViewProps> {
                             })
                           }}
                         >
-                          { 1 + index }:00 PM
+                          {
+                            ((item.activate) - ((item.activate) % 60)) / 60
+                          }
                         </div>
                       ))
                     }

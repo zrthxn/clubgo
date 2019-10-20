@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import './Event.scss'
 
-import RootContext from '../../RootContextProvider'
+import RootContext from '../../RootContext'
 import { Image } from '@clubgo/website/components'
 import { IEventModel } from '@clubgo/database'
 
 interface EventComponentProps {
   data: IEventModel
   size?: 'small' | 'large'
-  color?: 'default' | 'white'
+  color?: 'dark' | 'white'
   image?: string
 }
 
@@ -17,7 +17,21 @@ export class Event extends Component<EventComponentProps> {
   static contextType = RootContext
   context!: React.ContextType<typeof RootContext>
 
-  detailsPageURL = `/events/detail/${this.props.data._id}`
+  state = {
+    calculatedPrices: {
+      lowest: 0
+    }
+  }
+
+  detailsPageURL = `/event/${this.props.data._id}`
+
+  componentDidMount() {
+    this.calculatePrice()
+  }
+
+  calculatePrice = () => {
+
+  }
 
   openEventDetails = () => {
     window.scrollTo(0, 0)
@@ -36,13 +50,15 @@ export class Event extends Component<EventComponentProps> {
     return (
       <div className={eventCardStyle} onClick={this.openEventDetails}>
         {/* <Image alt="Image" src={ this.props.data.media.images[0].url }/> */}
-        {
-          this.props.data.media.images.length!==0 ? (
-            <img alt="Image" src={ this.props.data.media.images[0].url }/>
-          ) : (
-            <img alt="Image" src="/assets/clubgo.png"/>
-          )
-        }
+        <div className="image-container">
+          {
+            this.props.data.media.images.length!==0 ? (
+              <img alt="Image" src={ this.props.data.media.images[0].url }/>
+            ) : (
+              <img alt="Image" src="/assets/clubgo.png"/>
+            )
+          }
+        </div>
         
         <Link to={this.detailsPageURL}>
           <h3 className="event-title">{ this.props.data.eventTitle }</h3>
@@ -53,7 +69,7 @@ export class Event extends Component<EventComponentProps> {
         <p style={{ margin: '0.75em 0 0.5em 0', fontSize: '0.85em' }}>Friday, 20 October | 1:00 AM</p>
 
         <p style={{ margin: 0, fontWeight: 600, fontSize: '0.85em' }}>
-          Starting from { '\u20B9 ' + '3,000' }
+          Starting from { '\u20B9 ' + this.state.calculatedPrices.lowest }
         </p>
       </div>
     )

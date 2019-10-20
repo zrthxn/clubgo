@@ -3,10 +3,11 @@ import { RouteComponentProps } from 'react-router-dom'
 import './Events.scss'
 
 import { Story, StoriesContainer, FlexContainer, Flexbox, Event } from '@clubgo/website/components'
-import RootContext from '../../RootContextProvider'
+import RootContext from '../../RootContext'
 
 import { Advert } from '@clubgo/website/components'
 import { Lightbox, Button } from '@clubgo/website/components'
+import { DatabaseService } from '@clubgo/api'
 
 type URLParams = { 
   city: string
@@ -25,15 +26,28 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
     }
   }
 
+  eventService = new DatabaseService('/event')
+
   componentDidMount() {
     let { city } = this.props.match.params
     if(city!==undefined) {
       city = city.substr(0, 1).toUpperCase() + city.substr(1)
-      this.context.actions.setUserContext({ city })
       this.setState({
         city
       })
     }
+
+    this.eventService.searchBy({
+      venue: {
+        city
+      }
+    }).then(({ data })=>{
+      this.setState({
+        events: {
+          nearby: data.results
+        }
+      })
+    })
   }
 
   render() {

@@ -1,11 +1,11 @@
 @import "../../Global.scss";
 
-.event {
+.venue {
   padding: 1em;
   margin: 1em;
 
   width: 100%;
-  height: 20em;
+  height: 16em;
   border-radius: 0.5em;
   background-color: #20202040;
 
@@ -18,7 +18,7 @@
 
   .image-container {
     margin: -1em;
-    margin-bottom: 0.5em;
+    margin-bottom: 1.5em;
     max-height: 65%;
     overflow: hidden;
     
@@ -34,11 +34,11 @@
     margin: 1rem 0;
   }
   
-  .event-title {
+  .venue-title {
     font-weight: 600;
   }
 
-  .event-venue {
+  .venue-city {
     color: $primaryColor;
   }
 
@@ -55,7 +55,7 @@
 }
 
 .scrollarea-content {
-  .event {
+  .venue {
     width: 16em;
     transition: all 0.25s ease;
 
@@ -65,49 +65,49 @@
     }
   }
 
-  .event:first-of-type {
+  .venue:first-of-type {
     margin-left: 0;
   }
-  .event:last-of-type {
+  .venue:last-of-type {
     margin-right: 0;
   }
 }
 
 .flexbox {
   @media (min-width: 600px) {
-    .event:first-of-type {
+    .venue:first-of-type {
       margin-left: 0;
     }
-    .event:last-of-type {
+    .venue:last-of-type {
       margin-right: 0;
     }
   }
 }
 
-// Dark Event Card ------------------------------
-.event[class~="dark"] {
+// Dark venue Card ------------------------------
+.venue[class~="dark"] {
   background-color: #20202040;
   color: #fff;
   box-shadow: none;
 
-  .event-venue {
+  .venue-venue {
     color: #fff;
   }
 }
 
-// Large Event Card ------------------------------
-.event[class~="large"] {
+// Large venue Card ------------------------------
+.venue[class~="large"] {
   @media (min-width: 600px) {
     & {
       width: 20em;
       height: 22em;
     }
 
-    .event-title {
+    .venue-title {
       font-size: 1.25em;
     }
 
-    .event-venue {
+    .venue-venue {
       font-size: 1em;
     }
   }

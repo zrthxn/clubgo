@@ -3,7 +3,7 @@ import QueryString from 'query-string'
 
 import { handleChangeById as inputHandler, verifyRequirements } from '@clubgo/util'
 import { Textbox, Button } from '@clubgo/website/components'
-import RootContext from '../../../RootContextProvider'
+import RootContext from '../../../RootContext'
 
 interface DetailsProps {
   onComplete: Function

@@ -10,18 +10,19 @@
 
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onload="startParticles()"></script>
+    <script>
+      function startParticles() { 
+        particlesJS.load('particles', '/assets/particlesjs-config.json', ()=>{})
+      }
+    </script>
 
     <!-- PayUMoney Scripts -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <script async defer id="bolt" bolt-color="89216B" bolt-logo="https://tedxjmi.org/assets/icon.png"
+    <script async id="bolt" bolt-color="89216B" bolt-logo="https://tedxjmi.org/assets/icon.png"
       src="https://sboxcheckout-static.citruspay.com/bolt/run/bolt.min.js"></script>
   </head>
   <body>
     <div id="root"></div>
-
     <div id="particles"></div>
-    <script>
-      const startParticles = () => particlesJS.load('particles', '/assets/particlesjs-config.json', ()=>{})
-    </script>
   </body>
 </html>
