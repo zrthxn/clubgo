@@ -25,7 +25,7 @@ import LoginManager from './views/Login/Login'
 import Header from './partials/Header/Header'
 import Footer from './partials/Footer/Footer'
 import NotFound from './partials/Errors/NotFound'
-import BookingController from './views/Bookings/Booking'
+import BookingController from './views/Bookings/BookingController'
 
 const MaterialUITheme = createMuiTheme({
   palette: {

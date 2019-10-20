@@ -40,15 +40,19 @@ export default class Header extends Component {
                 
                 <div className="sidebar-shadow" id="sidebar-shadow" onClick={this.toggleSidebar}/>
 
-                <div className="sidebar">
-                  <nav className="sidebar-nav">
-                    <Link onClick={this.toggleSidebar} to={'/'}>About</Link>
-                    <Link onClick={this.toggleSidebar} to={'/speakers'}>Speakers</Link>
-                    <Link onClick={this.toggleSidebar} to={'/team'}>Team</Link>
-                    <Link onClick={this.toggleSidebar} to={'/contact'}>Contact</Link>
-                    <Link onClick={this.toggleSidebar} to={'/register'}>Register</Link>
-                  </nav>
-                </div>
+                {
+                  this.state.openSidebar ? (
+                    <div className="sidebar">
+                      <nav className="sidebar-nav">
+                        <Link onClick={this.toggleSidebar} to={'/'}>About</Link>
+                        <Link onClick={this.toggleSidebar} to={'/speakers'}>Speakers</Link>
+                        <Link onClick={this.toggleSidebar} to={'/team'}>Team</Link>
+                        <Link onClick={this.toggleSidebar} to={'/contact'}>Contact</Link>
+                        <Link onClick={this.toggleSidebar} to={'/register'}>Register</Link>
+                      </nav>
+                    </div>
+                  ) : null
+                }
 
                 <Link className="no-decor" to="/" style={{ padding: '1rem' }}>
                   <h1 id="site-title">ClubGo</h1>

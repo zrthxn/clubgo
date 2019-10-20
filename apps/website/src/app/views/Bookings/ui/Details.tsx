@@ -57,7 +57,7 @@ export class Details extends Component<DetailsProps> {
                 appContext => (
                   <Button size="large" onClick={()=>{
                     appContext.actions.setUserLogin(this.state.data)
-                    this.props.onComplete()
+                    this.props.onComplete(this.state.data)
                   }}>
                     Submit
                   </Button>

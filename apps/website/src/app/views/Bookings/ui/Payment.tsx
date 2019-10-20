@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 
-export class Payment extends Component {
+interface PaymentProps {
+  onComplete: Function
+  ticket: object
+}
+
+export class Payment extends Component<PaymentProps> {
   render() {
     return (
       <div>

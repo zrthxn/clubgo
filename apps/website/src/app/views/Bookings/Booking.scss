@@ -2,7 +2,7 @@
 
 .booking {
   .ticket {
-    margin: 1em;
+    margin: 0.5em;
     padding: 1em 1.5em;
     border-radius: 0.5em;
     overflow: hidden;
@@ -47,20 +47,123 @@
   }
 
   .payment {
-    margin: 1em;
+    margin: 0.5em;
     padding: 1em 1.5em;
     border-radius: 0.5em;
 
     background-color: #fff;
     color: #000;
 
+    .offers {
+      margin: 2em 0;
+      margin-top: 0;
+      
+      .offer-item {
+        margin: 0.25em 0;
+        padding: 1em;
+        background-color: #ffe60080;
+        border-radius: 10px;
+
+        font-size: 0.85em;
+        font-weight: 600;
+      }
+    }
+
     .price {
       display: flex;
       flex-direction: row;
-      margin: 2em 0 0 0;
+      // margin: 2em 0 0 0;
 
-      h3:first-of-type {
+      .right {
+        text-align: left;
         flex-grow: 1;
+
+        p {
+          margin: 0;
+        }
+      }
+
+      .left {
+        text-align: right;
+        flex-grow: 1;
+
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+.people {
+  display: flex;
+  flex-direction: column;
+
+  .people-block {
+    display: flex;
+    flex-direction: row;
+
+    margin: 1em 0;
+
+    * {
+      margin: 0;
+    }
+
+    .people-label {
+      width: 25%;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+
+      .price {
+        font-size: 0.8em;
+        opacity: 0.75;
+      }
+    }
+
+    .people-add {
+      // margin: 0 1em;
+      background-color: #1c1c1c40;
+      border-radius: 50%;
+      padding: 0.25em;
+      cursor: pointer;
+      transition: 0.25s all ease;
+
+      display: flex;
+      flex-direction: row;
+      * {
+        margin: auto;
+      }
+
+      &:hover {
+        transition: 0.25s all ease;
+        background-color: #1c1c1c60;
+      }
+    }
+    .people-count {
+      margin: auto 0;
+      width: 2em;
+      text-align: center;
+      font-size: 1.125em;
+      font-weight: 800;
+    }
+    .people-remove {
+      // margin: 0 1em;
+      background-color: #1c1c1c40;
+      border-radius: 50%;
+      padding: 0.25em;
+      cursor: pointer;
+      transition: 0.25s all ease;
+
+      display: flex;
+      flex-direction: row;
+      * {
+        margin: auto;
+      }
+
+      &:hover {
+        transition: 0.25s all ease;
+        background-color: #1c1c1c60;
       }
     }
   }
@@ -70,6 +173,7 @@
   border-radius: 0.5em;
   border: 1px solid $primaryColor;
   color: $primaryColor;
+  cursor: pointer;
   
   font-size: 0.75em;
   margin: 0.5em;

@@ -7,7 +7,7 @@ export const bookingSchema = new mongoose.Schema(
       type: Date, required: true
     },
     bookingReference: {
-      type: String, required: true
+      type: String, required: true, unique: true
     },
     name: {
       type: String, required: true
@@ -50,6 +50,15 @@ export const bookingSchema = new mongoose.Schema(
         }
       }
     ],
+    people: {
+      type: {
+        couple: Number,
+        single: Number,
+        female: Number,
+        male: Number
+      },
+      required: true
+    },
     payments: {
       transactionId: String,
       bookingAmountPaid: {
@@ -101,6 +110,12 @@ export interface IBookingModel extends mongoose.Document {
     category: string
     discountPercent: number
   }>
+  people: {
+    couple?: number
+    single?: number
+    female?: number
+    male?: number
+  }
   payments: {
     transactionId?: string
     bookingAmountPaid: boolean

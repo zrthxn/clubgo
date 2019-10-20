@@ -1,7 +1,8 @@
 import express from 'express'
 import { conf } from '@clubgo/util'
-import { ModelController, EventController, BookingController } from '@clubgo/database'
+import { ModelController, EventController } from '@clubgo/database'
 import { Venue, User, Offer, Ticket, Location } from '@clubgo/database'
+import BookingRouter from './BookingRouter'
 
 export const APIRouter = express.Router()
 export default APIRouter
@@ -30,8 +31,7 @@ APIRouter.use('/event', EventRouter.router())
 const VenueRouter = new ModelController(Venue)
 APIRouter.use('/venue', VenueRouter.router())
 
-const BookingRouter = new BookingController()
-APIRouter.use('/booking', BookingRouter.router())
+APIRouter.use('/booking', BookingRouter)
 
 const UserRouter = new ModelController(User)
 APIRouter.use('/user', UserRouter.router())

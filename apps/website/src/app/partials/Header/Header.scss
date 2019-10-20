@@ -97,6 +97,12 @@ header {
   top: 7px;
 }
 
+#sidebar-toggle:checked ~ .hamburger {
+  position: fixed;
+  left: 1em;
+  top: 3em;
+}
+
 #sidebar-toggle:checked ~ .hamburger span::before {
   bottom: 0;
   transform: rotate(-45deg);
