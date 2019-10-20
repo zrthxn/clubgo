@@ -3,25 +3,3 @@
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
-
-#root {
-  padding: 1em;
-  overflow-x: hidden;
-}
-
-#particles {
-  position: fixed;
-  top: 0;
-  left:0;
-  width: 100%;
-  height: 100vh;
-  z-index: -1;
-
-  * {
-    animation: reveal 7.5s ease forwards;
-  }
-}
-@keyframes reveal {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}

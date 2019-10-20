@@ -14,8 +14,11 @@ $accentLightColor: #FFF;
 $bodyBg: linear-gradient(135deg, $primaryColor, $secondaryColor);
 
 body {
+  overflow-x: hidden;
   background: $bodyBg;
   height: 100%;
+  
+  padding: 0.5em;
   font-family: $montserratFont;
 
   color: #fff;
@@ -32,7 +35,7 @@ h1 {
   font-family: $francoisFont;
   font-size: 36px;
   font-weight: 600;
-  margin: 2.5rem 0;
+  margin: 1rem 0;
   margin-top: 0.75rem;
 }
 h1[class~="light"] {
@@ -45,7 +48,7 @@ h2 {
   font-family: $montserratFont;
   font-size: 24px;
   font-weight: 800;
-  margin: 0.75rem 0;
+  margin: 0.5rem 0;
 }
 
 h3 {
@@ -53,7 +56,7 @@ h3 {
   font-family: $poppinsFont;
   font-size: 18px;
   font-weight: 500;
-  margin: 0.25rem 0;
+  margin: 0.125rem 0;
 }
 h4 {
   // Subheading
@@ -61,7 +64,7 @@ h4 {
   font-size: 16px;
   font-weight: 400;
   color: #FFFFFFC0;
-  margin: 0.25rem 0;
+  margin: 0.125rem 0;
 }
 
 p {
@@ -94,6 +97,38 @@ a[class~="no-decor"] {
 
 .bold {
   font-weight: bold;
+}
+
+@media (max-width: 360px) {
+  h1 {
+    // Page Heading
+    font-size: 30px;
+    margin: 1rem 0;
+    margin-top: 0.75rem;
+  }
+  
+  h2 {
+    // Section Heading
+    font-size: 18px;
+    margin: 0.5rem 0;
+  }
+  
+  h3 {
+    // Label
+    font-size: 16px;
+    margin: 0.125rem 0;
+  }
+  h4 {
+    // Subheading
+    font-size: 14px;
+    color: #FFFFFFC0;
+    margin: 0.125rem 0;
+  }
+  
+  p {
+    font-size: 12px;
+    margin: 1.5rem 0;
+  }  
 }
 
 // ========================================================
@@ -140,8 +175,7 @@ section {
   width: fit-content;
   overflow: visible;
   position: relative;
-  
-  padding: 1em 0;
+  padding-bottom: 1em;
 
   @media (min-width: 600px) {
     & {
@@ -156,5 +190,5 @@ section {
   position: relative;
   width: fit-content;
   overflow: visible;
-  padding: 1em 0;
+  // padding: 1em 0;
 }

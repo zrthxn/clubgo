@@ -39,7 +39,8 @@
       box-shadow: 0 0 10px #1c1c1c80;
 
       .block {
-        padding: 1.5em;
+        padding: 1em;
+        margin: 1em 0;
         color: #000;
       }
   
@@ -58,20 +59,27 @@
         // position: fixed;
       }
     }
+  }
 
-    .attendees {
-      display: flex;
-      flex-direction: row;
-      
-      span {
-        margin: auto 0.25em;
-        padding: 1em;
-        border-radius: 50%;
-        background: #fff;
+  .attendees {
+    display: flex;
+    flex-direction: row;
+    
+    p {
+      margin: 0 auto;
+      text-align: center !important;
+      font-size: 1.0625em;
+      font-weight: 600;
+    }
+    
+    span {
+      margin: auto 0.25em;
+      padding: 1em;
+      border-radius: 50%;
+      background: #fff;
 
-        &:first-of-type {
-          margin-left: 1em;
-        }
+      &:first-of-type {
+        margin-left: 1em;
       }
     }
   }

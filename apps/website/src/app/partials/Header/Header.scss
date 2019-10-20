@@ -1,7 +1,6 @@
 header {
-  padding: 1em;
+  padding: 0.25em 0;
   background: linear-gradient(#ff000040, transparent);
-  margin: -1em;
 
   .container {
     padding: 0.5em 0;
@@ -99,8 +98,8 @@ header {
 
 #sidebar-toggle:checked ~ .hamburger {
   position: fixed;
-  left: 1em;
-  top: 3em;
+  left: 0.5em;
+  top: 2.5em;
 }
 
 #sidebar-toggle:checked ~ .hamburger span::before {

@@ -4,24 +4,26 @@
   .ticket {
     margin: 0.5em;
     padding: 1em 1.5em;
-    border-radius: 0.5em;
+    border-radius: 1em;
     overflow: hidden;
 
     background-color: #fff;
     color: #000;
 
     .event-details {
-      background-color: #1c1c1c20;
-      padding: 2em;
+      background-color: #1c1c1c08;
+      padding: 1.5em;
       margin: -1em -1.5em;
       margin-bottom: 1em;
       text-align: center;
   
       .event-name {
         margin: 0;
+        font-weight: 900;
       }
       .venue-name {
         margin: 0;
+        font-weight: 900;
         color: $primaryColor;
       }
     }
@@ -35,21 +37,23 @@
       display: flex;
       flex-flow: row;
       flex-wrap: wrap;
-      margin: 1em 0;
+      // margin: 1em 0;
+      margin: 0 -0.5em;
     }
 
     .timings {
       display: flex;
       flex-flow: row;
       flex-wrap: wrap;
-      margin: 1em 0;
+      // margin: 1em 0;
+      margin: 0 -0.5em;
     }
   }
 
   .payment {
     margin: 0.5em;
     padding: 1em 1.5em;
-    border-radius: 0.5em;
+    border-radius: 1em;
 
     background-color: #fff;
     color: #000;
@@ -59,9 +63,11 @@
       margin-top: 0;
       
       .offer-item {
-        margin: 0.25em 0;
-        padding: 1em;
-        background-color: #ffe60080;
+        margin: 0.25rem auto;
+        padding: 0.75em;
+        max-width: 24em;
+        background-color: #ffc40020;
+        color: #ffc400;
         border-radius: 10px;
 
         font-size: 0.85em;
@@ -123,13 +129,15 @@
 
     .people-controls {
       display: flex;
-      flex-direction: row;
+      flex-direction: row-reverse;
       margin: 0 2em;
+      height: 2em;
       background-color: #1c1c1c20;
       border-radius: 5em;
   
       .people-add {
-        // margin: 0 1em;
+        width: 2em;
+        height: 2em;
         background-color: #1c1c1c40;
         border-radius: 50%;
         padding: 0.25em;
@@ -155,7 +163,8 @@
         font-weight: 800;
       }
       .people-remove {
-        // margin: 0 1em;
+        width: 2em;
+        height: 2em;
         background-color: #1c1c1c40;
         border-radius: 50%;
         padding: 0.25em;

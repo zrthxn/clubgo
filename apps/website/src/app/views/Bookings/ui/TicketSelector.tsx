@@ -151,15 +151,14 @@ export class TicketSelector extends Component<TicketViewProps> {
               <Grid item md={5} xs={12}>
                 <section className="ticket">
                   <div className="event-details">
-                    <h2 className="event-name">{ this.event.eventTitle }</h2>
-                    <h3 className="venue-name">{ this.event.venue.title }</h3>
+                    <h2 className="event-name"><b>{ this.event.eventTitle }</b></h2>
+                    <h3 className="venue-name"><b>{ this.event.venue.title }</b></h3>
                   </div>
 
-                  <h3 className="bold">Dates</h3>
-                  <h4 style={{ color: '#000', fontSize: '0.85em' }}>Select a date you want to attend</h4>
+                  <h3 className="bold" style={{ flexGrow: 1 }}>Dates</h3>
                   <div className="dates">
                     {
-                      this.event.scheduling.customDates.map((date, index)=>(
+                      this.event.scheduling.customDates.slice(0, 2).map((date, index)=>(
                         <div className={this.state.selectedDateIndex===index ? 'select-pill selected' : 'select-pill'}
                           onClick={()=>{
                             this.setState({
@@ -174,9 +173,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                   </div>
                   <br/>
 
-                  <h3 className="bold">Timings</h3>
-                  <h4 style={{ color: '#000', fontSize: '0.85em' }}>Select your entry time</h4>
-                  {/* <p style={{ margin: 0, opacity: 0.75 }}>Last entry time is <b>1:00 AM</b></p> */}
+                  <h3 className="bold" style={{ flexGrow: 1 }}>Timings</h3>
                   <div className="timings">
                     {
                       this.event.bookings.tickets.map((item, index)=>(
@@ -328,7 +325,6 @@ export class TicketSelector extends Component<TicketViewProps> {
                       {
                         this.event.offers.availableOffers.map((offer, index)=>(
                           <div className="offer-item" key={`available-offer-${index}`}>
-                            <span style={{ padding: '0 0.5em', fontWeight: 900, color: '#1c1c1c80' }}>#</span>
                             { offer.offerTitle }
                           </div>
                         ))
@@ -375,15 +371,15 @@ export class TicketSelector extends Component<TicketViewProps> {
 
                   <div className="price">
                     <div className="right">
-                      <h3>Sub-Total</h3>
-                      <p>Processing Fee</p>
-                      <p>GST</p>
+                      <h3 className="bold">Sub-Total</h3>
+                      <p style={{ opacity: 0.5 }}>Processing Fee</p>
+                      <p style={{ opacity: 0.5 }}>GST</p>
                       <h3 className="bold">To Pay</h3>
                     </div>
                     <div className="left">
                       <h3>{ '\u20B9' + this.state.payment.subtotal.toFixed(0) }</h3>
-                      <p>{ this.event.bookings.processingFeePercent } %</p>
-                      <p>{ this.event.bookings.taxPercent } %</p>
+                      <p style={{ opacity: 0.5 }}>{ this.event.bookings.processingFeePercent } %</p>
+                      <p style={{ opacity: 0.5 }}>{ this.event.bookings.taxPercent } %</p>
                       <h3 className="bold">{ '\u20B9' + this.state.payment.total.toFixed(2) }</h3>
                     </div>
                   </div>

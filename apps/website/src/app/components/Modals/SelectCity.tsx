@@ -31,32 +31,36 @@ export class SelectCity extends Component<ComponentProps> {
             <Lightbox open={this.state.openLightbox || appContext.state.openCityLightbox}>
               <article>
                 <section>
-                  <h2>Select your City</h2>
-
-                  <section>
-                    <div style={{
-                      display: 'flex',
-                      flexFlow: 'row',
-                      flexWrap: 'wrap',
-                      width: '20em',
-                      margin: 'auto'
-                    }}>
-                      {
-                        [
-                          "Delhi",
-                          "Mumbai",
-                          "Gurgaon",
-                          "Bangalore"
-                        ].map((item, index)=>(
-                          <div
-                            style={{
-                              padding: '3em 0',
-                              margin: '1em',
-                              width: '8em',
-                              border: '1px solid #1c1c1c80',
-                              borderRadius: '10px',
-                              textAlign: 'center'
-                            }}
+                  <div style={{
+                    display: 'flex', flexFlow: 'row', flexWrap: 'wrap',
+                    width: '16em', margin: 'auto',
+                  }}>
+                    <h2 style={{ margin: '1em auto' }}>Select your City</h2>
+                    {
+                      [
+                        "Delhi",
+                        "Mumbai",
+                        "Gurgaon",
+                        "Bangalore"
+                      ].map((item, index)=>(
+                        <div
+                          style={{
+                            padding: '1.5em 0', margin: '0.5em', width: '100%',
+                            border: '1px solid #1c1c1c80',
+                            borderRadius: '10px',
+                            textAlign: 'center'
+                          }}
+                          onClick={()=>{
+                            this.setState({ openLightbox: false })
+                            appContext.actions.toggleCityLightbox()
+                            appContext.router('/in/' + item.toLowerCase())
+                            window.location.reload()
+                            appContext.actions.setUserContext({
+                              city: item
+                            })
+                          }}
+                        >
+                          <p style={{ margin: '0 auto', cursor: 'pointer', fontWeight: 600 }}
                             onClick={()=>{
                               this.setState({ openLightbox: false })
                               appContext.actions.toggleCityLightbox()
@@ -67,25 +71,21 @@ export class SelectCity extends Component<ComponentProps> {
                               })
                             }}
                           >
-                            <p style={{ margin: '0 auto', cursor: 'pointer' }}
-                              onClick={()=>{
-                                this.setState({ openLightbox: false })
-                                appContext.actions.toggleCityLightbox()
-                                appContext.router('/in/' + item.toLowerCase())
-                                window.location.reload()
-                                appContext.actions.setUserContext({
-                                  city: item
-                                })
-                              }}
-                            >
-                              { item }
-                            </p>
-                          </div>
-                        ))
-                      }
-                    </div>
-                  </section>
+                            { item }
+                          </p>
+                        </div>
+                      ))
+                    }
+                  </div>
                 </section>
+
+                <p style={{ 
+                  margin: '0 auto', padding: '0.5em 1.25em', width: 'fit-content', textAlign: 'center',
+                  border: '1px solid #dd000080', color: '#dd0000', borderRadius: '10px',
+                  backgroundColor: '#dd000008', cursor: 'pointer'
+                }} onClick={appContext.actions.toggleCityLightbox}>
+                  Close
+                </p>
               </article>
             </Lightbox>
           )
