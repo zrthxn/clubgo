@@ -127,7 +127,7 @@ export const eventSchema = new mongoose.Schema(
             type: Number, min: 0, max: 1440
           },
           deactivate: {
-            type: Number, min: 0, max: 1440
+            type: Number, min: 0, max: 2880
           },
           ticketMaximumUses: Number,
           entry: {
