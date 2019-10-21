@@ -11,6 +11,7 @@ export * from './lib/models/ticket.model'
 export * from './lib/models/location.model'
 export * from './lib/models/webmaster.model'
 export * from './lib/models/booking.model'
+export * from './lib/models/category.model'
 
 // Controllers 
 export * from './lib/controllers/controller'

@@ -31,21 +31,8 @@ export class MediaCard extends Component<MediaCardProps> {
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
-        let images
-        try {
-          images = this.props.data
-        } catch (error) {
-          images = []
-        }
-        let { data } = this.state
-        
-        if(images!==undefined)
-          data.images = images
-        else
-          data.images = []
-
         return {
-          data
+          data: this.props.data
         }
       }
     })

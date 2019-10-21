@@ -40,8 +40,8 @@ export class Venue extends Component<VenueComponentProps> {
       <div className={venueCardStyle} onClick={this.openVenueDetails}>
         <div className="image-container">
           {
-            this.props.data.media.images.length!==0 ? (
-              <img alt="Image" src={ this.props.data.media.images[0].url }/>
+            this.props.data.media.cover.images.length!==0 ? (
+              <img alt="Image" src={ this.props.data.media.cover.images[0].url }/>
             ) : (
               <img alt="Image" src="/assets/clubgo.png"/>
             )

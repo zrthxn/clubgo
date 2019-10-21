@@ -315,7 +315,7 @@ export class VenueDetails extends Component<VenueDetailsProps> {
                   />
                 </div>
                 
-                <TextField id="costForTwo" fullWidth label="Cost For Two (&#x20B9;)" 
+                <TextField id="costForTwo" fullWidth label="Cost For Two (&#x20B9;)" type="number"
                   variant="outlined" margin="dense" onChange={this.handleChangeById}
                   value={this.state.data.costForTwo}
                 />

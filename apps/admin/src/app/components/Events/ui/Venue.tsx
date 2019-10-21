@@ -47,9 +47,11 @@ export class Venue extends Component<VenueProps> {
   constructor(props) {
     super(props)
     this.fetchCities()
+    this.fetchVenueCategories()
   }
 
   locationService = new DatabaseService('/location')
+  categoryService = new DatabaseService('/category')
 
   fetchCities = async () => {
     let { data } = await this.locationService.list()
@@ -59,6 +61,16 @@ export class Venue extends Component<VenueProps> {
       suggestions
     })
     return
+  }
+
+  fetchVenueCategories = async () => {
+    let { data } = await this.categoryService.list()
+    let { suggestions } = this.state
+    data = data.results.filter((cat)=>cat.categoryType==='venue')
+    suggestions.venueCategory = data
+    this.setState({
+      suggestions
+    })
   }
 
   componentDidMount() {
@@ -168,12 +180,28 @@ export class Venue extends Component<VenueProps> {
                     label: item.city, value: item
                   }))}
                   onChange={ selected => {
-                    let { data } = this.state
+                    let { selectVenueCategory, data } = this.state
                     data.city = selected.value
-                    this.setState((prevState, props)=>({ 
-                      data: data,
-                      selectCity: selected
-                    }))
+
+                    this.venueService.searchBy({
+                      city: selected!==null ? selected.value.city : undefined,
+                      categories: selectVenueCategory!==null ? selectVenueCategory.value : undefined
+                    }).then((response)=>{
+                      let apiResponse = response.data
+                      
+                      if (apiResponse.results.length!==0) {
+                        let { suggestions } = this.state
+                        suggestions.venue = apiResponse.results.map((item:IVenueModel)=>({
+                          label: item.venueTitle, value: item
+                        }))
+                  
+                        this.setState({
+                          suggestions,
+                          data: data,
+                          selectCity: selected
+                        })
+                      }
+                    })
                   }}
                 />
               </Grid>
@@ -183,11 +211,32 @@ export class Venue extends Component<VenueProps> {
                   inputId="venue.venueCategory"
                   placeholder="Venue Catgory"
                   value={this.state.selectVenueCategory}
-                  options={this.state.suggestions.venueCategory}
+                  options={this.state.suggestions.venueCategory.map((cat)=>({
+                    label: cat.name, value: cat.name.toLowerCase()
+                  }))}
                   onChange={ selected => {
-                    this.setState((prevState, props)=>({
-                      selectVenueCategory: selected
-                    }))
+                    let { selectCity, data } = this.state
+                    data.city = selected.value
+
+                    this.venueService.searchBy({
+                      city: selectCity!==null ? selectCity.value.city : undefined,
+                      categories: selected!==null ? selected.value : undefined
+                    }).then((response)=>{
+                      let apiResponse = response.data
+                      
+                      if (apiResponse.results.length!==0) {
+                        let { suggestions } = this.state
+                        suggestions.venue = apiResponse.results.map((item:IVenueModel)=>({
+                          label: item.venueTitle, value: item
+                        }))
+                  
+                        this.setState({
+                          suggestions,
+                          data: data,
+                          selectVenueCategory: selected
+                        })
+                      }
+                    })
                   }}
                 />
               </Grid>
@@ -210,31 +259,31 @@ export class Venue extends Component<VenueProps> {
                   backspaceRemovesValue={true}
                   value={this.state.selectVenue}
                   options={this.state.suggestions.venue}
-                  onInputChange={(value, { action }) => {
-                    if(action==="input-change" && value.length>3) {
-                      let { selectCity, selectVenueCategory } = this.state
-                      this.venueService.searchBy({
-                        city: selectCity!==null ? selectCity.value.city : undefined,
-                        categories: selectVenueCategory!==null ? selectVenueCategory.value : undefined,
-                        $text: {
-                          $search: value
-                        }
-                      }).then((response)=>{
-                        let apiResponse = response.data
+                  // onInputChange={(value, { action }) => {
+                  //   if(action==="input-change" && value.length>3) {
+                  //     let { selectCity, selectVenueCategory } = this.state
+                  //     this.venueService.searchBy({
+                  //       city: selectCity!==null ? selectCity.value.city : undefined,
+                  //       categories: selectVenueCategory!==null ? selectVenueCategory.value : undefined,
+                  //       $text: {
+                  //         $search: value
+                  //       }
+                  //     }).then((response)=>{
+                  //       let apiResponse = response.data
                         
-                        if (apiResponse.results.length!==0) {
-                          let { suggestions } = this.state
-                          suggestions.venue = apiResponse.results.map((item:IVenueModel)=>({
-                            label: item.venueTitle, value: item
-                          }))
+                  //       if (apiResponse.results.length!==0) {
+                  //         let { suggestions } = this.state
+                  //         suggestions.venue = apiResponse.results.map((item:IVenueModel)=>({
+                  //           label: item.venueTitle, value: item
+                  //         }))
                     
-                          this.setState({
-                            suggestions
-                          })
-                        }
-                      }) 
-                    }
-                  }}
+                  //         this.setState({
+                  //           suggestions
+                  //         })
+                  //       }
+                  //     }) 
+                  //   }
+                  // }}
                   onChange={({ value })=>{
                     this.assignVenue(value)
                   }}

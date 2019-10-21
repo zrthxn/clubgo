@@ -25,6 +25,9 @@ export class EventListing extends Component<EventListingProps> {
     listing: Array<IEventModel>(),
     errorText: undefined,
 
+    filterSuggestions: {
+      cities: []
+    },
     search: {
       maxRecords: 0,
       lazyLoad: true,
@@ -34,8 +37,27 @@ export class EventListing extends Component<EventListingProps> {
     },
   }
 
+  locationService = new DatabaseService('/location')
+
   componentDidMount() {
     this.loadListings(this.state.search)
+    this.fetchCities().then((cities)=>{
+      let { filterSuggestions } = this.state
+      filterSuggestions.cities = []
+      for (let city of cities) {
+        filterSuggestions.cities.push({
+          label: city.city, value: city.city
+        })
+      }
+      this.setState({
+        filterSuggestions
+      })
+    })
+  }
+
+  fetchCities = async () => {
+    let { data } = await this.locationService.list()
+    return data.results
   }
 
   loadListings = async (search) => {
@@ -95,12 +117,7 @@ export class EventListing extends Component<EventListingProps> {
             {
               key: 'venue.city',
               placeholder: 'City',
-              suggestions: [
-                { label: 'Delhi', value: 'Delhi' },
-                { label: 'Mumbai', value: 'Mumbai' },
-                { label: 'Gurgaon', value: 'Gurgaon' },
-                { label: 'Bangalore', value: 'Bangalore' }
-              ]
+              suggestions: this.state.filterSuggestions.cities
             }
           ]}
           onChange={(filters)=>{

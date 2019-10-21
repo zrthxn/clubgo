@@ -108,7 +108,9 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
   
                   <div>
                     <h2>Venue</h2>
-                    <p>{ this.venue.venueTitle }</p>
+                    <p>
+                      { this.event.venue.isCustomVenue ? this.event.venue.title : this.venue.venueTitle }
+                    </p>
                   </div>
                 </div>
               </Grid>

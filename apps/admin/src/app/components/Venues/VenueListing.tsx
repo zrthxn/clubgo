@@ -25,6 +25,9 @@ export class VenueListing extends Component<VenueListingProps> {
     errorText: undefined,
     listing: Array<IVenueModel>(),
 
+    filterSuggestions: {
+      cities: []
+    },
     search: {
       maxRecords: 0,
       lazyLoad: true,
@@ -34,11 +37,30 @@ export class VenueListing extends Component<VenueListingProps> {
     }
   }
 
+  locationService = new DatabaseService('/location')
+
   componentDidMount() {
     this.loadListings(this.state.search)
+    this.fetchCities().then((cities)=>{
+      let { filterSuggestions } = this.state
+      filterSuggestions.cities = []
+      for (let city of cities) {
+        filterSuggestions.cities.push({
+          label: city.city, value: city.city
+        })
+      }
+      this.setState({
+        filterSuggestions
+      })
+    })
   }
 
-  async loadListings(search) {
+  fetchCities = async () => {
+    let { data } = await this.locationService.list()
+    return data.results
+  }
+
+  loadListings = async (search) => {
     let { query } = search, listing, errorText
     try {
       let { data } = await this.service.searchBy(query)
@@ -94,10 +116,7 @@ export class VenueListing extends Component<VenueListingProps> {
             { 
               key: 'city',
               placeholder: 'City',
-              suggestions: [
-                { label: 'Delhi', value: 'Delhi' },
-                { label: 'Mumbai', value: 'Mumbai' }
-              ]
+              suggestions: this.state.filterSuggestions.cities
             }
           ]}
           onChange={(filters)=>{

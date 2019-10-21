@@ -7,6 +7,7 @@ import CreateableSelect from 'react-select/creatable'
 import { Add, Delete } from '@material-ui/icons'
 
 import { handleChangeById as inputHandler, verifyRequirements } from '@clubgo/util'
+import { DatabaseService } from '@clubgo/api'
 
 interface EventDetailsProps {
   syncParentData?: Function
@@ -28,14 +29,7 @@ export class EventDetails extends Component<EventDetailsProps> {
       ].map(item=>({
         label: item.label, value: item.label
       })),
-      category: [
-        { label: 'EDM' },
-        { label: 'Clubbing' },
-        { label: 'Comedy' },
-        { label: 'General' },
-      ].map(item=>({
-        label: item.label, value: item.label
-      })),
+      category: [],
     },
     selectDressCode: null,
     selectCategories: [],
@@ -64,11 +58,23 @@ export class EventDetails extends Component<EventDetailsProps> {
     unfulfilled: [ ]
   }
 
+  categoryService = new DatabaseService('/category')
+
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
     this.setState((prevState, props)=>(
       result
     ))
+  }
+
+  fetchCategories = async () => {
+    let { data } = await this.categoryService.list()
+    let { suggestions } = this.state
+    data = data.results.filter((cat)=>cat.categoryType==='event')
+    suggestions.category = data
+    this.setState({
+      suggestions
+    })
   }
 
   componentDidMount() {
@@ -100,6 +106,8 @@ export class EventDetails extends Component<EventDetailsProps> {
           loading: false,
         }
     }) 
+
+    this.fetchCategories()
   }
 
   componentDidUpdate() {
@@ -139,7 +147,9 @@ export class EventDetails extends Component<EventDetailsProps> {
                 placeholder="Category"
                 backspaceRemovesValue
                 defaultValue={this.state.selectCategories}
-                options={this.state.suggestions.category}
+                options={this.state.suggestions.category.map((cat)=>({
+                  label: cat.name, value: cat.name.toLowerCase()
+                }))}
                 isMulti
                 onChange={ selected => {
                   let { data } = this.state
