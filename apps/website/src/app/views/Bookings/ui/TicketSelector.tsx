@@ -43,6 +43,7 @@ export class TicketSelector extends Component<TicketViewProps> {
   }
 
   formatTime = (time) => {
+    if(time>=1440) time -= 1440
     return ((time - (time % 60)) / 60) > 12 ? (
       (
         (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
