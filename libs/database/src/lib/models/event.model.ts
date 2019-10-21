@@ -13,6 +13,13 @@ export const timeSchema = {
   type: Number, min: 0, max: 1440
 }
 
+export const imageSchema = {
+  url: {
+    type: String, required: true
+  },
+  tags: [String]
+}
+
 export const eventSchema = new mongoose.Schema(
   {
     ref: { 

@@ -199,7 +199,7 @@ export class EventEditor extends Component<EventEditorProps> {
 
                 <Grid item md={6} xs={12}>
                   <MediaCard populate={this.state.populateDataFromParent} data={this.state.data.media}
-                    tag="event" name="event" includeVideoURL={true}
+                    tag="event" includeVideoURL={true}
                     syncData={this.state.collectChildData} syncParentData={(data)=>{
                       this.syncDataChanges(data, 'media')
                     }} />

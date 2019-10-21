@@ -278,7 +278,7 @@ export class Venue extends Component<VenueProps> {
                   }))}
                   onChange={ selected => {
                     let { data } = this.state
-                    data.city = selected.value
+                    data.city = selected.value.city
                     this.setState((prevState, props)=>({ 
                       data: data,
                       selectCity: selected
@@ -288,7 +288,7 @@ export class Venue extends Component<VenueProps> {
               </Grid>
               
               <Grid item xs={6}>
-                <TextField  id="venue.customVenueDetails/locality" fullWidth label="Locality" style={{ margin: 0 }}
+                <TextField  id="venue.customVenueDetails/locality" fullWidth label="Locality"
                   variant="outlined" margin="dense" onChange={this.handleChangeById}
                   value={this.state.data.customVenueDetails.locality}/>
               </Grid>

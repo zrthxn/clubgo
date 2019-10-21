@@ -31,7 +31,7 @@ export class DatabaseService extends Interface {
       
       config.data = {
         ...config.data,
-        owner: 'admin'
+        // owner: 'admin'
       }
 
       return config

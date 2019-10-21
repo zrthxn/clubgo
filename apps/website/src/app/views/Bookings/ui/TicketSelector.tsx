@@ -86,7 +86,7 @@ export class TicketSelector extends Component<TicketViewProps> {
         key = 'couple'
       }
       else {
-        if(people.male <= this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.malesPerCoupleRatio)
+        if(people.male <= (people.couple * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.malesPerCoupleRatio))
           people[key]++
       }
 

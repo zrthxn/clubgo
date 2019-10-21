@@ -10,7 +10,6 @@ import { APIEndpoints } from '@clubgo/api'
 import { handleChangeById as inputHandler } from '@clubgo/util'
 
 interface MediaCardProps {
-  name: string
   syncParentData?: Function
   syncData?: boolean
   includeVideoURL?: boolean
@@ -32,7 +31,12 @@ export class MediaCard extends Component<MediaCardProps> {
   componentDidMount() {
     this.setState(()=>{
       if(this.props.populate) {
-        let { images } = this.props.data
+        let images
+        try {
+          images = this.props.data
+        } catch (error) {
+          images = []
+        }
         let { data } = this.state
         
         if(images!==undefined)
@@ -49,7 +53,7 @@ export class MediaCard extends Component<MediaCardProps> {
 
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
-    this.props.syncParentData(this.state.data, )
+    this.props.syncParentData(this.state.data)
     this.setState((prevState, props)=>(
       result
     ))
@@ -58,7 +62,7 @@ export class MediaCard extends Component<MediaCardProps> {
   componentDidUpdate() {
     if(this.props.syncData!==this.state.synchronized) { 
       if(this.props.syncData) {
-        this.props.syncParentData(this.state.data, this.props.name)
+        this.props.syncParentData(this.state.data)
         this.setState({
           synchronized: this.props.syncData
         })
@@ -71,7 +75,7 @@ export class MediaCard extends Component<MediaCardProps> {
       <Paper className="create-block">
         <h3 className="title">
           {
-            this.props.name + ' Images'
+            this.props.tag + ' Images'
           }
         </h3>
 

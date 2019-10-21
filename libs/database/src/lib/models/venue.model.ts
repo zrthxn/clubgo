@@ -77,15 +77,47 @@ export const venueSchema = new mongoose.Schema(
       }
     ],
     media: {
-      images: [
-        {
-          url: {
-            type: String, required: true
-          },
-          tags: [String]
-        }
-      ],
-      videoURL: String
+      cover: {
+        images: [
+          {
+            url: {
+              type: String, required: true
+            },
+            tags: [String]
+          }
+        ],
+        videoURL: String
+      },
+      food: {
+        images: [
+          {
+            url: {
+              type: String, required: true
+            },
+            tags: [String]
+          }
+        ]
+      },
+      ambiance: {
+        images: [
+          {
+            url: {
+              type: String, required: true
+            },
+            tags: [String]
+          }
+        ]
+      },
+      bar: {
+        images: [
+          {
+            url: {
+              type: String, required: true
+            },
+            tags: [String]
+          }
+        ]
+      }
     },
   },
   {
@@ -131,11 +163,31 @@ export interface IVenueModel extends mongoose.Document {
     busy?: number
   }>
   media: {
-    images: Array<{
-      url: string
-      tags?: Array<string>
-    }>
-    videoURL: string
+    cover: {
+      images: Array<{
+        url: string
+        tags?: Array<string>
+      }>
+      videoURL?: string
+    }
+    food: {
+      images: Array<{
+        url: string
+        tags?: Array<string>
+      }>
+    }
+    ambiance: {
+      images: Array<{
+        url: string
+        tags?: Array<string>
+      }>
+    }
+    bar: {
+      images: Array<{
+        url: string
+        tags?: Array<string>
+      }>
+    }
   }
 }
 

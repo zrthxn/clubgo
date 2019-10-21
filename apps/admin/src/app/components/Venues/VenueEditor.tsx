@@ -4,7 +4,7 @@ import { Grid, Paper } from '@material-ui/core'
 import { IVenueModel, ITicketModel } from '@clubgo/database'
 import Select from 'react-select'
 
-import Images from './ui/Images'
+// import Images from './ui/Images'
 import Settings from './ui/Settings'
 import VenueDetails from './ui/VenueDetails'
 import Hours from './ui/Hours'
@@ -13,6 +13,7 @@ import { VenueContext } from './VenueContext'
 import { TicketEditor } from '../Tickets/TicketEditor'
 import { Ticket } from '../Tickets/Ticket'
 import { DatabaseService } from '@clubgo/api'
+import { MediaCard } from '../Images/MediaCard'
 
 interface VenueEditorProps {
   intent: string
@@ -62,8 +63,19 @@ export class VenueEditor extends Component<VenueEditorProps> {
       timings: [],
       offers: [],
       media: {
-        images: [],
-        videoURL: undefined
+        cover: {
+          images: [],
+          videoURL: undefined
+        },
+        food: {
+          images: []
+        },
+        ambiance: {
+          images: []
+        },
+        bar: {
+          images: []
+        }
       }
     },
     openTicketEditor: false,
@@ -88,7 +100,7 @@ export class VenueEditor extends Component<VenueEditorProps> {
         return {
           loading: false
         }
-    })      
+    })
 
     this.auxTicketService.searchBy({}).then((response)=>{
       let apiResponse = response.data
@@ -127,12 +139,9 @@ export class VenueEditor extends Component<VenueEditorProps> {
         }
       }
 
+      this.setState({ data })
       clearInterval(transition)
       this.ongoingStateTransition = false
-      this.setState({
-        data,
-        syncData: false
-      })  
     }, 100)    
   }
 
@@ -302,9 +311,69 @@ export class VenueEditor extends Component<VenueEditorProps> {
 
                 <Grid item xs={12}><hr/></Grid>
 
-                <Grid item xs={12}>
-                  <Images populate={this.state.populateDataFromParent} data={this.state.data.media}  
-                    syncParentData={this.syncDataChanges} />
+                <Grid item md={6} xs={12}>
+                  <MediaCard populate={this.state.populateDataFromParent} data={this.state.data.media.cover}
+                    tag="cover" includeVideoURL={true} syncData={this.state.collectChildData} syncParentData={(_data)=>{
+                      let transition = setInterval(()=>{
+                        if(this.ongoingStateTransition)
+                          return
+                        this.ongoingStateTransition = true
+
+                        let { data } = this.state
+                        data.media.cover = _data
+                        this.setState({ data })
+                        clearInterval(transition)
+                        this.ongoingStateTransition = false
+                      }, 100)
+                    }} />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <MediaCard populate={this.state.populateDataFromParent} data={this.state.data.media.food}
+                    tag="food" includeVideoURL={false} syncData={this.state.collectChildData} syncParentData={(_data)=>{
+                      let transition = setInterval(()=>{
+                        if(this.ongoingStateTransition)
+                          return
+                        this.ongoingStateTransition = true
+
+                        let { data } = this.state
+                        data.media.food = _data
+                        this.setState({ data })
+                        clearInterval(transition)
+                        this.ongoingStateTransition = false
+                      }, 100)
+                    }} />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <MediaCard populate={this.state.populateDataFromParent} data={this.state.data.media.ambiance}
+                    tag="ambiance" includeVideoURL={false} syncData={this.state.collectChildData} syncParentData={(_data)=>{
+                      let transition = setInterval(()=>{
+                        if(this.ongoingStateTransition)
+                          return
+                        this.ongoingStateTransition = true
+
+                        let { data } = this.state
+                        data.media.ambiance = _data
+                        this.setState({ data })
+                        clearInterval(transition)
+                        this.ongoingStateTransition = false
+                      }, 100)
+                    }} />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <MediaCard populate={this.state.populateDataFromParent} data={this.state.data.media.bar}
+                    tag="bar" includeVideoURL={false} syncData={this.state.collectChildData} syncParentData={(_data)=>{
+                      let transition = setInterval(()=>{
+                        if(this.ongoingStateTransition)
+                          return
+                        this.ongoingStateTransition = true
+
+                        let { data } = this.state
+                        data.media.bar = _data
+                        this.setState({ data })
+                        clearInterval(transition)
+                        this.ongoingStateTransition = false
+                      }, 100)
+                    }} />
                 </Grid>
 
                 <Grid item xs={12}>

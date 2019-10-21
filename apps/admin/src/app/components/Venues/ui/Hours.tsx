@@ -33,31 +33,29 @@ export class Hours extends Component<HoursProps> {
           }
         }
       }
-      else
-        return {
-          loading: false
-        }
-    })
+      else {
+        let days = [
+          'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' 
+        ]
     
-    let days = [
-      'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' 
-    ]
-
-    let { data } = this.state
-    let timings = []
-    for (const day of days) {
-      timings.push({
-        day,
-        isOpen: false,
-        openTime: 720,
-        closeTime: 1440,
-        busy: 0,
-      })
-    }
-    data.timings = timings
-    this.setState(()=>({
-      data
-    }))
+        let { data } = this.state
+        let timings = []
+        for (const day of days) {
+          timings.push({
+            day,
+            isOpen: false,
+            openTime: 720,
+            closeTime: 1440,
+            busy: 0,
+          })
+        }
+        data.timings = timings
+        return {
+          loading: false,
+          data
+        }
+      }
+    })
   }
 
   componentDidUpdate() {    
