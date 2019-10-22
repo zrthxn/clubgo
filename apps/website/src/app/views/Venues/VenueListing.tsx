@@ -49,11 +49,11 @@ export default class VenueListing extends Component<RouteComponentProps<URLParam
   render() {
     return (
       <article>
-        <section className="container"> 
-          <StoriesContainer/>
+        <section className="container">
+          
         </section>
 
-        <section className="container">
+        <section className="container center">
           {
             this.state.city!==null ? (
               <h1>Venues in { this.state.city }</h1>
@@ -61,18 +61,26 @@ export default class VenueListing extends Component<RouteComponentProps<URLParam
               <h1>Venues Nearby</h1>
             )
           }
+        </section>
 
-          <FlexContainer>
-            <Flexbox flow="row">
-              {
-                this.state.venues.nearby.map((venue, index)=>{
-                  return (
-                    <Venue key={venue._id} data={venue}/>
-                  )
-                })
-              }
-            </Flexbox>
-          </FlexContainer>
+        <section className="container listing">
+          <div className="filters">
+
+          </div>
+
+          <div className="list">
+            <FlexContainer>
+              <Flexbox flow="row">
+                {
+                  this.state.venues.nearby.map((venue, index)=>{
+                    return (
+                      <Venue key={venue._id} data={venue}/>
+                    )
+                  })
+                }
+              </Flexbox>
+            </FlexContainer>
+          </div>
         </section>
       </article>
     )

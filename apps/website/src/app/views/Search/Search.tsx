@@ -170,7 +170,7 @@ export default class Search extends Component<RouteComponentProps> {
         <section className="container">
           <h2>Recommended Events</h2>
           <h4>Selected Events for you</h4>
-          <Recommender query={{
+          <Recommender path="/event" query={{
             venue: {
               city: this.props.city
             }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import { RootContext } from '../../RootContext'
 import { Lightbox } from './Lightbox'
+import { DatabaseService } from '@clubgo/api'
 
 interface ComponentProps {
   onComplete?: Function
@@ -12,8 +13,11 @@ export class SelectCity extends Component<ComponentProps> {
   context!: React.ContextType<typeof RootContext>
 
   state = {
-    openLightbox: false
+    openLightbox: false,
+    cities: []
   }
+
+  locationService = new DatabaseService('/location')
 
   componentDidMount() {
     let { city } = this.context.actions.getUserContext()
@@ -21,6 +25,14 @@ export class SelectCity extends Component<ComponentProps> {
       this.setState({
         openLightbox: true
       })
+
+    this.locationService.list().then(({ data })=>{
+      let { cities } = this.state
+      cities = data.results
+      this.setState({
+        cities
+      })
+    })
   }
   
   render() {
@@ -37,12 +49,7 @@ export class SelectCity extends Component<ComponentProps> {
                   }}>
                     <h2 style={{ margin: '1em auto' }}>Select your City</h2>
                     {
-                      [
-                        "Delhi",
-                        "Mumbai",
-                        "Gurgaon",
-                        "Bangalore"
-                      ].map((item, index)=>(
+                      this.state.cities.map((item, index)=>(
                         <div
                           style={{
                             padding: '1.5em 0', margin: '0.5em', width: '100%',
@@ -53,10 +60,10 @@ export class SelectCity extends Component<ComponentProps> {
                           onClick={()=>{
                             this.setState({ openLightbox: false })
                             appContext.actions.toggleCityLightbox()
-                            appContext.router('/in/' + item.toLowerCase())
+                            appContext.router('/in/' + item.city.toLowerCase())
                             window.location.reload()
                             appContext.actions.setUserContext({
-                              city: item
+                              city: item.city
                             })
                           }}
                         >
@@ -64,14 +71,14 @@ export class SelectCity extends Component<ComponentProps> {
                             onClick={()=>{
                               this.setState({ openLightbox: false })
                               appContext.actions.toggleCityLightbox()
-                              appContext.router('/in/' + item.toLowerCase())
+                              appContext.router('/in/' + item.city.toLowerCase())
                               window.location.reload()
                               appContext.actions.setUserContext({
-                                city: item
+                                city: item.city
                               })
                             }}
                           >
-                            { item }
+                            { item.city }
                           </p>
                         </div>
                       ))

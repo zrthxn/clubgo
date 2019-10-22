@@ -99,6 +99,13 @@ a[class~="no-decor"] {
   font-weight: bold;
 }
 
+.underline {
+  border-bottom: 4px solid $secondaryColor;
+}
+*[class~="underline"] {
+  width: fit-content;
+}
+
 @media (max-width: 360px) {
   h1 {
     // Page Heading

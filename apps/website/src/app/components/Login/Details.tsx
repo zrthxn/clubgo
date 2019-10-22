@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import QueryString from 'query-string'
 
 import { handleChangeById as inputHandler, verifyRequirements } from '@clubgo/util'
-import { Textbox, Button } from '@clubgo/website/components'
-import RootContext from '../../../RootContext'
+import { Textbox } from '../Textbox/Textbox'
+import { Button } from '../Button/Button'
+
+import RootContext from '../../RootContext'
 
 interface DetailsProps {
   onComplete: Function

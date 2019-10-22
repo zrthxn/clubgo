@@ -44,9 +44,21 @@ export default class Header extends Component {
                   this.state.openSidebar ? (
                     <div className="sidebar">
                       <nav className="sidebar-nav">
-                        <Link onClick={this.toggleSidebar} to={'/'}>Home</Link>
-                        <Link onClick={this.toggleSidebar} to={'/events'}>Events</Link>
-                        <Link onClick={this.toggleSidebar} to={'/venues'}>Venues</Link>
+                        <Link onClick={this.toggleSidebar} to={
+                          appContext.state.city!==undefined ? (
+                            `/events/in/${appContext.state.city.toLowerCase()}`
+                          ) : '/events/in/delhi'
+                        }>
+                          Events
+                        </Link>
+
+                        <Link onClick={this.toggleSidebar} to={
+                          appContext.state.city!==undefined ? (
+                            `/venues/in/${appContext.state.city.toLowerCase()}`
+                          ) : '/venues/in/delhi'
+                        }>
+                          Venues
+                        </Link>
                       </nav>
                     </div>
                   ) : null

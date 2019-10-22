@@ -24,12 +24,7 @@ export class TicketSelector extends Component<TicketViewProps> {
       single: 0
     },
     appliedOffers: [ ],
-    payment: {
-      subtotal: 0,
-      total: 0,
-      processingFee: 0,
-      tax: 0,
-    }
+    payment: 0
   }
   
   event:IEventModel
@@ -76,19 +71,24 @@ export class TicketSelector extends Component<TicketViewProps> {
     this.setState(()=>{
       if(key==='single') 
         people[key]++
-      else if(key==='female' && people.male!==0){
+      else if(key==='female' && people.male!==0) {
         people.couple++
         people.male--
         key = 'couple'
       }
-      else if(key==='male' && people.female!==0){
-        people.couple++
-        people.female--
-        key = 'couple'
+      else if(key==='male') {
+        if(people.male < (people.couple * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.malesPerCoupleRatio)) {
+          if(people.female!==0) {
+            people.couple++
+            people.female--
+            key = 'couple'
+          }
+          else
+            people.male++
+        }
       }
       else {
-        if(people.male <= (people.couple * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.malesPerCoupleRatio))
-          people[key]++
+        people[key]++
       }
 
       payment = this.calculatePayment(people)
@@ -112,7 +112,7 @@ export class TicketSelector extends Component<TicketViewProps> {
   }
 
   calculatePayment = (people) => {
-    let subtotal = 0, total = 0
+    let subtotal = 0
     
     if(this.event.bookings.tickets[this.state.selectedTimeIndex].entry.entryType==='couple') {
       subtotal += people.couple * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.admissionPrice
@@ -122,12 +122,7 @@ export class TicketSelector extends Component<TicketViewProps> {
     else if(this.event.bookings.tickets[this.state.selectedTimeIndex].entry.entryType==='single')
       subtotal += people.single * this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.single.admissionPrice
 
-    let processingFee = subtotal * (this.event.bookings.processingFeePercent/100)
-    let tax = processingFee * (this.event.bookings.taxPercent/100)
-
-    total = subtotal + processingFee + tax
-
-    return { subtotal, total, processingFee, tax }
+    return subtotal
   }
 
   onFinalize = () => {
@@ -189,10 +184,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                                 single: 0
                               },
                               appliedOffers: [ ],
-                              payment: {
-                                subtotal: 0,
-                                total: 0
-                              }
+                              payment: 0
                             })
                           }}
                         >
@@ -367,21 +359,13 @@ export class TicketSelector extends Component<TicketViewProps> {
                       />
                     </div>
                   </div>
-                  
-                  <h3 className="bold">Payment</h3>
 
                   <div className="price">
                     <div className="right">
-                      <h3 className="bold">Sub-Total</h3>
-                      <p style={{ opacity: 0.5 }}>Processing Fee</p>
-                      <p style={{ opacity: 0.5 }}>GST</p>
                       <h3 className="bold">To Pay</h3>
                     </div>
                     <div className="left">
-                      <h3>{ '\u20B9' + this.state.payment.subtotal.toFixed(0) }</h3>
-                      <p style={{ opacity: 0.5 }}>{ this.event.bookings.processingFeePercent } %</p>
-                      <p style={{ opacity: 0.5 }}>{ this.event.bookings.taxPercent } %</p>
-                      <h3 className="bold">{ '\u20B9' + this.state.payment.total.toFixed(2) }</h3>
+                      <h3>{ '\u20B9' + this.state.payment.toFixed(0) }</h3>
                     </div>
                   </div>
                   

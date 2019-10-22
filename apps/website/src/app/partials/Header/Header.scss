@@ -1,15 +1,20 @@
 header {
-  padding: 0.25em 0;
-  background: linear-gradient(#ff000040, transparent);
+  padding: 0.25em;
+  z-index: 10;
+  background-color: #00000040;
+  margin: -0.5em;
+  margin-bottom: 1em;
 
   .container {
-    padding: 0.5em 0;
+    padding: 0;
     display: flex;
     flex-direction: row;
   }
 
   #site-title {
+    padding: 0;
     margin: 0 !important;
+    font-size: 1.75em;
     flex-grow: 0.40;
     z-index: 110;
   }
@@ -28,14 +33,14 @@ header {
   .sidebar-nav {
     display: flex;
     flex-direction: column;
-    margin: 8em 4em;
+    margin: 8em 2em;
     width: 50%;
     height: fit-content;
     text-align: left;
     transition: all 0.5s ease;
     
     a {
-      color: #fff;
+      color: #000;
       margin: 1em;
       font-weight: 400;
       text-decoration: none;
@@ -98,18 +103,20 @@ header {
 
 #sidebar-toggle:checked ~ .hamburger {
   position: fixed;
-  left: 0.5em;
-  top: 2.5em;
+  left: 0.25em;
+  top: 1.25em;
 }
 
 #sidebar-toggle:checked ~ .hamburger span::before {
   bottom: 0;
   transform: rotate(-45deg);
+  background: #000;
 } #sidebar-toggle:checked ~ .hamburger span {
   background: transparent;
 } #sidebar-toggle:checked ~ .hamburger span::after {
   top: 0;
   transform: rotate(45deg);
+  background: #000;
 }
 
 // SIDEBAR MENU ---------------------
@@ -122,11 +129,18 @@ header {
   opacity: 0;
   z-index: 100;
   max-width: 300px;
-  background: linear-gradient(#ff0000, #aa0000);
+  // background: linear-gradient(#ff0000, #aa0000);
+  background-color: #fff;
   transition: all 0.25s ease;
 } #sidebar-toggle:checked ~ .sidebar {
-  opacity: 1;
-  width: 60%;
+  animation: slide 0.25s ease forwards;
+}
+@keyframes slide {
+  from {}
+  to {
+    opacity: 1;
+    width: 60%;
+  }
 }
 
 // SIDEBAR SHADOW ---------------------

@@ -57,3 +57,15 @@
     }
   }
 }
+
+.carousel-container {
+  border-radius: 0.5em;
+  overflow: hidden;
+
+  .carousel-inner {
+    max-height: 24em;
+    img {
+      width: 100%;
+    }    
+  }
+}

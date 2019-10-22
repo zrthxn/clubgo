@@ -4,83 +4,141 @@
   .action {
     position: relative;
 
-    .book {
-      position: fixed;
-        
-      width: 100%;
-      padding: 1em 1.5em;
-      left: 0;
-      bottom: 0;
-      z-index: 10000;
-
-      button {  
-        width: 100%;
-        border: none;
-        color: $primaryColor;
-        font-size: 1.125em;
-        font-weight: 900;
-        font-family: $poppinsFont;
-        padding: 1em;
-
-        box-shadow: 0 0 15px #1c1c1c80;
-        background-color: #fff;
-        border-radius: 0.45em;
-        text-transform: uppercase;
-  
-        &:focus, &:active {
-          outline: none;
-        }
-      }
-    }
-
     .floater {
       background: #fff;
       border-radius: 0.5em;
       box-shadow: 0 0 10px #1c1c1c80;
+      margin-bottom: 1em;
 
       .block {
         padding: 1em;
-        margin: 1em 0;
         color: #000;
       }
-  
-      .event-name {
-        margin: 0;
-      }
-  
-      .venue-name {
-        color: #dd0000;
-      }
-    }
 
-    @media (min-width: 600px) {
-      & {
-        // width: 24em;
-        // position: fixed;
+      button {
+        width: 100%;
+        padding: 1em 1.5em;
+
+        border: none;
+        color: #fff;
+        font-size: 1.125em;
+        font-family: $poppinsFont;
+        background: $secondaryColor;
+        text-transform: uppercase;
+        
+        border-bottom-left-radius: 0.45em;
+        border-bottom-right-radius: 0.45em;
+
+        &:focus, &:active {
+          outline: none;
+        }
+      }
+
+      .event-dates {
+        font-size: 1rem;
+        margin: 0.5em 0;
+      }
+
+      .event-price {
+        display: flex;
+        font-size: 0.9rem;
+        flex-direction: row;
+
+        &:before {
+          color: #dd0000;
+          content: url('/assets/icons/money.svg');
+          display: block;
+          width: 1em;
+          height: fit-content;
+          margin: auto 0;
+          margin-right: 0.25em;
+        }
+      }
+
+      .venue-title {
+        display: flex;
+        font-size: 0.9rem;
+        flex-direction: row;
+
+        &:before {
+          color: #dd0000;
+          content: url('/assets/icons/location.svg');
+          display: block;
+          width: 0.75em;
+          height: fit-content;
+          margin: auto 0;
+          margin-right: 0.25em;
+        }
+      }
+
+      .offers {
+        margin: 1em 0;
+        .offer-item {
+          margin: 0.25em 0;
+          padding: 0.25em 0.5em;
+          border-radius: 0.5em;
+          background-color: #ffd80040;
+          color: #ebb400;
+        }
       }
     }
   }
 
-  .attendees {
+  .event-detail-items {
+    .detail-item {
+      margin: 0.5em;
+      padding: 0.5em 0;
+      font-size: 1em;
+      border-bottom: 1px solid #ffffff40;
+      
+      display: flex;
+      flex-direction: row;
+
+      &:before {
+        content: '';
+        margin: auto 0.5em auto 0;
+        display: block;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+        background-color: white;
+      }
+    }
+  }
+}
+
+.event-listing {
+  .listing {
     display: flex;
     flex-direction: row;
     
-    p {
-      margin: 0 auto;
-      text-align: center !important;
-      font-size: 1.0625em;
-      font-weight: 600;
+    #drawer-open {
+      display: none;       
     }
-    
-    span {
-      margin: auto 0.25em;
-      padding: 1em;
-      border-radius: 50%;
-      background: #fff;
 
-      &:first-of-type {
-        margin-left: 1em;
+    .filters {
+      width: 30%;
+      position: relative;
+
+      @media (max-width: 600px) {
+        & {
+          position: fixed;
+          left: 0;
+          top: 0;
+
+          #drawer-open {
+            position: fixed;
+            display: block;
+            margin: 2em auto;
+            bottom: 0;
+            z-index: 20000;
+          }
+        }
       }
+    }
+
+    .list {
+
     }
   }
 }

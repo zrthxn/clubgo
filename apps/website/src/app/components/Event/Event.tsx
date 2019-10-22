@@ -105,14 +105,12 @@ export class Event extends Component<EventComponentProps> {
 
         <h4 className="event-venue">{ this.props.data.venue.title }</h4>
 
-        <p style={{ margin: '0.75em 0 0.5em 0', fontSize: '0.85em', opacity: 0.75 }}>
-          { 
-            (new Date(this.props.data.scheduling.customDates[0])).toDateString() + '  ' + 
-              this.formatTime(this.props.data.scheduling.timing.startTime) 
-          }
+        <p style={{ margin: '0.75em 0 0.5em 0', fontSize: '0.75em', opacity: 0.75 }}>
+          <span>{ (new Date(this.props.data.scheduling.customDates[0])).toDateString() }</span>
+          <span style={{ marginLeft: '0.5em' }}>{ this.formatTime(this.props.data.scheduling.timing.startTime) }</span>
         </p>
 
-        <p style={{ margin: 0, fontWeight: 600, fontSize: '0.85em' }}>
+        <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9em' }}>
           Starting from { '\u20B9 ' + this.state.calculatedLowestPrices }
         </p>
       </div>

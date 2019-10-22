@@ -1,0 +1,28 @@
+.checkout {
+  .head {
+    padding: 2em;  
+  }
+
+  .payment-details {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: 50%;
+
+    div {
+      p {
+        margin: 1em 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      & {
+        width: 75%;
+      }
+    }
+  }
+
+  .totals {
+    text-align: center;
+  }
+}

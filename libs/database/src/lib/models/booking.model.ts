@@ -67,7 +67,7 @@ export const bookingSchema = new mongoose.Schema(
       amount: Number,
       processingFee: Number,
       tax: Number,
-      totalBookingAmount: {
+      total: {
         type: Number, required: true
       }
     }

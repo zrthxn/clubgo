@@ -4,15 +4,12 @@ import { Grid } from '@material-ui/core'
 import QueryString from 'query-string'
 
 import './Booking.scss'
-import { Button, Textbox, Lightbox } from '@clubgo/website/components'
+import { Button, Textbox, Lightbox, Checkout } from '@clubgo/website/components'
 import { DatabaseService } from '@clubgo/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 
 import { TicketSelector } from './ui/TicketSelector'
-import { Details } from './ui/Details'
-import { } from '../Login/Login'
 import RootContext from '../../RootContext'
-import Payment from './ui/Payment'
 import Confirmation from './ui/Confirmation'
 
 type URLParams = {
@@ -25,11 +22,9 @@ export default class BookingController extends Component<RouteComponentProps<URL
 
   state = {
     loading: true,
-    loginValidated: false,
     ticketSelectionDone: false,
     bookingComplete: false,
     ticket: null,
-    user: null,
     booking: null
   }
 
@@ -59,22 +54,8 @@ export default class BookingController extends Component<RouteComponentProps<URL
     return
   }
 
-  setTicket = (ticket) => {
-    this.setState({
-      ticket
-    })
-  }
-
-  validateLogin = async () => {
-    this.setState({
-      loginValidated: false,
-      ticketSelectionDone: true
-    })
-  }
-
-  createBooking = async (txn) => {
-    let { ticket, user } = this.state
-    let { event, venue } = this
+  createBooking = async (user, txn) => {
+    let { ticket } = this.state, { event, venue } = this
     try {
       let booking = await this.bookingService.create({ ticket, user, txn, event, venue })
       booking = booking.data.results
@@ -85,7 +66,7 @@ export default class BookingController extends Component<RouteComponentProps<URL
       console.error(error)
     }
   }
-
+  
   render() {
     if(!this.state.loading) {
       return (
@@ -93,37 +74,28 @@ export default class BookingController extends Component<RouteComponentProps<URL
           {
             appContext => {
               if(this.state.ticketSelectionDone)
-                if(this.state.loginValidated)
-                  if(this.state.bookingComplete)
-                    return (
-                      <Confirmation booking={this.state.booking}/>
-                    )
-                  else
-                    return (
-                      <Payment payment={this.state.ticket.payment} 
-                        options={{
-                          
-                        }}
-                        onComplete={(txn)=>{
-                          this.createBooking(txn)
-                        }}
-                      />
-                    )
+                if(this.state.bookingComplete)
+                  return (
+                    <Confirmation booking={this.state.booking}/>
+                  )
                 else
                   return (
-                    <Details onComplete={(details)=>{
-                      this.setState({
-                        user: details,
-                        loginValidated: true
-                      })
-                    }}/>
+                    <Checkout payment={this.state.ticket.payment}
+                      options={{
+                        processingFeePercent: this.event.bookings.processingFeePercent,
+                        taxPercent: this.event.bookings.taxPercent
+                      }}
+                      onComplete={(user, txn)=>{
+                        this.createBooking(user, txn)
+                      }}
+                    />
                   )
               else
                 return (
                   <TicketSelector event={this.event} venue={this.venue}
                     onComplete={(ticket)=>{
-                      this.validateLogin().then(()=>{
-                        this.setTicket(ticket)
+                      this.setState({
+                        ticket, ticketSelectionDone: true
                       })
                     }}
                   />

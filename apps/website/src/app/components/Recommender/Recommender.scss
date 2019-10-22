@@ -4,4 +4,10 @@
   .scroll-view-area {
     overflow: visible;
   }
+
+  @media (min-width: 600px) {
+    .scroll-view-area {
+      overflow: hidden;
+    }
+  }
 }

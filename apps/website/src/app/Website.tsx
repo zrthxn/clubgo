@@ -13,19 +13,22 @@ import './Global.scss'
 
 import { LoginService } from '@clubgo/api'
 import { RootContextProvider, RootContext } from './RootContext'
+import { LoginController } from '@clubgo/website/components'
 
 import Home from './views/Home/Home'
-import EventListing from './views/Events/Events'
-import EventDetails from './views/Events/Details'
-import VenueListing from './views/Venues/Venues'
-import VenueDetails from './views/Venues/Details'
+
+import EventListing from './views/Events/EventListing'
+import EventDetails from './views/Events/EventDetails'
+
+import VenueListing from './views/Venues/VenueListing'
+import VenueDetails from './views/Venues/VenueDetails'
+
+import BookingController from './views/Bookings/BookingController'
 import Search from './views/Search/Search'
-import LoginManager from './views/Login/Login'
 
 import Header from './partials/Header/Header'
 import Footer from './partials/Footer/Footer'
 import NotFound from './partials/Errors/NotFound'
-import BookingController from './views/Bookings/BookingController'
 
 const MaterialUITheme = createMuiTheme({
   palette: {
@@ -67,72 +70,63 @@ export default class WebsiteController extends Component {
   }
 
   render() {
-    if(this.state.appValidationFinished)
-      return (
-        <Router>
-          <ThemeProvider theme={MaterialUITheme}>
-            <RootContextProvider>
-              <Header/>
+    return (
+      <Router>
+        <ThemeProvider theme={MaterialUITheme}>
+          <RootContextProvider>
+            <Header/>
 
-              <RootContext.Consumer>
-                {
-                  appContext => (
-                    <Switch>
-                      <Route exact path="/" component={Home}/>
-                      <Route path="/in/:city" render={(routeProps)=>{
-                        let { city } = routeProps.match.params
-                        city = city.substr(0,1).toUpperCase() + city.substr(1).toLowerCase()
-                        return (
-                          <Home city={city} { ...routeProps }/>
-                        )
-                      }}/>
+            <RootContext.Consumer>
+              {
+                appContext => (
+                  <Switch>
+                    <Route exact path="/" component={Home}/>
+                    <Route path="/in/:city" render={(routeProps)=>{
+                      let { city } = routeProps.match.params
+                      city = city.substr(0,1).toUpperCase() + city.substr(1).toLowerCase()
+                      return (
+                        <Home city={city} { ...routeProps }/>
+                      )
+                    }}/>
 
-                      <Route exact path="/events" component={EventListing} />
-                      <Route path="/events/in/:city" render={(routeProps)=>(
-                        <EventListing { ...routeProps }/>
-                      )}/>
-                      <Route exact path="/event/:id" render={(routeProps)=>(
-                        <EventDetails { ...routeProps }/>
-                      )}/>
-                      
-                      <Route exact path="/venues" component={VenueListing} />
-                      <Route path="/venues/in/:city" render={(routeProps)=>( 
-                        <VenueListing { ...routeProps }/>
-                      )}/>
-                      <Route exact path="/venue/:id" render={(routeProps)=>(
-                        <VenueDetails { ...routeProps }/> 
-                      )}/>
+                    <Route exact path="/events" component={EventListing} />
+                    <Route path="/events/in/:city" render={(routeProps)=>(
+                      <EventListing { ...routeProps }/>
+                    )}/>
+                    <Route exact path="/event/:id" render={(routeProps)=>(
+                      <EventDetails { ...routeProps }/>
+                    )}/>
+                    
+                    <Route exact path="/venues" component={VenueListing} />
+                    <Route path="/venues/in/:city" render={(routeProps)=>( 
+                      <VenueListing { ...routeProps }/>
+                    )}/>
+                    <Route exact path="/venue/:id" render={(routeProps)=>(
+                      <VenueDetails { ...routeProps }/> 
+                    )}/>
 
-                      <Route path="/bookings/:id" render={(routeProps)=>(
-                        <BookingController { ...routeProps }/>
-                      )}/>
+                    <Route path="/bookings/:id" render={(routeProps)=>(
+                      <BookingController { ...routeProps }/>
+                    )}/>
 
-                      <Route path="/search" render={(routeProps)=>(
-                        <Search { ...routeProps }/>
-                      )}/>
+                    <Route path="/search" render={(routeProps)=>(
+                      <Search { ...routeProps }/>
+                    )}/>
 
-                      <Route path="/login" render={(routeProps)=>(
-                        <LoginManager { ...routeProps }/>
-                      )}/>
+                    <Route path="/login" render={(routeProps)=>(
+                      <LoginController { ...routeProps }/>
+                    )}/>
 
-                      <Route component={NotFound}/>
-                    </Switch>
-                  )
-                }
-              </RootContext.Consumer>
-              
-              <Footer/>
-            </RootContextProvider>
-          </ThemeProvider>
-        </Router>
-      )
-    else
-      return (
-        <div style={{ height: '100vh', padding: '4em', display: 'flex', flexDirection: 'column' }}>
-          <h1 style={{ textAlign: 'center', margin: 'auto' }}>
-            Loading
-          </h1>
-        </div>
-      )
+                    <Route component={NotFound}/>
+                  </Switch>
+                )
+              }
+            </RootContext.Consumer>
+            
+            <Footer/>
+          </RootContextProvider>
+        </ThemeProvider>
+      </Router>
+    )
   }
 }

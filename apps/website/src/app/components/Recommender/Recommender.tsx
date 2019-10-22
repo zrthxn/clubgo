@@ -9,6 +9,7 @@ import RootContext from '../../RootContext'
 
 interface RecommenderComponentProps {
   render: ((renderProps?)=>((typeof React.Component) | ReactElement))
+  path: string
   query: object
 
   title?: string
@@ -31,7 +32,7 @@ export class Recommender extends Component<RecommenderComponentProps> {
     ]
   }
 
-  recommendationService = new DatabaseService('/event')
+  recommendationService = new DatabaseService(this.props.path)
 
   componentDidMount() {
     let context = this.context.actions.getUserContext()
@@ -41,10 +42,15 @@ export class Recommender extends Component<RecommenderComponentProps> {
   }
 
   fetchRecommendations = async ({ city }) => {
-    let { data } = await this.recommendationService.searchBy({ ...this.props.query })
-    this.setState({
-      recommendations: data.results
+    let { data } = await this.recommendationService.searchBy({ 
+      ...this.props.query
+      // venue: {
+      //   city
+      // }
     })
+    if(this.props.maxItemCount)
+      data.results = data.results.splice(0, this.props.maxItemCount)
+    this.setState({ recommendations: data.results })
     return
   }
   
@@ -83,8 +89,6 @@ export class Recommender extends Component<RecommenderComponentProps> {
             )
           }
         </ScrollArea>
-        
-        {/* <Button className="float-right" size="small">More</Button> */}
       </div>
     )
   }
