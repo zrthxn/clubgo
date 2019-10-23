@@ -6,6 +6,7 @@ import { DatabaseService } from '@clubgo/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 import Button from '../Button/Button'
 import RootContext from '../../RootContext'
+import { FlexScroll } from '../Flexbox/Flexbox'
 
 interface RecommenderComponentProps {
   render: ((renderProps?)=>((typeof React.Component) | ReactElement))
@@ -71,16 +72,7 @@ export class Recommender extends Component<RecommenderComponentProps> {
   render() {
     return (
       <div className="recommender">
-        <ScrollArea
-          speed={1}
-          horizontal
-          className="scroll-view-area"
-          contentClassName="scroll-container-row"
-          horizontalScrollbarStyle={{ borderRadius: 5 }}
-          horizontalContainerStyle={{ borderRadius: 5 }}
-          smoothScrolling= {true}
-          minScrollSize={40}
-        >
+        <FlexScroll>
           {
             !this.state.loading ? (
               this.state.renderQueue
@@ -88,7 +80,7 @@ export class Recommender extends Component<RecommenderComponentProps> {
               <h3 className="center">Loading</h3>
             )
           }
-        </ScrollArea>
+        </FlexScroll>
       </div>
     )
   }

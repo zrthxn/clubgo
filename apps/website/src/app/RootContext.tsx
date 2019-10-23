@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
+import { IEventModel } from '@clubgo/database'
 
 // Initial State
 const _istate = {
@@ -16,6 +17,10 @@ const _istate = {
       { imageURL: '' }, 
       { imageURL: '' }, 
     ],
+  },
+  objectPreload: {
+    event: null,
+    venue: null
   }
 }
 
@@ -34,7 +39,9 @@ export class RootContextProvider extends Component {
       getUserContext: this.getUserContext,
       setUserContext: this.setUserContext,
       setUserLogin: this.setUserLogin,
-      toggleCityLightbox: this.toggleCityLightbox
+      toggleCityLightbox: this.toggleCityLightbox,
+      putObjectPreload: this.putObjectPreload,
+      fetchObjectPreload: this.fetchObjectPreload
     }
   }
 
@@ -101,6 +108,14 @@ export class RootContextProvider extends Component {
       openCityLightbox: !this.state.openCityLightbox
     })
   }
+
+  putObjectPreload = (preload) => {
+    this.setState({
+      objectPreload: preload
+    })
+  }
+
+  fetchObjectPreload = () => this.state.objectPreload
 
   render() {
     return (

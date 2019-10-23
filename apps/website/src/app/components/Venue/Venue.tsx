@@ -23,8 +23,8 @@ export class Venue extends Component<VenueComponentProps> {
   detailsPageURL = `/venue/${this.props.data._id}`
 
   openVenueDetails = () => {
-    window.scrollTo(0, 0)
-    this.context.router(this.detailsPageURL)
+    // window.scrollTo(0, 0)
+    // this.context.router(this.detailsPageURL)
   }
 
   render() {
@@ -48,12 +48,12 @@ export class Venue extends Component<VenueComponentProps> {
           }
         </div>
         
-        <Link to={this.detailsPageURL}>
+        {/* <Link to={this.detailsPageURL}> */}
           <h3 className="venue-title">
             { this.props.data.venueTitle }
             <h4 className="venue-city">{ this.props.data.locality }, { this.props.data.city }</h4>
           </h3>
-        </Link>
+        {/* </Link> */}
       </div>
     )
   }

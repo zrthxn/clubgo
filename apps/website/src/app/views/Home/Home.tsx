@@ -4,12 +4,13 @@ import ScrollArea from 'react-scrollbar'
 
 import './Home.scss'
 
-import { Story, StoriesContainer, Carousel, Venue } from '@clubgo/website/components'
+import { Story, StoriesContainer, Carousel, Venue, FlexScroll } from '@clubgo/website/components'
 import { Banner, Textbox, Recommender } from '@clubgo/website/components'
 import { Event, Flexbox, FlexContainer } from '@clubgo/website/components'
 import RootContext from '../..//RootContext'
 
 import { DatabaseService } from '@clubgo/api'
+import { getFormattedDate } from '@clubgo/util'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 import { SelectCity } from '@clubgo/website/components'
 
@@ -27,6 +28,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   context!: React.ContextType<typeof RootContext>
 
   eventService = new DatabaseService('/event')
+  auxCategoryService = new DatabaseService('/category')
 
   state = {
     searchQuery: null,
@@ -34,7 +36,10 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
       nearby: [
 
       ]
-    }
+    },
+    categories: [
+
+    ]
   }
 
   componentDidMount() {
@@ -42,18 +47,12 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
     if(city===undefined) {
       city = this.context.actions.getUserContext().city
       if(city!==undefined)
-        this.context.router(`/in/${city.toLowerCase()}`)
-      else {
-        this.context.router('/in/delhi')
-        this.context.actions.setUserContext({ city: 'Delhi' })
-        // ^ open modal to select city here
-      }
+        this.context.router(`/in/${city}`)
+      else
+        this.context.router('/')
     }
-    else
-      this.context.actions.setUserContext({
-        city: this.props.city
-      })
 
+    // Find events
     this.eventService.searchBy({
       venue: {
         city
@@ -63,6 +62,15 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
       events.nearby = data.results
       this.setState({
         events
+      })
+    })
+
+    // Categories
+    this.auxCategoryService.searchBy({
+      categoryType: 'event'
+    }).then(({ data })=>{
+      this.setState({
+        categories: data.results
       })
     })
   }
@@ -86,7 +94,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
 
         <section className="container">
           <h1>Featured Events</h1>
-          <Recommender path="/event" maxItemCount={4}
+          <Recommender path="/event" maxItemCount={6}
             query={{
               settings: {
                 isFeatured: true
@@ -101,13 +109,9 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
           />
         </section>
 
-        <section className="container"> 
-          <StoriesContainer/>
-        </section>
-
         <section className="container">
           <h2>Events Near You</h2>
-          <Recommender path="/event" maxItemCount={4}
+          <Recommender path="/event"
             query={{
               venue: {
                 city: this.props.city,
@@ -121,8 +125,23 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
+          <h2>Categories</h2>
+          <FlexScroll>
+            {
+              this.state.categories.map((category, index)=>(
+                <Link className="no-decor" to="/">
+                  <div className="category-item">
+                    <h3>{ category.name }</h3>
+                  </div>
+                </Link>
+              ))
+            }
+          </FlexScroll>
+        </section>
+
+        <section className="container">
           <h2>Recommended</h2>
-          <Recommender path="/event" maxItemCount={4} 
+          <Recommender path="/event" maxItemCount={10} 
             query={{
               venue: {
                 city: this.props.city
@@ -134,8 +153,24 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
           />
         </section>
 
-        <section className="container"> 
-          <StoriesContainer/>
+        <section className="container">
+          <h2>Events this Week</h2>
+          <FlexScroll>
+            {
+              [
+                { label: 'Today', date: getFormattedDate(Date.now()).date + ' ' + getFormattedDate(Date.now()).month },
+                { label: 'Tomorrow', date: getFormattedDate(Date.now() + 86400000).date + ' ' + getFormattedDate(Date.now() + 86400000).month },
+                { label: 'Later', date: 'This Week' }
+              ].map((date, index)=>(
+                <Link className="no-decor" to="/">
+                  <div className="event-date-item">
+                    <h3>{ date.label }</h3>
+                    <p>{ date.date }</p>
+                  </div>
+                </Link>
+              ))
+            }
+          </FlexScroll>
         </section>
 
         <section className="container">

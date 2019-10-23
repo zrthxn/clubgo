@@ -6,7 +6,33 @@ footer {
 
   .mobile-advert {
     padding: 2em;
-    background: $secondaryColor;
+    background: #490c38;
+    position: relative;
+    overflow: hidden;
+
+    .app-mockup {
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      
+      position: absolute;
+      width: 36em;
+      height: 100%;
+      top: 0;
+      left: 5vw;
+
+      img {
+        width: 100%;
+        margin: auto;
+      }
+
+      @media (max-width: 600px) {
+        & {
+          display: none;
+        }
+      }
+    }
 
     .app-icons {
       img {
@@ -25,6 +51,6 @@ footer {
 
   .base {
     padding: 2em;
-    background-color: #1c1c1c;
+    background-color: #000;
   }
 }

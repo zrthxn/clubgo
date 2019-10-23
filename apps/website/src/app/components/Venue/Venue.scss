@@ -29,6 +29,11 @@
       border-radius: 0;
       object-fit: cover;
       transition: all 0.25s ease;
+
+      &:hover {
+        transition: all 0.25s ease;
+        transform: scale(1.0625);
+      }
     }
   }
   
@@ -60,15 +65,10 @@
   }
 }
 
-.scrollarea-content {
+.flexscroll-content {
   .venue {
     width: 16em;
     transition: all 0.25s ease;
-
-    &:hover {
-      transition: all 0.25s ease;
-      transform: scale(1.03125);
-    }
   }
 
   .venue:first-of-type {
@@ -80,6 +80,10 @@
 }
 
 .flexbox {
+  .venue {
+    margin: 0.5em auto;
+  }
+  
   @media (max-width: 600px) {
     .venue {
       width: 12em;
@@ -89,7 +93,7 @@
       .venue-title {
         font-size: 1em;
       }
-    }
+    } 
   }
 }
 

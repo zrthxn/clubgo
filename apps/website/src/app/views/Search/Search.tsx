@@ -6,7 +6,7 @@ import RootContext from '../../RootContext'
 import { IEventModel } from '@clubgo/database'
 
 import { DatabaseService } from '@clubgo/api'
-import { Event, Textbox, StoriesContainer, Flexbox, FlexContainer, Recommender } from '@clubgo/website/components'
+import { Event, Textbox, Flexbox, FlexContainer, Recommender } from '@clubgo/website/components'
 
 export default class Search extends Component<RouteComponentProps> {
   static contextType = RootContext
@@ -102,7 +102,7 @@ export default class Search extends Component<RouteComponentProps> {
   render() {
     return (
       <article>
-        <section className="center">
+        <section className="center container">
           <h1 className="light">Search</h1>
           <Textbox unconstrained placeholder="Find events near you" margins="normal"
             spellCheck={false} 
@@ -128,44 +128,57 @@ export default class Search extends Component<RouteComponentProps> {
               }
             }}
           />
-        </section>
+
+          <br/>
         
-        {
-          !this.state.loading ? (
-            <RootContext.Consumer>
-              {
-                appContext => (
-                  <section>
-                    <h2>
-                      Events in {
-                        appContext.state.city.substr(0,1).toUpperCase() + appContext.state.city.substr(1)
-                      }
-                    </h2>
-                    <h3>Found { this.state.searchResults.events.length } events matching your search</h3>
-                    
-                    <section>
-                      <FlexContainer>
-                        <Flexbox>
-                          {
-                            this.state.searchResults.events.map((event, index)=>{
-                              return (
-                                <Event key={`search-event-${index}`} data={event}/>
-                              )
-                            })
-                          }
-                        </Flexbox>
-                      </FlexContainer>
-                    </section>
-                  </section>
-                )
-              }
-            </RootContext.Consumer>
-          ) : (
-            <section className="container"> 
-              <StoriesContainer/>
-            </section>
-          )
-        }
+          {
+            !this.state.loading ? (
+              <RootContext.Consumer>
+                {
+                  appContext => (
+                    <div>
+                      <h2>
+                        Events in {
+                          appContext.state.city.substr(0,1).toUpperCase() + appContext.state.city.substr(1)
+                        }
+                      </h2>
+                      <h3>Found { this.state.searchResults.events.length } events matching your search</h3>
+                      <br/>
+                      
+                      <div>
+                        <FlexContainer>
+                          <Flexbox>
+                            {
+                              this.state.searchResults.events.map((event, index)=>{
+                                return (
+                                  <Event key={`search-event-${index}`} data={event}/>
+                                )
+                              })
+                            }
+                          </Flexbox>
+                        </FlexContainer>
+                      </div>
+                    </div>
+                  )
+                }
+              </RootContext.Consumer>
+            ) : null
+          }
+        </section>
+
+        <section className="container">
+          <h2>Trending Events</h2>
+          <h4>Selected Events for you</h4>
+          <Recommender path="/event" query={{
+            venue: {
+              city: this.props.city
+            }
+          }}
+            render={(eventProps:IEventModel)=>(
+              <Event key={eventProps._id} data={eventProps} />
+            )}
+          />
+        </section>
 
         <section className="container">
           <h2>Recommended Events</h2>

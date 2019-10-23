@@ -73,11 +73,22 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
   }
 
   fetchEventDetails = async (id) => {
-    let event = await this.eventService.findById(id)
-    this.event = event.data.results
+    let { event } = this.context.actions.fetchObjectPreload()
+
+    if(event!==null) {
+      this.event = event
+    }
+    else {
+      event = await this.eventService.findById(id)
+      this.event = event.data.results
+    }
 
     let venue = await this.venueService.findById(this.event.venue.venueId)
     this.venue = venue.data.results
+    
+    this.context.actions.putObjectPreload({
+      venue: this.venue
+    })
 
     let attendees = await this.bookingService.searchBy({ event: { eventId: this.event._id } })
     

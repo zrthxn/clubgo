@@ -188,13 +188,18 @@ export class TicketSelector extends Component<TicketViewProps> {
                             })
                           }}
                         >
-                          {
-                            this.formatTime(item.activate)
-                          }
+                          { item.entry.ticketTitle }
                         </div>
                       ))
                     }
                   </div>
+                  <p style={{ margin: 0 }}>
+                    From { 
+                      this.formatTime(this.event.bookings.tickets[this.state.selectedTimeIndex].activate) 
+                    } to {
+                      this.formatTime(this.event.bookings.tickets[this.state.selectedTimeIndex].deactivate) 
+                    }
+                  </p>
                   <br/>
 
                   <h3 className="bold">People</h3>
@@ -207,7 +212,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                             Couple
                             <p className="price">
                               { 
-                                '\u20B9' + this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.admissionPrice 
+                                '\u20B9' + this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.admissionPrice
                               }
                             </p>
                           </div>

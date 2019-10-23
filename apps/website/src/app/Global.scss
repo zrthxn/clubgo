@@ -7,11 +7,11 @@ $montserratFont: 'Montserrat', sans-serif;
 $francoisFont: 'Francois One', sans-serif;
 
 $primaryColor: #D62839;
-$secondaryColor: #89216B;
+$secondaryColor: #691351;
 $accentColor: #26233D;
 $accentLightColor: #FFF;
 
-$bodyBg: linear-gradient(135deg, $primaryColor, $secondaryColor);
+$bodyBg: linear-gradient(90deg, $primaryColor, $secondaryColor);
 
 body {
   overflow-x: hidden;
@@ -183,12 +183,6 @@ section {
   overflow: visible;
   position: relative;
   padding-bottom: 1em;
-
-  @media (min-width: 600px) {
-    & {
-      padding: 1em 0;
-    }
-  }
 }
 
 .scroll-container-col {
@@ -197,5 +191,4 @@ section {
   position: relative;
   width: fit-content;
   overflow: visible;
-  // padding: 1em 0;
 }

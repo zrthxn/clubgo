@@ -75,6 +75,7 @@ export class Event extends Component<EventComponentProps> {
 
   openEventDetails = () => {
     window.scrollTo(0, 0)
+    this.context.actions.putObjectPreload({ event: this.props.data })
     this.context.router(this.detailsPageURL)
   }
 
@@ -88,32 +89,42 @@ export class Event extends Component<EventComponentProps> {
       eventCardStyle += ' ' + this.props.color
 
     return (
-      <div className={eventCardStyle} onClick={this.openEventDetails}>
-        <div className="image-container">
-          {
-            this.props.data.media.images.length!==0 ? (
-              <img alt="Image" src={ this.props.data.media.images[0].url }/>
-            ) : (
-              <img alt="Image" src="/assets/clubgo.png"/>
-            )
-          }
-        </div>
-        
-        <Link to={this.detailsPageURL}>
-          <h3 className="event-title">{ this.props.data.eventTitle }</h3>
-        </Link>
-
-        <h4 className="event-venue">{ this.props.data.venue.title }</h4>
-
-        <p style={{ margin: '0.75em 0 0.5em 0', fontSize: '0.75em', opacity: 0.75 }}>
-          <span>{ (new Date(this.props.data.scheduling.customDates[0])).toDateString() }</span>
-          <span style={{ marginLeft: '0.5em' }}>{ this.formatTime(this.props.data.scheduling.timing.startTime) }</span>
-        </p>
-
-        <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9em' }}>
-          Starting from { '\u20B9 ' + this.state.calculatedLowestPrices }
-        </p>
-      </div>
+      <RootContext.Consumer>
+        {
+          appContext => (
+            <div className={eventCardStyle} onClick={this.openEventDetails}>
+              <div className="image-container">
+                {
+                  this.props.data.media.images.length!==0 ? (
+                    <img alt="Image" src={ this.props.data.media.images[0].url }/>
+                  ) : (
+                    <img alt="Image" src="/assets/clubgo.png"/>
+                  )
+                }
+              </div>
+      
+              <div className="category">
+                <p>{ this.props.data.categories[0] }</p>
+              </div>
+              
+              <Link to={this.detailsPageURL} onClick={this.openEventDetails}>
+                <h3 className="event-title">{ this.props.data.eventTitle }</h3>
+              </Link>
+      
+              <h4 className="event-venue">{ this.props.data.venue.title }</h4>
+      
+              <p style={{ margin: '0.75em 0 0.5em 0', fontSize: '0.75em', opacity: 0.75 }}>
+                <span>{ (new Date(this.props.data.scheduling.customDates[0])).toDateString() }</span>
+                <span style={{ marginLeft: '0.5em' }}>{ this.formatTime(this.props.data.scheduling.timing.startTime) }</span>
+              </p>
+      
+              <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9em' }}>
+                From { '\u20B9 ' + this.state.calculatedLowestPrices }
+              </p>
+            </div>
+          )
+        }
+      </RootContext.Consumer>
     )
   }
 }

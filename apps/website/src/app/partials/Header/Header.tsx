@@ -8,13 +8,29 @@ import './Header.scss'
 
 import RootContext from '../../RootContext'
 import { SelectCity } from '@clubgo/website/components'
+import { DatabaseService } from '@clubgo/api'
 
 export default class Header extends Component {
   static contextType = RootContext
   context!: React.ContextType<typeof RootContext>
 
   state = {
-    openSidebar: false
+    openSidebar: false,
+    categories: [
+
+    ]
+  }
+
+  auxCategoryService = new DatabaseService('/category')
+
+  componentDidMount() {
+    this.auxCategoryService.searchBy({
+      categoryType: 'event'
+    }).then(({ data })=>{
+      this.setState({
+        categories: data.results
+      })
+    })
   }
 
   toggleSidebar = () => {
@@ -84,15 +100,17 @@ export default class Header extends Component {
                   }>
                     <h4>Venues</h4>
                   </Link>
+
+                  {
+                    this.state.categories.map((category, index)=>(
+                      <Link className="no-decor" to={''}>
+                        <h4>{ category.name }</h4>
+                      </Link>
+                    ))
+                  }
                 </div>
 
                 <div style={{ margin: 'auto 0 auto auto' }}>
-                  <div className="set-city" onClick={()=>{
-                    appContext.actions.toggleCityLightbox()
-                  }}>
-                    { appContext.state.city } <label htmlFor=""/>
-                  </div>
-
                   <IconButton onClick={()=>{ this.context.router('/search') }}>
                     <Search/>
                   </IconButton>
@@ -100,6 +118,12 @@ export default class Header extends Component {
                   <IconButton onClick={()=>{ this.context.router('/account') }}>
                     <AccountCircle/>
                   </IconButton>
+
+                  <div className="set-city" onClick={()=>{
+                    appContext.actions.toggleCityLightbox()
+                  }}>
+                    { appContext.state.city } <label htmlFor=""/>
+                  </div>
                 </div>
               </section>
             </header>
