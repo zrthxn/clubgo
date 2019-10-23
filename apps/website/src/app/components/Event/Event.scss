@@ -7,11 +7,10 @@
   width: 100%;
   height: 18em;
   border-radius: 0.5em;
-  background-color: #20202040;
 
-  background-color: #fff;
-  color: #000;
-  box-shadow: 0 0 5px #00000080;
+  background-color: #20202040;
+  color: #fff;
+  box-shadow: none;
 
   text-align: left;
   position: relative;
@@ -25,7 +24,7 @@
     overflow: hidden;
     
     img {
-      height: 100%;
+      width: 100%;
       border-radius: 0;
       object-fit: cover;
       transition: all 0.25s ease;
@@ -41,19 +40,12 @@
     font-size: 1em;
   }
   .event-venue {
-    color: $primaryColor;
+    color: #fff;
   }
 
   @media (min-width: 600px) {
     & {
       width: 16em;
-    }
-
-    .image-container {
-      img {
-        width: 100%;
-        height: unset;
-      } 
     }
   }
 
@@ -102,13 +94,13 @@
 }
 
 // Dark Event Card ------------------------------
-.event[class~="dark"] {
-  background-color: #20202040;
-  color: #fff;
-  box-shadow: none;
+.event[class~="white"] {
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 5px #00000080;
 
   .event-venue {
-    color: #fff;
+    color: $primaryColor;
   }
 }
 
@@ -118,6 +110,11 @@
     & {
       width: 20em;
       height: 22em;
+    }
+
+    .image-container {
+      margin-bottom: 0.25em;
+      height: 75%;
     }
 
     .event-title {

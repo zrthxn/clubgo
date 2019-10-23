@@ -96,7 +96,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
               }
             }}
             render={(eventProps:IEventModel)=>(
-              <Event key={eventProps._id} size="large" data={eventProps} />
+              <Event key={eventProps._id} size="large" color="white" data={eventProps} />
             )}
           />
         </section>
