@@ -11,6 +11,52 @@ export default BookingRouter
 // Security Functions
 // --------------------------------------------------------
 
+// ========================================================
+
+// Create a Booking :: /_create
+BookingRouter.post('/_create', async (req, res) => {
+  let { ticket, user, txn, event, venue } = req.body.createBody
+
+  let createBooking = new Booking({
+    createdOn: (new Date()).toJSON(),
+    bookingReference: Date.now().toString(36).toUpperCase(),
+    ...user,
+    people: ticket.people,
+    payment: txn,
+    event: {
+      eventTitle: event.eventTitle,
+      eventId: event._id
+    },
+    venue: {
+      venueTitle: venue.venueTitle,
+      city: venue.city,
+      locality: venue.locality,
+      venueId: venue._id,
+    },
+    schedule: {
+      date: ticket.date,
+      time: ticket.time
+    },
+    appliedOffers: [ ...ticket.appliedOffers ]
+  })
+
+  try {
+    const result = await createBooking.save()
+    
+    // Send confirmation email
+    // Send confirmation SMS
+    // Add to some spreadsheet
+
+    res.status(201).send({ 
+      message: 'Created',
+      results: result
+    })
+  } catch (err) {
+    console.log(conf.Red(err))
+    res.status(400).send({ error: err })
+  }
+})
+
 // Read all Bookings :: /_list
 BookingRouter.get('/_list', async (req, res) => {
   const stream = await Booking.find({})
@@ -49,52 +95,6 @@ BookingRouter.post('/_search', async (req, res) => {
     message: `Found ${searchResult.length} matching records`,
     results: searchResult 
   })
-})
-
-// Create a Booking :: /_create
-BookingRouter.post('/_create', async (req, res) => {
-  let { ticket, user, txn, event, venue } = req.body.createBody
-
-  let createBooking = new Booking({
-    createdOn: (new Date()).toJSON(),
-    bookingReference: Date.now().toString(36).toUpperCase(),
-    ...user,
-    people: ticket.people,
-    payment: txn,
-    event: {
-      eventTitle: event.eventTitle,
-      eventId: event._id
-    },
-    venue: {
-      venueTitle: venue.venueTitle,
-      city: venue.city,
-      locality: venue.locality,
-      venueId: venue._id,
-    },
-    schedule: {
-      date: ticket.date,
-      time: ticket.time
-    },
-    appliedOffers: [
-      ...ticket.appliedOffers
-    ]
-  })
-
-  try {
-    const result = await createBooking.save()
-    
-    // Send confirmation email
-    // Send confirmation SMS
-    // Add to some spreadsheet
-
-    res.status(201).send({ 
-      message: 'Created',
-      results: result
-    })
-  } catch (err) {
-    console.log(conf.Red(err))
-    res.status(400).send({ error: err })
-  }
 })
 
 // Update a Booking by ID :: /_update/:bookingId

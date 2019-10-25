@@ -5,5 +5,8 @@
     "ALLOW_ORIGIN": "*",
     "ALLOW_HEADERS": "*",
     "ALLOW_METHODS": "*"
+  },
+  "gmailer": {
+    
   }
 }

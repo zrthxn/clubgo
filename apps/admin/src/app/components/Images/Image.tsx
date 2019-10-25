@@ -2,24 +2,37 @@ import React, { Component } from 'react'
 import { Button } from '@material-ui/core'
 import { Add, Delete } from '@material-ui/icons'
 import { extractImageFileExtensionFromBase64 } from '@clubgo/util'
+import ImageCrop from './ImageCrop'
 
-export interface ImageProps {
-  index: number,
-  onSelect: Function,
-  onClear: Function,
-  onDelete: Function,
-  filename?: string,
+interface ImageProps {
+  index: number
+  onSelect: Function
+  onClear: Function
+  onDelete: Function
+  filename?: string
   injectFileData?: {
-    imgData: string,
+    imgData: string
     imgSrcExt: string
   }
 }
+
 export class Image extends Component<ImageProps> {
   state = {
     imgSrc: null,
-    imgSrcExt: null
+    imgSrcExt: null,
+    selectedImage: null,
+    selectedImageType: null,
+    openImageCrop: false
   }
 
+  imagePreviewCanvasRef = React.createRef<HTMLCanvasElement>()
+  fileInputRef = React.createRef<HTMLInputElement>()
+
+  imageMaxSize = 25 * 1024 * 1024 // MB
+  
+  acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif, image/webp'
+  acceptedFileTypesArray = this.acceptedFileTypes.split(',').map(item => item.trim())
+  
   componentDidUpdate() {
     if(this.state.imgSrc!==this.props.injectFileData.imgData)
       this.setState({
@@ -27,14 +40,6 @@ export class Image extends Component<ImageProps> {
         imgSrcExt: this.props.injectFileData.imgSrcExt
       })
   }
-
-  imagePreviewCanvasRef = React.createRef<HTMLCanvasElement>()
-  fileInputRef = React.createRef<HTMLInputElement>()
-
-  imageMaxSize = 1000000000 // bytes
-  
-  acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif, image/webp'
-  acceptedFileTypesArray = this.acceptedFileTypes.split(',').map(item => item.trim())
 
   verifyFile = (files) => {
     if (files && files.length > 0){
@@ -62,15 +67,13 @@ export class Image extends Component<ImageProps> {
         const fileItemReader = new FileReader()
         fileItemReader.addEventListener('load', ()=>{
           const { result } = fileItemReader
-          this.setState((prevState, props)=>{
-            this.props.onSelect( result, extractImageFileExtensionFromBase64(result), currentFile.type )
-            return {
-              imgSrc: result,
-              imgSrcExt: extractImageFileExtensionFromBase64(result)
-            }
+          this.setState({
+            selectedImage: result,
+            selectedImageType: currentFile.type,
+            openImageCrop: true
           })
         }, false)
-
+        
         fileItemReader.readAsDataURL(currentFile)
       }
     }
@@ -104,10 +107,8 @@ export class Image extends Component<ImageProps> {
             <div className="no-image-container">
               <div className="no-image-view">
                 <label htmlFor={'imageSelect-' + this.props.index}>
-                  Select an Image
-                  <br/>
-                  <Add/>
-                  <br/>
+                  Select an Image<br/>
+                  <Add/><br/>
                   <Button color="default"
                     onClick={this.props.onDelete.bind(this)}
                   >
@@ -115,14 +116,41 @@ export class Image extends Component<ImageProps> {
                   </Button>
                 </label>
               </div>
-              <input
-                id={'imageSelect-' + this.props.index}
-                ref={this.fileInputRef}
-                type="file"
-                accept={this.acceptedFileTypes} 
-                multiple={false} 
+              <input id={'imageSelect-' + this.props.index} ref={this.fileInputRef}
+                type="file" accept={this.acceptedFileTypes} multiple={false} 
                 onChange={this.handleFileSelect} 
               />
+              
+              {
+                this.state.openImageCrop ? (
+                  <ImageCrop open={this.state.openImageCrop}
+                    src={this.state.selectedImage}
+                    onComplete={(result)=>{
+                      this.setState(()=>{
+                        this.props.onSelect( result, extractImageFileExtensionFromBase64(result), this.state.selectedImageType )
+                        return {
+                          imgSrc: result,
+                          imgSrcExt: extractImageFileExtensionFromBase64(result),
+                          openImageCrop: false
+                        }
+                      })
+                    }}
+                    onClose={()=>{
+                      this.setState(()=>{
+                        this.props.onSelect( this.state.selectedImage, 
+                          extractImageFileExtensionFromBase64(this.state.selectedImage), 
+                          this.state.selectedImageType
+                        )
+                        return {
+                          imgSrc: this.state.selectedImage,
+                          imgSrcExt: extractImageFileExtensionFromBase64(this.state.selectedImage),
+                          openImageCrop: false
+                        }
+                      })
+                    }}
+                  />
+                ) : null
+              }
             </div>
           )
         }

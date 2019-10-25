@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose'
+import { ObjectID } from 'bson'
 
 /**
  * @module
@@ -11,6 +12,17 @@ export const artistSchema = new mongoose.Schema(
     artistTitle: {
       type: String, required: true
     },
+    description: String,
+    category: String,
+    music: [ String ],
+    followers: [ ObjectID ],
+    social: [
+      {
+        platform: String,
+        icon: String,
+        url: String
+      }
+    ],
     images: [
       {
         url: {
@@ -26,9 +38,18 @@ export const artistSchema = new mongoose.Schema(
 
 export interface IArtistModel extends mongoose.Document {
   artistTitle: string
+  description?: string
+  category?: string
+  music?: string[]
+  followers?: ObjectID[]
+  social?: Array<{
+    platform: string
+    icon: string
+    url: string
+  }>
   images: Array<{
     url: string
-    tags?: Array<string>
+    tags: string[]
   }>
 }
 

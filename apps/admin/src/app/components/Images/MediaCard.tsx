@@ -81,7 +81,7 @@ export class MediaCard extends Component<MediaCardProps> {
               {
                 this.state.data.images.map((image, index)=>{
                   return (
-                    <Image key={index} src={image.url} 
+                    <UploadedImage key={index} src={image.url} 
                       onDelete={(src)=>{
                         let { images } = this.state.data
                         images = images.filter((img)=>{
@@ -167,11 +167,12 @@ export class MediaCard extends Component<MediaCardProps> {
   }
 }
 
-export interface ImageProps {
+interface UploadedImageProps {
   src: string,
   onDelete?: Function
 }
-export class Image extends Component<ImageProps> {
+
+export class UploadedImage extends Component<UploadedImageProps> {
   render() {
     return (
       <div style={{

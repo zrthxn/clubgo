@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Button, Fab, Paper, Modal } from '@material-ui/core'
-import { Add } from '@material-ui/icons'
+import { Button, Paper, Modal } from '@material-ui/core'
 
 import '../scss/ImageUploader.scss'
 
-import { Image } from './ui/Image'
+import { Image } from './Image'
 import { UploadService, IUploadFile } from '@clubgo/api'
 
 interface ImageUploaderProps{
@@ -78,15 +77,19 @@ export class ImageUploader extends Component<ImageUploaderProps> {
 
   render() {
     return (
-      <Modal open={this.props.open} 
-        style={{ 
-          margin: 'auto',
-          padding: '2em 0',
-          position: 'absolute',
-          width: 600
-        }}
-      >
-        <Paper style={{ width: '50em', padding: '2em' }}>
+      <Modal open={this.props.open} style={{
+        textAlign: 'center',
+        width: '100%', height: '100%',
+        display: 'flex', flexDirection: 'column'
+      }}>
+        <Paper style={{ 
+          marginTop: '5em',
+          marginLeft: '50%',
+          left: '-24em',
+          padding: '2em',
+          width: '48em',
+          position: 'absolute' 
+        }}>
           {
             !this.state.uploadStarted ? (
               <div className="Uploader">

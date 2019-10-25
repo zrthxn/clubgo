@@ -1,6 +1,6 @@
 import express from 'express'
 import { conf } from '@clubgo/util'
-import { ModelController, EventController, Category } from '@clubgo/database'
+import { ModelController, EventController, Category, Artist } from '@clubgo/database'
 import { Venue, User, Offer, Ticket, Location } from '@clubgo/database'
 import BookingRouter from './BookingRouter'
 
@@ -25,26 +25,45 @@ APIRouter.get('/', (req, res, next)=>{
 
 // CRUD Functions
 // --------------------------------------------------------
+
+// Events Router
 const EventRouter = new EventController()
 APIRouter.use('/event', EventRouter.router())
 
+// Venues Router
 const VenueRouter = new ModelController(Venue)
 APIRouter.use('/venue', VenueRouter.router())
 
+// Bookings Router
 APIRouter.use('/booking', BookingRouter)
 
+// Users Router
 const UserRouter = new ModelController(User)
 APIRouter.use('/user', UserRouter.router())
 
+// Adverts Router
+// const AdvertRouter = new AdvertController()
+// APIRouter.use('/ads', CategoryRouter.router())
+
+// --------------------------
+
+// Offers Router
 const OfferRouter = new ModelController(Offer)
 APIRouter.use('/offer', OfferRouter.router())
 
+// Tickets Router
 const TicketRouter = new ModelController(Ticket)
 APIRouter.use('/ticket', TicketRouter.router())
 
+// Tickets Router
+const ArtistRouter = new ModelController(Artist)
+APIRouter.use('/artist', TicketRouter.router())
+
+// Locations Router
 const LocationRouter = new ModelController(Location)
 APIRouter.use('/location', LocationRouter.router())
 
+// Categories Router
 const CategoryRouter = new ModelController(Category)
 APIRouter.use('/category', CategoryRouter.router())
 

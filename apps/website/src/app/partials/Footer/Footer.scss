@@ -14,9 +14,9 @@ footer {
       padding: 1em;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
       
       position: absolute;
+      transform: rotate(-30deg);
       width: 36em;
       height: 100%;
       top: 0;

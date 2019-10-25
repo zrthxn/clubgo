@@ -1,86 +1,187 @@
-import React, { Component } from 'react'
-import Cropper from 'react-cropper';
+import React, { PureComponent } from 'react'
+import { Grid, Paper, Button, Modal } from '@material-ui/core'
+import Select from 'react-select'
+import Cropper from 'react-easy-crop'
+import getCroppedImg from './util/crop'
+import { Slider } from '@material-ui/lab'
 
-import { extractImageFileExtensionFromBase64 } from '@clubgo/util'
+interface ImageCropProps {
+  open: boolean
+  src: any
+  onComplete: Function
+  onClose?: Function
+}
 
-export class ImageCrop extends Component {
+export class ImageCrop extends PureComponent<ImageCropProps> {
   state = {
-    imgSrc: null
-  }
-
-  fileInputRef = React.createRef<HTMLInputElement>()
-  imageMaxSize = 1000000000 // bytes
-  
-  acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif, image/webp'
-  acceptedFileTypesArray = this.acceptedFileTypes.split(',').map(item => item.trim())
-
-  verifyFile = (files) => {
-    if (files && files.length > 0){
-      const currentFile = files[0]
-      const currentFileType = currentFile.type
-      const currentFileSize = currentFile.size
-      if(currentFileSize > this.imageMaxSize) {
-        alert("This file is not allowed. " + currentFileSize + " bytes is too large")
-        return false
-      }
-      if (!this.acceptedFileTypesArray.includes(currentFileType)){
-        alert("This file is not allowed. Only images are allowed.")
-        return false
-      }
-      return true
+    croppedImage: null,
+    croppedAreaPixels: null,
+    aspectRatio: 1,
+    rotation: 0,
+    zoom: 1,
+    crop: {
+      x: 0,
+      y: 0
     }
   }
 
-  handleFileSelect = event => {
-    // console.log(event)
-    const files = event.target.files
-    if (files && files.length > 0){
-      const isVerified = this.verifyFile(files)
-      if (isVerified){
-        // imageBase64Data 
-        const currentFile = files[0]
-        const myFileItemReader = new FileReader()
-        myFileItemReader.addEventListener("load", ()=>{
-          // console.log(myFileItemReader.result)
-          const myResult = myFileItemReader.result
-          this.setState({
-            imgSrc: myResult,
-            imgSrcExt: extractImageFileExtensionFromBase64(myResult)
-          })
-        }, false)
+  onCropComplete = (croppedArea, croppedAreaPixels) => {
+    this.setState({ croppedAreaPixels })
+  }
 
-        myFileItemReader.readAsDataURL(currentFile)
-      }
+  showCroppedImage = async () => {
+    try {
+      const croppedImage = await getCroppedImg(
+        this.props.src,
+        this.state.croppedAreaPixels,
+        this.state.rotation
+      )
+      this.props.onComplete(croppedImage)
+    } catch (e) {
+      console.error(e)
     }
+  }
+
+  onClose = () => {
+    this.setState({
+      croppedImage: null
+    })
   }
 
   render() {
     return (
-      <div>
-        {
-          this.state.imgSrc!==null ? (
-            <Cropper
-              ref="cropper"
-              src={this.state.imgSrc}
-              style={{height: 400, width: '100%'}}
-              // Cropper.js options
-              aspectRatio={16 / 9}
-              responsive={true}
-              guides={true}
-              modal={true}
-              crop={this._crop.bind(this)}
-            />
-          ) : (
-            <input
-              ref={this.fileInputRef}
-              type="file"
-              accept={this.acceptedFileTypes} 
-              multiple={false} 
-              onChange={this.handleFileSelect} 
-            />
-          )
-        }        
-      </div>
+      <Modal open={this.props.open} style={{
+        textAlign: 'center',
+        width: '100%', height: '100%',
+        display: 'flex', flexDirection: 'column'
+      }}>
+        <Paper style={{ 
+          marginTop: '5em',
+          marginLeft: '50%',
+          left: '-24em',
+          padding: '2em 4em',
+          width: '48em',
+          position: 'absolute' 
+        }}>
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <h3 style={{ textAlign: 'left' }}>Crop Image</h3>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Select 
+                options={[
+                  { label: 'Square (1:1)', value: 1 },
+                  { label: '16:9', value: 16/9 },
+                  { label: '4:3', value: 4/3 }
+                ].map((item, index)=>({
+                  label: item.label, value: item.value
+                }))}
+                placeholder="Aspect Ratio"
+                onChange={(selected)=>{
+                  this.setState(()=>{
+                    let { aspectRatio } = this.state
+                    if(selected!==null)
+                      aspectRatio = selected.value
+                    return {
+                      aspectRatio
+                    }
+                  })
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12} style={{
+              position: 'relative',
+              width: '100%',
+              height: 400,
+              background: '#eee'
+            }}>
+              <Cropper
+                image={this.props.src}
+                crop={this.state.crop}
+                rotation={this.state.rotation}
+                zoom={this.state.zoom}
+                aspect={this.state.aspectRatio}
+                onCropComplete={this.onCropComplete}
+                onCropChange={(crop)=>{
+                  this.setState({ crop })
+                }}
+                onRotationChange={(rotation)=>{
+                  this.setState({ rotation })
+                }}
+                onZoomChange={(zoom)=>{
+                  this.setState({ zoom })
+                }}
+              />
+            </Grid>
+
+            <Grid item md={6} xs={12} style={{
+              display: 'flex',
+              flex: '1',
+              alignItems: 'center',
+            }}>
+              <Slider style={{
+                  padding: '22px 0px',
+                  marginLeft: 16,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  margin: '0 16px',
+                }}
+                value={this.state.zoom}
+                min={1}
+                max={3}
+                step={0.1}
+                onChange={(e, zoom) => {
+                  this.setState({ zoom })
+                }}
+              />
+            </Grid>
+
+            <Grid item md={6} xs={12} style={{
+              display: 'flex',
+              flex: '1',
+              alignItems: 'center',
+            }}>
+              <Slider style={{
+                  padding: '22px 0px',
+                  marginLeft: 16,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  margin: '0 16px',
+                }}
+                value={this.state.rotation}
+                min={0}
+                max={360}
+                step={1}
+                aria-labelledby="Rotation"
+                onChange={(e, rotation) => {
+                  this.setState({ rotation })
+                }}
+              />
+            </Grid>
+
+
+            <Grid item xs={12}></Grid>
+            <Grid item xs={12}></Grid>
+
+            <Grid item xs={6}>
+              <Button variant="outlined" color="primary" onClick={()=>{
+                if(this.props.onClose)
+                  this.props.onClose()
+              }}>
+                Cancel
+              </Button>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Button variant="contained" color="primary" onClick={this.showCroppedImage}>
+                Done
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Modal>
     )
   }
 }
