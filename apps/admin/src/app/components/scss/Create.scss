@@ -7,24 +7,24 @@ $section-content-bg: #bdbdbd40;
     font-size: 1.5em;
     padding: 1em;
   }
-  
-  .create-block {
-    margin: 1em;
+}
+
+.create-block {
+  margin: 1em;
+  padding: 2em;
+  border: 1.5px solid #1c1c1c40;
+  box-shadow: none;
+
+  .title {
+    text-transform: uppercase;
+    color: #1c1c1c;
+    font-size: 1em;
+    font-weight: 600;
+
+    margin: -2em;
     padding: 2em;
-    border: 1.5px solid #1c1c1c40;
-    box-shadow: none;
-
-    .title {
-      text-transform: uppercase;
-      color: #1c1c1c;
-      font-size: 1em;
-      font-weight: 600;
-
-      margin: -2em;
-      padding: 2em;
-      border-top-left-radius: 0.5em;
-      border-top-right-radius: 0.5em;
-    }
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
   }
 }
 

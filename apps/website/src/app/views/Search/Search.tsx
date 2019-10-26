@@ -18,11 +18,6 @@ export default class Search extends Component<RouteComponentProps> {
   state = {
     loading: true,
     searchQuery: null,
-    recommendations: {
-      nearby: [
-        
-      ]
-    },
     searchResults: {
       events: [
       
@@ -36,7 +31,7 @@ export default class Search extends Component<RouteComponentProps> {
   componentDidMount() {
     this.queryParamSearch()
 
-    let { city } = this.context.actions.getUserContext()
+    let { city } = this.context.actions.getUserContext().city
     this.eventService.searchBy({
       venue: {
         city
@@ -101,41 +96,41 @@ export default class Search extends Component<RouteComponentProps> {
   
   render() {
     return (
-      <article>
-        <section className="center container">
-          <h1 className="light">Search</h1>
-          <Textbox unconstrained placeholder="Find events near you" margins="normal"
-            spellCheck={false} 
-            style={{ textAlign: 'center' }}
-            onChange={({ target })=>{
-              this.setState(()=>{
-                if(target.value!=='')
-                  return {
-                    searchQuery: {
-                      q: target.value
+      <RootContext.Consumer>
+        {
+          appContext => (
+            <article>
+              <section className="center container">
+                <h1 className="light">Search</h1>
+                <Textbox unconstrained placeholder="Find events near you" margins="normal"
+                  spellCheck={false} 
+                  style={{ textAlign: 'center' }}
+                  onChange={({ target })=>{
+                    this.setState(()=>{
+                      if(target.value!=='')
+                        return {
+                          searchQuery: {
+                            q: target.value
+                          }
+                        }
+                      else
+                        return {
+                          searchQuery: null
+                        }
+                    })
+                  }}
+                  onKeyDown={(event)=>{
+                    if(event.key==='Enter' && this.state.searchQuery.q.length>=3) {
+                      this.context.router(`/search?q=${this.state.searchQuery.q.replace(/ /g, '-')}`)
+                      this.search()
                     }
-                  }
-                else
-                  return {
-                    searchQuery: null
-                  }
-              })
-            }}
-            onKeyDown={(event)=>{
-              if(event.key==='Enter' && this.state.searchQuery.q.length>=3) {
-                this.context.router(`/search?q=${this.state.searchQuery.q.replace(/ /g, '-')}`)
-                this.search()
-              }
-            }}
-          />
+                  }}
+                />
 
-          <br/>
-        
-          {
-            !this.state.loading ? (
-              <RootContext.Consumer>
+                <br/>
+              
                 {
-                  appContext => (
+                  !this.state.loading ? (
                     <div>
                       <h2>
                         Events in {
@@ -159,41 +154,41 @@ export default class Search extends Component<RouteComponentProps> {
                         </FlexContainer>
                       </div>
                     </div>
-                  )
+                  ) : null
                 }
-              </RootContext.Consumer>
-            ) : null
-          }
-        </section>
+              </section>
 
-        <section className="container">
-          <h2>Trending Events</h2>
-          <h4>Selected Events for you</h4>
-          <Recommender path="/event" query={{
-            venue: {
-              city: this.props.city
-            }
-          }}
-            render={(eventProps:IEventModel)=>(
-              <Event key={eventProps._id} data={eventProps} />
-            )}
-          />
-        </section>
+              <section className="container">
+                <h2>Trending Events</h2>
+                <h4>Selected Events for you</h4>
+                <Recommender path="/event" query={{
+                  venue: {
+                    // city: appContext.actions.getUserContext().city
+                  }
+                }}
+                  render={(eventProps:IEventModel)=>(
+                    <Event key={eventProps._id} data={eventProps} />
+                  )}
+                />
+              </section>
 
-        <section className="container">
-          <h2>Recommended Events</h2>
-          <h4>Selected Events for you</h4>
-          <Recommender path="/event" query={{
-            venue: {
-              city: this.props.city
-            }
-          }}
-            render={(eventProps:IEventModel)=>(
-              <Event key={eventProps._id} data={eventProps} />
-            )}
-          />
-        </section>
-      </article>
+              <section className="container">
+                <h2>Recommended Events</h2>
+                <h4>Selected Events for you</h4>
+                <Recommender path="/event" query={{
+                  venue: {
+                    // city: appContext.actions.getUserContext().city
+                  }
+                }}
+                  render={(eventProps:IEventModel)=>(
+                    <Event key={eventProps._id} data={eventProps} />
+                  )}
+                />
+              </section>
+            </article>
+          )
+        }
+      </RootContext.Consumer>
     )
   }
 }

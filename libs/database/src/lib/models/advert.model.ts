@@ -11,25 +11,25 @@ export const advertSchema = new mongoose.Schema(
     advertTitle: {
       type: String, required: true
     },
-    images: [
-      {
-        url: {
-          type: String, required: true
-        },
-        tags: [String]
-      }
-    ]
+    link: String,
+    city: String,
+    imageURL: {
+      type: String//, required: true
+    }
   }, {
     collection: 'Adverts'
   }
 )
 
+advertSchema.index({
+  advertTitle: 'text'
+})
+
 export interface IAdvertModel extends mongoose.Document {
-  AdvertTitle: string
-  images: Array<{
-    url: string
-    tags?: Array<string>
-  }>
+  advertTitle: string
+  link?: string
+  city?: string
+  imageURL: string
 }
 
 export const Advert = mongoose.model<IAdvertModel>('Advert', advertSchema)

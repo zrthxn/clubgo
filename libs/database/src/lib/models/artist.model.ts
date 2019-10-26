@@ -36,6 +36,11 @@ export const artistSchema = new mongoose.Schema(
   }
 )
 
+artistSchema.index({
+  artistTitle: 'text',
+  description: 'text'
+})
+
 export interface IArtistModel extends mongoose.Document {
   artistTitle: string
   description?: string

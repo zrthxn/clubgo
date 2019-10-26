@@ -32,6 +32,7 @@ import SettingsPage from './pages/SettingsPage'
 import AdminContextProvider from './AdminContextProvider'
 import AdminContext from './AdminContext'
 import CategoriesPage from './pages/CategoriesPage'
+import AdvertPage from './pages/AdvertPage'
 
 export class Admin extends Component {
   state = {
@@ -109,6 +110,7 @@ export class Admin extends Component {
               </div>
 
               <Link onClick={this.toggleSidebar} to="/dashboard"> Dashboard </Link>
+              <Link onClick={this.toggleSidebar} to="/ads"> Advertising </Link>
               <Link onClick={this.toggleSidebar} to="/bookings"> Bookings </Link>
               <Link onClick={this.toggleSidebar} to="/events"> Events </Link>
               <Link onClick={this.toggleSidebar} to="/venues"> Venues </Link>
@@ -169,6 +171,7 @@ export class Admin extends Component {
                 <Switch>
                   <Route exact path="/" component={ Dashboard } />
                   <Route path="/dashboard" component={ Dashboard } />
+                  <Route path="/ads" component={ AdvertPage } />
                   <Route path="/bookings/:eventId" render={(routeProps)=>(
                     <BookingsPage { ...routeProps } />
                   )} />

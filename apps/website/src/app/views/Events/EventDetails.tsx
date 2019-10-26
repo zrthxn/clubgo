@@ -150,7 +150,9 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                         }
                       </div>
                     </div>
-                    <button onClick={this.openBooking}>Book Now</button>
+                    <div className="button-container">
+                      <button onClick={this.openBooking}>Book Now</button>
+                    </div>
                   </div>
                 </div>
               </Grid>
@@ -159,23 +161,26 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                 <h2 className="underline bold">Event Details</h2>
                 <div className="event-detail-items">
                   <p className="detail-item">
+                    <span className="label">ARTISTS</span>
                     { 
                       this.event.artists.map((artist)=>(
-                        <span>{ artist }</span>
+                        <span className="item">{ artist }</span>
                       )) 
                     }
                   </p>
 
                   <p className="detail-item">
+                    <span className="label">MUSIC</span>
                     { 
                       this.event.music.map((music)=>(
-                        <span>{ music }</span>
+                        <span className="item">{ music }</span>
                       ))
                     }
                   </p>
 
                   <p className="detail-item">
-                    { this.event.dressCode.title }
+                    <span className="label">DRESS CODE</span>
+                    <span className="item">{ this.event.dressCode.title }</span>
                   </p>
                 </div>
               </Grid>

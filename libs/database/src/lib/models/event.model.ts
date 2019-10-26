@@ -1,7 +1,8 @@
 import * as mongoose from 'mongoose'
-import { artistSchema, IArtistModel } from './artist.model'
-import { ticketSchema, ITicketModel } from './ticket.model'
-import { offerSchema, IOfferModel } from './offer.model'
+import { IArtistModel } from './artist.model'
+import { ITicketModel } from './ticket.model'
+import { IOfferModel } from './offer.model'
+import { serialize } from '@clubgo/util'
 
 /**
  * @module
@@ -31,9 +32,7 @@ export const eventSchema = new mongoose.Schema(
     eventTitle: { 
       type: String, required: true
     },
-    description: { 
-      type: String, required: true 
-    },
+    description: String,
     categories: [String],
     tagline: String,
     flashText: String,
@@ -215,10 +214,7 @@ export const eventSchema = new mongoose.Schema(
   }
 )
 
-eventSchema.index({ 
-  eventTitle: 'text',
-  tagline: 'text'
-})
+eventSchema.index({ '$**': 'text' })
 
 export interface IEventModel extends mongoose.Document {
   ref: string
@@ -266,9 +262,9 @@ export interface IEventModel extends mongoose.Document {
     type: 'once' | 'daily' | 'weekly' | 'monthly' | 'custom'
     isRecurring: boolean
     recurring?: {
-      date: Array<number> | undefined
-      day: Array<string> | undefined
-      month: Array<string> | undefined
+      date?: Array<number>
+      day?: Array<string>
+      month?: Array<string>
     }
     customDates?: Array<Date>
     noShowDates?: Array<Date>
