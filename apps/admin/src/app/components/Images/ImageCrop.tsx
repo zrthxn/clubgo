@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { Grid, Paper, Button, Modal } from '@material-ui/core'
 import Select from 'react-select'
 import Cropper from 'react-easy-crop'
-import getCroppedImg from './util/crop'
+import getCroppedImg from './crop'
 import { Slider } from '@material-ui/lab'
 
 interface ImageCropProps {
@@ -116,7 +116,7 @@ export class ImageCrop extends PureComponent<ImageCropProps> {
               />
             </Grid>
 
-            <Grid item md={6} xs={12} style={{
+            {/* <Grid item md={6} xs={12} style={{
               display: 'flex',
               flex: '1',
               alignItems: 'center',
@@ -159,7 +159,7 @@ export class ImageCrop extends PureComponent<ImageCropProps> {
                   this.setState({ rotation })
                 }}
               />
-            </Grid>
+            </Grid> */}
 
 
             <Grid item xs={12}></Grid>

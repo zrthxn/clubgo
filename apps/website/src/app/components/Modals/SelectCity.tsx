@@ -22,9 +22,7 @@ export class SelectCity extends Component<ComponentProps> {
   componentDidMount() {
     let { city } = this.context.actions.getUserContext()
     if(city===undefined)
-      this.setState({
-        openLightbox: true
-      })
+      this.context.actions.toggleCityLightbox()
 
     this.locationService.list().then(({ data })=>{
       let { cities } = this.state
@@ -40,7 +38,7 @@ export class SelectCity extends Component<ComponentProps> {
       <RootContext.Consumer>
         {
           appContext => (
-            <Lightbox open={this.state.openLightbox || appContext.state.openCityLightbox}>
+            <Lightbox open={appContext.state.openCityLightbox}>
               <article>
                 <section>
                   <div style={{

@@ -81,6 +81,25 @@ export class DatabaseService extends Interface {
       )
     } catch (HTTPError) {
       return Promise.reject(HTTPError)
+    }
+  }
+
+  /**
+   * Recommend by given params
+   * @param search `Mongoose.Query` 
+   * @param options
+   */
+  async recommend(search:object, options:object) {
+    // cRud
+    try {
+      return await this.request.post(
+        this.endpoint + '/_recommend', {
+          query: serialize(search),
+          options
+        }
+      )
+    } catch (HTTPError) {
+      return Promise.reject(HTTPError)
     }    
   }
 

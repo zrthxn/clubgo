@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Button, Paper, Modal } from '@material-ui/core'
-
 import '../scss/ImageUploader.scss'
 
 import { Image } from './Image'

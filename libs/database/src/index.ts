@@ -13,6 +13,7 @@ export * from './lib/models/webmaster.model'
 export * from './lib/models/booking.model'
 export * from './lib/models/category.model'
 export * from './lib/models/artist.model'
+export * from './lib/models/advert.model'
 
 // Controllers 
 export * from './lib/controllers/controller'

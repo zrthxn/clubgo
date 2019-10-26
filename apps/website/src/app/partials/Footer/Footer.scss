@@ -2,7 +2,7 @@
 
 footer {  
   margin: -0.5em;
-  margin-top: 4em;
+  margin-top: 1em;
 
   .mobile-advert {
     padding: 2em;
@@ -45,8 +45,25 @@ footer {
   }
 
   .cities {
-    padding: 2em;
-    margin: 2em 0;
+    padding: 2em 1em;
+
+    .footer-locations {
+      div {
+        padding: 0;
+        margin: 0;
+      }
+
+      a {
+        color: #fff;
+        font-weight: 400;
+        font-size: 0.85em;
+        text-decoration: none;
+
+        &:hover {
+          opacity: 0.75;
+        }
+      }
+    }
   }
 
   .base {

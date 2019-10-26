@@ -5,6 +5,9 @@ import { TextField, Button, Switch, Checkbox } from '@material-ui/core'
 import { InputAdornment } from '@material-ui/core'
 import { Link, Delete } from '@material-ui/icons'
 
+import '../scss/ImageUploader.scss'
+import '../scss/Create.scss'
+
 import { ImageUploader } from './ImageUploader'
 import { APIEndpoints } from '@clubgo/api'
 import { handleChangeById as inputHandler } from '@clubgo/util'
@@ -152,9 +155,10 @@ export class MediaCard extends Component<MediaCardProps> {
                 <TextField id="videoURL" fullWidth variant="outlined" 
                   margin="dense" placeholder="https://example.com/video"
                   InputProps={{
-                    startAdornment: <InputAdornment position="start">
-                      <Link/>
-                    </InputAdornment>,
+                    startAdornment: 
+                      <InputAdornment position="start">
+                        <Link/>
+                      </InputAdornment>,
                   }}
                   onChange={this.handleChangeById}
                 />

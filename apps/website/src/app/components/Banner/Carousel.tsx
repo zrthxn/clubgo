@@ -10,6 +10,7 @@ import {
 interface CarouselProps {
   items: Array<{
     src: string
+    link: string
   }>
 }
 
@@ -65,7 +66,9 @@ export class Carousel extends Component<CarouselProps> {
                   onExited={() => this.setAnimating(false)}
                   key={item.src}
                 >
-                  <img src={item.src} />
+                  <a href={item.link}>
+                    <img src={item.src} />
+                  </a>
                 </CarouselItem>
               )
             })

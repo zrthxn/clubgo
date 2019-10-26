@@ -82,27 +82,41 @@ export default class WebsiteController extends Component {
                   <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route path="/in/:city" render={(routeProps)=>{
-                      let { city } = routeProps.match.params
+                      let { city } = routeProps.match.params                      
+                      if(city===undefined) {
+                        city = this.context.actions.getUserContext().city
+                        if(city===undefined)
+                          this.context.router(`/in/${city}`)
+                      }
+                      
                       city = city.substr(0,1).toUpperCase() + city.substr(1).toLowerCase()
                       return (
                         <Home city={city} { ...routeProps }/>
                       )
                     }}/>
+                    
+                    <Route exact path="/event/:id" render={(routeProps)=>(
+                      <EventDetails { ...routeProps }/>
+                    )}/>
 
                     <Route exact path="/events" component={EventListing} />
+                    <Route path="/events/in/:city/on/:when" render={(routeProps)=>(
+                      <EventListing { ...routeProps }/>
+                    )}/>
+                    <Route path="/events/in/:city/:search" render={(routeProps)=>(
+                      <EventListing { ...routeProps }/>
+                    )}/>
                     <Route path="/events/in/:city" render={(routeProps)=>(
                       <EventListing { ...routeProps }/>
                     )}/>
-                    <Route exact path="/event/:id" render={(routeProps)=>(
-                      <EventDetails { ...routeProps }/>
+                    
+                    <Route exact path="/venue/:id" render={(routeProps)=>(
+                      <VenueDetails { ...routeProps }/> 
                     )}/>
                     
                     <Route exact path="/venues" component={VenueListing} />
                     <Route path="/venues/in/:city" render={(routeProps)=>( 
                       <VenueListing { ...routeProps }/>
-                    )}/>
-                    <Route exact path="/venue/:id" render={(routeProps)=>(
-                      <VenueDetails { ...routeProps }/> 
                     )}/>
 
                     <Route path="/bookings/:id" render={(routeProps)=>(

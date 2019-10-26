@@ -80,9 +80,17 @@ export default class Header extends Component {
                   ) : null
                 }
 
-                <Link className="no-decor" to="/" style={{ padding: '1rem' }}>
-                  <h1 id="site-title">ClubGo</h1>
-                </Link>
+                {
+                  appContext.state.city!==undefined ? (
+                    <Link className="no-decor" to={`/in/${appContext.state.city.toLowerCase()}`} style={{ padding: '1rem' }}>
+                      <h1 id="site-title">ClubGo</h1>
+                    </Link>
+                  ) : (
+                    <Link className="no-decor" to="/" style={{ padding: '1rem' }}>
+                      <h1 id="site-title">ClubGo</h1>
+                    </Link>
+                  )
+                }
 
                 <div className="desktop-nav">
                   <Link className="no-decor" to={
@@ -103,9 +111,10 @@ export default class Header extends Component {
 
                   {
                     this.state.categories.map((category, index)=>(
-                      <Link className="no-decor" to={''}>
+                      <a className="no-decor" 
+                        href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
                         <h4>{ category.name }</h4>
-                      </Link>
+                      </a>
                     ))
                   }
                 </div>
@@ -115,14 +124,17 @@ export default class Header extends Component {
                     <Search/>
                   </IconButton>
                   
-                  <IconButton onClick={()=>{ this.context.router('/account') }}>
+                  {/* <IconButton onClick={()=>{ this.context.router('/account') }}>
                     <AccountCircle/>
-                  </IconButton>
+                  </IconButton> */}
 
                   <div className="set-city" onClick={()=>{
                     appContext.actions.toggleCityLightbox()
                   }}>
-                    { appContext.state.city } <label htmlFor=""/>
+                    <img src="/assets/icons/location.svg" width="20px" alt=""/>
+                    <span style={{ margin: '0 1em 0 0.25em' }}>
+                      { appContext.state.city }
+                    </span>
                   </div>
                 </div>
               </section>

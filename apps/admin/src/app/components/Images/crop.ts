@@ -1,4 +1,4 @@
-const createImage = url =>
+const createImage:any = url =>
   new Promise((resolve, reject) => {
     const image = new Image()
     image.addEventListener('load', () => resolve(image))
