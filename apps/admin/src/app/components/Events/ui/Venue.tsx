@@ -183,7 +183,7 @@ export class Venue extends Component<VenueProps> {
                   }))}
                   onChange={ selected => {
                     let { selectVenueCategory, data } = this.state
-                    data.city = selected.value
+                    data.city = selected.value.city
 
                     this.venueService.searchBy({
                       city: selected!==null ? selected.value.city : undefined,
