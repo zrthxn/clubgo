@@ -16,9 +16,7 @@ export default class Header extends Component {
 
   state = {
     openSidebar: false,
-    categories: [
-
-    ]
+    categories: []
   }
 
   auxCategoryService = new DatabaseService('/category')
