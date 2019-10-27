@@ -63,7 +63,7 @@ export default class Header extends Component {
                         <Link onClick={this.toggleSidebar} to={
                           appContext.state.city!==undefined ? (
                             `/events/in/${appContext.state.city.toLowerCase()}`
-                          ) : '/events/in/delhi'
+                          ) : '/events'
                         }>
                           Events
                         </Link>
@@ -71,7 +71,7 @@ export default class Header extends Component {
                         <Link onClick={this.toggleSidebar} to={
                           appContext.state.city!==undefined ? (
                             `/venues/in/${appContext.state.city.toLowerCase()}`
-                          ) : '/venues/in/delhi'
+                          ) : '/venues'
                         }>
                           Venues
                         </Link>
@@ -96,7 +96,7 @@ export default class Header extends Component {
                   <Link className="no-decor" to={
                     appContext.state.city!==undefined ? (
                       `/events/in/${appContext.state.city.toLowerCase()}`
-                    ) : '/events/in/delhi'
+                    ) : '/events'
                   }>
                     <h4>Events</h4>
                   </Link>
@@ -104,17 +104,24 @@ export default class Header extends Component {
                   <Link className="no-decor" to={
                     appContext.state.city!==undefined ? (
                       `/venues/in/${appContext.state.city.toLowerCase()}`
-                    ) : '/venues/in/delhi'
+                    ) : '/venues'
                   }>
                     <h4>Venues</h4>
                   </Link>
 
                   {
                     this.state.categories.map((category, index)=>(
-                      <a className="no-decor" 
-                        href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
-                        <h4>{ category.name }</h4>
-                      </a>
+                      appContext.state.city!==undefined ? (
+                        <a className="no-decor" 
+                          href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+                          <h4>{ category.name }</h4>
+                        </a>
+                      ) : (
+                        <a className="no-decor" 
+                          href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+                          <h4>{ category.name }</h4>
+                        </a>
+                      )
                     ))
                   }
                 </div>

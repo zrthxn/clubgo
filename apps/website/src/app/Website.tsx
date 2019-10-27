@@ -99,12 +99,16 @@ export default class WebsiteController extends Component {
                         <Home city={city} { ...routeProps }/>
                       )
                     }}/>
+
                     
                     <Route exact path="/event/:id" render={(routeProps)=>(
                       <EventDetails { ...routeProps }/>
                     )}/>
-
+                    
                     <Route exact path="/events" component={EventListing} />
+                    <Route path="/events/in/:city/:search/on/:when" render={(routeProps)=>(
+                      <EventListing { ...routeProps }/>
+                    )}/>
                     <Route path="/events/in/:city/on/:when" render={(routeProps)=>(
                       <EventListing { ...routeProps }/>
                     )}/>
@@ -114,6 +118,10 @@ export default class WebsiteController extends Component {
                     <Route path="/events/in/:city" render={(routeProps)=>(
                       <EventListing { ...routeProps }/>
                     )}/>
+                    <Route path="/events/:search" render={(routeProps)=>(
+                      <EventListing { ...routeProps }/>
+                    )}/>
+
                     
                     <Route exact path="/venue/:id" render={(routeProps)=>(
                       <VenueDetails { ...routeProps }/> 
@@ -123,6 +131,7 @@ export default class WebsiteController extends Component {
                     <Route path="/venues/in/:city" render={(routeProps)=>( 
                       <VenueListing { ...routeProps }/>
                     )}/>
+
 
                     <Route path="/bookings/:id" render={(routeProps)=>(
                       <BookingController { ...routeProps }/>
