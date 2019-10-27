@@ -80,18 +80,18 @@ export default class WebsiteController extends Component {
                 appContext => (
                   <Switch>
                     <Route exact path="/" render={(routeProps)=>{
-                      let { city } = this.context.actions.getUserContext()
+                      let { city } = appContext.actions.getUserContext()
                       if(city!==undefined)
-                        this.context.router(`/in/${city}`)
+                        appContext.router(`/in/${city}`)
                       else
                         return <Home/>
                     }}/>
                     <Route path="/in/:city" render={(routeProps)=>{
                       let { city } = routeProps.match.params                      
                       if(city===undefined) {
-                        city = this.context.actions.getUserContext().city
+                        city = appContext.actions.getUserContext().city
                         if(city===undefined)
-                          this.context.router(`/in/${city}`)
+                          appContext.router(`/in/${city}`)
                       }
                       
                       city = city.substr(0,1).toUpperCase() + city.substr(1).toLowerCase()
