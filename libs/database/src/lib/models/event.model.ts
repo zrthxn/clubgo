@@ -69,6 +69,7 @@ export const eventSchema = new mongoose.Schema(
       title: {
         type: String, required: true
       },
+      locality: String, 
       address: String, 
       isCustomVenue: Boolean,
       customVenueDetails: {
@@ -248,6 +249,7 @@ export interface IEventModel extends mongoose.Document {
     city: string
     venueId?: string
     title: string
+    locality?: string
     address?: string 
     isCustomVenue?: boolean
     customVenueDetails?: {

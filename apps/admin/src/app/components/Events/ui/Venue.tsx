@@ -32,6 +32,7 @@ export class Venue extends Component<VenueProps> {
       city: String(),
       venueId: String(),
       title: String(),
+      locality: String(), 
       address: String(),
       isCustomVenue: false,
       customVenueDetails: {
@@ -118,6 +119,7 @@ export class Venue extends Component<VenueProps> {
     this.setState(()=>{
       data.venueId = venue._id
       data.title = venue.venueTitle
+      data.locality = venue.locality
       data.address = venue.address
 
       return {
