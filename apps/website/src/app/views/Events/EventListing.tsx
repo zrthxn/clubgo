@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import './Events.scss'
 
-import { FlexContainer, Flexbox, Event, Banner } from '@clubgo/website/components'
+import { FlexContainer, Flexbox, Event, Banner, FlexScroll } from '@clubgo/website/components'
 import RootContext from '../../RootContext'
 
 import { Advert, Carousel } from '@clubgo/website/components'
 import { Lightbox, Button } from '@clubgo/website/components'
 import { DatabaseService } from '@clubgo/api'
-import { IEventModel } from '@clubgo/database'
+import { IEventModel, ICategoryModel, ILocationModel } from '@clubgo/database'
 import { serialize, getFormattedDate } from '@clubgo/util'
 
 type URLParams = { 
@@ -28,60 +28,49 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
 
     listing: [],
     filters: { 
-      'venue.title': 'Test Venue'
+      
     }
   }
 
   eventService = new DatabaseService('/event')
-
   adService = new DatabaseService('/ads')
+
+  auxCategoryService = new DatabaseService('/category')
+  auxLocationService = new DatabaseService('/location')
 
   componentDidMount() {
     let { city, search, when } = this.props.match.params
-    let query = {}
 
-    if(city!==undefined) {
-      city = city.substr(0, 1).toUpperCase() + city.substr(1)
-      query = {
-        ...query,
-        venue: {
-          city
+    if(when) this.findEventsByDate(when, city, search)
+    else this.findEventsBySearchQuery(search, city)
+
+    // Categories
+    this.auxCategoryService.searchBy({
+      categoryType: 'event'
+    }).then(({ data })=>{
+      this.setState({
+        categories: data.results
+      })
+    })
+
+    // Localities
+    this.auxLocationService.searchBy({
+      city: city.substr(0, 1).toUpperCase() + city.substr(1)
+    }).then(({ data })=>{
+      let localities = []
+      for (const location of data.results) {
+        for (const locality of location.localities) {
+          localities.push(locality)
         }
       }
-      this.setState({ city })
-    }
-
-    if(search!==undefined) {
-      search = search.trim()
-      search = search.replace(/-/g, ' ')
-      query = {
-        ...query,
-        $text: {
-          $search: search
-        }
-      }
-    }
-
-    if(when)
-      this.eventService.recommend(query, {
-        when
-      }).then(({ data })=>{
-        this.setState({
-          events: data.results,
-          listing: data.results
-        })
+      this.setState({
+        localities
       })
-    else
-      this.eventService.searchBy(query).then(({ data })=>{
-        this.setState({
-          events: data.results,
-          listing: data.results
-        })
-      })
-
+    })
+      
     // Advertising
     this.adService.searchBy({
-      city
+      city: city.substr(0, 1).toUpperCase() + city.substr(1)
     }).then(({ data })=>{
       let ads = []
       for (const ad of data.results) {
@@ -95,14 +84,82 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
     })
   }
 
-  filterEvents = () => {
-    let { listing } = this.state
-    for (const key in this.state.filters)
-      if (this.state.filters.hasOwnProperty(key))
-        listing = listing.filter(list => serialize(list)[key]===this.state.filters[key])
-    console.log(serialize(listing[0]['venue.title']))
+  createSearchQuery = (city?, search?) => {
+    let query = {}
+    if(city===undefined)
+      city = this.props.match.params.city
+    city = city.substr(0, 1).toUpperCase() + city.substr(1)
+    query = {
+      ...query,
+      venue: {
+        city
+      }
+    }
+
+    this.setState({ city })
+
+    if(search!==undefined) {
+      search = search.trim()
+      search = search.replace(/-/g, ' ')
+      query = {
+        ...query,
+        $text: {
+          $search: search
+        }
+      }
+    }
+
+    return query
+  }
+
+  findEventsBySearchQuery = (search, city?) => {
+    let query = this.createSearchQuery(city, search)
+    this.eventService.searchBy(query).then(({ data })=>{
+      this.setState({
+        events: data.results,
+        listing: data.results
+      })
+    })
+  }
+
+  findEventsByDate = (when, city?, search?) => {
+    let query = this.createSearchQuery(city, search)
+    this.eventService.recommend(query, {
+      when
+    }).then(({ data })=>{
+      this.setState({
+        events: data.results,
+        listing: data.results
+      })
+    })
+  }
+
+  filterEvents = (query:object) => {
+    let { listing, filters, events } = this.state
+    
+    for(const key in query) {
+      if(query.hasOwnProperty(key)) {
+        if(filters.hasOwnProperty(key) && filters[key]!==query[key])
+          filters[key] = query[key]
+        else
+          filters = { ...filters, ...query }
+      }
+    }
+    
+    for(const key in filters) {
+      if(filters.hasOwnProperty(key)) {
+        listing = events.filter((list)=>{
+          list = serialize(list)
+          if(Array.isArray(list[key]))
+            return list[key].includes(filters[key])
+          else
+            return list[key] === filters[key]
+        })
+      }
+    }
+    
     this.setState({
-      listing
+      listing, filters
     })
   }
 
@@ -124,17 +181,62 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
           }
         </section>
 
-        <section className="listing">
-          {/* <div className="filters">
-            <div className="drawer">
-              <Button id="drawer-open" onClick={()=>{
-                this.filterEvents()
-              }}>
-                Filters
-              </Button>
-            </div>
-          </div> */}
+        <section className="filters center">
+          <h4>Filters</h4><br/>
+          
+          <span className="title">Localities</span>
+          <FlexScroll>
+          {
+            this.state.localities.map((locality)=>(
+              <span className="filter-category-item"
+                style={ this.state.filters['venue.locality']===locality.name ? {
+                  background: '#fff', color: '#dd0000', fontWeight: 600
+                } : {
+                  background: 'transparent', color: '#fff'
+                }}
+                onClick={()=>{
+                  this.filterEvents({ 'venue.locality': locality.name })
+                }}
+              >
+                { locality.name }
+              </span>
+            ))
+          }
+          </FlexScroll>
+          
+          <span className="title">Categories</span>
+          <FlexScroll>
+            {
+              this.state.categories.map((category:ICategoryModel)=>(
+                <span className="filter-category-item" 
+                  style={ this.state.filters['categories']===category.name ? {
+                    background: '#fff', color: '#dd0000', fontWeight: 600
+                  } : {
+                    background: 'transparent', color: '#fff'
+                  }}
+                  onClick={()=>{
+                    this.filterEvents({ 'categories': category.name })
+                  }}
+                >
+                  { category.name }
+                </span>
+              ))
+            }
+          </FlexScroll>
 
+          <div className="filter-category">
+            <Button onClick={()=>{
+              this.setState({
+                filters: {},
+                listing: this.state.events
+              })
+            }}>
+              Clear
+            </Button>
+          </div>
+        </section>
+
+        <section className="listing">
           <div className="list">
             <FlexContainer>
               <Flexbox flow="row">

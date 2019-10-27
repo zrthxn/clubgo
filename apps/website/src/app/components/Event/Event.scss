@@ -97,15 +97,27 @@
 
 .flexbox {
   .event {
-    margin: 0.5em;
+    margin: 0.25em;
   }
 
   @media (max-width: 600px) {
     .event {
-      width: 11.5em;
-
+      width: 12em;
       .event-title {
         font-size: 1em;
+      }
+    }
+  }
+
+  @media (max-width: 400px) {
+    .event {
+      width: 10em;
+
+      .event-title {
+        font-size: 0.85em;
+      }
+      .event-venue {
+        font-size: 0.85em;
       }
     }
   }

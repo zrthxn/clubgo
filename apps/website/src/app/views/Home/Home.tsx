@@ -115,7 +115,9 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
           <FlexScroll>
             {
               this.state.categories.map((category, index)=>(
-                <Link className="no-decor" to="/">
+                <Link className="no-decor" to={'/events/in/' +
+                  `${this.props.city!==undefined ? this.props.city.toLowerCase() : ''}/` +
+                  `${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
                   <div className="category-item">
                     <h3>{ category.name }</h3>
                   </div>
@@ -148,9 +150,9 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
                 { label: 'Tomorrow', date: getFormattedDate(Date.now() + 86400000).date + ' ' + getFormattedDate(Date.now() + 86400000).month },
                 { label: 'Later', date: 'This Week' }
               ].map((date, index)=>(
-                <Link className="no-decor" to={`/events/in/${
-                  this.props.city!==undefined ? this.props.city.toLowerCase() : ''
-                }/on/${date.label.toLowerCase().trim().replace(/ /g, '-')}`}>
+                <Link className="no-decor" to={'/events/in/' +
+                  `${this.props.city!==undefined ? this.props.city.toLowerCase() : ''}/on/` +
+                  `${date.label.toLowerCase().trim().replace(/ /g, '-')}`}>
                   <div className="event-date-item">
                     <h3>{ date.label }</h3>
                     <p>{ date.date }</p>

@@ -126,6 +126,7 @@ export class RootContextProvider extends Component {
               state: this.state,
               actions: _iactions,
               router: (path) => {
+                window.scrollTo({ top: window.screenTop })
                 history.push(path)
               }
             }}
