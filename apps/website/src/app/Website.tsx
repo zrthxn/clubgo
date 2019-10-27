@@ -48,7 +48,6 @@ export default class WebsiteController extends Component {
   }
 
   componentDidMount() {
-    this.context.actions.getUserContext()
     this.validateApplication().then(()=>{
       this.setState({
         appValidationFinished: true
@@ -80,7 +79,13 @@ export default class WebsiteController extends Component {
               {
                 appContext => (
                   <Switch>
-                    <Route exact path="/" component={Home}/>
+                    <Route exact path="/" render={(routeProps)=>{
+                      let { city } = this.context.actions.getUserContext()
+                      if(city!==undefined)
+                        this.context.router(`/in/${city}`)
+                      else
+                        return <Home/>
+                    }}/>
                     <Route path="/in/:city" render={(routeProps)=>{
                       let { city } = routeProps.match.params                      
                       if(city===undefined) {
