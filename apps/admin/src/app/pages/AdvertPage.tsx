@@ -53,7 +53,7 @@ export default class AdvertPage extends Component {
 
         <article className="page-content">
           <Grid container spacing={3}>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <Grid container spacing={3}>
                 <Grid item xs={12} style={{ padding: '1em' }}>
                   <TextField variant="outlined" margin="dense" fullWidth
@@ -146,7 +146,7 @@ export default class AdvertPage extends Component {
               </Grid>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={8}>
               <Grid container spacing={3}>
                 {
                   this.state.ads.map((advert:IAdvertModel, index)=>(

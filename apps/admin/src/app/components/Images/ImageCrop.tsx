@@ -8,6 +8,7 @@ import { Slider } from '@material-ui/lab'
 interface ImageCropProps {
   open: boolean
   src: any
+  mimeType: string
   onComplete: Function
   onClose?: Function
 }
@@ -31,11 +32,9 @@ export class ImageCrop extends PureComponent<ImageCropProps> {
 
   showCroppedImage = async () => {
     try {
-      const croppedImage = await getCroppedImg(
-        this.props.src,
-        this.state.croppedAreaPixels,
-        this.state.rotation
-      )
+      let { src, mimeType } = this.props
+      let { croppedAreaPixels, rotation } = this.state
+      const croppedImage = await getCroppedImg(src, mimeType, croppedAreaPixels, rotation)
       this.props.onComplete(croppedImage)
     } catch (e) {
       console.error(e)
