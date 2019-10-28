@@ -73,6 +73,22 @@ export default class Header extends Component {
                         }>
                           Venues
                         </Link>
+
+                        {
+                          this.state.categories.map((category, index)=>(
+                            appContext.state.city!==undefined ? (
+                              <a className="no-decor" 
+                                href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+                                <h4>{ category.name }</h4>
+                              </a>
+                            ) : (
+                              <a className="no-decor" 
+                                href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+                                <h4>{ category.name }</h4>
+                              </a>
+                            )
+                          ))
+                        }
                       </nav>
                     </div>
                   ) : null
