@@ -5,7 +5,7 @@ import readline from 'readline'
 import { OAuth2Client } from 'googleapis-common'
 import { conf } from '@clubgo/util'
 
-const CREDENTIALS_DIR = path.join(__dirname, '..', 'Credentials')
+const CREDENTIALS_DIR = path.join(__dirname, 'assets','Credentials')
 
 interface ISpreadsheetEntryItem {
   ssId: string
@@ -16,7 +16,7 @@ interface ISpreadsheetEntryItem {
 export default class GSheets {
   readonly SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
   readonly CREDENTIALS_PATH = path.join(CREDENTIALS_DIR, 'googleapis.json')
-	readonly TOKEN_PATH = path.join(CREDENTIALS_DIR, 'Tokens', 'gmailer.json')
+	readonly TOKEN_PATH = path.join(CREDENTIALS_DIR, 'Tokens', 'gsheets.json')
 
   private authorize() {
 		return new Promise((resolve:((client:OAuth2Client)=>any), reject) => {
@@ -70,9 +70,9 @@ export default class GSheets {
   }
 
   TestGSheets = async () => {
-    console.log('Testing Sheets API')
     try {
       const auth = await this.authorize()
+      console.log('Sheets', conf.Green('Test Successful'))
       const testObj = google.sheets({version: 'v4', auth})
       if (testObj!=null) return({ success: true })
     } catch(err) {

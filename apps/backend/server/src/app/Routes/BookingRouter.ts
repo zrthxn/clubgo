@@ -10,8 +10,13 @@ export default BookingRouter
 
 // Security Functions
 // --------------------------------------------------------
+BookingRouter.use((req, res, next)=>{
+  next()
+})
 
 // ========================================================
+
+import SendSMS from '../Services/SMSWorker'
 
 // Create a Booking :: /_create
 BookingRouter.post('/_create', async (req, res) => {
@@ -44,7 +49,16 @@ BookingRouter.post('/_create', async (req, res) => {
     const result = await createBooking.save()
     
     // Send confirmation email
-    // Send confirmation SMS
+    
+    // SendSMS(user.phone, 'bookuser', 
+    //   `Hey ${user.name}, Your Booking details for ${event.eventTitle} on ${ticket.date} are mentioned below.` +
+    //   `Booking ID ${result._id}` +
+    //   `No. of people ${ticket.people.couple} couples and ${ticket.people.female} females` +
+    //   `Entry time ${ticket.time} to ${ticket.time} ` +
+    //   `Amount ${txn.amount} Pay at Venue . ` +
+    //   `Facing an issue, Please feel free to reach us at 9999030363.`
+    // )
+
     // Add to some spreadsheet
 
     res.status(201).send({ 

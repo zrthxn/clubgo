@@ -71,7 +71,7 @@ export class DatabaseService extends Interface {
    * Search for object by given params
    * @param search `Mongoose.Query` 
    */
-  async searchBy(search:object) {
+  async searchBy(search:object, options?:object) {
     // cRud
     try {
       return await this.request.post(
@@ -94,8 +94,7 @@ export class DatabaseService extends Interface {
     try {
       return await this.request.post(
         this.endpoint + '/_recommend', {
-          query: serialize(search),
-          options
+          query: serialize(search), options
         }
       )
     } catch (HTTPError) {

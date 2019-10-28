@@ -8,4 +8,6 @@ import WebsiteController from './app/Website'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(<WebsiteController />, document.getElementById('root'))
-// serviceWorker.register()
+serviceWorker.register()
+
+console.log(process.env.REACT_APP_FIREBASE_APIKEY)

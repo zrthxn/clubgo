@@ -7,7 +7,8 @@ import { LoadBalancer } from '../LoadBalancer'
 import { conf } from '@clubgo/util'
 
 const GmailConfig = require('../serverconfig.json').gmailer
-const CREDENTIALS_DIR = path.join(__dirname, '..', 'Credentials')
+const CREDENTIALS_DIR = path.join(__dirname, 'assets','Credentials')
+const TEMPLATES_DIR = path.join(__dirname, 'assets', 'Templates')
 
 interface IEmail {
 	to: string
@@ -117,9 +118,9 @@ export default class Gmailer {
 	}
 
 	TestGmailer = async () => {
-		console.log('Testing GMail API')
     try {
       const auth = await this.authorize()
+      console.log('GMail', conf.Green('Test Successful'))
       const testObj = google.sheets({version: 'v4', auth})
       if (testObj!=null) return({ success: true })
     } catch(err) {
@@ -133,7 +134,7 @@ export default class Gmailer {
 	}
 
 	SingleDelivery(mail:IEmail, template?:Templates) {
-    let TEMPLATE_PATH = path.join(__dirname, '..', 'Templates', template + '.html')
+    let TEMPLATE_PATH = path.join(TEMPLATES_DIR, template + '.html')
     if(template!==undefined)
       mail.body = fs.readFileSync(TEMPLATE_PATH).toString()
 
@@ -170,7 +171,7 @@ export default class Gmailer {
 	}
 
 	SingleDataDelivery(mail:IEmail, template:Templates, data:IDataItem[]) {
-    let TEMPLATE_PATH = path.join(__dirname, '..', 'Templates', template + '.html')
+    let TEMPLATE_PATH = path.join(TEMPLATES_DIR, template + '.html')
     fs.readFile(TEMPLATE_PATH, (templateError, templateData)=>{
       if(templateError) return console.error(conf.Red('TEMPLATE ERROR'), templateError)
 
@@ -244,7 +245,7 @@ export default class Gmailer {
 	}
 
 	DatasetDelivery(mail:IEmail, template:Templates, database:EmailDatabase) {
-    let TEMPLATE_PATH = path.join(__dirname, '..', 'Templates', template + '.html')
+    let TEMPLATE_PATH = path.join(TEMPLATES_DIR, template + '.html')
     fs.readFile(TEMPLATE_PATH, (templateError, templateData)=>{
       if(templateError) return console.error(conf.Red('TEMPLATE ERROR'), templateError)
       let content = templateData.toString()
@@ -360,7 +361,7 @@ export default class Gmailer {
 	}
 
 	DistributedCampaign(mail:IEmail, template:Templates, database:EmailDatabase, options?) {
-    let TEMPLATE_PATH = path.join(__dirname, '..', 'Templates', template + '.html')
+    let TEMPLATE_PATH = path.join(TEMPLATES_DIR, template + '.html')
     fs.readFile(TEMPLATE_PATH, (templateError, templateData)=>{
       if(templateError) return console.error(conf.Red('TEMPLATE ERROR'), templateError)
       let content = templateData.toString()

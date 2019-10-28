@@ -23,7 +23,12 @@ const months = {
   '11': 'December'
 }
 
-export function getFormattedDate(_date:Date|number|string) {
+/**
+ * Returns the human-readble formatted date
+ * @param _date Date object to convert
+ * @returns `DateFormat` object
+ */
+export function getFormattedDate(_date:Date|number|string):DateFormat {
   let date = new Date(_date)
   return {
     date: date.getDate(),
@@ -31,4 +36,57 @@ export function getFormattedDate(_date:Date|number|string) {
     month: months[date.getMonth().toString()],
     year: date.getFullYear()
   }
+}
+
+const antiDayOfTheWeek = {
+  'Monday': 0,
+  'Tuesday': 1,
+  'Wednesday': 2,
+  'Thursday': 3,
+  'Friday': 4,
+  'Saturday': 5,
+  'Sunday': 6
+}
+
+const antiMonths = {
+  'January': 0,
+  'February': 1,
+  'March': 2,
+  'April': 3,
+  'May': 4,
+  'June': 5,
+  'July': 6,
+  'August': 7,
+  'September': 8,
+  'October': 9,
+  'November': 10,
+  'December': 11
+}
+
+/**
+ * Returns the machine-readble formatted date
+ * @param _date DateFormat object to convert
+ * @returns `AntiDateFormat` object
+ */
+export function fromFormattedDate(_date:DateFormat):AntiDateFormat {
+  return {
+    date: _date.date,
+    dayOfTheWeek: antiDayOfTheWeek[_date.dayOfTheWeek],
+    month: antiMonths[_date.month],
+    year: _date.year
+  }
+}
+
+export interface DateFormat {
+  date: number
+  dayOfTheWeek: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
+  month: 'January' | 'February' | 'March' | 'April' | 'May' | 'June' | 'July' | 'August' | 'September' | 'October' | 'November' | 'December'
+  year: number
+}
+
+export interface AntiDateFormat {
+  date: number
+  dayOfTheWeek: number
+  month: number
+  year: number
 }

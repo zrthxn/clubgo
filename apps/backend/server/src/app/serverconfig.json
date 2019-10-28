@@ -6,7 +6,17 @@
     "ALLOW_HEADERS": "*",
     "ALLOW_METHODS": "*"
   },
+  "firebase": {
+    "authDomain": "clubgo-website.firebaseapp.com",
+    "databaseURL": "https://clubgo-website.firebaseio.com",
+    "projectId": "clubgo-website",
+    "storageBucket": "clubgo-website.appspot.com",
+    "messagingSenderId": "93570941124",
+    "appId": "1:93570941124:web:06a8cf89e2cac6a26b0991",
+    "measurementId": "G-PZMZMMQR3R"
+  },
   "gmailer": {
-    
+    "userId": "teamclubgo@gmail.com",
+    "username": "Team ClubGo"
   }
 }

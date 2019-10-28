@@ -1,6 +1,6 @@
 import { ModelController, IRouteItem } from './controller'
 import Event, { IEventModel } from '../models/event.model'
-import { getFormattedDate } from '@clubgo/util'
+import { getFormattedDate, fromFormattedDate } from '@clubgo/util'
 
 export class EventController extends ModelController {
   constructor() {
@@ -12,14 +12,38 @@ export class EventController extends ModelController {
    * @override Default Search
    */
   search = async (req, res) => {
-    const { query } = req.body
+    const { query, options } = req.body
     
     let searchResult = await Event.find(query)
-    searchResult = searchResult.sort((a, b)=>{
-      if(a.settings.eventPriority < b.settings.eventPriority)
-        return b.settings.eventPriority
-      else
-        return a.settings.eventPriority
+
+    let date = new Date()
+    searchResult = searchResult.filter((item:IEventModel)=>{
+      if(options!==undefined) {
+        if(options.includePastEvents)
+          return true
+      }
+
+      if(item.scheduling.isRecurring)
+        return true
+      else {
+        for (let customDate of item.scheduling.customDates) {
+          customDate = new Date(customDate)
+          if(customDate.getFullYear()>=date.getFullYear())
+            if(customDate.getMonth()>=date.getMonth())
+              if(customDate.getDate()>=date.getDate())
+                return true
+              else
+                return false
+            else
+              return false
+          else
+            return false
+        }
+      }
+    })
+
+    searchResult.sort((a, b)=>{
+      return a.settings.eventPriority - b.settings.eventPriority
     })
 
     res.send({ 
@@ -76,11 +100,8 @@ export class EventController extends ModelController {
       }
     })
 
-    recommendations = recommendations.sort((a, b)=>{
-      if(a.settings.eventPriority > b.settings.eventPriority)
-        return b.settings.eventPriority
-      else
-        return a.settings.eventPriority
+    recommendations.sort((a, b)=>{
+      return a.settings.eventPriority - b.settings.eventPriority
     })
 
     res.send({ 
