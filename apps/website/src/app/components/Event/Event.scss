@@ -5,7 +5,7 @@
   margin: 1em;
 
   width: 100%;
-  height: 18em;
+  height: 20em;
   border-radius: 0.5em;
 
   background-color: #cccccc40;
@@ -74,6 +74,7 @@
       margin: 0;
       font-size: 0.5em;
       text-transform: uppercase;
+      text-align: right;
       color: #fff;
     }
   }
@@ -102,23 +103,13 @@
 
   @media (max-width: 600px) {
     .event {
-      width: 12em;
-      .event-title {
-        font-size: 1em;
-      }
+      // width: 100%;
     }
   }
 
   @media (max-width: 400px) {
     .event {
-      width: 10em;
-
-      .event-title {
-        font-size: 0.85em;
-      }
-      .event-venue {
-        font-size: 0.85em;
-      }
+      // width: 10em;
     }
   }
 }

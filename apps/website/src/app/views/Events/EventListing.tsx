@@ -21,15 +21,14 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
 
   state = {
     city: null,
+    date: null,
     events: [],
     categories: [],
     localities: [],
     ads: [],
 
     listing: [],
-    filters: { 
-      
-    }
+    filters: {}
   }
 
   eventService = new DatabaseService('/event')
@@ -182,8 +181,30 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
         </section>
 
         <section className="filters center">
-          <h4>Filters</h4><br/>
-          
+          <FlexScroll>
+            {
+              [
+                { label: 'Today' },
+                { label: 'Tomorrow' },
+                { label: 'Later' }
+              ].map((date, index)=>(
+                <span className="filter-category-item"
+                  style={ this.state.date===date.label ? {
+                    background: '#fff', color: '#dd0000', fontWeight: 600
+                  } : {
+                    background: 'transparent', color: '#fff'
+                  }}
+                  onClick={()=>{
+                    this.findEventsByDate(date.label.toLowerCase(), this.state.city)
+                    this.setState({ date: date.label })
+                  }}
+                >
+                  { date.label }
+                </span>
+              ))
+            }
+          </FlexScroll>
+
           <span className="title">Localities</span>
           <FlexScroll>
           {
@@ -225,14 +246,18 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
           </FlexScroll>
 
           <div className="filter-category">
-            <Button onClick={()=>{
-              this.setState({
-                filters: {},
-                listing: this.state.events
-              })
-            }}>
-              Clear
-            </Button>
+            {
+              this.state.filters!==Object() ? (
+                <Button size="small" onClick={()=>{
+                  this.setState({
+                    filters: {},
+                    listing: this.state.events
+                  })
+                }}>
+                  Clear
+                </Button>
+              ) : null
+            }
           </div>
         </section>
 

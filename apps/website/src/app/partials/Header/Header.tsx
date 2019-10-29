@@ -74,15 +74,17 @@ export default class Header extends Component {
                           Venues
                         </Link>
 
+                        <span style={{ margin: '1.5em 1em 1em 1em', fontSize: '0.85em', fontWeight: 600 }}>CATEGORIES</span>
+
                         {
                           this.state.categories.map((category, index)=>(
                             appContext.state.city!==undefined ? (
-                              <a className="no-decor" 
+                              <a className="no-decor category-link" 
                                 href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
                                 <h4>{ category.name }</h4>
                               </a>
                             ) : (
-                              <a className="no-decor" 
+                              <a className="no-decor category-link" 
                                 href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
                                 <h4>{ category.name }</h4>
                               </a>
@@ -126,12 +128,12 @@ export default class Header extends Component {
                   {
                     this.state.categories.map((category, index)=>(
                       appContext.state.city!==undefined ? (
-                        <a className="no-decor" 
+                        <a className="no-decor category-link" 
                           href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
                           <h4>{ category.name }</h4>
                         </a>
                       ) : (
-                        <a className="no-decor" 
+                        <a className="no-decor category-link" 
                           href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
                           <h4>{ category.name }</h4>
                         </a>
@@ -152,7 +154,7 @@ export default class Header extends Component {
                   <div className="set-city" onClick={()=>{
                     appContext.actions.toggleCityLightbox()
                   }}>
-                    <img src="/assets/icons/location.svg" width="20px" alt=""/>
+                    <img src="/assets/icons/location.svg" width="15px" alt=""/>
                     <span style={{ margin: '0 1em 0 0.25em' }}>
                       { appContext.state.city }
                     </span>

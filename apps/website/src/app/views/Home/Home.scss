@@ -1,23 +1,25 @@
 @import "../../Global.scss";
 
 .category-item {
-  width: 8em;
-  height: 8em;
+  width: 6em;
+  height: 4em;
   margin: 0.5em 1em 0.5em 0;
-  border-radius: 20px;
+  padding: 0.5em;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   background: #520f3f80;
 
   h3 {
+    font-size: 0.75em;
     margin: auto;
-    text-transform: uppercase;
+    text-align: center;
     color: #fff;
   }
 }
 
 .event-date-item {
-  width: 12em;
+  width: 10em;
   padding: 1em;
   border: 2px solid #ffffff80;
   background-color: transparent;
@@ -46,4 +48,8 @@
   //     margin: 0.5em 0.25em 0.5em 0;
   //   }
   // }
+}
+
+.scroll-title {
+  margin: 0;
 }

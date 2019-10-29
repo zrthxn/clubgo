@@ -49,8 +49,10 @@ export class Venue extends Component<VenueComponentProps> {
         </div>
         
         {/* <Link to={this.detailsPageURL}> */}
-          <h3 className="venue-title">{ this.props.data.venueTitle }</h3>
-          <h4 className="venue-city">{ this.props.data.locality }, { this.props.data.city }</h4>
+          <h3 className="venue-title">
+            { this.props.data.venueTitle }
+            <h4 className="venue-city">{ this.props.data.locality }, { this.props.data.city }</h4>
+          </h3>
         {/* </Link> */}
       </div>
     )

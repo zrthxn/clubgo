@@ -79,7 +79,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
-          <h1>Featured Events</h1>
+          <h2 className="scroll-title">Featured Events</h2>
           <Recommender path="/event" maxItemCount={6}
             query={{
               settings: {
@@ -96,7 +96,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
-          <h2>Events Near You</h2>
+          <h2 className="scroll-title">Events Near You</h2>
           <Recommender path="/event"
             query={{
               venue: {
@@ -128,7 +128,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
-          <h2>Recommended</h2>
+          <h2 className="scroll-title">Recommended</h2>
           <Recommender path="/event" maxItemCount={10} 
             query={{
               venue: {
@@ -164,7 +164,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
-          <h1>Venues</h1>
+          <h2 className="scroll-title">Venues</h2>
           <Recommender path="/venue" maxItemCount={4} 
             query={{ city: this.props.city }}
             render={(venueProps:IVenueModel)=>(
