@@ -138,15 +138,15 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
     
     for(const key in query) {
       if(query.hasOwnProperty(key)) {
-        if(filters.hasOwnProperty(key) && filters[key]!==query[key])
-          filters[key] = query[key]
+        if(filters.hasOwnProperty(key) && filters[key]===query[key])
+          filters[key] = null
         else
           filters = { ...filters, ...query }
       }
     }
     
     for(const key in filters) {
-      if(filters.hasOwnProperty(key)) {
+      if(filters.hasOwnProperty(key) && filters[key]!==null) {
         listing = events.filter((list)=>{
           list = serialize(list)
           if(Array.isArray(list[key]))
@@ -247,7 +247,7 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
 
           <div className="filter-category">
             {
-              this.state.filters!==Object() ? (
+              Object.entries(this.state.filters).length!==0 ? (
                 <Button size="small" onClick={()=>{
                   this.setState({
                     filters: {},

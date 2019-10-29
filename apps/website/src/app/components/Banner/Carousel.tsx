@@ -57,14 +57,13 @@ export class Carousel extends Component<CarouselProps> {
           next={this.next}
           previous={this.previous}
         >
-          <CarouselIndicators items={this.props.items} activeIndex={this.state.activeIndex} onClickHandler={this.goToIndex} />
+          {/* <CarouselIndicators items={this.props.items} activeIndex={this.state.activeIndex} onClickHandler={this.goToIndex} /> */}
           {
             this.props.items.map((item) => {
               return (
                 <CarouselItem
                   onExiting={() => this.setAnimating(true)}
                   onExited={() => this.setAnimating(false)}
-                  key={item.src}
                 >
                   <a href={item.link}>
                     <img src={item.src} />

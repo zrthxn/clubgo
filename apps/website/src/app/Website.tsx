@@ -102,7 +102,7 @@ export default class WebsiteController extends Component {
                     }}/>
 
                     
-                    <Route exact path="/event/:id" render={(routeProps)=>(
+                    <Route path="/event/:id" render={(routeProps)=>(
                       <EventDetails { ...routeProps }/>
                     )}/>
                     

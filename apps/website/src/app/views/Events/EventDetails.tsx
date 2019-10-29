@@ -116,39 +116,36 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
               <Grid item md={4} xs={12} style={{ position: 'relative' }}>
                 <div className="action">
                   <div className="floater">
-                    <div className="block">
-                      <h2 className="event-title">
-                        { this.event.eventTitle }
-                      </h2>
-                      
-                      <h3 className="event-dates">
-                        <b>{ (new Date(this.event.scheduling.customDates[0])).toDateString() }</b>
-                      </h3>
+                    <h2 className="event-title">
+                      { this.event.eventTitle }
+                    </h2>
 
-                      <h3 className="venue-title">
-                        { this.event.venue.title }, { this.event.venue.city }
-                      </h3>
+                    <h3 className="venue-title">
+                      <b>{ this.event.venue.title }, { this.event.venue.city }</b>
+                    </h3>
+                    
+                    <h3 className="event-dates">
+                      { (new Date(this.event.scheduling.customDates[0])).toDateString() }
+                    </h3>
 
-                      <h3 className="event-price">
-                        Starting from &#x20B9;{ this.state.calculatedLowestPrices } 
-                        <span style={{ opacity: 0.5, margin: '0 0.5em' }}>
-                          {
-                            this.event.bookings.isTakingOnsitePayments && this.event.bookings.onsitePaymentRequired ? null : (
-                              '(Pay at Venue)'
-                            )
-                          }
-                        </span>
-                      </h3>
+                    <h3 className="event-price">
+                      {
+                        this.state.calculatedLowestPrices===0 ? (
+                          '\u20B9 Free'
+                        ) : (
+                          'Starting from \u20B9' + this.state.calculatedLowestPrices
+                        )
+                      }
+                    </h3>
 
-                      <div className="offers">
-                        {
-                          this.event.offers.availableOffers.map((offer, item)=>(
-                            <div className="offer-item">
-                              { offer.offerTitle }
-                            </div>
-                          ))
-                        }
-                      </div>
+                    <div className="offers">
+                      {
+                        this.event.offers.availableOffers.map((offer, item)=>(
+                          <div className="offer-item">
+                            { offer.offerTitle }
+                          </div>
+                        ))
+                      }
                     </div>
                     <div className="button-container">
                       <button onClick={this.openBooking}>Book Now</button>
@@ -161,7 +158,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                 <h2 className="underline bold">Event Details</h2>
                 <div className="event-detail-items">
                   <p className="detail-item">
-                    <span className="label">ARTISTS</span>
+                    <span className="label">Artists</span>
                     { 
                       this.event.artists.map((artist)=>(
                         <span className="item">{ artist }</span>
@@ -170,7 +167,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                   </p>
 
                   <p className="detail-item">
-                    <span className="label">MUSIC</span>
+                    <span className="label">Music</span>
                     { 
                       this.event.music.map((music)=>(
                         <span className="item">{ music }</span>
@@ -179,7 +176,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                   </p>
 
                   <p className="detail-item">
-                    <span className="label">DRESS CODE</span>
+                    <span className="label">Dress Code</span>
                     <span className="item">{ this.event.dressCode.title }</span>
                   </p>
                 </div>
@@ -196,14 +193,14 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                   this.event.venue.isCustomVenue ? (
                     <div>
                       <h3>{ this.event.venue.title }</h3>
-                      <span>{ this.event.venue.address }</span><br/>
-                      <span>{ this.event.venue.customVenueDetails.locality }, { this.event.venue.city }</span>
+                      <span style={{ opacity: 0.75 }}>{ this.event.venue.address }</span><br/>
+                      <span style={{ opacity: 0.75 }}>{ this.event.venue.customVenueDetails.locality }, { this.event.venue.city }</span>
                     </div>
                   ) : (
                     <div>
                       <h3>{ this.venue.venueTitle }</h3>
-                      <span>{ this.venue.address }</span><br/>
-                      <span>{ this.venue.locality }, { this.venue.city }</span>
+                      <span style={{ opacity: 0.75 }}>{ this.venue.address }</span><br/>
+                      <span style={{ opacity: 0.75 }}>{ this.venue.locality }, { this.venue.city }</span>
                     </div>
                   )
                 }
@@ -211,14 +208,17 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
 
               <Grid item md={8} xs={12}>
                 <h2 className="underline bold">Terms and Conditions</h2>
-                <p></p>
+                <p>
+                  {
+                    this.event.termsAndConditions
+                  }
+                </p>
               </Grid>
             </Grid>
           </section>
 
           <section className="container">
-            <h2>Similar Events</h2>
-            <h4>Events recommended for you</h4>
+            <h2 className="scroll-title">Similar Events</h2>
             <Recommender path="/event" maxItemCount={10}
               query={{
                 venue: {

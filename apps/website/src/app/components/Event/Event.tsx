@@ -21,7 +21,7 @@ export class Event extends Component<EventComponentProps> {
     calculatedLowestPrices: 0
   }
 
-  detailsPageURL = `/event/${this.props.data._id}`
+  detailsPageURL = `/event/${this.props.data._id}/${this.props.data.eventTitle.toLowerCase().trim().replace(/ /g,'-')}`
 
   componentDidMount() {
     this.calculatePrice()
@@ -45,32 +45,47 @@ export class Event extends Component<EventComponentProps> {
     })
   }
 
-  formatTime = (time) => {
-    return ((time - (time % 60)) / 60) > 12 ? (
-      (
-        (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
-          (((time - (time % 60)) / 60) - 12).toString()
-        )
-      ) + ':' + (
-        (time % 60).toString().length < 2 ? (
-          '0' + (time % 60).toString()
-        ) : (
-          (time % 60).toString()
-        ) 
-      ) + 'PM'
-    ) : (
-      (
-        (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
-          (((time - (time % 60)) / 60)).toString()
-        )
-      ) + ':' + (
-        (time % 60).toString().length < 2 ? (
-          '0' + (time % 60).toString()
-        ) : (
-          (time % 60).toString()
-        ) 
-      ) + 'AM'
-    )
+  formatTime = (time, options?) => {
+    if(options.hideMinutes)
+      return ((time - (time % 60)) / 60) > 12 ? (
+        (
+          (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
+            (((time - (time % 60)) / 60) - 12).toString()
+          )
+        ) + 'PM'
+      ) : (
+        (
+          (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
+            (((time - (time % 60)) / 60)).toString()
+          )
+        ) + 'AM'
+      )
+    else
+      return ((time - (time % 60)) / 60) > 12 ? (
+        (
+          (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
+            (((time - (time % 60)) / 60) - 12).toString()
+          )
+        ) + ':' + (
+          (time % 60).toString().length < 2 ? (
+            '0' + (time % 60).toString()
+          ) : (
+            (time % 60).toString()
+          ) 
+        ) + 'PM'
+      ) : (
+        (
+          (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
+            (((time - (time % 60)) / 60)).toString()
+          )
+        ) + ':' + (
+          (time % 60).toString().length < 2 ? (
+            '0' + (time % 60).toString()
+          ) : (
+            (time % 60).toString()
+          ) 
+        ) + 'AM'
+      )
   }
 
   openEventDetails = () => {
@@ -115,10 +130,16 @@ export class Event extends Component<EventComponentProps> {
       
               <p style={{ margin: '0.75em 0 0.5em 0', fontSize: '0.75em', opacity: 0.75 }}>
                 <span>{ (new Date(this.props.data.scheduling.customDates[0])).toDateString() }</span>
-                <span style={{ marginLeft: '0.5em' }}>{ this.formatTime(this.props.data.scheduling.timing.startTime) }</span>
+                <span style={{ marginLeft: '0.5em' }}>
+                  { 
+                    this.formatTime(this.props.data.scheduling.timing.startTime, {
+                      hideMinutes: true
+                    }) 
+                  }
+                </span>
               </p>
       
-              <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9em' }}>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9em', position: 'absolute', bottom: '1em' }}>
                 From { '\u20B9 ' + this.state.calculatedLowestPrices }
               </p>
             </div>

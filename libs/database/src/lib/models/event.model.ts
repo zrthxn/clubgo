@@ -50,6 +50,7 @@ export const eventSchema = new mongoose.Schema(
         detailData: String
       }
     ],
+    termsAndConditions: String,
     settings: {
       isPublished: {
         type: Boolean, required: true
@@ -236,6 +237,7 @@ export interface IEventModel extends mongoose.Document {
     detailName: string
     detailData: string
   }>
+  termsAndConditions: string
   settings: {
     isPublished: boolean
     eventPriority?: number
