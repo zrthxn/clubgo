@@ -13,7 +13,7 @@ import './Global.scss'
 
 import { LoginService } from '@clubgo/api'
 import { RootContextProvider, RootContext } from './RootContext'
-import { LoginController } from '@clubgo/website/components'
+import { LoginManager } from '@clubgo/website/components'
 
 import Home from './views/Home/Home'
 
@@ -143,7 +143,7 @@ export default class WebsiteController extends Component {
                     )}/>
 
                     <Route path="/login" render={(routeProps)=>(
-                      <LoginController { ...routeProps }/>
+                      <LoginManager { ...routeProps }/>
                     )}/>
 
                     <Route component={NotFound}/>

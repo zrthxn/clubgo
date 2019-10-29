@@ -4,7 +4,7 @@ import { Grid } from '@material-ui/core'
 import './Checkout.scss'
 
 import { Button } from '../Button/Button'
-import LoginController from '../Login/LoginController'
+import LoginManager from '../Login/LoginManager'
 import RootContext from '../../RootContext'
 
 interface CheckoutProps {
@@ -101,7 +101,7 @@ export class Checkout extends Component<CheckoutProps> {
       )
     else
       return (
-        <LoginController type="details"
+        <LoginManager type="details"
           onComplete={(user)=>{
             this.setState({
               loginValidated: true,

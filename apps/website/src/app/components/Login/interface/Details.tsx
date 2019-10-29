@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import QueryString from 'query-string'
 
 import { handleChangeById as inputHandler, verifyRequirements } from '@clubgo/util'
-import { Textbox } from '../Textbox/Textbox'
-import { Button } from '../Button/Button'
+import { Textbox } from '../../Textbox/Textbox'
+import { Button } from '../../Button/Button'
 
-import RootContext from '../../RootContext'
+import RootContext from '../../../RootContext'
 
 interface DetailsProps {
   onComplete: Function
@@ -36,7 +36,7 @@ export class Details extends Component<DetailsProps> {
   }
 
   finalize = () => {
-
+    this.props.onComplete(this.state.data)
   }
 
   render() {
@@ -54,18 +54,9 @@ export class Details extends Component<DetailsProps> {
           </section>
 
           <section>
-            <RootContext.Consumer>
-              {
-                appContext => (
-                  <Button size="medium" onClick={()=>{
-                    appContext.actions.setUserLogin(this.state.data)
-                    this.props.onComplete(this.state.data)
-                  }}>
-                    Submit
-                  </Button>
-                )
-              }
-            </RootContext.Consumer>
+            <Button size="medium" onClick={this.finalize}>
+              Submit
+            </Button>
           </section>
         </section>
       </article>

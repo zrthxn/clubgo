@@ -7,6 +7,7 @@ const _istate = {
   city: undefined,
   locality: undefined,
   openCityLightbox: false,
+  isUserLoggedIn: false,
   story: {
     isOpen: false,
     image: String(),
@@ -97,9 +98,9 @@ export class RootContextProvider extends Component {
     this.getUserContext()
   }
 
-  setUserLogin = (user) => {
+  setUserLogin = () => {
     this.setState({
-      user
+      isUserLoggedIn: true
     })
   }
 

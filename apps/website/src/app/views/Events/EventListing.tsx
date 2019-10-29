@@ -145,9 +145,10 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
       }
     }
     
+    listing = events
     for(const key in filters) {
       if(filters.hasOwnProperty(key) && filters[key]!==null) {
-        listing = events.filter((list)=>{
+        listing = listing.filter((list)=>{
           list = serialize(list)
           if(Array.isArray(list[key]))
             return list[key].includes(filters[key])
