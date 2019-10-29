@@ -166,7 +166,13 @@ export class LocationsPage extends Component {
                               </IconButton>
 
                               <IconButton>
-                                <Delete/>
+                                <Delete onClick={()=>{
+                                  this.locationService.delete(location._id).then(()=>{
+                                    let { locations } = this.state 
+                                    locations.splice(index, 1)
+                                    this.setState({ locations })
+                                  })
+                                }}/>
                               </IconButton>
                             </span>
                           </Grid>
@@ -215,7 +221,15 @@ export class LocationsPage extends Component {
                                 </IconButton>
 
                                 <IconButton>
-                                  <Delete/>
+                                  <Delete onClick={()=>{
+                                    let city = this.state.locations[this.state.selectedCity]
+                                    city.localities.splice(index, 1)
+                                    this.locationService.update(city._id, city).then(()=>{
+                                      let { locations } = this.state 
+                                      locations[this.state.selectedCity] = city
+                                      this.setState({ locations })
+                                    })
+                                  }}/>
                                 </IconButton>
                               </span>
                             </Grid>
