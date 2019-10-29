@@ -43,22 +43,21 @@ export class MediaCard extends Component<MediaCardProps> {
 
   handleChangeById = (event) => {
     const result = inputHandler(event, this.state)
-    this.props.syncParentData(this.state.data)
     this.setState((prevState, props)=>(
       result
     ))
   }
 
-  componentDidUpdate() {
-    if(this.props.syncData!==this.state.synchronized) { 
-      if(this.props.syncData) {
-        this.props.syncParentData(this.state.data)
-        this.setState({
-          synchronized: this.props.syncData
-        })
-      }
-    }
-  }
+  // componentDidUpdate() {
+  //   if(this.props.syncData!==this.state.synchronized) { 
+  //     if(this.props.syncData) {
+  //       this.props.syncParentData(this.state.data)
+  //       this.setState({
+  //         synchronized: this.props.syncData
+  //       })
+  //     }
+  //   }
+  // }
 
   render() {
     return (
@@ -136,9 +135,10 @@ export class MediaCard extends Component<MediaCardProps> {
                     data
                   }
                 })
+                this.props.syncParentData(data)
               }}
               onUploadError={()=>{
-                
+                alert('Error in uploading image')                
               }}
               onClose={()=>{
                 this.setState({

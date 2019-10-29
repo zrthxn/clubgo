@@ -19,9 +19,15 @@ export const bookingSchema = new mongoose.Schema(
       type: String, maxlength: 14, required: true
     },
     event: {
-      eventTitle: String,
       eventId: {
         type: ObjectID, required: true
+      },
+      eventTitle: String,
+      startTime: {
+        type: Number, min: 0, max: 2880, required: true
+      },
+      endTime: {
+        type: Number, min: 0, max: 2880, required: true
       }
     },
     venue: {
@@ -37,7 +43,7 @@ export const bookingSchema = new mongoose.Schema(
         type: Date, required: true
       },
       time: {
-        type: Number, min: 0, max: 1440, required: true
+        type: Number, min: 0, max: 2880, required: true
       }
     },
     appliedOffers: [
@@ -93,6 +99,8 @@ export interface IBookingModel extends mongoose.Document {
   event: {
     eventTitle?: string,
     eventId: ObjectID
+    startTime: number
+    endTime: number
   }
   venue: {
     venueTitle?: string
@@ -122,7 +130,7 @@ export interface IBookingModel extends mongoose.Document {
     amount?: number
     processingFee?: number
     tax?: number
-    totalBookingAmount: number
+    total: number
   }
 }
 

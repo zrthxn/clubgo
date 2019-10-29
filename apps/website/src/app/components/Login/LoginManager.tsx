@@ -40,19 +40,20 @@ export class LoginManager extends Component<LoginManagerProps> {
     
   }
 
+  interfaceBuilder(loginContext) {
+    if(this.props.type==='basic')
+      return this.BasicLogin(loginContext)
+    else if(this.props.type==='details')
+      return this.DetailsLogin(loginContext)
+  }
+
   render() {
-    function interfaceBuilder(loginContext) {
-      if(this.props.type==='basic')
-        return this.BasicLogin(loginContext)
-      else if(this.props.type==='details')
-        return this.DetailsLogin(loginContext)
-    }
 
     return (
       <LoginContextProvider>
         <LoginContext.Consumer>
           {
-            loginContext => interfaceBuilder(loginContext)
+            loginContext => this.interfaceBuilder(loginContext)
           }
         </LoginContext.Consumer>
       </LoginContextProvider>

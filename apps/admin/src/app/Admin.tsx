@@ -33,6 +33,7 @@ import AdminContextProvider from './AdminContextProvider'
 import AdminContext from './AdminContext'
 import CategoriesPage from './pages/CategoriesPage'
 import AdvertPage from './pages/AdvertPage'
+import DressCodePage from './pages/DressCodePage'
 
 export class Admin extends Component {
   state = {
@@ -117,9 +118,9 @@ export class Admin extends Component {
               <Link onClick={this.toggleSidebar} to="/tickets"> Tickets </Link>
               <Link onClick={this.toggleSidebar} to="/offers"> Offers </Link>
               <Link onClick={this.toggleSidebar} to="/artists"> Artists and Music </Link>
-              <Link onClick={this.toggleSidebar} to="/users"> Users </Link>
               <Link onClick={this.toggleSidebar} to="/locations"> Locations </Link>
               <Link onClick={this.toggleSidebar} to="/categories"> Categories </Link>
+              <Link onClick={this.toggleSidebar} to="/dress"> Dress Codes </Link>
               <Link onClick={this.toggleSidebar} to="/settings"> Settings </Link>
             </div>
 
@@ -184,6 +185,7 @@ export class Admin extends Component {
                   <Route path="/artists" component={ ArtistsPage } />
                   <Route path="/locations" component={ LocationsPage } />
                   <Route path="/categories" component={ CategoriesPage } />
+                  <Route path="/dress" component={ DressCodePage } />
                   <Route path="/settings" component={ SettingsPage } />
                 </Switch>
 

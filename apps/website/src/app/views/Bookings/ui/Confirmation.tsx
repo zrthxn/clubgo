@@ -4,10 +4,55 @@ import { IBookingModel } from '@clubgo/database'
 import '../Confirmation.scss'
 
 interface ConfirmationProps {
-  booking: any, //IBookingModel
+  booking: IBookingModel
 }
 
 export default class Confirmation extends Component<ConfirmationProps> {
+  formatTime = (time, options?) => {
+    if(options) {
+      if(options.hideMinutes)
+        return ((time - (time % 60)) / 60) > 12 ? (
+          (
+            (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
+              (((time - (time % 60)) / 60) - 12).toString()
+            )
+          ) + 'PM'
+        ) : (
+          (
+            (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
+              (((time - (time % 60)) / 60)).toString()
+            )
+          ) + 'AM'
+        )
+    }
+    else
+      return ((time - (time % 60)) / 60) > 12 ? (
+        (
+          (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
+            (((time - (time % 60)) / 60) - 12).toString()
+          )
+        ) + ':' + (
+          (time % 60).toString().length < 2 ? (
+            '0' + (time % 60).toString()
+          ) : (
+            (time % 60).toString()
+          ) 
+        ) + 'PM'
+      ) : (
+        (
+          (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
+            (((time - (time % 60)) / 60)).toString()
+          )
+        ) + ':' + (
+          (time % 60).toString().length < 2 ? (
+            '0' + (time % 60).toString()
+          ) : (
+            (time % 60).toString()
+          ) 
+        ) + 'AM'
+      )
+  }
+
   render() {
     return (
       <article>
@@ -19,11 +64,17 @@ export default class Confirmation extends Component<ConfirmationProps> {
         <section className="booked-ticket">
           <div className="event-details">
             <div className="deets">
-              <h2>Event Name</h2>
-              <h3>Event Venue</h3>
+              <h2>{ this.props.booking.event.eventTitle }</h2>
+              <h3>{ this.props.booking.venue.venueTitle }</h3>
 
               <h4>
-                { (new Date(this.props.booking.schedule.date)).toDateString() }
+                { 
+                  (new Date(this.props.booking.schedule.date)).toDateString() 
+                }, {
+                  this.formatTime(this.props.booking.event.startTime, { hideMinutes: true })
+                } - {
+                  this.formatTime(this.props.booking.event.endTime, { hideMinutes: true })
+                }
               </h4>
             </div>
 
@@ -35,7 +86,7 @@ export default class Confirmation extends Component<ConfirmationProps> {
 
           <div className="booking-details">
             <p style={{ margin: 0 }}>
-              <b>Dear Ajit</b>, <br/>
+              <b>Dear { this.props.booking.name }</b>, <br/>
               Your booking was confirmed
             </p>
             
@@ -45,26 +96,47 @@ export default class Confirmation extends Component<ConfirmationProps> {
             </p>
 
             <p style={{ margin: 0, opacity: 0.75 }}>
-              <b>Your last entry time is { this.props.booking.schedule.time }</b><br/>
-              Please note, the guest list will be closed sharp at TIME. After this, entry will 
+              <b>Your last entry time is { this.formatTime(this.props.booking.schedule.time) }</b><br/>
+              Please note, the guest list will be closed sharp at the last entry time. After this, entry will 
               be chargeable.
             </p>
 
             <div className="people">
-              <div className="people-block">
-                <div className="left">Couple</div>
-                <div className="right">3</div>
-              </div>
+              {
+                this.props.booking.people.couple!==0 ? (
+                  <div className="people-block">
+                    <div className="left">Couple</div>
+                    <div className="right">{ this.props.booking.people.couple }</div>
+                  </div>
+                ) : null
+              }
 
-              <div className="people-block">
-                <div className="left">Female</div>
-                <div className="right">3</div>
-              </div>
+              {
+                this.props.booking.people.female!==0 ? (
+                  <div className="people-block">
+                    <div className="left">Female</div>
+                    <div className="right">{ this.props.booking.people.female }</div>
+                  </div>
+                ) : null
+              }
 
-              <div className="people-block">
-                <div className="left">Male</div>
-                <div className="right">3</div>
-              </div>
+              {
+                this.props.booking.people.male!==0 ? (
+                  <div className="people-block">
+                    <div className="left">Male</div>
+                    <div className="right">{ this.props.booking.people.male }</div>
+                  </div>
+                ) : null
+              }
+
+              {
+                this.props.booking.people.single!==0 ? (
+                  <div className="people-block">
+                    <div className="left">Single</div>
+                    <div className="right">{ this.props.booking.people.single }</div>
+                  </div>
+                ) : null
+              }
             </div>
 
             <div className="pricing">
@@ -73,15 +145,15 @@ export default class Confirmation extends Component<ConfirmationProps> {
                 <p>Convinience Fee</p>
                 <p>GST</p>
 
-                <h3>Amount Paid</h3>
+                <h3>Amount</h3>
               </div>
 
               <div className="right">
-                <p><b>500</b></p>
-                <p>0</p>
-                <p>0</p>
+                <p><b>{ this.props.booking.payment.amount }</b></p>
+                <p>{ this.props.booking.payment.processingFee }</p>
+                <p>{ this.props.booking.payment.tax }</p>
 
-                <h3>500</h3>
+                <h3>{ this.props.booking.payment.total }</h3>
               </div>
             </div>
 

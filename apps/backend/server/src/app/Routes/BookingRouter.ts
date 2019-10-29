@@ -30,7 +30,9 @@ BookingRouter.post('/_create', async (req, res) => {
     payment: txn,
     event: {
       eventTitle: event.eventTitle,
-      eventId: event._id
+      eventId: event._id,
+      startTime: event.scheduling.timing.startTime,
+      endTime: event.scheduling.timing.endTime
     },
     venue: {
       venueTitle: venue.venueTitle,

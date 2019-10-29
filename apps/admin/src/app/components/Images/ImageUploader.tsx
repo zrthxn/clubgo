@@ -71,21 +71,22 @@ export class ImageUploader extends Component<ImageUploaderProps> {
     this.setState({ uploadStarted: true, uploadFileNumber: 1 })
     let { files } = this.state, refs = []
 
-    for (const file of files) {
-      if(file.data!==null && file.filename!==null) {
-        try {
+    try {
+      for (const file of files) {
+        if(file.data!==null && file.filename!==null) {
           let result = await this.uploader.single(file)
           this.setState({ uploadFileNumber: this.state.uploadFileNumber + 1 })
           refs.push(result.data.ref)
-        } catch (error) {
-          this.props.onUploadError(error)
-          console.error(error)
         }
       }
-    }
     
-    this.props.onUploadComplete(refs)
-    this.reset()
+      this.props.onUploadComplete(refs)
+      this.reset()
+    } catch (error) {
+      this.props.onUploadError(error)
+      this.setState({ uploadStarted: false })
+      console.error(error)
+    }    
   }
 
   render() {

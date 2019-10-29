@@ -1,6 +1,6 @@
 import express from 'express'
 import { conf } from '@clubgo/util'
-import { ModelController, EventController, Category, Artist } from '@clubgo/database'
+import { ModelController, EventController, Category, Artist, DressCode } from '@clubgo/database'
 import { Venue, User, Offer, Ticket, Location, Advert } from '@clubgo/database'
 import BookingRouter from './BookingRouter'
 
@@ -66,5 +66,9 @@ APIRouter.use('/location', LocationRouter.router())
 // Categories Router
 const CategoryRouter = new ModelController(Category)
 APIRouter.use('/category', CategoryRouter.router())
+
+// Dress Code Router
+const DressCodeRouter = new ModelController(DressCode)
+APIRouter.use('/dress', DressCodeRouter.router())
 
 // STOP ============================================== STOP

@@ -16,7 +16,7 @@ export default async function SendSMS(to:string, template:string, message:string
     apiKey: APIKEY,
     sender: SENDER,
     numbers: to,
-    message, template
+    template, message
   })
 
   try {

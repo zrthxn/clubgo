@@ -73,13 +73,12 @@ _Server.use((req, res, next)=>{
 const AuthRouter = express.Router()
 AuthRouter.post('/_authenticate', generateRequestAuthentication)
 
+_Server.use(AuthRouter)
 // STOP ============================================== STOP
 
 // Routes
 // --------------------------------------------------------
-_Server.use(AuthRouter)
-
-_Server.use(LoginRouter)
+_Server.use('/_login', LoginRouter)
 
 // Development
 _Server.use(APIRouter)
