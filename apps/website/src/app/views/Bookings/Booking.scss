@@ -1,32 +1,36 @@
 @import '../../Global.scss';
 
+.book-event-details {
+  padding: 1.5em;
+  margin: -1em -1.5em;
+  margin-bottom: 1em;
+  text-align: center;
+  color: #fff;
+
+  .event-name {
+    margin: 0.25em;
+    font-size: 2em;
+    font-weight: 900;
+  }
+  .venue-name {
+    font-size: 1.5em;
+    opacity: 0.75;
+  }
+}
+
 .booking {
+  max-width: 50%;
+  border-radius: 0.5em;
+  background-color: #fff;
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+  }
+
   .ticket {
     margin: 0.5em;
-    padding: 1em 1.5em;
-    border-radius: 1em;
     overflow: hidden;
-
-    background-color: #fff;
     color: #000;
-
-    .event-details {
-      background-color: #1c1c1c08;
-      padding: 1.5em;
-      margin: -1em -1.5em;
-      margin-bottom: 1em;
-      text-align: center;
-  
-      .event-name {
-        margin: 0;
-        font-weight: 900;
-      }
-      .venue-name {
-        margin: 0;
-        font-weight: 900;
-        color: $primaryColor;
-      }
-    }
 
     hr {
       border: 1px solid #1c1c1c20;
@@ -52,26 +56,32 @@
 
   .payment {
     margin: 0.5em;
-    padding: 1em 1.5em;
-    border-radius: 1em;
-
-    background-color: #fff;
     color: #000;
 
     .offers {
       margin: 2em 0;
       margin-top: 0;
+
+      .available-offers {
+        margin: 1em 0 2em 0;
+      }
       
       .offer-item {
-        margin: 0.25rem auto;
+        margin: 0.5rem auto;
         padding: 0.75em;
         max-width: 24em;
         background-color: #ffc40020;
-        color: #ffc400;
+        color: #ca9b00;
         border-radius: 10px;
 
         font-size: 0.85em;
         font-weight: 600;
+
+        .offer-icon {
+          width: 15px;
+          transform: rotate(90deg);
+          margin-right: 0.5em;
+        }
       }
     }
 
@@ -109,7 +119,7 @@
     display: flex;
     flex-direction: row;
 
-    margin: 1em 0;
+    margin: 1.5em 0 0 0;
 
     * {
       margin: 0;
@@ -118,22 +128,25 @@
     .people-label {
       width: 25%;
       font-weight: 600;
+      flex-grow: 1;
+
       display: flex;
       flex-direction: column;
 
       .price {
+        color: $primaryColor;
         font-size: 0.8em;
-        opacity: 0.75;
+        font-weight: 900;
       }
     }
 
     .people-controls {
-      display: flex;
-      flex-direction: row-reverse;
-      margin: 0 2em;
+      margin: 0 0 0 2.5em;
       height: 2em;
       background-color: #1c1c1c20;
       border-radius: 5em;
+      display: flex;
+      flex-direction: row-reverse;
   
       .people-add {
         width: 2em;
@@ -187,7 +200,7 @@
 }
 
 .select-pill {
-  border-radius: 0.5em;
+  border-radius: 0.25em;
   border: 1px solid $primaryColor;
   color: $primaryColor;
   cursor: pointer;

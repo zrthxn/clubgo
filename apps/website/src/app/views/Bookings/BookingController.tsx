@@ -22,8 +22,8 @@ export default class BookingController extends Component<RouteComponentProps<URL
 
   state = {
     loading: true,
-    ticketSelectionDone: false,
-    bookingComplete: false,
+    ticketSelectionDone: true, //false,
+    bookingComplete: true, //false,
     ticket: null,
     booking: null
   }
@@ -76,7 +76,16 @@ export default class BookingController extends Component<RouteComponentProps<URL
               if(this.state.ticketSelectionDone)
                 if(this.state.bookingComplete)
                   return (
-                    <Confirmation booking={this.state.booking}/>
+                    <Confirmation booking={
+                      // this.state.booking
+                      {
+                        bookingReference: 'KSIQ9IUGB12',
+                        schedule: {
+                          date: Date.now(),
+                          time: 1320
+                        } 
+                      }
+                    }/>
                   )
                 else
                   return (

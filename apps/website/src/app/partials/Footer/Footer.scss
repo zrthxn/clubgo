@@ -46,22 +46,31 @@ footer {
 
   .cities {
     padding: 2em 1em;
+    
+    div {
+      padding: 0;
+      margin: 0;
+    }
 
-    .footer-locations {
-      div {
-        padding: 0;
-        margin: 0;
+    a {
+      color: #fff;
+      font-weight: 400;
+      text-decoration: none;
+
+      &:hover {
+        opacity: 0.75;
       }
+    }
 
+    .footer-city {
       a {
-        color: #fff;
-        font-weight: 400;
-        font-size: 0.85em;
-        text-decoration: none;
+        font-size: 1.25em;
+      }
+    }
 
-        &:hover {
-          opacity: 0.75;
-        }
+    .footer-locality {
+      a {
+        font-size: 0.85em;
       }
     }
   }

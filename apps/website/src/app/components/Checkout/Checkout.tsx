@@ -63,7 +63,7 @@ export class Checkout extends Component<CheckoutProps> {
               <article className="checkout">
                 <section className="container center">
                   <div className="head">
-                    <h1>Review Payment</h1>
+                    <h1 className="light">Review Payment</h1>
                     <h3>Please confirm your Booking</h3>
                   </div>
                 </section>

@@ -43,9 +43,9 @@ export class Details extends Component<DetailsProps> {
     return (
       <article>
         <section className="center">
-          <h1 className="center">Details</h1>
+          <h1 className="center light"><b>Details</b></h1>
 
-          <p>We need the following details to take your booking</p>
+          <p style={{ margin: 0 }}>We need the following details to take your booking</p>
 
           <section>
             <Textbox id="name" placeholder="Name" onChange={this.handleChangeById}/>
@@ -57,7 +57,7 @@ export class Details extends Component<DetailsProps> {
             <RootContext.Consumer>
               {
                 appContext => (
-                  <Button size="large" onClick={()=>{
+                  <Button size="medium" onClick={()=>{
                     appContext.actions.setUserLogin(this.state.data)
                     this.props.onComplete(this.state.data)
                   }}>

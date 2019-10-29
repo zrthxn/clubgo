@@ -44,6 +44,8 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
     this.fetchEventDetails(id).then(()=>{
       this.calculatePrice()
     })
+
+    document.title
   }
 
   componentDidUpdate() {
@@ -107,6 +109,8 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
     if(!this.state.loading)
       return (
         <article className="event-details">
+          <title>{ this.event.eventTitle } | ClubGo</title>
+
           <section className="container">
             <Grid container spacing={3}>
               <Grid item md={8} xs={12}>
@@ -142,6 +146,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                       {
                         this.event.offers.availableOffers.map((offer, item)=>(
                           <div className="offer-item">
+                            <img src="assets/icons/offer.png" alt="" className="offer-icon" />
                             { offer.offerTitle }
                           </div>
                         ))

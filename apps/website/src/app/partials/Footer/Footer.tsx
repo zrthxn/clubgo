@@ -33,20 +33,20 @@ export default class Footer extends Component {
           <section className="container">
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <h3>Discover your City</h3>
+                <h2>Discover your City</h2>
               </Grid>
 
               {
                 this.state.locations.map((city)=>(
                   city.city!==undefined ? (
                     <Grid item md={3} xs={6}>
-                      <Grid container spacing={1} key={city.city} className="footer-locations">
-                        <Grid item xs={12}>
+                      <Grid container spacing={1} key={city.city}>
+                        <Grid item xs={12} className="footer-city">
                           <a href={`/events/in/${city.city.toLowerCase()}`}><b>{ city.city }</b></a>
                         </Grid>
                         {
                           city.localities.map((locality)=>(
-                            <Grid item xs={12} key={locality.name}>
+                            <Grid item xs={12} key={locality.name} className="footer-locality">
                               <a href={`/events/in/${city.city.toLowerCase()}/${locality.name.toLowerCase().trim().replace(/ /g, '-')}`}>
                                 { locality.name }
                               </a>
