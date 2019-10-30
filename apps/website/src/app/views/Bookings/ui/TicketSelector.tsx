@@ -18,6 +18,7 @@ export class TicketSelector extends Component<TicketViewProps> {
   state = {
     selectedDateIndex: 0,
     selectedTimeIndex: 0,
+    ticketId: null,
     people: {
       male: 0,
       female: 0,
@@ -99,6 +100,7 @@ export class TicketSelector extends Component<TicketViewProps> {
 
   onFinalize = () => {
     this.props.onComplete({
+      ticketId: this.state.ticketId,
       date: this.event.scheduling.customDates[this.state.selectedDateIndex],
       time: this.event.bookings.tickets[this.state.selectedTimeIndex].deactivate,
       people: this.state.people,
@@ -150,6 +152,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                       onClick={()=>{
                         this.setState({
                           selectedTimeIndex: index,
+                          ticketId: item.entry._id,
                           people: {
                             male: 0,
                             female: 0,

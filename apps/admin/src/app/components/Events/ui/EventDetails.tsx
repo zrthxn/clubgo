@@ -275,7 +275,7 @@ export class EventDetails extends Component<EventDetailsProps> {
             </Grid>
 
             <Grid item xs={12}>
-              <TextField id="termsAndConditions" required fullWidth label="Terms And Conditions" 
+              <TextField id="termsAndConditions" required fullWidth multiline label="Terms And Conditions" 
                 variant="outlined" onChange={this.handleChangeById} 
                 defaultValue={this.state.data.termsAndConditions}/>
             </Grid>

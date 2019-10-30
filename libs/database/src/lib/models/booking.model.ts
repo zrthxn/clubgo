@@ -9,6 +9,9 @@ export const bookingSchema = new mongoose.Schema(
     bookingReference: {
       type: String, required: true, unique: true
     },
+    ticketId: {
+      type: ObjectID, required: true
+    },
     name: {
       type: String, required: true
     },
@@ -94,6 +97,7 @@ bookingSchema.index({
 export interface IBookingModel extends mongoose.Document {
   createdOn: Date,
   bookingReference: string
+  ticketId: ObjectID
   name: string
   email: string
   phone: string
