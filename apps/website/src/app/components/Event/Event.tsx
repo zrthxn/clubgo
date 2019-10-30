@@ -5,6 +5,7 @@ import './Event.scss'
 import RootContext from '../../RootContext'
 import { Image } from '@clubgo/website/components'
 import { IEventModel } from '@clubgo/database'
+import { formatTime } from '@clubgo/util'
 
 interface EventComponentProps {
   data: IEventModel
@@ -43,49 +44,6 @@ export class Event extends Component<EventComponentProps> {
     this.setState({
       calculatedLowestPrices: lowest
     })
-  }
-
-  formatTime = (time, options?) => {
-    if(options.hideMinutes)
-      return ((time - (time % 60)) / 60) > 12 ? (
-        (
-          (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
-            (((time - (time % 60)) / 60) - 12).toString()
-          )
-        ) + 'PM'
-      ) : (
-        (
-          (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
-            (((time - (time % 60)) / 60)).toString()
-          )
-        ) + 'AM'
-      )
-    else
-      return ((time - (time % 60)) / 60) > 12 ? (
-        (
-          (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
-            (((time - (time % 60)) / 60) - 12).toString()
-          )
-        ) + ':' + (
-          (time % 60).toString().length < 2 ? (
-            '0' + (time % 60).toString()
-          ) : (
-            (time % 60).toString()
-          ) 
-        ) + 'PM'
-      ) : (
-        (
-          (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
-            (((time - (time % 60)) / 60)).toString()
-          )
-        ) + ':' + (
-          (time % 60).toString().length < 2 ? (
-            '0' + (time % 60).toString()
-          ) : (
-            (time % 60).toString()
-          ) 
-        ) + 'AM'
-      )
   }
 
   openEventDetails = () => {
@@ -132,7 +90,7 @@ export class Event extends Component<EventComponentProps> {
                 <span>{ (new Date(this.props.data.scheduling.customDates[0])).toDateString() }</span>
                 <span style={{ marginLeft: '0.5em' }}>
                   { 
-                    this.formatTime(this.props.data.scheduling.timing.startTime, {
+                    formatTime(this.props.data.scheduling.timing.startTime, {
                       hideMinutes: true
                     }) 
                   }

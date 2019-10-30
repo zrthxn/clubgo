@@ -86,12 +86,12 @@
   
   @media (max-width: 600px) {
     .venue {
-      width: 12em;
-      height: 12em;
-      margin: 0.25em auto;
+      width: 10em;
+      height: 10em;
+      margin: 0.5em auto;
       
-      .venue-title {
-        font-size: 1em;
+      .venue-title, .venue-city {
+        font-size: 0.85em;
       }
     } 
   }

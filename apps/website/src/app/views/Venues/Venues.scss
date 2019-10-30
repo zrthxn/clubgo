@@ -1,0 +1,15 @@
+.venue-listing {
+  .listing {
+    padding: 1em 0.5em;
+    display: flex;
+    flex-direction: row;
+    
+    #drawer-open {
+      display: none;       
+    }
+
+    .list {
+      width: 100%;
+    }
+  } 
+}

@@ -18,6 +18,7 @@ export const bookingSchema = new mongoose.Schema(
     phone: {
       type: String, maxlength: 14, required: true
     },
+    termsAndConditions: String,
     event: {
       eventId: {
         type: ObjectID, required: true
@@ -67,7 +68,7 @@ export const bookingSchema = new mongoose.Schema(
     },
     payment: {
       transactionId: String,
-      bookingAmountPaid: {
+      isBookingAmountPaid: {
         type: Boolean, required: true
       },
       amount: Number,
@@ -96,6 +97,7 @@ export interface IBookingModel extends mongoose.Document {
   name: string
   email: string
   phone: string
+  termsAndConditions: string
   event: {
     eventTitle?: string,
     eventId: ObjectID
@@ -126,7 +128,7 @@ export interface IBookingModel extends mongoose.Document {
   }
   payment: {
     transactionId?: string
-    bookingAmountPaid: boolean
+    isBookingAmountPaid: boolean
     amount?: number
     processingFee?: number
     tax?: number

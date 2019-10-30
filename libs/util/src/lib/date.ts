@@ -77,6 +77,52 @@ export function fromFormattedDate(_date:DateFormat):AntiDateFormat {
   }
 }
 
+export function formatTime(time:number, options?) {
+  if(time>=1440) time -= 1440
+  if(options) {
+    if(options.hideMinutes)
+      return ((time - (time % 60)) / 60) > 12 ? (
+        (
+          (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
+            (((time - (time % 60)) / 60) - 12).toString()
+          )
+        ) + 'PM'
+      ) : (
+        (
+          (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
+            (((time - (time % 60)) / 60)).toString()
+          )
+        ) + 'AM'
+      )
+  }
+  else
+    return ((time - (time % 60)) / 60) > 12 ? (
+      (
+        (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
+          (((time - (time % 60)) / 60) - 12).toString()
+        )
+      ) + ':' + (
+        (time % 60).toString().length < 2 ? (
+          '0' + (time % 60).toString()
+        ) : (
+          (time % 60).toString()
+        ) 
+      ) + 'PM'
+    ) : (
+      (
+        (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
+          (((time - (time % 60)) / 60)).toString()
+        )
+      ) + ':' + (
+        (time % 60).toString().length < 2 ? (
+          '0' + (time % 60).toString()
+        ) : (
+          (time % 60).toString()
+        ) 
+      ) + 'AM'
+    )
+}
+
 export interface DateFormat {
   date: number
   dayOfTheWeek: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'

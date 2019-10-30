@@ -6,7 +6,7 @@ import '../Booking.scss'
 import { Button, Textbox } from '@clubgo/website/components'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 import { Add, Remove } from '@material-ui/icons'
-import { getFormattedDate } from '@clubgo/util'
+import { getFormattedDate, formatTime } from '@clubgo/util'
 
 interface TicketViewProps {
   event:IEventModel
@@ -36,35 +36,6 @@ export class TicketSelector extends Component<TicketViewProps> {
     super(props)
     this.event = this.props.event
     this.venue = this.props.venue
-  }
-
-  formatTime = (time) => {
-    if(time>=1440) time -= 1440
-    return ((time - (time % 60)) / 60) > 12 ? (
-      (
-        (((time - (time % 60)) / 60) - 12).toString()==='0' ? '12' : (
-          (((time - (time % 60)) / 60) - 12).toString()
-        )
-      ) + ':' + (
-        (time % 60).toString().length < 2 ? (
-          '0' + (time % 60).toString()
-        ) : (
-          (time % 60).toString()
-        ) 
-      ) + 'PM'
-    ) : (
-      (
-        (((time - (time % 60)) / 60)).toString()==='0' ? '12' : (
-          (((time - (time % 60)) / 60)).toString()
-        )
-      ) + ':' + (
-        (time % 60).toString().length < 2 ? (
-          '0' + (time % 60).toString()
-        ) : (
-          (time % 60).toString()
-        ) 
-      ) + 'AM'
-    )
   }
   
   incrementPeople = (key) => {
@@ -197,9 +168,9 @@ export class TicketSelector extends Component<TicketViewProps> {
               </div>
               <p style={{ margin: 0 }}>
                 From { 
-                  this.formatTime(this.event.bookings.tickets[this.state.selectedTimeIndex].activate) 
+                  formatTime(this.event.bookings.tickets[this.state.selectedTimeIndex].activate) 
                 } to {
-                  this.formatTime(this.event.bookings.tickets[this.state.selectedTimeIndex].deactivate) 
+                  formatTime(this.event.bookings.tickets[this.state.selectedTimeIndex].deactivate) 
                 }
               </p>
               <br/>

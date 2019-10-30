@@ -7,6 +7,7 @@ import { Slider } from '@material-ui/lab'
 import { Link, Phone, Delete } from '@material-ui/icons'
 import { ITicketModel } from '@clubgo/database'
 import { DatabaseService } from '@clubgo/api'
+import { formatTime } from '@clubgo/util'
 
 import { Ticket } from '../../Tickets/Ticket'
 
@@ -259,22 +260,7 @@ export class Booking extends Component<BookingProps> {
 
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                           <span style={{ margin: '0 1em' }}>
-                            {
-                              ((this.state.data.tickets[index].activate - 
-                                (this.state.data.tickets[index].activate % 60))/60).toString().length===1 ? (
-                                  '0'
-                                ) : null
-                            }{ 
-                              (this.state.data.tickets[index].activate - (this.state.data.tickets[index].activate % 60))/60
-                            }  
-                            { ':' }
-                            {
-                              (this.state.data.tickets[index].activate % 60).toString().length===1 ? (
-                                '0'
-                              ) : null
-                            }{
-                              (this.state.data.tickets[index].activate % 60)
-                            }
+                            { formatTime(this.state.data.tickets[index].activate) }
                           </span>
 
                           <Slider style={{ flexGrow: 1 }}
@@ -296,22 +282,7 @@ export class Booking extends Component<BookingProps> {
                           />
 
                           <span style={{ margin: '0 1em' }}>
-                            {
-                              ((this.state.data.tickets[index].deactivate - 
-                                (this.state.data.tickets[index].deactivate % 60))/60).toString().length===1 ? (
-                                  '0'
-                                ) : null
-                            }{ 
-                              (this.state.data.tickets[index].deactivate - (this.state.data.tickets[index].deactivate % 60))/60
-                            }
-                            { ':' }
-                            {
-                              (this.state.data.tickets[index].deactivate % 60).toString().length===1 ? (
-                                '0'
-                              ) : null
-                            }{
-                              (this.state.data.tickets[index].deactivate % 60)
-                            }
+                            { formatTime(this.state.data.tickets[index].deactivate) }
                           </span>
                         </div>
                       </div>

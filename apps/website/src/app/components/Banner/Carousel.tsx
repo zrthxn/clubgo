@@ -6,6 +6,7 @@ import {
   CarouselIndicators,
   CarouselCaption
 } from 'reactstrap'
+import Banner from './Banner'
 
 interface CarouselProps {
   items: Array<{
@@ -66,7 +67,7 @@ export class Carousel extends Component<CarouselProps> {
                   onExited={() => this.setAnimating(false)}
                 >
                   <a href={item.link}>
-                    <img src={item.src} />
+                    <Banner image={item.src}/>
                   </a>
                 </CarouselItem>
               )
