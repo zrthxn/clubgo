@@ -190,7 +190,7 @@ export class Booking extends Component<BookingProps> {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField id="processingFeePercent" fullWidth variant="outlined" margin="dense" type="number"
                   label="Processing Fee Percent" defaultValue={this.state.data.processingFeePercent}
                   onChange={({ target })=>{
@@ -222,6 +222,9 @@ export class Booking extends Component<BookingProps> {
                   }}
                 />
               </Grid>
+
+              <Grid item xs={12}></Grid>
+              <Grid item xs={12}></Grid>
 
               <Grid item xs={12}>
                 <Select
