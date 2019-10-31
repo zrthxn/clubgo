@@ -6,6 +6,12 @@ $poppinsFont: 'Poppins', sans-serif;
 $montserratFont: 'Montserrat', sans-serif;
 $francoisFont: 'Francois One', sans-serif;
 
+$neonFont: 'Neon 80s', sans-serif;
+@font-face {
+  font-family: $neonFont;
+  src: local('/apps/website/src/assets/fonts/Neon.ttf') format('truetype');
+}
+
 $primaryColor: #D62839;
 $secondaryColor: #691351;
 $accentColor: #26233D;
@@ -103,6 +109,10 @@ a[class~="no-decor"] {
 }
 *[class~="underline"] {
   width: fit-content;
+}
+
+#site-title {
+  font-family: $poppinsFont !important;
 }
 
 @media (max-width: 360px) {

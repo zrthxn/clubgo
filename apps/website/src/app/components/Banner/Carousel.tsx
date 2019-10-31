@@ -2,9 +2,7 @@ import React, { Component, useState } from 'react'
 import {
   Carousel as BootstrapCarousel,
   CarouselItem,
-  CarouselControl,
-  CarouselIndicators,
-  CarouselCaption
+  CarouselControl
 } from 'reactstrap'
 import Banner from './Banner'
 

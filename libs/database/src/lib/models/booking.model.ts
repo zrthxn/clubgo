@@ -10,7 +10,7 @@ export const bookingSchema = new mongoose.Schema(
       type: String, required: true, unique: true
     },
     ticketId: {
-      type: ObjectID, required: true
+      type: ObjectID
     },
     name: {
       type: String, required: true
@@ -23,15 +23,13 @@ export const bookingSchema = new mongoose.Schema(
     },
     termsAndConditions: String,
     event: {
-      eventId: {
-        type: ObjectID, required: true
-      },
+      eventId: ObjectID,
       eventTitle: String,
       startTime: {
-        type: Number, min: 0, max: 2880, required: true
+        type: Number, min: 0, max: 2880
       },
       endTime: {
-        type: Number, min: 0, max: 2880, required: true
+        type: Number, min: 0, max: 2880
       }
     },
     venue: {
@@ -39,15 +37,15 @@ export const bookingSchema = new mongoose.Schema(
       city: String,
       locality: String,
       venueId: {
-        type: ObjectID, required: true
+        type: ObjectID
       },
     },
     schedule: {
       date: {
-        type: Date, required: true
+        type: Date
       },
       time: {
-        type: Number, min: 0, max: 2880, required: true
+        type: Number, min: 0, max: 2880
       }
     },
     appliedOffers: [
@@ -56,7 +54,7 @@ export const bookingSchema = new mongoose.Schema(
         offerTitle: String,
         category: String,
         discountPercent: {
-          type: Number, min: 0, max: 100, default: 0, required: true
+          type: Number, min: 0, max: 100, default: 0
         }
       }
     ],

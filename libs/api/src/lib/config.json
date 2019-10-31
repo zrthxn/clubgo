@@ -5,7 +5,7 @@
   "prod": {
     "endpoints": {
       "api": {
-        "url": "https://api.clubgo.in",
+        "url": "https://xapi.clubgo.in",
         "secure": true
       },
       "cdn": {

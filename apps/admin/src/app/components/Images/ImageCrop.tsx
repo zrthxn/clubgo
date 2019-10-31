@@ -70,9 +70,10 @@ export class ImageCrop extends PureComponent<ImageCropProps> {
             <Grid item xs={6}>
               <Select 
                 options={[
-                  { label: 'Square (1:1)', value: 1 },
-                  { label: '16:9', value: 16/9 },
-                  { label: '4:3', value: 4/3 }
+                  { label: '1:1 (Square)', value: 1 },
+                  { label: '12:5 (Ad Banner)', value: 12/5 },
+                  { label: '16:9 (Wide)', value: 16/9 },
+                  { label: '4:3 (Event Card)', value: 4/3 }
                 ].map((item, index)=>({
                   label: item.label, value: item.value
                 }))}

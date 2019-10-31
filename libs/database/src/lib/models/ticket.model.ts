@@ -44,10 +44,6 @@ export const ticketSchema = new mongoose.Schema(
           type: Number, min: 0, max: 100
         }
       }
-    },
-    assignedTo: {
-      events: [ ObjectID ],
-      venues: [ ObjectID ]
     }
   },
   {

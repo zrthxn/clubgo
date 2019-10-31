@@ -66,10 +66,11 @@ export class Details extends Component<DetailsProps> {
             <section>
               <Button size="medium" onClick={()=>{
                 if(this.state.requiredFulfilled) {
-                  this.verifyPhone()
-                  this.setState({
-                    verifyEntries: true
-                  })
+                  this.finalize()
+                  // this.verifyPhone()
+                  // this.setState({
+                  //   verifyEntries: true
+                  // })
                 }
               }}>
                 Submit
@@ -105,7 +106,7 @@ export class Details extends Component<DetailsProps> {
 
             {
               this.state.isPhoneVerified===true ? (
-                <p>Correct OTP. Phone Verified.</p>
+                <p><b>Phone Number Verified</b></p>
               ) : null
             }
 

@@ -17,10 +17,10 @@ footer {
       
       position: absolute;
       transform: rotate(-30deg);
-      width: 36em;
+      width: 20em;
       height: 100%;
       top: 0;
-      left: 5vw;
+      left: 8vw;
 
       img {
         width: 100%;
@@ -37,8 +37,15 @@ footer {
     .app-icons {
       img {
         margin: 0 0.25em;
+
         :first-of-type {
           margin-left: 0;
+        }
+
+        @media (max-width: 600px) {
+          & {
+            width: 120px
+          }
         }
       }
     }
@@ -46,6 +53,7 @@ footer {
 
   .cities {
     padding: 2em 1em;
+    background-color: #1c1c1c;
     
     div {
       padding: 0;
@@ -78,5 +86,33 @@ footer {
   .base {
     padding: 2em;
     background-color: #000;
+
+    a {
+      font-size: 0.85em;
+    }
+
+    .endcard {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+
+      .social {
+        margin: 0 auto;
+
+        display: flex;
+        flex-direction: row;
+
+        img {
+          margin: 0.5em 1em;
+          filter: grayscale(100%);
+          transition: filter 0.25s ease;
+
+          &:hover, &:active, &:focus {
+            transition: filter 0.25s ease;
+            filter: none;
+          }
+        }
+      }
+    }
   }
 }

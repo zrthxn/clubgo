@@ -63,13 +63,9 @@ export const eventSchema = new mongoose.Schema(
       }
     },
     venue: {
-      city: { 
-        type: String, required: true 
-      },
+      city: String,
       venueId: String,
-      title: {
-        type: String, required: true
-      },
+      title: String,
       locality: String, 
       address: String, 
       isCustomVenue: Boolean,
@@ -87,7 +83,7 @@ export const eventSchema = new mongoose.Schema(
     },
     scheduling: {
       type: {
-        type: String, enum: [ 'once', 'daily', 'weekly', 'monthly', 'custom' ], required: true
+        type: String, enum: [ 'once', 'daily', 'weekly', 'monthly', 'custom' ]
       },
       isRecurring: Boolean,
       isCustomDates: Boolean,
@@ -99,15 +95,12 @@ export const eventSchema = new mongoose.Schema(
       customDates: [ Date ],
       noShowDates: [ Date ],
       timing: {
-        type: {
-          startTime: {
-            type: Number, min: 0, max: 1440, required: true
-          },
-          endTime: {
-            type: Number, min: 0, max: 2880, required: true
-          }
+        startTime: {
+          type: Number, min: 0, max: 1440
         },
-        required: true
+        endTime: {
+          type: Number, min: 0, max: 2880
+        }
       }
     },
     bookings: {
@@ -122,6 +115,7 @@ export const eventSchema = new mongoose.Schema(
       processingFeePercent: {
         type: Number, min: 0, max: 100, default: 3
       },
+      bookingTerms: String,
       tickets: [
         {
           activate: {
@@ -133,11 +127,9 @@ export const eventSchema = new mongoose.Schema(
           ticketMaximumUses: Number,
           entry: {
             owner: String,
-            ticketTitle: {
-              type: String, required: true
-            },
+            ticketTitle: String,
             entryType: {
-              type: String, required: true, enum: [ 'couple', 'single' ]
+              type: String, enum: [ 'couple', 'single' ]
             },
             pricing: {
               couple: {
@@ -183,17 +175,15 @@ export const eventSchema = new mongoose.Schema(
       availableOffers: [
         {
           owner: String,
-          offerTitle: {
-            type: String, required: true
-          },
+          offerTitle: String,
           description: {
-            type: String, required: true, maxlength: 250
+            type: String, maxlength: 250
           },
           category: {
-            type: String, required: true, enum: [ 'flat', 'payment', 'coupon', 'platform' ]
+            type: String, enum: [ 'flat', 'payment', 'coupon', 'platform' ]
           },
           discountPercent: {
-            type: Number, min: 0, max: 100, default: 0, required: true
+            type: Number, min: 0, max: 100, default: 0
           },
           terms: String
         }
@@ -202,9 +192,7 @@ export const eventSchema = new mongoose.Schema(
     media: {
       images: [
         {
-          url: {
-            type: String, required: true
-          },
+          url: String,
           tags: [String]
         }
       ],
@@ -285,6 +273,7 @@ export interface IEventModel extends mongoose.Document {
     maximumBookingUpto: number
     taxPercent?: number
     processingFeePercent?: number
+    bookingTerms?: string
     tickets?: Array<{
       entry: ITicketModel
       ticketMaximumUses?: number

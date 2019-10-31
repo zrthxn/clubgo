@@ -45,6 +45,7 @@ export class Booking extends Component<BookingProps> {
       details: undefined,
       taxPercent: undefined,
       processingFeePercent: undefined,
+      bookingTerms: undefined,
       tickets: Array<IAssignTicket>(),
       registrationURL: String,
       registrationPhone: String
@@ -154,6 +155,75 @@ export class Booking extends Component<BookingProps> {
               }
 
               <Grid item xs={12}>
+                <TextField id="maximumBookingUpto" fullWidth variant="outlined" margin="dense" type="number"
+                  label="Total Maximum Entries" defaultValue={this.state.data.maximumBookingUpto}
+                  onChange={({ target })=>{
+                    let { data } = this.state
+                    this.setState(()=>{
+                      if(target.value!=='')
+                        data.maximumBookingUpto = parseInt(target.value, 10)
+                      else
+                        data.maximumBookingUpto = 0
+                      return {
+                        data
+                      }
+                    })
+                  }} 
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextField id="taxPercent" fullWidth variant="outlined" margin="dense" type="number"
+                  label="Tax Percent" defaultValue={this.state.data.taxPercent}
+                  onChange={({ target })=>{
+                    let { data } = this.state
+                    this.setState(()=>{
+                      if(target.value!=='')
+                        data.taxPercent = parseInt(target.value, 10)
+                      else
+                        data.taxPercent = 0
+                      return {
+                        data
+                      }
+                    })
+                  }} 
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField id="processingFeePercent" fullWidth variant="outlined" margin="dense" type="number"
+                  label="Processing Fee Percent" defaultValue={this.state.data.processingFeePercent}
+                  onChange={({ target })=>{
+                    let { data } = this.state
+                    this.setState(()=>{
+                      if(target.value!=='')
+                        data.processingFeePercent = parseInt(target.value, 10)
+                      else
+                        data.processingFeePercent = 0
+                      return {
+                        data
+                      }
+                    })
+                  }} 
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField id="bookingTerms" fullWidth multiline label="Booking Terms"
+                  variant="outlined" defaultValue={this.state.data.bookingTerms} 
+                  onChange={({ target })=>{
+                    let { data } = this.state
+                    this.setState(()=>{
+                      data.bookingTerms = target.value
+                      return {
+                        data
+                      }
+                    })
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
                 <Select
                   inputId="searchTicketName"
                   placeholder="Search Ticket"
@@ -193,24 +263,6 @@ export class Booking extends Component<BookingProps> {
                       data
                     })
                   }}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField id="maximumBookingUpto" fullWidth variant="outlined" margin="dense" type="number"
-                  label="Total Maximum Entries" defaultValue={this.state.data.maximumBookingUpto}
-                  onChange={({ target })=>{
-                    let { data } = this.state
-                    this.setState(()=>{
-                      if(target.value!=='')
-                        data.maximumBookingUpto = parseInt(target.value, 10)
-                      else
-                        data.maximumBookingUpto = 0
-                      return {
-                        data
-                      }
-                    })
-                  }} 
                 />
               </Grid>
               

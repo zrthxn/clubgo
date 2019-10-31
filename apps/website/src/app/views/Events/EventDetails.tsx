@@ -8,6 +8,7 @@ import './Events.scss'
 import { DatabaseService } from '@clubgo/api'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 import RootContext from '../../RootContext'
+import { getFormattedDate } from '@clubgo/util'
 
 type URLParams = {
   id: string
@@ -129,7 +130,13 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                     </h3>
                     
                     <h3 className="event-dates">
-                      { (new Date(this.event.scheduling.customDates[0])).toDateString() }
+                      { 
+                        getFormattedDate(new Date(this.event.scheduling.customDates[0])).dayOfTheWeek
+                      }, { 
+                        getFormattedDate(new Date(this.event.scheduling.customDates[0])).date
+                      } { 
+                        getFormattedDate(new Date(this.event.scheduling.customDates[0])).month
+                      }
                     </h3>
 
                     <h3 className="event-price">
@@ -189,7 +196,19 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
 
               <Grid item md={8} xs={12}>
                 <h2 className="underline bold">About</h2>
-                <span>{ this.event.description }</span>
+                <div>
+                  {
+                    this.event.description.split('\n\n').map((paragraph)=>(
+                      <p>
+                        {
+                          paragraph.split('\n').map((line)=>(
+                            <div>{ line }</div>
+                          ))
+                        }
+                      </p>
+                    ))
+                  }
+                </div>
               </Grid>
 
               <Grid item md={8} xs={12}>

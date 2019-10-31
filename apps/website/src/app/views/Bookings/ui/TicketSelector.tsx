@@ -18,7 +18,6 @@ export class TicketSelector extends Component<TicketViewProps> {
   state = {
     selectedDateIndex: 0,
     selectedTimeIndex: 0,
-    ticketId: null,
     people: {
       male: 0,
       female: 0,
@@ -100,7 +99,7 @@ export class TicketSelector extends Component<TicketViewProps> {
 
   onFinalize = () => {
     this.props.onComplete({
-      ticketId: this.state.ticketId,
+      ticketId: this.event.bookings.tickets[this.state.selectedTimeIndex].entry._id,
       date: this.event.scheduling.customDates[this.state.selectedDateIndex],
       time: this.event.bookings.tickets[this.state.selectedTimeIndex].deactivate,
       people: this.state.people,
@@ -144,7 +143,7 @@ export class TicketSelector extends Component<TicketViewProps> {
               </div>
               <br/>
 
-              <h3 className="bold" style={{ flexGrow: 1 }}>Timings</h3>
+              <h3 className="bold" style={{ flexGrow: 1 }}>Tickets</h3>
               <div className="timings">
                 {
                   this.event.bookings.tickets.map((item, index)=>(
@@ -152,7 +151,6 @@ export class TicketSelector extends Component<TicketViewProps> {
                       onClick={()=>{
                         this.setState({
                           selectedTimeIndex: index,
-                          ticketId: item.entry._id,
                           people: {
                             male: 0,
                             female: 0,
@@ -185,7 +183,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                   <div className="people">
                     <div className="people-block">
                       <div className="people-label">
-                        Couple
+                        Couples
                         <p className="price">
                           { 
                             this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.admissionPrice===0 ? (
@@ -217,7 +215,7 @@ export class TicketSelector extends Component<TicketViewProps> {
 
                     <div className="people-block">
                       <div className="people-label">
-                        Female
+                        Females
                         <p className="price">
                           { 
                             this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.female.admissionPrice===0 ? (
@@ -249,7 +247,7 @@ export class TicketSelector extends Component<TicketViewProps> {
 
                     <div className="people-block">
                       <div className="people-label">
-                        Male
+                        Males
                         <p className="price">
                           { 
                             this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.couple.male.admissionPrice===0 ? (
@@ -283,7 +281,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                   <div className="people">
                     <div className="people-block">
                       <div className="people-label">
-                        Single
+                        Singles
                         <p className="price">
                           { 
                             this.event.bookings.tickets[this.state.selectedTimeIndex].entry.pricing.single.admissionPrice===0 ? (
@@ -316,6 +314,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                 )
               }
             </section>
+
             <section className="payment">
               <div className="offers">
                 <h3 className="bold">Offers</h3>
@@ -371,7 +370,7 @@ export class TicketSelector extends Component<TicketViewProps> {
                   }
                 </div>
 
-                <div>
+                <div className="coupon-code">
                   <Textbox spellCheck={false} variant="solid" placeholder="Coupon Code"
                     onChange={({ target })=>{
                       target.value = target.value.toUpperCase()
@@ -434,6 +433,21 @@ export class TicketSelector extends Component<TicketViewProps> {
               </p>
             </section>
           </section>
+        </section>
+
+        <section className="booking-terms">
+          <h2 className="underline bold">Terms and Conditions</h2>
+          <p>
+            <ul>
+              {
+                this.event.bookings.bookingTerms!==undefined ? (
+                  this.event.bookings.bookingTerms.split('\n').map((term)=>(
+                    <li>{ term }</li>
+                  ))
+                ) : null 
+              }
+            </ul>
+          </p>
         </section>
       </article>
     )

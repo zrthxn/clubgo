@@ -1,12 +1,12 @@
 @import "../../Global.scss";
 
 .textbox-container {
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   margin: 0.5rem auto;
   max-width: 20em;
   background: #1C1C1C60;
   border: 2px solid transparent;
-  border-radius: 5px;
+  border-radius: 5em;
   transition: all 0.25s ease;
 
   display: flex;
@@ -44,8 +44,11 @@
   }
 
   .input-adornment {
+    display: flex;
+    flex-direction: row;
+    
     * {
-      margin: 0;
+      margin: auto 0;
     }
   }
 }

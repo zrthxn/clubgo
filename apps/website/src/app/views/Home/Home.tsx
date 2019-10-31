@@ -74,9 +74,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   render() {
     return (
       <article>
-        <section className="container">
-          <Carousel items={this.state.ads}/>
-        </section>
+        <Carousel items={this.state.ads}/>
 
         <section className="container">
           <h2 className="scroll-title">Featured Events</h2>

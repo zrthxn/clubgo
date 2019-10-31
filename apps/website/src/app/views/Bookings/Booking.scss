@@ -55,7 +55,7 @@
   }
 
   .payment {
-    margin: 0.5em;
+    margin: 1.5em 0.5em;
     color: #000;
 
     .offers {
@@ -81,6 +81,17 @@
           width: 15px;
           transform: rotate(90deg);
           margin-right: 0.5em;
+        }
+      }
+
+      .coupon-code {
+        input {
+          font-weight: 800;
+          color: $primaryColor;
+
+          &::placeholder {
+            font-weight: initial;
+          }
         }
       }
     }
@@ -196,6 +207,19 @@
         }
       }
     }
+  }
+}
+
+.booking-terms {
+  max-width: 50%;
+  padding: 1em;
+
+  ul {
+    padding-left: 1em;
+  }
+
+  @media (max-width: 600px) {
+    max-width: 100%;
   }
 }
 

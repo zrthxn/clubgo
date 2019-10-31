@@ -23,7 +23,7 @@ export class Checkout extends Component<CheckoutProps> {
     },
     payment: {
       transactionId: Date.now().toString(36),
-      bookingAmountPaid: false,
+      isBookingAmountPaid: false,
       amount: this.props.payment,
       processingFee: 0,
       tax: 0,

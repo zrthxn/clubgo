@@ -22,6 +22,7 @@ export class TicketEditor extends Component<TicketEditorProps> {
       owner: 'admin',
       ticketTitle: undefined,
       entryType: 'couple',
+      bookingTerms: undefined,
       pricing: {
         couple: {
           admissionPrice: undefined,
@@ -140,194 +141,197 @@ export class TicketEditor extends Component<TicketEditorProps> {
             }
 
             <Grid item xs={12}>
-            {
-              this.state.data.entryType === 'couple' ? (
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={2}><b>Couple</b></Grid>
-                      <Grid item xs={10}><hr/></Grid>
-                      <Grid item xs={8}>
-                        <TextField fullWidth label="Price" 
-                          type="number" defaultValue={this.state.data.pricing.couple.admissionPrice}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            if(target.value!=='')
-                              data.pricing.couple.admissionPrice = parseInt(target.value, 10)
-                            else
-                              data.pricing.couple.admissionPrice = 0
-                            this.setState({ data }) 
-                          }}
-                        />
-                      </Grid>
+              {
+                this.state.data.entryType === 'couple' ? (
+                  <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                      <Grid container spacing={1}>
+                        <Grid item xs={2}><b>Couple</b></Grid>
+                        <Grid item xs={10}><hr/></Grid>
+                        <Grid item xs={8}>
+                          <TextField fullWidth label="Price" 
+                            type="number" defaultValue={this.state.data.pricing.couple.admissionPrice}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              if(target.value!=='')
+                                data.pricing.couple.admissionPrice = parseInt(target.value, 10)
+                              else
+                                data.pricing.couple.admissionPrice = 0
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
 
-                      <Grid item xs={4}>
-                        <TextField fullWidth label="Discount %" 
-                          type="number" defaultValue={this.state.data.pricing.couple.discount}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            if(target.value!=='')
-                              data.pricing.couple.discount = parseInt(target.value, 10)
-                            else
-                              data.pricing.couple.discount = 0
-                            this.setState({ data }) 
-                          }}
-                        />
-                      </Grid>
+                        <Grid item xs={4}>
+                          <TextField fullWidth label="Discount %" 
+                            type="number" defaultValue={this.state.data.pricing.couple.discount}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              if(target.value!=='')
+                                data.pricing.couple.discount = parseInt(target.value, 10)
+                              else
+                                data.pricing.couple.discount = 0
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
 
-                      <Grid item xs={12}>
-                        <TextField multiline fullWidth label="Booking Description"
-                          defaultValue={this.state.data.pricing.couple.bookingDescription}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            data.pricing.couple.bookingDescription = target.value
-                            this.setState({ data }) 
-                          }}
-                        />
+                        <Grid item xs={12}>
+                          <TextField multiline fullWidth label="Booking Description"
+                            defaultValue={this.state.data.pricing.couple.bookingDescription}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              data.pricing.couple.bookingDescription = target.value
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+
+                    <Grid item md={6} xs={12}>
+                      <Grid container spacing={1}>
+                        <Grid item xs={4}><b>Female</b></Grid>
+                        <Grid item xs={8}><hr/></Grid>
+                        <Grid item xs={6}>
+                          <TextField fullWidth label="Price" 
+                            type="number" defaultValue={this.state.data.pricing.couple.female.admissionPrice}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              if(target.value!=='')
+                                data.pricing.couple.female.admissionPrice = parseInt(target.value, 10)
+                              else
+                                data.pricing.couple.female.admissionPrice = 0
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                          <TextField fullWidth label="Discount %" 
+                            type="number" defaultValue={this.state.data.pricing.couple.female.discount}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              if(target.value!=='')
+                                data.pricing.couple.female.discount = parseInt(target.value, 10)
+                              else
+                                data.pricing.couple.female.discount = 0
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                          <TextField multiline fullWidth label="Booking Description" 
+                            defaultValue={this.state.data.pricing.couple.female.bookingDescription}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              data.pricing.couple.female.bookingDescription = target.value
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+
+                    <Grid item md={6} xs={12}>
+                      <Grid container spacing={1}>
+                        <Grid item xs={4}><b>Male</b></Grid>
+                        <Grid item xs={8}><hr/></Grid>
+                        <Grid item xs={6}>
+                          <TextField fullWidth label="Price" 
+                            type="number" defaultValue={this.state.data.pricing.couple.male.admissionPrice}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              if(target.value!=='')
+                                data.pricing.couple.male.admissionPrice = parseInt(target.value, 10)
+                              else
+                                data.pricing.couple.male.admissionPrice = 0
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                          <TextField fullWidth label="Discount %" 
+                            type="number" defaultValue={this.state.data.pricing.couple.male.discount}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              if(target.value!=='')
+                                data.pricing.couple.male.discount = parseInt(target.value, 10)
+                              else
+                                data.pricing.couple.male.discount = 0
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                          <TextField multiline fullWidth label="Booking Description" 
+                            defaultValue={this.state.data.pricing.couple.male.bookingDescription}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              data.pricing.couple.male.bookingDescription = target.value
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
+                ) : (
+                  <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                      <Grid container spacing={1}>
+                        <Grid item xs={2}><b>Single</b></Grid>
+                        <Grid item xs={10}><hr/></Grid>
+                        <Grid item xs={8}>
+                          <TextField fullWidth label="Price" 
+                            type="number" defaultValue={this.state.data.pricing.single.admissionPrice}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              if(target.value!=='')
+                                data.pricing.single.admissionPrice = target.value
+                              else
+                                data.pricing.single.admissionPrice = 0
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
 
-                  <Grid item md={6} xs={12}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={4}><b>Female</b></Grid>
-                      <Grid item xs={8}><hr/></Grid>
-                      <Grid item xs={6}>
-                        <TextField fullWidth label="Price" 
-                          type="number" defaultValue={this.state.data.pricing.couple.female.admissionPrice}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            if(target.value!=='')
-                              data.pricing.couple.female.admissionPrice = parseInt(target.value, 10)
-                            else
-                              data.pricing.couple.female.admissionPrice = 0
-                            this.setState({ data }) 
-                          }}
-                        />
-                      </Grid>
+                        <Grid item xs={4}>
+                          <TextField fullWidth label="Discount %" 
+                            type="number" defaultValue={this.state.data.pricing.single.discount}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              if(target.value!=='')
+                                data.pricing.single.discount = parseInt(target.value, 10)
+                              else
+                                data.pricing.single.discount = 0
+                              this.setState({ data })
+                            }}
+                          />
+                        </Grid>
 
-                      <Grid item xs={6}>
-                        <TextField fullWidth label="Discount %" 
-                          type="number" defaultValue={this.state.data.pricing.couple.female.discount}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            if(target.value!=='')
-                              data.pricing.couple.female.discount = parseInt(target.value, 10)
-                            else
-                              data.pricing.couple.female.discount = 0
-                            this.setState({ data }) 
-                          }}
-                        />
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <TextField multiline fullWidth label="Booking Description" 
-                          defaultValue={this.state.data.pricing.couple.female.bookingDescription}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            data.pricing.couple.female.bookingDescription = target.value
-                            this.setState({ data }) 
-                          }}
-                        />
+                        <Grid item xs={12}>
+                          <TextField multiline fullWidth label="Booking Description" 
+                            defaultValue={this.state.data.pricing.single.bookingDescription}
+                            variant="outlined" margin="dense" onChange={({target})=>{ 
+                              let { data } = this.state
+                              data.pricing.single.bookingDescription = target.value
+                              this.setState({ data }) 
+                            }}
+                          />
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-
-                  <Grid item md={6} xs={12}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={4}><b>Male</b></Grid>
-                      <Grid item xs={8}><hr/></Grid>
-                      <Grid item xs={6}>
-                        <TextField fullWidth label="Price" 
-                          type="number" defaultValue={this.state.data.pricing.couple.male.admissionPrice}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            if(target.value!=='')
-                              data.pricing.couple.male.admissionPrice = parseInt(target.value, 10)
-                            else
-                              data.pricing.couple.male.admissionPrice = 0
-                            this.setState({ data }) 
-                          }}
-                        />
-                      </Grid>
-
-                      <Grid item xs={6}>
-                        <TextField fullWidth label="Discount %" 
-                          type="number" defaultValue={this.state.data.pricing.couple.male.discount}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            if(target.value!=='')
-                              data.pricing.couple.male.discount = parseInt(target.value, 10)
-                            else
-                              data.pricing.couple.male.discount = 0
-                            this.setState({ data }) 
-                          }}
-                        />
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <TextField multiline fullWidth label="Booking Description" 
-                          defaultValue={this.state.data.pricing.couple.male.bookingDescription}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            data.pricing.couple.male.bookingDescription = target.value
-                            this.setState({ data }) 
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              ) : (
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={2}><b>Single</b></Grid>
-                      <Grid item xs={10}><hr/></Grid>
-                      <Grid item xs={8}>
-                        <TextField fullWidth label="Price" 
-                          type="number" defaultValue={this.state.data.pricing.single.admissionPrice}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            if(target.value!=='')
-                              data.pricing.single.admissionPrice = target.value
-                            else
-                              data.pricing.single.admissionPrice = 0
-                            this.setState({ data }) 
-                          }}
-                        />
-                      </Grid>
-
-                      <Grid item xs={4}>
-                        <TextField fullWidth label="Discount %" 
-                          type="number" defaultValue={this.state.data.pricing.single.discount}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            if(target.value!=='')
-                              data.pricing.single.discount = parseInt(target.value, 10)
-                            else
-                              data.pricing.single.discount = 0
-                            this.setState({ data })
-                          }}
-                        />
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <TextField multiline fullWidth label="Booking Description" 
-                          defaultValue={this.state.data.pricing.single.bookingDescription}
-                          variant="outlined" margin="dense" onChange={({target})=>{ 
-                            let { data } = this.state
-                            data.pricing.single.bookingDescription = target.value
-                            this.setState({ data }) 
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              )
-            }
+                )
+              }
             </Grid>
+            
+            <Grid item xs={12}></Grid>
+            <Grid item xs={12}></Grid>
 
             <Grid item xs={6}>
               <Button

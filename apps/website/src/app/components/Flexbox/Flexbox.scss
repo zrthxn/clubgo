@@ -7,11 +7,9 @@
 }
 
 .flexscroll {
-  margin: 0 -1.5em;
   overflow-x: scroll !important;
 
   .flexscroll-content {
-    padding: 0 1.5em;
     display: flex;
     flex-direction: row;
     width: fit-content;
@@ -26,5 +24,14 @@
   overflow: -moz-scrollbars-none; 
   &::-webkit-scrollbar { 
     width: 0 !important 
+  }
+
+  @media (max-width: 600px) {
+    & {
+      margin: 0 -1.5em;
+      .flexscroll-content {
+        padding: 0 1.5em;
+      }
+    }
   }
 }
