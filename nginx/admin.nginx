@@ -1,26 +1,23 @@
 # Admin ClubGo
 server {
-    server_name admin.cg.zrthxn.com;
+    listen 443 ssl;
+    server_name beta.cgsquad.in;
 
-    root /home/zrthxn/clubgo/dist/apps/admin;
+    root /home/deploy/clubgo/dist/apps/admin;
     index index.html;
 
     location / {
         # Serve website
         try_files $uri /index.html =404;
     }
-
-    listen 443 ssl; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 }
 
 server {
-    if ($host = admin.cg.zrthxn.com) {
+    if ($host = beta.cgsquad.in) {
         return 301 https://$host$request_uri;
-    } # managed by Certbot
+    }
 
 	listen 80;
-	server_name admin.cg.zrthxn.com;
-    return 404; # managed by Certbot
+	server_name beta.cgsquad.in;
+    return 404;
 }
