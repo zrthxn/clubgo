@@ -1,7 +1,7 @@
 {
   "database": {
-    "protocol": "mongodb+srv",
-    "url": "sandboxdb-oitfz.mongodb.net", 
+    "protocol": "mongodb",
+    "url": "127.0.0.1:27017",
     "username": "admin",
     "password": "admin",
     "options": {
