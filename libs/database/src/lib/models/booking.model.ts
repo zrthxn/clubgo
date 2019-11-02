@@ -25,12 +25,8 @@ export const bookingSchema = new mongoose.Schema(
     event: {
       eventId: ObjectID,
       eventTitle: String,
-      startTime: {
-        type: Number, min: 0, max: 2880
-      },
-      endTime: {
-        type: Number, min: 0, max: 2880
-      }
+      startTime: String,
+      endTime: String
     },
     venue: {
       venueTitle: String,
@@ -41,12 +37,8 @@ export const bookingSchema = new mongoose.Schema(
       },
     },
     schedule: {
-      date: {
-        type: Date
-      },
-      time: {
-        type: Number, min: 0, max: 2880
-      }
+      date: Date,
+      time: String
     },
     appliedOffers: [
       {

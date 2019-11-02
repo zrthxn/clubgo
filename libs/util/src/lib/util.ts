@@ -51,20 +51,18 @@ export function convertToCSV(items:Array<object>, headers?:Array<string>) {
   var csv = '', useKeyAsHeader = false
 
   if(headers!==undefined) {
-    if(headers.length!==0) {
-      for (const header of headers) {
-        csv += header + ','
-      }
+    for (const header of headers) {
+      csv += header + ','
     }
-    else {
-      let item = items[0]
-      item = serialize(item)
-      for (const key in item)
-        if (item.hasOwnProperty(key))
-          csv += key + ','
-    }
-    csv += '\r\n'
   }
+  else {
+    let item = items[0]
+    item = serialize(item)
+    for (const key in item)
+      if (item.hasOwnProperty(key))
+        csv += key.replace(/./g, ' ').toUpperCase() + ','
+  }
+  csv += '\r\n'
 
   for (let item of items){
     item = serialize(item)

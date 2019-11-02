@@ -101,7 +101,7 @@ export class TicketSelector extends Component<TicketViewProps> {
     this.props.onComplete({
       ticketId: this.event.bookings.tickets[this.state.selectedTimeIndex].entry._id,
       date: this.event.scheduling.customDates[this.state.selectedDateIndex],
-      time: this.event.bookings.tickets[this.state.selectedTimeIndex].deactivate,
+      time: formatTime(this.event.bookings.tickets[this.state.selectedTimeIndex].deactivate),
       people: this.state.people,
       appliedOffers: this.state.appliedOffers,
       payment: this.state.payment,

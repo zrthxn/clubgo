@@ -67,11 +67,7 @@ export default class BookingsPage extends Component<RouteComponentProps<URLParam
   }
 
   convertBookingToCSVEntry = () => {
-    exportAsCSV(this.state.selectedBookings, 'hello.csv', [
-      'Event', 'Event ID', 'Venue', 'City', 'Venue ID', 'Created On', 
-      'Amount', 'TXNID', 'PAID', 'Price', 'Processing', 'Tax', 'Total', 
-      'Booking ID', 'Created On', 'REF', 'Name', 'Email', 'Phone', 'Applied Offer'
-    ])
+    exportAsCSV(this.state.selectedBookings, 'export.csv')
   }
 
   render() {
