@@ -230,18 +230,23 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                 }
               </Grid>
 
-              <Grid item md={8} xs={12}>
-                <h2 className="underline bold">Terms and Conditions</h2>
-                <p>
-                  <ul>
-                    {
-                      this.event.termsAndConditions.split('\n').map((term)=>(
-                        <li>{ term }</li>
-                      ))
-                    }
-                  </ul>
-                </p>
-              </Grid>
+              {
+                this.event.termsAndConditions ? (
+                  <Grid item md={8} xs={12}>
+                    <h2 className="underline bold">Terms and Conditions</h2>
+                    <p>
+                      <ul>
+                        {
+                          this.event.termsAndConditions.split('\n').map((term)=>(
+                            <li>{ term }</li>
+                          ))
+                        }
+                      </ul>
+                    </p>
+                        
+                  </Grid>  
+                ) : null
+              }
             </Grid>
           </section>
 
