@@ -56,7 +56,7 @@ BookingRouter.post('/_create', async (req, res) => {
     let message = 
       `Hey ${user.name}, Your Booking details for ${event.eventTitle} on ${(new Date(ticket.date)).toDateString()} are mentioned\n` +
       `below Booking ID ${createBooking.bookingReference} No. of people ${ticket.people.couple} couples and ${ticket.people.female} females\n` +
-      `Entry time ${ formatTime(event.scheduling.timing.startTime) } to ${ formatTime(ticket.time) } Amount ${txn.total} Pay at Venue . Facing an\n` +
+      `Entry time ${ formatTime(event.scheduling.timing.startTime) } to ${ ticket.time } Amount ${txn.total} Pay at Venue . Facing an\n` +
       `issue, Please feel free to reach us at 9999030363.`
 
     SendSMS(user.phone, 'bookuser', message)

@@ -33,11 +33,7 @@ export default class Confirmation extends Component<ConfirmationProps> {
               <h4>
                 { 
                   (new Date(this.props.booking.schedule.date)).toDateString() 
-                }, {
-                  formatTime(this.props.booking.event.startTime, { hideMinutes: true })
-                } - {
-                  formatTime(this.props.booking.event.endTime, { hideMinutes: true })
-                }
+                }, { this.props.booking.event.startTime } - { this.props.booking.event.endTime }
               </h4>
             </div>
 
