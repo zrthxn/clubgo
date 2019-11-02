@@ -74,7 +74,7 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
       let ads = []
       for (const ad of data.results) {
         ads.push({
-          src: ad.imageURL, link: ad.link
+          src: ad.imageURL, link: ad.link, text: ad.advertTitle
         })
       }
       this.setState({
