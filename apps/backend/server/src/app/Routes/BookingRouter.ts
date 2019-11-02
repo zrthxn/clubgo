@@ -2,7 +2,7 @@ import express from 'express'
 import path from 'path'
 import * as mongoose from 'mongoose'
 import { Booking } from '@clubgo/database'
-import { conf } from '@clubgo/util'
+import { conf, formatTime } from '@clubgo/util'
 
 export const BookingRouter = express.Router()
 export default BookingRouter
@@ -53,14 +53,13 @@ BookingRouter.post('/_create', async (req, res) => {
     
     // Send confirmation email
     
-    // SendSMS(user.phone, 'bookuser', 
-    //   `Hey ${user.name}, Your Booking details for ${event.eventTitle} on ${ticket.date} are mentioned below.` +
-    //   `Booking ID ${result._id}` +
-    //   `No. of people ${ticket.people.couple} couples and ${ticket.people.female} females` +
-    //   `Entry time ${ticket.time} to ${ticket.time} ` +
-    //   `Amount ${txn.amount} Pay at Venue . ` +
-    //   `Facing an issue, Please feel free to reach us at 9999030363.`
-    // )
+    let message = 
+    `Hey ${user.name}, Your Booking details for ${event.eventTitle} on ${(new Date(ticket.date)).toDateString()} are mentioned\n` +
+    `below Booking ID ${createBooking.bookingReference} No. of people ${ticket.people.couple} couples and ${ticket.people.female} females\n` +
+    `Entry time ${ formatTime(event.scheduling.timing.startTime) } to ${ formatTime(ticket.time) } Amount ${txn.total} Pay at Venue . Facing an\n` +
+    `issue, Please feel free to reach us at 9999030363.`
+
+    SendSMS(user.phone, 'bookuser', message)
 
     // Add to some spreadsheet
 
