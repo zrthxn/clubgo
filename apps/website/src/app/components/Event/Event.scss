@@ -66,13 +66,13 @@
     top: 1em;
     right: 1em;
     padding: 0.25em 0.5em;
-    width: fit-content;
+    width: max-content;
     background-color: $primaryColor;
     border-radius: 5px;
 
     p {
       margin: 0;
-      font-size: 0.5em;
+      font-size: 0.65em;
       text-transform: uppercase;
       text-align: right;
       color: #fff;

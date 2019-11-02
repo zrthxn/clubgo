@@ -78,6 +78,22 @@
       filter: drop-shadow(0 0 5px #000);
     }
   }
+  
+  .carousel-caption {
+    display: block !important;
+    bottom: -25px !important;
+    filter: drop-shadow(0 0 10px #1c1c1c);
+
+    h3 {
+      font-weight: 600 !important;
+      font-size: 1em;
+      @media (min-width: 600px) {
+        & {
+          font-size: 1.5em;
+        }
+      }
+    }
+  }
 
   @media (max-width: 600px) {    
     & {

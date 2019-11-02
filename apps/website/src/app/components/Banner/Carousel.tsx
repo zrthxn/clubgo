@@ -2,7 +2,8 @@ import React, { Component, useState } from 'react'
 import {
   Carousel as BootstrapCarousel,
   CarouselItem,
-  CarouselControl
+  CarouselControl,
+  CarouselCaption
 } from 'reactstrap'
 import Banner from './Banner'
 
@@ -10,6 +11,7 @@ interface CarouselProps {
   items: Array<{
     src: string
     link: string
+    text: string
   }>
 }
 
@@ -66,6 +68,7 @@ export class Carousel extends Component<CarouselProps> {
                 >
                   <a href={item.link}>
                     <Banner image={item.src}/>
+                    <CarouselCaption captionHeader={item.text}/>
                   </a>
                 </CarouselItem>
               )

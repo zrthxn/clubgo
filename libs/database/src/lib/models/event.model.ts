@@ -110,10 +110,10 @@ export const eventSchema = new mongoose.Schema(
       allowPreBookingUptoDays: Number,
       maximumBookingUpto: Number,
       taxPercent: {
-        type: Number, min: 0, max: 100, default: 18
+        type: Number, min: 0, max: 100, default: 0
       },
       processingFeePercent: {
-        type: Number, min: 0, max: 100, default: 3
+        type: Number, min: 0, max: 100, default: 0
       },
       bookingTerms: String,
       tickets: [

@@ -62,7 +62,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
       let ads = []
       for (const ad of data.results) {
         ads.push({
-          src: ad.imageURL, link: ad.link
+          src: ad.imageURL, link: ad.link, text: ad.advertTitle
         })
       }
       this.setState({

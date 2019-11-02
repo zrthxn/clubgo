@@ -125,6 +125,20 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                       { this.event.eventTitle }
                     </h2>
 
+                    <div style={{ display: 'flex', flexFlow: 'row', flexWrap: 'wrap' }}>
+                      {
+                        this.event.categories.map((category)=>(
+                          <span style={{
+                            border: '1px solid #fff', padding: '0.5em',
+                            borderRadius: '2em', fontSize: '0.85em', margin: '0.5em 0.5em 0 0',
+                            textTransform: 'uppercase', width: 'max-content'
+                          }}>
+                            { category }
+                          </span>
+                        ))
+                      }
+                    </div>
+
                     <h3 className="venue-title">
                       <b>{ this.event.venue.title }, { this.event.venue.city }</b>
                     </h3>

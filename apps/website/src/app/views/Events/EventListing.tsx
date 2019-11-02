@@ -116,8 +116,10 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
     this.eventService.searchBy(query).then(({ data })=>{
       if(city) {
         city = city.substr(0, 1).toUpperCase() + city.substr(1).toLowerCase()
-        document.title = `${data.results.length} Events in ${city} | ClubGo`
+        document.title = `${data.results.length} Upcoming Events in ${city} | ClubGo`
       }
+      if(search)
+        document.title = `${data.results.length} Upcoming Events for ${this.toCapitalizeCase(search.replace(/-/g, ' '))} in ${city} | ClubGo`
       this.setState({
         events: data.results,
         listing: data.results
@@ -167,6 +169,13 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
     })
   }
 
+  toCapitalizeCase(string:string) {
+    let splits = string.split(' '), str = ''
+    for (let word of splits)
+      str += word.substr(0, 1).toUpperCase() + word.substr(1).toLowerCase() + ' '
+    return str
+  }
+
   render() {
     return (
       <article className="event-listing">
@@ -176,7 +185,17 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
           <h1>Where's the Party?</h1>
           {
             this.state.city!==null ? (
-              <h3>We found { this.state.listing.length } Events in { this.state.city }</h3>
+              <h2>
+                { this.state.listing.length } Upcoming Events {
+                  this.props.match.params.search ? (
+                    'for ' + this.toCapitalizeCase(this.props.match.params.search.replace(/-/g, ' '))
+                  ) : ''
+                } { 
+                  this.state.city ? (
+                    'in ' + this.toCapitalizeCase(this.state.city)
+                  ) : ''
+                }
+              </h2>
             ) : (
               <h3>Events Nearby</h3>
             )
