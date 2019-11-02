@@ -217,9 +217,7 @@ export class Venue extends Component<VenueProps> {
                     label: cat.name, value: cat.name.toLowerCase()
                   }))}
                   onChange={ selected => {
-                    let { selectCity, data } = this.state
-                    data.city = selected.value
-
+                    let { selectCity } = this.state
                     this.venueService.searchBy({
                       city: selectCity!==null ? selectCity.value.city : undefined,
                       categories: selected!==null ? selected.value : undefined
@@ -234,7 +232,6 @@ export class Venue extends Component<VenueProps> {
                   
                         this.setState({
                           suggestions,
-                          data: data,
                           selectVenueCategory: selected
                         })
                       }
