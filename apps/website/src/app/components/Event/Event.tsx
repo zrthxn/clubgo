@@ -96,9 +96,15 @@ export class Event extends Component<EventComponentProps> {
                   }
                 </span>
               </p>
-      
+
               <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9em', position: 'absolute', bottom: '1em' }}>
-                From { '\u20B9 ' + this.state.calculatedLowestPrices }
+                {
+                  this.state.calculatedLowestPrices===0 ? (
+                    'Free'    
+                  ) : (
+                    'From \u20B9 ' + this.state.calculatedLowestPrices
+                  )
+                }
               </p>
             </div>
           )
