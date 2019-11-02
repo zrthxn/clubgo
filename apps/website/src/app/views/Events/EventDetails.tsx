@@ -43,10 +43,9 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
   componentDidMount() {
     let { id } = this.props.match.params
     this.fetchEventDetails(id).then(()=>{
+      document.title = this.event.eventTitle + ' | ClubGo'
       this.calculatePrice()
     })
-
-    document.title
   }
 
   componentDidUpdate() {
@@ -59,16 +58,20 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
 
   calculatePrice = () => {
     let lowest = 999999999
-    for (const ticket of this.event.bookings.tickets) {
-      if(ticket.entry.entryType==='couple') {
-        if(ticket.entry.pricing.couple.admissionPrice < lowest)
-          lowest = ticket.entry.pricing.couple.admissionPrice
+
+    if(!this.event.bookings.isTakingOnsiteBookings)
+      lowest = 0
+    else
+      for (const ticket of this.event.bookings.tickets) {
+        if(ticket.entry.entryType==='couple') {
+          if(ticket.entry.pricing.couple.admissionPrice < lowest)
+            lowest = ticket.entry.pricing.couple.admissionPrice
+        }
+        else if(ticket.entry.entryType==='single') {
+          if(ticket.entry.pricing.single.admissionPrice < lowest)
+            lowest = ticket.entry.pricing.single.admissionPrice
+        }
       }
-      else if(ticket.entry.entryType==='single') {
-        if(ticket.entry.pricing.single.admissionPrice < lowest)
-          lowest = ticket.entry.pricing.single.admissionPrice
-      }
-    }
 
     this.setState({
       calculatedLowestPrices: lowest
@@ -103,7 +106,17 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
   }
   
   openBooking = () => {
-    this.context.router('/bookings/' + this.event._id + '/start')
+    if(this.event.bookings.isTakingOnsiteBookings)
+      this.context.router('/bookings/' + this.event._id + '/start')
+    else {
+      let url = new Location()
+      if(this.event.bookings.registrationURL)
+        url.href = this.event.bookings.registrationURL
+      else
+        url.href = this.event.bookings.registrationPhone
+
+      window.location = url
+    }
   }
   
   render() {

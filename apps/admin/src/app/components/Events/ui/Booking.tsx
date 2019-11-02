@@ -7,7 +7,7 @@ import { Slider } from '@material-ui/lab'
 import { Link, Phone, Delete } from '@material-ui/icons'
 import { ITicketModel } from '@clubgo/database'
 import { DatabaseService } from '@clubgo/api'
-import { formatTime } from '@clubgo/util'
+import { formatTime, handleChangeById } from '@clubgo/util'
 
 import { Ticket } from '../../Tickets/Ticket'
 
@@ -47,8 +47,8 @@ export class Booking extends Component<BookingProps> {
       processingFeePercent: undefined,
       bookingTerms: undefined,
       tickets: Array<IAssignTicket>(),
-      registrationURL: String,
-      registrationPhone: String
+      registrationURL: undefined,
+      registrationPhone: undefined
     }
   } 
 
@@ -351,6 +351,12 @@ export class Booking extends Component<BookingProps> {
               <Grid item xs={12}>
                 <Label>Registration URL</Label>
                 <TextField fullWidth variant="outlined" margin="dense" placeholder="https://example.com/register"
+                  defaultValue={this.state.data.registrationURL}
+                  onChange={({ target })=>{
+                    let { data } = this.state
+                    data.registrationURL = target.value
+                    this.setState({ data })
+                  }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">
                       <Link/>
@@ -362,6 +368,12 @@ export class Booking extends Component<BookingProps> {
               <Grid item xs={12}>
                 <Label>Phone</Label>
                 <TextField fullWidth variant="outlined" margin="dense" placeholder="+91-9988776655"
+                  defaultValue={this.state.data.registrationPhone}
+                  onChange={({ target })=>{
+                    let { data } = this.state
+                    data.registrationPhone = target.value
+                    this.setState({ data })
+                  }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">
                       <Phone/>
