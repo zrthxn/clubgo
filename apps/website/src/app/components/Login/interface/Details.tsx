@@ -66,11 +66,10 @@ export class Details extends Component<DetailsProps> {
             <section>
               <Button size="medium" onClick={()=>{
                 if(this.state.requiredFulfilled) {
-                  this.finalize()
-                  // this.verifyPhone()
-                  // this.setState({
-                  //   verifyEntries: true
-                  // })
+                  this.verifyPhone()
+                  this.setState({
+                    verifyEntries: true
+                  })
                 }
               }}>
                 Submit
