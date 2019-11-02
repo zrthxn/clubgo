@@ -56,11 +56,10 @@ export function convertToCSV(items:Array<object>, headers?:Array<string>) {
     }
   }
   else {
-    let item = items[0]
-    item = serialize(item)
+    let item = serialize(items[0])
     for (const key in item)
       if (item.hasOwnProperty(key))
-        csv += key.replace(/./g, ' ').toUpperCase() + ','
+        csv += key + ','
   }
   csv += '\r\n'
 
