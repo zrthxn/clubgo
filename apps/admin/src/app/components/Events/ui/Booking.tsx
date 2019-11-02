@@ -322,7 +322,7 @@ export class Booking extends Component<BookingProps> {
                             value={[
                               this.state.data.tickets[index].activate, this.state.data.tickets[index].deactivate
                             ]}
-                            step={60}
+                            step={30}
                             max={2880}
                             onChange={(e, vals)=>{
                               this.setState(()=>{
