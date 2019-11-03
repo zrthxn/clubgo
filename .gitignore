@@ -2,6 +2,8 @@
 
 # Environment Variables
 .env
+env.ts
+env.prod.ts
 environment.ts
 environment.prod.ts
 
