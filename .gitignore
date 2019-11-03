@@ -1,14 +1,17 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Environment Variables
 .env
-
-# compiled output
-/dist
-/tmp
-/out-tsc
+environment.ts
+environment.prod.ts
 
 # dependencies
 /node_modules
 
 # IDE - VSCode
 /.vscode
+
+# compiled output
+/dist
+/tmp
+/out-tsc

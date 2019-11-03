@@ -32,9 +32,9 @@ export function sortItemArrayByRef(files, high?:number, low?:number) {
     for (var j=low; j<=high-1; j++)
       if (files[j].ref <= pivot) { 
         i++  
-        let temp = files[i]
+        let t = files[i]
         files[i] = files[j]
-        files[j] = temp 
+        files[j] = t 
       } 
 
     let pi = i + 1

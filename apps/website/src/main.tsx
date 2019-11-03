@@ -9,5 +9,3 @@ import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(<WebsiteController />, document.getElementById('root'))
 serviceWorker.register()
-
-console.log(process.env.REACT_APP_FIREBASE_APIKEY)
