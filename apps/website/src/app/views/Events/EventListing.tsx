@@ -66,7 +66,7 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
         localities
       })
     })
-      
+
     // Advertising
     this.adService.searchBy({
       city: city.substr(0, 1).toUpperCase() + city.substr(1)
@@ -126,7 +126,7 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
       })
     })
   }
-
+  
   findEventsByDate = (when, city?, search?) => {
     let query = this.createSearchQuery(city, search)
     this.eventService.recommend(query, {
@@ -138,28 +138,34 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
       })
     })
   }
-
+  
   filterEvents = (query:object) => {
     let { listing, filters, events } = this.state
     
     for(const key in query) {
       if(query.hasOwnProperty(key)) {
         if(filters.hasOwnProperty(key) && filters[key]===query[key])
-          filters[key] = null
+          delete filters[key]
         else
           filters = { ...filters, ...query }
       }
     }
-    
+
     listing = events
     for(const key in filters) {
       if(filters.hasOwnProperty(key) && filters[key]!==null) {
-        listing = listing.filter((list)=>{
-          list = serialize(list)
-          if(Array.isArray(list[key]))
-            return list[key].includes(filters[key])
+        listing = listing.filter((listItem)=>{
+          listItem = serialize(listItem)
+          if(Array.isArray(listItem[key])) {
+            for (const iterableListItemKey of listItem[key]) {
+              if(iterableListItemKey.toLowerCase()===filters[key].toLowerCase())
+                return true
+              else
+                continue
+            }
+          }
           else
-            return list[key] === filters[key]
+            return listItem[key] === filters[key]
         })
       }
     }

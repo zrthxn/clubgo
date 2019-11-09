@@ -61,14 +61,42 @@ export class EventController extends ModelController {
 
     let date = new Date()
     if(when==='tomorrow')
-      date = new Date(Date.now() + 86400000)
+      date = new Date(Date.now() + (24 * 60 * 60 * 1000))
     else if(when==='later')
-      date = new Date(Date.now() + (7 * 86400000))
+      date = new Date(Date.now() + (7 * (24 * 60 * 60 * 1000)))
 
     let recommendations = await Event.find(query)
+
+    // Filter out past events
+    recommendations = recommendations.filter((item:IEventModel)=>{
+      if(options!==undefined) {
+        if(options.includePastEvents)
+          return true
+      }
+
+      if(item.scheduling.isRecurring)
+        return true
+      else {
+        for (let customDate of item.scheduling.customDates) {
+          customDate = new Date(customDate)
+          if(customDate.getFullYear()>=date.getFullYear())
+            if(customDate.getMonth()>=date.getMonth())
+              if(customDate.getDate()>=date.getDate())
+                return true
+              else
+                return false
+            else
+              return false
+          else
+            return false
+        }
+      }
+    })
+
+    // Filter acc to when
     recommendations = recommendations.filter((item:IEventModel)=>{
       if(when==='later') {
-        // TODO Sort this week
+        // TODO later in this week
         return true
       }
 

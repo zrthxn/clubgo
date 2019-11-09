@@ -30,16 +30,19 @@ export class Event extends Component<EventComponentProps> {
 
   calculatePrice = () => {
     let lowest = 999999999
-    for (const ticket of this.props.data.bookings.tickets) {
-      if(ticket.entry.entryType==='couple') {
-        if(ticket.entry.pricing.couple.admissionPrice < lowest)
-          lowest = ticket.entry.pricing.couple.admissionPrice
+    if(!this.props.data.bookings.isTakingOnsiteBookings)
+      lowest = 0
+    else
+      for (const ticket of this.props.data.bookings.tickets) {
+        if(ticket.entry.entryType==='couple') {
+          if(ticket.entry.pricing.couple.admissionPrice < lowest)
+            lowest = ticket.entry.pricing.couple.admissionPrice
+        }
+        else if(ticket.entry.entryType==='single') {
+          if(ticket.entry.pricing.single.admissionPrice < lowest)
+            lowest = ticket.entry.pricing.single.admissionPrice
+        }
       }
-      else if(ticket.entry.entryType==='single') {
-        if(ticket.entry.pricing.single.admissionPrice < lowest)
-          lowest = ticket.entry.pricing.single.admissionPrice
-      }
-    }
 
     this.setState({
       calculatedLowestPrices: lowest

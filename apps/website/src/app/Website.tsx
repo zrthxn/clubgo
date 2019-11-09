@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useContext } from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { createMuiTheme } from '@material-ui/core/styles'
@@ -14,6 +14,8 @@ import './Global.scss'
 import { LoginService } from '@clubgo/api'
 import { RootContextProvider, RootContext } from './RootContext'
 import { LoginManager } from '@clubgo/website/components'
+// import { observer } from 'mobx'
+import AppDataStore from './DataStore'
 
 import Home from './views/Home/Home'
 
@@ -39,9 +41,12 @@ const MaterialUITheme = createMuiTheme({
   }
 })
 
+// @observer
 export default class WebsiteController extends Component {
   static contextType = RootContext
   context!: React.ContextType<typeof RootContext>
+
+  // appDataStore = useContext(AppDataStore)
 
   state = {
     appValidationFinished: false

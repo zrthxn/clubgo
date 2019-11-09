@@ -26,7 +26,7 @@ export default class Header extends Component {
       categoryType: 'event'
     }).then(({ data })=>{
       this.setState({
-        categories: data.results
+        categories: data.results.slice(0,6)
       })
     })
   }
