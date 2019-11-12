@@ -3,3 +3,7 @@
   box-sizing: border-box !important;
   -webkit-tap-highlight-color: transparent !important;
 }
+
+.MuiIconButton-root:focus, .MuiIconButton-root:active {
+  outline: none;
+}

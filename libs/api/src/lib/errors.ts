@@ -1,4 +1,4 @@
-export default class ErrorsAPI {
+export class ErrorsAPI {
   constructor() {
 
   }

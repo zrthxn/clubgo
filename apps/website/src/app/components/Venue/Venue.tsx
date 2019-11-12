@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import './Venue.scss'
 
 import RootContext from '../../RootContext'
+import { Image } from '../Image/Image'
 import { IVenueModel } from '@clubgo/database'
 
 interface VenueComponentProps {
@@ -41,9 +42,9 @@ export class Venue extends Component<VenueComponentProps> {
         <div className="image-container">
           {
             this.props.data.media.cover.images.length!==0 ? (
-              <img alt="Image" src={ this.props.data.media.cover.images[0].url }/>
+              <Image src={ this.props.data.media.cover.images[0].url }/>
             ) : (
-              <img alt="Image" src="/assets/clubgo.png"/>
+              <Image src="/assets/clubgo.png"/>
             )
           }
         </div>

@@ -13,6 +13,7 @@ interface RecommenderComponentProps {
   path: string
   query: object
 
+  shuffle?: boolean
   title?: string
   subtitle?: string
   maxItemCount?: number
@@ -43,21 +44,21 @@ export class Recommender extends Component<RecommenderComponentProps> {
   }
 
   fetchRecommendations = async ({ city }) => {
-    let { data } = await this.recommendationService.searchBy({ 
-      ...this.props.query
-      // venue: {
-      //   city
-      // }
-    })
+    let { data } = await this.recommendationService.searchBy(this.props.query)
+    
     if(this.props.maxItemCount)
       data.results = data.results.splice(0, this.props.maxItemCount)
-    this.setState({ recommendations: data.results })
+    
+      this.setState({ recommendations: data.results })
     return
   }
   
   buildRenderQueue = async () => {
     let { recommendations, renderQueue } = this.state
     
+    if(this.props.shuffle)
+      recommendations.sort(() => Math.random() - 0.5)
+
     renderQueue = recommendations.map((item, index)=>{
       return this.props.render(item)
     })

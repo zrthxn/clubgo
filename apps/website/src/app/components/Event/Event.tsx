@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './Event.scss'
 
 import RootContext from '../../RootContext'
-import { Image } from '@clubgo/website/components'
+import { Image } from '../Image/Image'
 import { IEventModel } from '@clubgo/database'
 import { formatTime } from '@clubgo/util'
 
@@ -72,9 +72,9 @@ export class Event extends Component<EventComponentProps> {
               <div className="image-container">
                 {
                   this.props.data.media.images.length!==0 ? (
-                    <img alt="Image" src={ this.props.data.media.images[0].url }/>
+                    <Image src={ this.props.data.media.images[0].url }/>
                   ) : (
-                    <img alt="Image" src="/assets/clubgo.png"/>
+                    <Image src="/assets/clubgo.png"/>
                   )
                 }
               </div>

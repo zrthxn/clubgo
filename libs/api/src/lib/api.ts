@@ -2,9 +2,9 @@ import axios from 'axios'
 import * as crypto from 'crypto'
 
 export const APIEndpoints = process.env.NODE_ENV==='production' ? (
-  require('./config.json').test.endpoints
+  require('../config.json').test.endpoints
 ) : (
-  require('./config.json').dev.endpoints
+  require('../config.json').dev.endpoints
 )
 
 // export const APIEndpoints = require('./config.json').test.endpoints

@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import ScrollArea from 'react-scrollbar'
+import { observer } from 'mobx-react'
 
 import './Home.scss'
 
 import { Story, StoriesContainer, Carousel, Venue, FlexScroll } from '@clubgo/website/components'
 import { Banner, Textbox, Recommender } from '@clubgo/website/components'
 import { Event, Flexbox, FlexContainer } from '@clubgo/website/components'
-import RootContext from '../..//RootContext'
+import RootContext from '../../RootContext'
 
 import { DatabaseService } from '@clubgo/api'
 import { getFormattedDate } from '@clubgo/util'
 import { IEventModel, IVenueModel } from '@clubgo/database'
 import { SelectCity } from '@clubgo/website/components'
+
+import ContextStore from '../../ContextStore'
 
 type URLParams = { 
   city: string
@@ -23,18 +26,17 @@ interface HomeProps {
   locality: string
 }
 
+@observer
 export default class Home extends Component<HomeProps & RouteComponentProps<URLParams>> {
   static contextType = RootContext
   context!: React.ContextType<typeof RootContext>
 
   eventService = new DatabaseService('/event')
   auxCategoryService = new DatabaseService('/category')
-
   adService = new DatabaseService('/ads')
 
   state = {
     searchQuery: null,
-    city: null,
     events: {
       nearby: []
     },
@@ -43,7 +45,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   }
 
   componentDidMount() {
-    let { city } = this.props
+    let { city } = ContextStore
     this.setState({ city })
 
     // Categories

@@ -1,13 +1,10 @@
-import { Interface } from '../api'
-import ErrorsAPI from '../errors'
+import { Interface } from './api'
+import { ErrorsAPI } from './errors'
 import { Observable, ErrorObserver } from 'rxjs'
 import { serialize } from '@clubgo/util'
 
 /**
  * @description Standard Database CRUD Service
- * 
- * @author 
- * Alisamar Husain `zrthxn`
  */
 export class DatabaseService extends Interface {
   model = null

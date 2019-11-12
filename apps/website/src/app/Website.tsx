@@ -1,6 +1,7 @@
 import React, { Component, useContext } from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { observer } from 'mobx-react'
 import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
 import { 
@@ -14,17 +15,14 @@ import './Global.scss'
 import { LoginService } from '@clubgo/api'
 import { RootContextProvider, RootContext } from './RootContext'
 import { LoginManager } from '@clubgo/website/components'
-// import { observer } from 'mobx'
-import AppDataStore from './DataStore'
+
+import ContextStore from './ContextStore'
 
 import Home from './views/Home/Home'
-
 import EventListing from './views/Events/EventListing'
 import EventDetails from './views/Events/EventDetails'
-
 import VenueListing from './views/Venues/VenueListing'
 import VenueDetails from './views/Venues/VenueDetails'
-
 import BookingController from './views/Bookings/BookingController'
 import Search from './views/Search/Search'
 
@@ -41,25 +39,17 @@ const MaterialUITheme = createMuiTheme({
   }
 })
 
-// @observer
+@observer
 export default class WebsiteController extends Component {
   static contextType = RootContext
   context!: React.ContextType<typeof RootContext>
-
-  // appDataStore = useContext(AppDataStore)
 
   state = {
     appValidationFinished: false
   }
 
   componentDidMount() {
-    this.validateApplication().then(()=>{
-      this.setState({
-        appValidationFinished: true
-      })
-    }).catch((error)=>{
-      console.error(error)
-    })
+    this.validateApplication()
   }
 
   async validateApplication() {
@@ -85,8 +75,8 @@ export default class WebsiteController extends Component {
                 appContext => (
                   <Switch>
                     <Route exact path="/" render={(routeProps)=>{
-                      let { city } = appContext.actions.getUserContext()
-                      if(city!==undefined)
+                      let { city } = ContextStore
+                      if(city)
                         appContext.router(`/in/${city}`)
                       else
                         return <Home/>

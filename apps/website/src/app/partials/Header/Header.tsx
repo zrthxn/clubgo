@@ -43,7 +43,8 @@ export default class Header extends Component {
         {
           appContext => (
             <header>
-              <SelectCity onComplete={()=>{
+              <SelectCity 
+                onComplete={()=>{
                   this.context.actions.toggleCityLightbox()
                 }}
               />
