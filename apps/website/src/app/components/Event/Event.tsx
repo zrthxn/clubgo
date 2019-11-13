@@ -117,4 +117,27 @@ export class Event extends Component<EventComponentProps> {
   }
 }
 
+export function EventPlaceholder(props) {
+    var eventCardStyle = 'event placeholder'
+
+    if(props.size!==undefined)
+      eventCardStyle += ' ' + this.props.size
+      
+    if(props.color!==undefined)
+      eventCardStyle += ' ' + this.props.color
+
+    return (
+      <div className={eventCardStyle} onClick={this.openEventDetails}>
+        <div className="image-container">
+          <Image src="/assets/clubgo.png"/>
+        </div>
+
+        <h3 className="event-title">Placeholder Event Title</h3>
+        <h4 className="event-venue">Placeholder Venue</h4>
+
+        <p className="desc">Placeholder</p>
+      </div>
+    )
+}
+
 export default Event

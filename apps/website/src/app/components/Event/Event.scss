@@ -80,6 +80,26 @@
   }
 }
 
+.event[class~="placeholder"] {
+  .event-title, .event-venue, p {
+    width: fit-content;
+    border-radius: 2px;
+    color: transparent;
+    background-image: linear-gradient(90deg, #444 45%, #555 55%, #444 60%, #444 100%);
+    background-size: 400% 400%;
+    animation: shimmer 2.5s ease infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;		
+    }
+  }
+}
+
 // --------------------------------------------------------
 
 .flexscroll-content {

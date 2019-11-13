@@ -10,6 +10,7 @@ import { FlexScroll } from '../Flexbox/Flexbox'
 
 interface RecommenderComponentProps {
   render: ((renderProps?)=>((typeof React.Component) | ReactElement))
+  placeholder?: ((renderProps?)=>((typeof React.Component) | ReactElement))
   path: string
   query: object
 
@@ -78,7 +79,13 @@ export class Recommender extends Component<RecommenderComponentProps> {
             !this.state.loading ? (
               this.state.renderQueue
             ) : (
-              <h3 className="center">Loading</h3>
+              this.props.placeholder ? (
+                [1, 2, 3, 5].map((item, index)=>{
+                  return this.props.placeholder(item)
+                })
+              ) : (
+                <h3 className="center">Loading</h3>
+              )
             )
           }
         </FlexScroll>

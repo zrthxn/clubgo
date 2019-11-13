@@ -69,8 +69,11 @@ export class EventController extends ModelController {
 
     // Filter out past events
     recommendations = recommendations.filter((item:IEventModel)=>{
-      if(options!==undefined) {
-        if(options.includePastEvents)
+      if(!item.settings.isPublished)
+        return false
+
+      if(options) {
+        if(options.includePastEvents || when==='past')
           return true
       }
 
@@ -95,6 +98,9 @@ export class EventController extends ModelController {
 
     // Filter acc to when
     recommendations = recommendations.filter((item:IEventModel)=>{
+      if(when==='past')
+        return true
+        
       if(when==='later') {
         // TODO later in this week
         return true

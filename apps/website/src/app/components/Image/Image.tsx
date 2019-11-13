@@ -22,7 +22,7 @@ export class Image extends Component<ImageProps> {
             this.state.loaded ? {
               height: '100%', width: '100%'
             } : {
-              display: 'none'
+              height: 0, width: 0
             }
           }
           alt="banner" 

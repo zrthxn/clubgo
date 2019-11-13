@@ -5,7 +5,7 @@ import { observer } from 'mobx-react'
 
 import './Home.scss'
 
-import { Story, StoriesContainer, Carousel, Venue, FlexScroll } from '@clubgo/website/components'
+import { Story, StoriesContainer, Carousel, Venue, FlexScroll, EventPlaceholder } from '@clubgo/website/components'
 import { Banner, Textbox, Recommender } from '@clubgo/website/components'
 import { Event, Flexbox, FlexContainer } from '@clubgo/website/components'
 import RootContext from '../../RootContext'
@@ -89,6 +89,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
                 city: this.props.city
               }
             }}
+            placeholder={EventPlaceholder}
             render={(eventProps:IEventModel)=>(
               <Event key={eventProps._id} size="large" color="white" data={eventProps} />
             )}
@@ -104,6 +105,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
                 locality: undefined
               }
             }}
+            placeholder={EventPlaceholder}
             render={(eventProps:IEventModel)=>(
               <Event key={eventProps._id} data={eventProps} />
             )}
@@ -135,6 +137,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
                 city: this.props.city
               }
             }}
+            placeholder={EventPlaceholder}
             render={(eventProps:IEventModel)=>(
               <Event key={eventProps._id} data={eventProps} />
             )}
@@ -167,6 +170,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
           <h2 className="scroll-title">Venues</h2>
           <Recommender path="/venue" maxItemCount={4} 
             query={{ city: this.props.city }}
+            placeholder={EventPlaceholder}
             render={(venueProps:IVenueModel)=>(
               <Venue key={venueProps._id} data={venueProps} />
             )}

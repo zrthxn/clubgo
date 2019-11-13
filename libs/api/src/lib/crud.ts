@@ -86,7 +86,7 @@ export class DatabaseService extends Interface {
    * @param search `Mongoose.Query` 
    * @param options
    */
-  async recommend(search:object, options:object) {
+  async recommend(search:object, options?:object) {
     // cRud
     try {
       return await this.request.post(
