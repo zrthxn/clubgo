@@ -11,13 +11,23 @@ export default WebRouter
 import { render } from '../SSR/renderer'
 import { build, BUILD_PATH } from '../SSR/application'
 
-WebRouter.use(express.static( path.join(BUILD_PATH) ))
-
 import Website from '../SSR/website/Website'
 
-WebRouter.get('^/$', (req, res)=>{
-  const Application = build(Website)
-  render(Application, req, res)
+WebRouter.get('/', (req, res)=>{
+  const app = build(Website)
+  render(req, res, app)
 })
+
+WebRouter.get('/in/:city', (req, res)=>{
+  const app = build(Website, {
+    featured: [
+      
+    ]
+  })
+
+  render(req, res, app)
+})
+
+WebRouter.use(express.static( path.join(BUILD_PATH) ))
 
 // STOP ============================================== STOP

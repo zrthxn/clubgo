@@ -11,7 +11,7 @@ const MIMETypes = {
   '.json': 'application/json',
   '.css': 'text/css',
   '.html': 'text/html',
-  '.txt': 'text/plain',
+  '.txt': 'text/plain'
 }
 
 const ENV = process.env.NODE_ENV === 'production'
@@ -22,7 +22,7 @@ const ENV = process.env.NODE_ENV === 'production'
  * @param res Response Object
  * @param next Next Function
  */
-export function render(app, req, res) {
+export function render(req, res, app:React.ComponentElement<unknown, React.Component<unknown, any, any>>) {
   const file = path.resolve(BUILD_PATH, 'index.html')
 
   fs.readFile(file, 'utf8', (err, html) => {
@@ -43,7 +43,7 @@ function mimeLookup(_path: string): string {
   const ext = path.extname(_path)
   const mime = MIMETypes[ext]
 
-  if(_path==='/')
+  if(ext==='')
     return 'text/html'
   else if (!mime)
     throw new Error(`No mime type for file: ${_path}`)
