@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, Switch } from '@material-ui/core'
 
 import '../scss/Listing.scss'
 
@@ -31,6 +31,9 @@ export class EventListing extends Component<EventListingProps> {
     search: {
       maxRecords: 0,
       lazyLoad: true,
+      options: {
+        includePastEvents: false
+      },
       query: {
 
       }
@@ -62,9 +65,9 @@ export class EventListing extends Component<EventListingProps> {
 
   loadListings = async (search) => {
     this.setState({ loading: true })
-    let { query } = search, listing, errorText
+    let { query, options } = search, listing, errorText
     try {
-      let { data } = await this.service.searchBy(query)
+      let { data } = await this.service.searchBy(query, options)
       errorText = undefined
       if(data.results.length > 0) 
         listing = data.results
@@ -122,7 +125,21 @@ export class EventListing extends Component<EventListingProps> {
           ]}
           onChange={(filters)=>{
             this.loadListings({
-              query: filters
+              query: filters,
+              options: {
+                includePastEvents: this.state.search.options.includePastEvents
+              }
+            })
+          }}
+        />
+
+        <label>Include Past Events</label>
+        <Switch 
+          onChange={({ target })=>{
+            let { search } = this.state
+            search.options.includePastEvents = !search.options.includePastEvents
+            this.setState({
+              search
             })
           }}
         />

@@ -113,7 +113,9 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
 
   findEventsBySearchQuery = (search, city?) => {
     let query = this.createSearchQuery(city, search)
-    this.eventService.recommend(query).then(({ data })=>{
+    this.eventService.recommend(query, {
+      when: 'later'
+    }).then(({ data })=>{
       if(city) {
         city = city.substr(0, 1).toUpperCase() + city.substr(1).toLowerCase()
         document.title = `${data.results.length} Upcoming Events in ${city} | ClubGo`

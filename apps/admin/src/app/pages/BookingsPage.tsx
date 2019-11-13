@@ -43,6 +43,14 @@ export default class BookingsPage extends Component<RouteComponentProps<URLParam
 
       this.fetchEventDetails(eventId)
     }
+    else {
+      this.bookingService.list().then(({ data })=>{
+        this.setState({
+          listing: data.results,
+          loading: false
+        })
+      })
+    }
   }
 
   fetchBookings = (eventId) => {
