@@ -5,9 +5,15 @@ import { conf } from '@clubgo/util'
 import './Footer.scss'
 import { Grid } from '@material-ui/core'
 import { DatabaseService } from '@clubgo/api'
+import { ICategoryModel } from '@clubgo/database'
 
 export default class Footer extends Component {
   state = {
+    categories: [
+      {
+        name: undefined
+      }
+    ],
     locations: [
       {
         city: undefined,
@@ -17,13 +23,21 @@ export default class Footer extends Component {
   }
 
   locationService = new DatabaseService('/location')
+  categoryService = new DatabaseService('/category')
 
   componentDidMount() {
     this.locationService.list().then(({ data })=>{
       this.setState({
         locations: data.results
       })
-    }) 
+    })
+
+    // categories
+    this.categoryService.list().then(({ data })=>{
+      this.setState({
+        categories: data.results
+      })
+    })
   }
   
   render() {
@@ -93,36 +107,43 @@ export default class Footer extends Component {
         <article className="base">
           <section className="container">
             <Grid container spacing={3}>
-              <Grid item md={3} xs={6}>
-                <h3>Popular</h3>
-                <a href="">Things to Do In Delhi</a><br/>
-                <a href="">Best Parties In Gurgaon</a><br/>
-                <a href="">Events Today In Mumbai</a><br/>
-                <a href="">Events Tomorrow In Bangalore</a><br/>
-                <a href="">Events This Week In Delhi</a><br/>
+              <Grid item xs={12}>
+                <h3>Categories</h3><br/>
+                <Grid container spacing={1}>
+                  {
+                    this.state.categories.map((category:ICategoryModel)=>(
+                      <Grid item md={3} xs={6}>
+                        <a href={`/events/in/delhi/${ category.name }`}>{ category.name }</a>
+                      </Grid>
+                    ))
+                  }
+                </Grid>
               </Grid>
 
-              <Grid item md={3} xs={6}>
-                <h3>Categories</h3>
-                <a href="">DJ Night & Parties</a><br/>
-                <a href="">Bollywood Night</a><br/>
-                <a href="">Karaoke Night</a><br/>
-                <a href="">Live Performance</a><br/>
-                <a href="">Concert & Festivals</a><br/>
+              <Grid item xs={12}></Grid>
+              <Grid item xs={12}></Grid>
+              
+              <Grid item md={3} xs={12}>
+                <h3>Popular</h3>
+                <a href="/events/in/delhi/on/today">Things to Do In Delhi</a><br/>
+                <a href="/events/in/gurgaon">Best Parties In Gurgaon</a><br/>
+                <a href="/events/in/mumbai/on/today">Events Today In Mumbai</a><br/>
+                <a href="/events/in/bangalore/on/tomrrow">Events Tomorrow In Bangalore</a><br/>
+                <a href="/events/in/delhi/on/later">Events This Week In Delhi</a><br/>
               </Grid>
 
               <Grid item md={3} xs={6}>
                 <h3>Events</h3>
-                <a href="">Upcoming Events</a><br/>
-                <a href="">Event Tags</a><br/>
-                <a href="">Past Events</a><br/>
+                <a href="/events/in/delhi">Upcoming Events</a><br/>
+                {/* <a href="">Event Tags</a><br/> */}
+                <a href="/in/delhi/on/past">Past Events</a><br/>
               </Grid>
 
               <Grid item md={3} xs={6}>
                 <h3>When</h3>
-                <a href="">Events Today</a><br/>
-                <a href="">Events Tomorrow</a><br/>
-                <a href="">Events This Week</a><br/>
+                <a href="/events/in/delhi/on/today">Events Today</a><br/>
+                <a href="/events/in/delhi/on/tomrrow">Events Tomorrow</a><br/>
+                <a href="/events/in/delhi/on/later">Events This Week</a><br/>
               </Grid>
             </Grid>
           </section>
