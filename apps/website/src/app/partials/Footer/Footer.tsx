@@ -111,11 +111,16 @@ export default class Footer extends Component {
                 <h3>Categories</h3><br/>
                 <Grid container spacing={1}>
                   {
-                    this.state.categories.map((category:ICategoryModel)=>(
-                      <Grid item md={3} xs={6}>
-                        <a href={`/events/in/delhi/${ category.name }`}>{ category.name }</a>
-                      </Grid>
-                    ))
+                    this.state.categories.map((category:ICategoryModel)=>{
+                      if(category.name)
+                        return (
+                          <Grid item md={3} xs={6}>
+                            <a href={`/events/in/delhi/${ category.name.trim().replace(/ /g, '-').toLowerCase() }`}>
+                              { category.name }
+                            </a>
+                          </Grid>
+                        )
+                    })
                   }
                 </Grid>
               </Grid>
@@ -125,10 +130,10 @@ export default class Footer extends Component {
               
               <Grid item md={3} xs={12}>
                 <h3>Popular</h3>
-                <a href="/events/in/delhi/on/today">Things to Do In Delhi</a><br/>
-                <a href="/events/in/gurgaon">Best Parties In Gurgaon</a><br/>
+                <a href="/in/delhi">Things to Do In Delhi</a><br/>
+                <a href="/in/gurgaon">Best Parties In Gurgaon</a><br/>
                 <a href="/events/in/mumbai/on/today">Events Today In Mumbai</a><br/>
-                <a href="/events/in/bangalore/on/tomrrow">Events Tomorrow In Bangalore</a><br/>
+                <a href="/events/in/bangalore/on/tomorrow">Events Tomorrow In Bangalore</a><br/>
                 <a href="/events/in/delhi/on/later">Events This Week In Delhi</a><br/>
               </Grid>
 
@@ -136,13 +141,13 @@ export default class Footer extends Component {
                 <h3>Events</h3>
                 <a href="/events/in/delhi">Upcoming Events</a><br/>
                 {/* <a href="">Event Tags</a><br/> */}
-                <a href="/in/delhi/on/past">Past Events</a><br/>
+                <a href="/events/in/delhi/on/past">Past Events</a><br/>
               </Grid>
 
               <Grid item md={3} xs={6}>
                 <h3>When</h3>
                 <a href="/events/in/delhi/on/today">Events Today</a><br/>
-                <a href="/events/in/delhi/on/tomrrow">Events Tomorrow</a><br/>
+                <a href="/events/in/delhi/on/tomorrow">Events Tomorrow</a><br/>
                 <a href="/events/in/delhi/on/later">Events This Week</a><br/>
               </Grid>
             </Grid>

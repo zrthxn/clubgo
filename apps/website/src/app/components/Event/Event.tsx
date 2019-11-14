@@ -127,7 +127,7 @@ export function EventPlaceholder(props) {
       eventCardStyle += ' ' + this.props.color
 
     return (
-      <div className={eventCardStyle} onClick={this.openEventDetails}>
+      <div className={eventCardStyle}>
         <div className="image-container">
           <Image src="/assets/clubgo.png"/>
         </div>

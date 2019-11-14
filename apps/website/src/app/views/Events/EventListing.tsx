@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import './Events.scss'
 
-import { FlexContainer, Flexbox, Event, Banner, FlexScroll } from '@clubgo/website/components'
+import { FlexContainer, Flexbox, Event, Banner, FlexScroll, EventPlaceholder } from '@clubgo/website/components'
 import RootContext from '../../RootContext'
 
 import { Advert, Carousel } from '@clubgo/website/components'
@@ -295,6 +295,14 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
           <div className="list">
             <FlexContainer>
               <Flexbox flow="row">
+                {
+                  this.state.events.length===0 ? (
+                    [1, 2, 3, 4].map(()=>(
+                      <EventPlaceholder/>
+                    ))
+                  ) : null
+                }
+                
                 {
                   this.state.listing.map((event:IEventModel, index)=>{
                     return (
