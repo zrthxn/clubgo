@@ -1,11 +1,21 @@
 const dayOfTheWeek = {
+  '0': 'Sunday',
   '1': 'Monday',
   '2': 'Tuesday',
   '3': 'Wednesday',
   '4': 'Thursday',
   '5': 'Friday',
-  '6': 'Saturday',
-  '7': 'Sunday'
+  '6': 'Saturday'
+}
+
+const shortDayOfTheWeek = {
+  '0': 'Sun',
+  '1': 'Mon',
+  '2': 'Tue',
+  '3': 'Wed',
+  '4': 'Thu',
+  '5': 'Fri',
+  '6': 'Sat'
 }
 
 const months = {
@@ -23,6 +33,21 @@ const months = {
   '11': 'December'
 }
 
+const shortMonths = {
+  '0': 'Jan',
+  '1': 'Feb',
+  '2': 'Mar',
+  '3': 'Apr',
+  '4': 'May',
+  '5': 'Jun',
+  '6': 'Jul',
+  '7': 'Aug',
+  '8': 'Sep',
+  '9': 'Oct',
+  '10': 'Nov',
+  '11': 'Dec'
+}
+
 /**
  * Returns the human-readble formatted date
  * @param _date Date object to convert
@@ -30,11 +55,18 @@ const months = {
  */
 export function getFormattedDate(_date:Date|number|string):DateFormat {
   let date = new Date(_date)
+  let naturalDate = dayOfTheWeek[date.getDay().toString()] + ', ' + date.getDate() + ' ' + months[date.getMonth().toString()]
+  let shortNaturalDate = shortDayOfTheWeek[date.getDay().toString()] + ', ' + date.getDate() + ' ' + shortMonths[date.getMonth().toString()]
+
   return {
     date: date.getDate(),
     dayOfTheWeek: dayOfTheWeek[date.getDay().toString()],
     month: months[date.getMonth().toString()],
-    year: date.getFullYear()
+    shortDayOfTheWeek: shortDayOfTheWeek[date.getDay().toString()],
+    shortMonth: shortMonths[date.getMonth().toString()],
+    year: date.getFullYear(),
+    naturalDate,
+    shortNaturalDate
   }
 }
 
@@ -127,7 +159,11 @@ export interface DateFormat {
   date: number
   dayOfTheWeek: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
   month: 'January' | 'February' | 'March' | 'April' | 'May' | 'June' | 'July' | 'August' | 'September' | 'October' | 'November' | 'December'
+  shortDayOfTheWeek: 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun'
+  shortMonth: 'Jan' | 'Feb' | 'Mar' | 'Apr' | 'May' | 'Jun' | 'Jul' | 'Aug' | 'Sep' | 'Oct' | 'Nov' | 'Dec'
   year: number
+  naturalDate: string
+  shortNaturalDate: string
 }
 
 export interface AntiDateFormat {

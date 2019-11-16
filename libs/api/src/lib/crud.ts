@@ -73,7 +73,7 @@ export class DatabaseService extends Interface {
     try {
       return await this.request.post(
         this.endpoint + '/_search', {
-          query: serialize(search)
+          query: serialize(search), options
         }
       )
     } catch (HTTPError) {

@@ -1,47 +1,41 @@
+import { createContext } from 'react'
 import { action, observable, computed } from 'mobx'
+import { ICategoryModel, ILocationModel } from '@clubgo/database'
+import { DatabaseService } from '@clubgo/api'
 
-class Store {
-  @observable city:string
+const categoryService = new DatabaseService('/category')
 
-  constructor() {
-    let context = this.readLocalContext()
-    this.city = context.city
-  }
+// export class Store {
+//   @observable city:string
+//   @observable locality:string
 
-  readLocalContext() {
-    let context:any = localStorage.getItem('cg:context')
-    if(context) {
-      try {
-        context = JSON.parse(atob(context))
-      } catch (error) {
-        context = {}
-      }
-    }
-    else 
-      context = {}
-    return context
-  }
+//   @observable categories = []
+  
+//   @observable locations:ILocationModel[] = []
 
-  writeLocalContext(context) {
-    localStorage.setItem('cg:context', 
-      btoa(
-        JSON.stringify(context)
-      )
-    )
-  }
+//   @computed 
+//   get numOfCategories() {
+//     return this.categories.length
+//   }
 
-  @action setCity(city:string) {
-    this.city = city
+//   @action 
+//   async fetchCategories() {
+//     categoryService.list().then(({ data })=>{
+//       this.categories.push(data.results)
+//     })
+//   }
+// }
 
-    let context = this.readLocalContext()
-    context.city = city
-    this.writeLocalContext(context)
-  }
+export class Store {
+  city:string
+  locality:string
 
-  @computed get getCity() {
-    return this.city
-  }
+  categories:ICategoryModel[] = []
+  
+  locations:ILocationModel[] = []
 }
 
-const ContextStore = new Store()
+const ContextStore = window['store'] = new Store()
 export default ContextStore
+
+export const StoreContext = createContext(ContextStore)

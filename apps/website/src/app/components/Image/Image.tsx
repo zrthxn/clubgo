@@ -20,9 +20,9 @@ export class Image extends Component<ImageProps> {
         <img { ...this.props }
           style={
             this.state.loaded ? {
-              height: '100%', width: '100%', opacity: 1
+              opacity: 1
             } : {
-              height: 0, width: 0, opacity: 0
+              opacity: 0
             }
           }
           alt="banner" 

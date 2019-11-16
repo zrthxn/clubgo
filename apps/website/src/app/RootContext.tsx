@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import { IEventModel } from '@clubgo/database'
+import { DatabaseService } from '@clubgo/api'
+import ContextStore from './ContextStore'
 
 // Initial State
 const _istate = {
@@ -12,17 +14,15 @@ const _istate = {
     isOpen: false,
     image: String(),
     stories: [
-      { imageURL: '' }, 
-      { imageURL: '' }, 
-      { imageURL: '' }, 
-      { imageURL: '' }, 
-      { imageURL: '' }, 
+      { imageURL: '' }
     ],
   },
   objectPreload: {
     event: null,
     venue: null
-  }
+  },
+  locations: [],
+  categories: []
 }
 
 var _iactions = Object()
@@ -42,7 +42,9 @@ export class RootContextProvider extends Component {
       setUserLogin: this.setUserLogin,
       toggleCityLightbox: this.toggleCityLightbox,
       putObjectPreload: this.putObjectPreload,
-      fetchObjectPreload: this.fetchObjectPreload
+      fetchObjectPreload: this.fetchObjectPreload,
+      fetchLocations: this.fetchLocations,
+      fetchCategories: this.fetchCategories
     }
   }
 
@@ -117,6 +119,24 @@ export class RootContextProvider extends Component {
   }
 
   fetchObjectPreload = () => this.state.objectPreload
+
+  fetchLocations = async () => {
+    const locationService = new DatabaseService('/location')
+    let locations = await locationService.list()
+    // this.setState({
+    //   locations: locations.data
+    // })
+    ContextStore.locations = locations.data
+  }
+
+  fetchCategories = async () => {
+    const categoryService = new DatabaseService('/category')
+    let categories = await categoryService.list()
+    // this.setState({
+    //   categories: categories.data
+    // })
+    ContextStore.categories = categories.data
+  }
 
   render() {
     return (

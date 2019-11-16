@@ -107,15 +107,25 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
   
   openBooking = () => {
     if(this.event.bookings.isTakingOnsiteBookings)
-      this.context.router('/bookings/' + this.event._id + '/start')
-    else {
-      let url = new Location()
-      if(this.event.bookings.registrationURL)
-        url.href = this.event.bookings.registrationURL
-      else
-        url.href = this.event.bookings.registrationPhone
+      this.context.router('/bookings/' + this.event._id)
+    else
+      window.location.href = this.event.bookings.registrationURL
+  }
 
-      window.location = url
+  get isBookingOpen() {
+    let date = new Date()
+    for (let customDate of this.event.scheduling.customDates) {
+      customDate = new Date(customDate)
+      if(customDate.getFullYear()>=date.getFullYear())
+        if(customDate.getMonth()>=date.getMonth())
+          if(customDate.getDate()>=date.getDate())
+            return true
+          else
+            return false
+        else
+          return false
+      else
+        return false
     }
   }
   
@@ -158,11 +168,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                     
                     <h3 className="event-dates">
                       { 
-                        getFormattedDate(new Date(this.event.scheduling.customDates[0])).dayOfTheWeek
-                      }, { 
-                        getFormattedDate(new Date(this.event.scheduling.customDates[0])).date
-                      } { 
-                        getFormattedDate(new Date(this.event.scheduling.customDates[0])).month
+                        getFormattedDate(new Date(this.event.scheduling.customDates[0])).naturalDate
                       }
                     </h3>
 
@@ -187,7 +193,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                       }
                     </div>
                     <div className="button-container">
-                      <button onClick={this.openBooking}>Book Now</button>
+                      <button disabled={this.isBookingOpen} onClick={this.openBooking}>Book Now</button>
                     </div>
                   </div>
                 </div>

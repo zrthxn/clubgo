@@ -5,7 +5,7 @@ import './Event.scss'
 import RootContext from '../../RootContext'
 import { Image } from '../Image/Image'
 import { IEventModel } from '@clubgo/database'
-import { formatTime } from '@clubgo/util'
+import { formatTime, getFormattedDate } from '@clubgo/util'
 
 interface EventComponentProps {
   data: IEventModel
@@ -90,7 +90,11 @@ export class Event extends Component<EventComponentProps> {
               <h4 className="event-venue">{ this.props.data.venue.title }</h4>
       
               <p style={{ margin: '0.75em 0 0.5em 0', fontSize: '0.75em', opacity: 0.75 }}>
-                <span>{ (new Date(this.props.data.scheduling.customDates[0])).toDateString() }</span>
+                <span>
+                  { 
+                    getFormattedDate((new Date(this.props.data.scheduling.customDates[0]))).shortNaturalDate
+                  }
+                </span>
                 <span style={{ marginLeft: '0.5em' }}>
                   { 
                     formatTime(this.props.data.scheduling.timing.startTime, {

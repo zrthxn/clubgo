@@ -61,7 +61,6 @@ export class SelectCity extends Component<ComponentProps> {
                           this.setState({ openLightbox: false })
                           appContext.actions.toggleCityLightbox()
                           appContext.router('/in/' + item.city.toLowerCase())
-                          ContextStore.setCity(item.city)
                           window.location.reload()
                           appContext.actions.setUserContext({
                             city: item.city

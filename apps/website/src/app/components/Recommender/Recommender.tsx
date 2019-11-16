@@ -45,7 +45,7 @@ export class Recommender extends Component<RecommenderComponentProps> {
   }
 
   fetchRecommendations = async ({ city }) => {
-    let { data } = await this.recommendationService.searchBy(this.props.query)
+    let { data } = await this.recommendationService.recommend(this.props.query)
     
     if(this.props.maxItemCount)
       data.results = data.results.splice(0, this.props.maxItemCount)

@@ -32,7 +32,8 @@ export class EventListing extends Component<EventListingProps> {
       maxRecords: 0,
       lazyLoad: true,
       options: {
-        includePastEvents: false
+        includePastEvents: false,
+        includeUnpublishedEvents: false
       },
       query: {
 
@@ -43,7 +44,7 @@ export class EventListing extends Component<EventListingProps> {
   locationService = new DatabaseService('/location')
 
   componentDidMount() {
-    this.loadListings(this.state.search)
+    this.loadListings(this.state.search.query)
     this.fetchCities().then((cities)=>{
       let { filterSuggestions } = this.state
       filterSuggestions.cities = []
@@ -63,11 +64,11 @@ export class EventListing extends Component<EventListingProps> {
     return data.results
   }
 
-  loadListings = async (search) => {
+  loadListings = async (query) => {
     this.setState({ loading: true })
-    let { query, options } = search, listing, errorText
+    let { search } = this.state, listing, errorText
     try {
-      let { data } = await this.service.searchBy(query, options)
+      let { data } = await this.service.searchBy(query, search.options)
       errorText = undefined
       if(data.results.length > 0) 
         listing = data.results
@@ -124,12 +125,7 @@ export class EventListing extends Component<EventListingProps> {
             }
           ]}
           onChange={(filters)=>{
-            this.loadListings({
-              query: filters,
-              options: {
-                includePastEvents: this.state.search.options.includePastEvents
-              }
-            })
+            this.loadListings(filters)
           }}
         />
 
@@ -137,7 +133,18 @@ export class EventListing extends Component<EventListingProps> {
         <Switch 
           onChange={({ target })=>{
             let { search } = this.state
-            search.options.includePastEvents = !search.options.includePastEvents
+            search.options.includePastEvents = target.checked
+            this.setState({
+              search
+            })
+          }}
+        />
+
+        <label>Include Unpublished Events</label>
+        <Switch 
+          onChange={({ target })=>{
+            let { search } = this.state
+            search.options.includeUnpublishedEvents = target.checked
             this.setState({
               search
             })

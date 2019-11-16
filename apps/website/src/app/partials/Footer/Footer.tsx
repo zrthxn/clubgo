@@ -6,38 +6,11 @@ import './Footer.scss'
 import { Grid } from '@material-ui/core'
 import { DatabaseService } from '@clubgo/api'
 import { ICategoryModel } from '@clubgo/database'
+import Context from '../../Context'
 
 export default class Footer extends Component {
   state = {
-    categories: [
-      {
-        name: undefined
-      }
-    ],
-    locations: [
-      {
-        city: undefined,
-        localities: []
-      }
-    ]
-  }
-
-  locationService = new DatabaseService('/location')
-  categoryService = new DatabaseService('/category')
-
-  componentDidMount() {
-    this.locationService.list().then(({ data })=>{
-      this.setState({
-        locations: data.results
-      })
-    })
-
-    // categories
-    this.categoryService.list().then(({ data })=>{
-      this.setState({
-        categories: data.results
-      })
-    })
+    
   }
   
   render() {
@@ -77,29 +50,35 @@ export default class Footer extends Component {
               <Grid item xs={12}>
                 <h2>Discover your City</h2>
               </Grid>
-
-              {
-                this.state.locations.map((city)=>(
-                  city.city!==undefined ? (
-                    <Grid item md={3} xs={6}>
-                      <Grid container spacing={1} key={city.city}>
-                        <Grid item xs={12} className="footer-city">
-                          <a href={`/events/in/${city.city.toLowerCase()}`}><b>{ city.city }</b></a>
-                        </Grid>
-                        {
-                          city.localities.map((locality)=>(
-                            <Grid item xs={12} key={locality.name} className="footer-locality">
-                              <a href={`/events/in/${city.city.toLowerCase()}/${locality.name.toLowerCase().trim().replace(/ /g, '-')}`}>
-                                { locality.name }
-                              </a>
+              
+              <Context.Consumer>
+                { context => (
+                  <Grid container spacing={3}>
+                    {
+                      context.store.locations.map((city)=>(
+                        city.city!==undefined ? (
+                          <Grid item md={3} xs={6}>
+                            <Grid container spacing={1} key={city.city}>
+                              <Grid item xs={12} className="footer-city">
+                                <a href={`/events/in/${city.city.toLowerCase()}`}><b>{ city.city }</b></a>
+                              </Grid>
+                              {
+                                city.localities.map((locality)=>(
+                                  <Grid item xs={12} key={locality.name} className="footer-locality">
+                                    <a href={`/events/in/${city.city.toLowerCase()}/${locality.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+                                      { locality.name }
+                                    </a>
+                                  </Grid>
+                                ))
+                              }
                             </Grid>
-                          ))
-                        }
-                      </Grid>
-                    </Grid>
-                  ) : null
-                ))
-              }
+                          </Grid>
+                        ) : null
+                      ))
+                    }
+                  </Grid>
+                )}
+              </Context.Consumer>
             </Grid>
           </section>
         </article>
@@ -108,21 +87,25 @@ export default class Footer extends Component {
           <section className="container">
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <h3>Categories</h3><br/>
-                <Grid container spacing={1}>
-                  {
-                    this.state.categories.map((category:ICategoryModel)=>{
-                      if(category.name)
-                        return (
-                          <Grid item md={3} xs={6}>
-                            <a href={`/events/in/delhi/${ category.name.trim().replace(/ /g, '-').toLowerCase() }`}>
-                              { category.name }
-                            </a>
-                          </Grid>
-                        )
-                    })
-                  }
-                </Grid>
+                <h3>Categories</h3><br/>                
+                <Context.Consumer>
+                  { context => (
+                    <Grid container spacing={1}>
+                      {
+                        context.store.categories.map((category:ICategoryModel)=>{
+                          if(category.name)
+                            return (
+                              <Grid item md={3} xs={6}>
+                                <a href={`/events/in/delhi/${ category.name.trim().replace(/ /g, '-').toLowerCase() }`}>
+                                  { category.name }
+                                </a>
+                              </Grid>
+                            )
+                        })
+                      }
+                    </Grid>
+                  )}
+                </Context.Consumer>
               </Grid>
 
               <Grid item xs={12}></Grid>
