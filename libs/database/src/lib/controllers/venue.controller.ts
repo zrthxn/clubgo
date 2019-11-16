@@ -59,4 +59,4 @@ export class VenueController extends ModelController {
   ]
 }
 
-export default venueController
+export default VenueController
