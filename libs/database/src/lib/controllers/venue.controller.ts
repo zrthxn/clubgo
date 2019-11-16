@@ -55,7 +55,7 @@ export class VenueController extends ModelController {
 
   // tslint:disable-next-line: member-ordering
   xroutes:IRouteItem[] = [
-    
+    { method: 'post', path: '/_recommend', handler: this.recommend }
   ]
 }
 
