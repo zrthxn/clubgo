@@ -15,16 +15,41 @@ export class VenueController extends ModelController {
     const { query } = req.body
     
     let searchResult = await Venue.find(query)
-    searchResult = searchResult.sort((a, b)=>{
-      if(a.settings.venuePriority < b.settings.venuePriority)
-        return b.settings.venuePriority
-      else
-        return a.settings.venuePriority
+    searchResult.sort((a, b)=>{
+      return a.settings.venuePriority - b.settings.venuePriority
     })
 
     res.send({ 
       message: `Found ${searchResult.length} venues`,
       results: searchResult 
+    })
+  }
+
+  /**
+   * @description Recommendations
+   */
+  recommend = async (req, res) => {
+    const { query, options } = req.body
+    
+    let recommendations = await Venue.find(query)
+
+    // Filter out Unpublished events
+    recommendations = recommendations.filter((item:IVenueModel)=>{
+      if(item.settings.isPublished) 
+        return true
+      if(options)
+        if(options.includeUnpublishedVenues) 
+          return true
+      return false
+    })
+
+    recommendations.sort((a, b)=>{
+      return a.settings.venuePriority - b.settings.venuePriority
+    })
+
+    res.send({ 
+      message: `Found ${recommendations.length} events`,
+      results: recommendations 
     })
   }
 

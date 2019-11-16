@@ -98,7 +98,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
 
         <section className="container">
           <h2 className="scroll-title">Events Near You</h2>
-          <Recommender path="/event" maxItemCount={6}
+          <Recommender path="/event" maxItemCount={6} shuffle
             query={{
               venue: {
                 city: this.props.city,
@@ -131,7 +131,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
 
         <section className="container">
           <h2 className="scroll-title">Recommended</h2>
-          <Recommender path="/event" maxItemCount={10} 
+          <Recommender path="/event" maxItemCount={10} shuffle
             query={{
               venue: {
                 city: this.props.city
