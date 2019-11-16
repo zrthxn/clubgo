@@ -1,43 +1,31 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { IconButton } from '@material-ui/core'
 import { Search, AccountCircle } from '@material-ui/icons'
 import { stringify as QueryBuilder } from 'query-string'
+import { observer, inject  } from 'mobx-react'
 
 import './Header.scss'
 
 import RootContext from '../../RootContext'
+import Context, { ContextProps } from '../../Context'
+import ContextStore, { StoreContext } from '../../ContextStore'
 import { SelectCity } from '@clubgo/website/components'
 import { DatabaseService } from '@clubgo/api'
+import { ICategoryModel } from '@clubgo/database'
 
-export default class Header extends Component {
-  static contextType = RootContext
-  context!: React.ContextType<typeof RootContext>
-
+export class Header extends Component {
   state = {
-    openSidebar: false,
-    categories: []
-  }
-
-  auxCategoryService = new DatabaseService('/category')
-
-  componentDidMount() {
-    this.auxCategoryService.searchBy({
-      categoryType: 'event'
-    }).then(({ data })=>{
-      this.setState({
-        categories: data.results.slice(0,6)
-      })
-    })
+    openSidebar: false
   }
 
   toggleSidebar = () => {
-    this.setState(()=>({
+    this.setState({
       openSidebar: !this.state.openSidebar
-    }))
+    })
   }
 
-  render() {
+  render() {  
     return (
       <RootContext.Consumer>
         {
@@ -45,7 +33,7 @@ export default class Header extends Component {
             <header>
               <SelectCity 
                 onComplete={()=>{
-                  this.context.actions.toggleCityLightbox()
+                  appContext.actions.toggleCityLightbox()
                 }}
               />
               
@@ -77,8 +65,8 @@ export default class Header extends Component {
 
                         <span style={{ margin: '1.5em 1em 1em 1em', fontSize: '0.85em', fontWeight: 600 }}>CATEGORIES</span>
 
-                        {
-                          this.state.categories.map((category, index)=>(
+                        {/* {
+                          ContextStore.categories.map((category:ICategoryModel, index)=>(
                             appContext.state.city!==undefined ? (
                               <a className="no-decor category-link" 
                                 href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
@@ -91,7 +79,7 @@ export default class Header extends Component {
                               </a>
                             )
                           ))
-                        }
+                        } */}
                       </nav>
                     </div>
                   ) : null
@@ -109,6 +97,7 @@ export default class Header extends Component {
                   )
                 }
 
+                {/* =================== Desktop Nav ==================== */}
                 <div className="desktop-nav">
                   <Link className="no-decor" to={
                     appContext.state.city!==undefined ? (
@@ -126,40 +115,48 @@ export default class Header extends Component {
                     <h4>Venues</h4>
                   </Link>
 
-                  {
-                    this.state.categories.map((category, index)=>(
-                      appContext.state.city!==undefined ? (
-                        <a className="no-decor category-link" 
-                          href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
-                          <h4>{ category.name }</h4>
-                        </a>
-                      ) : (
-                        <a className="no-decor category-link" 
-                          href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
-                          <h4>{ category.name }</h4>
-                        </a>
-                      )
-                    ))
-                  }
+                  <Context.Consumer>
+                    { context => (
+                      context.store.categories.filter((category:ICategoryModel)=>{
+                        return category.categoryType === 'event'
+                      })
+                      .slice(0, 6)
+                      .map((category, index)=>(
+                        appContext.state.city!==undefined ? (
+                          <a className="no-decor category-link" 
+                            href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+                            <h4>{ category.name }</h4>
+                          </a>
+                        ) : (
+                          <a className="no-decor category-link" 
+                            href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+                            <h4>{ category.name }</h4>
+                          </a>
+                        )
+                      ))
+                    )}
+                  </Context.Consumer>
                 </div>
 
                 <div style={{ margin: 'auto 0 auto auto' }}>
-                  <IconButton onClick={()=>{ this.context.router('/search') }}>
+                  <div className="set-city" 
+                    onClick={()=>{
+                      appContext.actions.toggleCityLightbox()
+                    }}
+                  >
+                    <img src="/assets/icons/location.svg" width="15px" alt=""/>
+                    {/* <span style={{ margin: '0 1em 0 0.25em' }}>
+                      { appContext.state.city }
+                    </span> */}
+                  </div>
+
+                  <IconButton onClick={()=>{ appContext.router('/search') }}>
                     <Search/>
                   </IconButton>
                   
-                  {/* <IconButton onClick={()=>{ this.context.router('/account') }}>
+                  <IconButton onClick={()=>{ appContext.router('/account') }}>
                     <AccountCircle/>
-                  </IconButton> */}
-
-                  <div className="set-city" onClick={()=>{
-                    appContext.actions.toggleCityLightbox()
-                  }}>
-                    <img src="/assets/icons/location.svg" width="15px" alt=""/>
-                    <span style={{ margin: '0 1em 0 0.25em' }}>
-                      { appContext.state.city }
-                    </span>
-                  </div>
+                  </IconButton>
                 </div>
               </section>
             </header>
@@ -170,3 +167,152 @@ export default class Header extends Component {
   }
 }
 
+// export const Header = observer(() => {
+//   const [openSidebar, setOpenSidebar] = useState(false)
+//   const toggleSidebar = () => {
+//     setOpenSidebar(!openSidebar)
+//   }
+
+//   const context = useContext(StoreContext)
+  
+//   return (
+//     <RootContext.Consumer>
+//       {
+//         appContext => (
+//           <header>
+//             <SelectCity 
+//               onComplete={()=>{
+//                 appContext.actions.toggleCityLightbox()
+//               }}
+//             />
+            
+//             <section className="container">
+//               <input type="checkbox" checked={openSidebar} id="sidebar-toggle" hidden readOnly/>
+//               <label htmlFor="sidebar-toggle" className="hamburger" onClick={toggleSidebar}><span></span></label>
+              
+//               <div className="sidebar-shadow" id="sidebar-shadow" onClick={toggleSidebar}/>
+
+//               {
+//                 openSidebar ? (
+//                   <div className="sidebar">
+//                     <nav className="sidebar-nav">
+//                       <Link onClick={toggleSidebar} to={
+//                         appContext.state.city!==undefined ? (
+//                           `/events/in/${appContext.state.city.toLowerCase()}`
+//                         ) : '/events'
+//                       }>
+//                         Events
+//                       </Link>
+
+//                       <Link onClick={toggleSidebar} to={
+//                         appContext.state.city!==undefined ? (
+//                           `/venues/in/${appContext.state.city.toLowerCase()}`
+//                         ) : '/venues'
+//                       }>
+//                         Venues
+//                       </Link>
+
+//                       <span style={{ margin: '1.5em 1em 1em 1em', fontSize: '0.85em', fontWeight: 600 }}>CATEGORIES</span>
+
+//                       {/* {
+//                         ContextStore.categories.map((category:ICategoryModel, index)=>(
+//                           appContext.state.city!==undefined ? (
+//                             <a className="no-decor category-link" 
+//                               href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+//                               <h4>{ category.name }</h4>
+//                             </a>
+//                           ) : (
+//                             <a className="no-decor category-link" 
+//                               href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+//                               <h4>{ category.name }</h4>
+//                             </a>
+//                           )
+//                         ))
+//                       } */}
+//                     </nav>
+//                   </div>
+//                 ) : null
+//               }
+
+//               {
+//                 appContext.state.city!==undefined ? (
+//                   <Link className="no-decor" to={`/in/${appContext.state.city.toLowerCase()}`} style={{ padding: '1rem' }}>
+//                     <h1 id="site-title">ClubGo</h1>
+//                   </Link>
+//                 ) : (
+//                   <Link className="no-decor" to="/" style={{ padding: '1rem' }}>
+//                     <h1 id="site-title">ClubGo</h1>
+//                   </Link>
+//                 )
+//               }
+
+//               {/* =================== Desktop Nav ==================== */}
+//               <div className="desktop-nav">
+//                 <Link className="no-decor" to={
+//                   appContext.state.city!==undefined ? (
+//                     `/events/in/${appContext.state.city.toLowerCase()}`
+//                   ) : '/events'
+//                 }>
+//                   <h4>Events</h4>
+//                 </Link>
+                
+//                 <Link className="no-decor" to={
+//                   appContext.state.city!==undefined ? (
+//                     `/venues/in/${appContext.state.city.toLowerCase()}`
+//                   ) : '/venues'
+//                 }>
+//                   <h4>Venues</h4>
+//                 </Link>
+
+//                 <Context.Consumer>
+//                   { context => (
+//                     context.store.categories.filter((category:ICategoryModel)=>{
+//                       return category.categoryType === 'event'
+//                     })
+//                     .slice(0, 6)
+//                     .map((category, index)=>(
+//                       appContext.state.city!==undefined ? (
+//                         <a className="no-decor category-link" 
+//                           href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+//                           <h4>{ category.name }</h4>
+//                         </a>
+//                       ) : (
+//                         <a className="no-decor category-link" 
+//                           href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+//                           <h4>{ category.name }</h4>
+//                         </a>
+//                       )
+//                     ))
+//                   )}
+//                 </Context.Consumer>
+//               </div>
+
+//               <div style={{ margin: 'auto 0 auto auto' }}>
+//                 <div className="set-city" 
+//                   onClick={()=>{
+//                     appContext.actions.toggleCityLightbox()
+//                   }}
+//                 >
+//                   <img src="/assets/icons/location.svg" width="15px" alt=""/>
+//                   {/* <span style={{ margin: '0 1em 0 0.25em' }}>
+//                     { appContext.state.city }
+//                   </span> */}
+//                 </div>
+
+//                 <IconButton onClick={()=>{ appContext.router('/search') }}>
+//                   <Search/>
+//                 </IconButton>
+                
+//                 <IconButton onClick={()=>{ appContext.router('/account') }}>
+//                   <AccountCircle/>
+//                 </IconButton>
+//               </div>
+//             </section>
+//           </header>
+//         )
+//       }
+//     </RootContext.Consumer>
+//   )
+// })
+
+export default Header

@@ -193,7 +193,11 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                       }
                     </div>
                     <div className="button-container">
-                      <button disabled={this.isBookingOpen} onClick={this.openBooking}>Book Now</button>
+                      {
+                        this.isBookingOpen ? (
+                          <button disabled={this.isBookingOpen} onClick={this.openBooking}>Book Now</button>
+                        ) : null
+                      }                      
                     </div>
                   </div>
                 </div>
