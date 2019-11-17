@@ -196,7 +196,7 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                     <div className="button-container">
                       {
                         this.isBookingOpen ? (
-                          <button disabled={this.isBookingOpen} onClick={this.openBooking}>Book Now</button>
+                          <button disabled={!this.isBookingOpen} onClick={this.openBooking}>Book Now</button>
                         ) : null
                       }                      
                     </div>
@@ -281,7 +281,6 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                         }
                       </ul>
                     </p>
-                        
                   </Grid>  
                 ) : null
               }
