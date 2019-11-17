@@ -121,12 +121,13 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
           if(customDate.getDate()>=date.getDate())
             return true
           else
-            return false
+            continue
         else
-          return false
+          continue
       else
-        return false
+        continue
     }
+    return false
   }
   
   render() {
