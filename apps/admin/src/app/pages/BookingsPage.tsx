@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
 import { RouteComponentProps } from 'react-router-dom'
-import { Checkbox, Grid, Button } from '@material-ui/core'
+import { Checkbox, Grid, Button, Switch } from '@material-ui/core'
 import './scss/Pages.scss'
 
 import { DatabaseService } from '@clubgo/api'
@@ -24,7 +24,8 @@ export default class BookingsPage extends Component<RouteComponentProps<URLParam
     suggestions: {
       events: []
     },
-    listing: []
+    listing: [],
+    when: undefined
   }
 
   bookingService = new DatabaseService('/booking')
@@ -46,20 +47,22 @@ export default class BookingsPage extends Component<RouteComponentProps<URLParam
     else {
       this.bookingService.list().then(({ data })=>{
         this.setState({
-          listing: data.results, loading: false
+          listing: data.results.reverse(), loading: false
         })
       })
     }
   }
 
-  fetchBookings = (eventId) => {
+  fetchBookings = (eventId, when?) => {
     this.bookingService.searchBy({
       event: {
         eventId
       }
+    }, {
+      when
     }).then(({ data })=>{
       this.setState({
-        listing: data.results, loading: false
+        listing: data.results.reverse(), loading: false
       })
     })
   }
@@ -166,60 +169,69 @@ export default class BookingsPage extends Component<RouteComponentProps<URLParam
           </Grid>
         </article>
 
-          <article className="page-content">
-            <Checkbox color="primary" defaultChecked={false}
-              onChange={({ target })=>{
-                let { selectedBookings, listing } = this.state
-                selectedBookings = []
-                if(target.checked)
-                  for (const booking of listing)
-                    selectedBookings.push(booking)
-                this.setState(()=>({
-                  selectedBookings
-                }))
-              }}
-            />
-            <label htmlFor="">Select All</label>
+        <article className="page-content">
+          <Checkbox color="primary" defaultChecked={false}
+            onChange={({ target })=>{
+              let { selectedBookings, listing } = this.state
+              selectedBookings = []
+              if(target.checked)
+                for (const booking of listing)
+                  selectedBookings.push(booking)
+              this.setState(()=>({
+                selectedBookings
+              }))
+            }}
+          />
+          <label htmlFor="">Select All</label>
 
-            <p style={{ display: 'inline', margin: '0 2em' }}>
-              { this.state.selectedBookings.length } selected out of { this.state.listing.length }
-            </p>
+          <p style={{ display: 'inline', margin: '0 2em' }}>
+            { this.state.selectedBookings.length } selected out of { this.state.listing.length }
+          </p>
 
-            <Button variant="outlined" onClick={this.convertBookingToCSVEntry}>
-              Export
-            </Button>
+          <label>Bookings Today</label>
+          <Switch
+            onChange={({ target })=>{
+              let when
+              if(target.checked)
+                  when = 'today'
+              this.fetchBookings(this.state.selectedEventId, when)
+            }}
+          />
 
-            <br/><br/>
+          <Button variant="outlined" onClick={this.convertBookingToCSVEntry}>
+            Export
+          </Button>
 
-            {
-              !this.state.loading ? (
-                this.state.listing.map((booking:IBookingModel, index)=>(
-                  <div style={{ display: 'flex', flexDirection: 'row', margin: '0.5em 0' }}>
-                    <Checkbox color="primary" checked={this.state.selectedBookings.includes(booking)}
-                      onChange={({ target })=>{
-                        let { selectedBookings } = this.state
-                        if(target.checked)
-                          selectedBookings.push(booking)
-                        else
-                          selectedBookings = selectedBookings.filter((sel)=>( booking._id!==sel._id ))
-                        this.setState(()=>({
-                          selectedBookings
-                        }))
-                      }}
-                    />
+          <br/><br/>
 
-                    <BookingListItem data={booking} />
-                  </div>
-                ))
-              ) : (
-                <div>
-                  <span className="spinner"/>
-                  <p>Loading</p>
+          {
+            !this.state.loading ? (
+              this.state.listing.map((booking:IBookingModel, index)=>(
+                <div style={{ display: 'flex', flexDirection: 'row', margin: '0.5em 0' }}>
+                  <Checkbox color="primary" checked={this.state.selectedBookings.includes(booking)}
+                    onChange={({ target })=>{
+                      let { selectedBookings } = this.state
+                      if(target.checked)
+                        selectedBookings.push(booking)
+                      else
+                        selectedBookings = selectedBookings.filter((sel)=>( booking._id!==sel._id ))
+                      this.setState(()=>({
+                        selectedBookings
+                      }))
+                    }}
+                  />
+
+                  <BookingListItem data={booking} />
                 </div>
-              )
-            }
-          </article>
-        }
+              ))
+            ) : (
+              <div>
+                <span className="spinner"/>
+                <p>Loading</p>
+              </div>
+            )
+          }
+        </article>
       </div>
     )
   }
