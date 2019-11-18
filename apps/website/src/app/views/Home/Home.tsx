@@ -5,7 +5,7 @@ import { observer } from 'mobx-react'
 
 import './Home.scss'
 
-import { Story, StoriesContainer, Carousel, Venue, FlexScroll, EventPlaceholder } from '@clubgo/website/components'
+import { Story, StoriesContainer, Carousel, Venue, FlexScroll, EventPlaceholder, SlidingCarousel } from '@clubgo/website/components'
 import { Banner, Textbox, Recommender } from '@clubgo/website/components'
 import { Event, Flexbox, FlexContainer } from '@clubgo/website/components'
 import RootContext from '../../RootContext'
@@ -76,7 +76,7 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   render() {
     return (
       <article>
-        <Carousel items={this.state.ads}/>
+        <SlidingCarousel items={this.state.ads}/>
 
         <section className="container">
           <h2 className="scroll-title">Featured Events</h2>

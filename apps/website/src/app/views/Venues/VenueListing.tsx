@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import './Venues.scss'
 
-import { FlexContainer, Flexbox, Venue, Carousel } from '@clubgo/website/components'
+import { FlexContainer, Flexbox, Venue, Carousel, SlidingCarousel } from '@clubgo/website/components'
 import RootContext from '../../RootContext'
 
 import { Advert } from '@clubgo/website/components'
@@ -64,7 +64,7 @@ export default class VenueListing extends Component<RouteComponentProps<URLParam
   render() {
     return (
       <article className="venue-listing">
-        <Carousel items={this.state.ads}/>
+        <SlidingCarousel items={this.state.ads}/>
 
         <section className="container center">
           {
