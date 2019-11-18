@@ -1,7 +1,7 @@
 import express from 'express'
 import path from 'path'
 import * as mongoose from 'mongoose'
-import { Booking } from '@clubgo/database'
+import { Booking, IBookingModel } from '@clubgo/database'
 import { conf, formatTime } from '@clubgo/util'
 
 export const BookingRouter = express.Router()
@@ -104,8 +104,28 @@ BookingRouter.post('/_group', async (req, res) => {
 
 // Search for venues :: /_search
 BookingRouter.post('/_search', async (req, res) => {
-  const { query } = req.body
-  const searchResult = await Booking.find({ ...query })
+  const { query, options } = req.body
+  
+  var searchResult = await Booking.find({ ...query })
+
+  if(options)
+    var when = options.when
+    
+  if(when)
+    if(when==='today')
+      searchResult = searchResult.filter((item:IBookingModel)=>{
+        let date = new Date(), bookingDate = new Date(item.createdOn)
+        if(bookingDate.getFullYear()===date.getFullYear())
+          if(bookingDate.getMonth()===date.getMonth())
+            if(bookingDate.getDate()===date.getDate())
+              return true
+            else
+              return false
+          else
+            return false
+        else
+          return false
+      })
 
   res.send({ 
     message: `Found ${searchResult.length} matching records`,
