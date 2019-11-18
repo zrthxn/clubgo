@@ -21,24 +21,36 @@ export class ContextProvider extends Component<ContextProps> {
     this.fetchCategories()
     this.fetchLocations()
     
-    let { contextState } = this.state
-    contextState.loading = false
-    this.setState({ 
-      contextState 
+    this.setContextState({ 
+      loading: false
     })
   }
-  
+
+  setContextState(payload:object, callback?: (() => void) | undefined) {
+    let { contextState } = this.state
+    for (const key in payload)
+      if (payload.hasOwnProperty(key))
+        contextState[key] = payload[key]
+    this.setState({ contextState }, callback)
+  }
+
+  updateStore(payload:object, callback?: (() => void) | undefined) {
+    let { contextStore } = this.state
+    for (const key in payload)
+      if (payload.hasOwnProperty(key))
+        contextStore[key] = payload[key]
+    this.setState({ contextStore }, callback)
+  }
+
   async fetchCategories() {
     const categoryService = new DatabaseService('/category')
-    let { contextStore } = this.state
     try {
       let { data } = await categoryService.list()
-      contextStore.categories = data.results
-      this.setState({ 
-        contextStore 
+      this.updateStore({
+        categories: data.results
       })
     } catch (error) {
-      
+      console.error(error)
     } finally {
       return
     }
@@ -46,15 +58,13 @@ export class ContextProvider extends Component<ContextProps> {
 
   async fetchLocations() {
     const locationService = new DatabaseService('/location')
-    let { contextStore } = this.state
     try {
       let { data } = await locationService.list()
-      contextStore.locations = data.results
-      this.setState({ 
-        contextStore 
+      this.updateStore({
+        locations: data.results
       })
     } catch (error) {
-      
+      console.error(error)
     } finally {
       return
     }

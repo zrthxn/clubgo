@@ -34,5 +34,14 @@ export function FlexScroll(props) {
   )
 }
 
+export function FlexGrid(props) {
+  return (
+    <div className="flexgrid">
+      {
+        props.children
+      }
+    </div>
+  )
+}
 
 export default Flexbox

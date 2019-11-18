@@ -4,7 +4,7 @@
   padding: 1em;
   margin: 1em;
 
-  width: 100%;
+  // width: 100%;
   height: 20em;
   border-radius: 0.5em;
 
@@ -84,6 +84,7 @@
 
 .event[class~="placeholder"] {
   opacity: 0.5;
+  
   .event-title, .event-venue, p {
     width: fit-content;
     border-radius: 2px;
@@ -108,6 +109,7 @@
 .flexscroll-content {
   .event {
     width: 16em;
+    max-width: 16em;
     transition: all 0.25s ease;
   }
 
@@ -121,19 +123,8 @@
 
 .flexbox {
   .event {
+    flex-grow: 0.125;
     margin: 0.5em;
-  }
-
-  @media (max-width: 600px) {
-    .event {
-      // width: 100%;
-    }
-  }
-
-  @media (max-width: 400px) {
-    .event {
-      // width: 10em;
-    }
   }
 }
 

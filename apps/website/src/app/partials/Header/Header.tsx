@@ -65,21 +65,24 @@ export class Header extends Component {
 
                         <span style={{ margin: '1.5em 1em 1em 1em', fontSize: '0.85em', fontWeight: 600 }}>CATEGORIES</span>
 
-                        {/* {
-                          ContextStore.categories.map((category:ICategoryModel, index)=>(
-                            appContext.state.city!==undefined ? (
-                              <a className="no-decor category-link" 
-                                href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
-                                <h4>{ category.name }</h4>
-                              </a>
-                            ) : (
-                              <a className="no-decor category-link" 
-                                href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
-                                <h4>{ category.name }</h4>
-                              </a>
-                            )
-                          ))
-                        } */}
+                        <Context.Consumer>
+                          { context => (
+                            context.store.categories.map((category:ICategoryModel, index)=>(
+                              appContext.state.city!==undefined ? (
+                                <a className="no-decor category-link" 
+                                  href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+                                  <h4>{ category.name }</h4>
+                                </a>
+                              ) : (
+                                <a className="no-decor category-link" 
+                                  href={`/events/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
+                                  <h4>{ category.name }</h4>
+                                </a>
+                              )
+                            ))
+                          )}
+                        </Context.Consumer>
+                        
                       </nav>
                     </div>
                   ) : null

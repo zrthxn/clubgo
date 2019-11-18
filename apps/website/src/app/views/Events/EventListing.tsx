@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import './Events.scss'
 
-import { FlexContainer, Flexbox, Event, Banner, FlexScroll, EventPlaceholder } from '@clubgo/website/components'
+import { FlexContainer, Flexbox, Event, Banner, FlexScroll, EventPlaceholder, FlexGrid } from '@clubgo/website/components'
 import RootContext from '../../RootContext'
 
 import { Advert, Carousel } from '@clubgo/website/components'
@@ -10,6 +10,10 @@ import { Lightbox, Button } from '@clubgo/website/components'
 import { DatabaseService } from '@clubgo/api'
 import { IEventModel, ICategoryModel, ILocationModel } from '@clubgo/database'
 import { serialize, getFormattedDate } from '@clubgo/util'
+import { Grid } from '@material-ui/core'
+import Context from '../../Context'
+import ContextStore from '../../ContextStore'
+import { SlidingCarousel } from '@clubgo/website/components'
 
 type URLParams = { 
   city: string
@@ -185,7 +189,8 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
   render() {
     return (
       <article className="event-listing">
-        <Carousel items={this.state.ads}/>
+        {/* <Carousel items={this.state.ads}/> */}
+        <SlidingCarousel items={this.state.ads}/>
         
         <section className="container center">
           <h1>Where's the Party?</h1>
@@ -237,42 +242,44 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
 
           <span className="title">Localities</span>
           <FlexScroll>
-          {
-            this.state.localities.map((locality)=>(
-              <span className="filter-category-item"
-                style={ this.state.filters['venue.locality']===locality.name ? {
-                  background: '#fff', color: '#dd0000', fontWeight: 600
-                } : {
-                  background: 'transparent', color: '#fff'
-                }}
-                onClick={()=>{
-                  this.filterEvents({ 'venue.locality': locality.name })
-                }}
-              >
-                { locality.name }
-              </span>
-            ))
-          }
-          </FlexScroll>
-          
-          <span className="title">Categories</span>
-          <FlexScroll>
             {
-              this.state.categories.map((category:ICategoryModel)=>(
-                <span className="filter-category-item" 
-                  style={ this.state.filters['categories']===category.name ? {
+              this.state.localities.map((locality)=>(
+                <span className="filter-category-item"
+                  style={ this.state.filters['venue.locality']===locality.name ? {
                     background: '#fff', color: '#dd0000', fontWeight: 600
                   } : {
                     background: 'transparent', color: '#fff'
                   }}
                   onClick={()=>{
-                    this.filterEvents({ 'categories': category.name })
+                    this.filterEvents({ 'venue.locality': locality.name })
                   }}
                 >
-                  { category.name }
+                  { locality.name }
                 </span>
               ))
             }
+          </FlexScroll>
+          
+          <span className="title">Categories</span>
+          <FlexScroll>
+            <Context.Consumer>
+              { context => (
+                context.store.categories.map((category:ICategoryModel)=>(
+                  <span className="filter-category-item" 
+                    style={ this.state.filters['categories']===category.name ? {
+                      background: '#fff', color: '#dd0000', fontWeight: 600
+                    } : {
+                      background: 'transparent', color: '#fff'
+                    }}
+                    onClick={()=>{
+                      this.filterEvents({ 'categories': category.name })
+                    }}
+                  >
+                    { category.name }
+                  </span>
+                ))
+              )}
+            </Context.Consumer>
           </FlexScroll>
 
           <div className="filter-category">
@@ -303,15 +310,25 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
                   ) : null
                 }
                 
-                {
+                {/* {
                   this.state.listing.map((event:IEventModel, index)=>{
                     return (
                       <Event key={event._id} data={event}/>
                     )
                   })
-                }
+                } */}
               </Flexbox>
             </FlexContainer>
+
+            <FlexGrid>
+              {
+                this.state.listing.map((event:IEventModel, index)=>{
+                  return (
+                    <Event key={event._id} data={event}/>
+                  )
+                })
+              }
+            </FlexGrid>
           </div>
         </section>
       </article>

@@ -60,7 +60,7 @@ export class SelectCity extends Component<ComponentProps> {
                         onClick={()=>{
                           this.setState({ openLightbox: false })
                           appContext.actions.toggleCityLightbox()
-                          appContext.router('/in/' + item.city.toLowerCase())
+                          // appContext.router('/in/' + item.city.toLowerCase())
                           window.location.reload()
                           appContext.actions.setUserContext({
                             city: item.city
@@ -71,7 +71,7 @@ export class SelectCity extends Component<ComponentProps> {
                           onClick={()=>{
                             this.setState({ openLightbox: false })
                             appContext.actions.toggleCityLightbox()
-                            appContext.router('/in/' + item.city.toLowerCase())
+                            // appContext.router('/in/' + item.city.toLowerCase())
                             window.location.reload()
                             appContext.actions.setUserContext({
                               city: item.city

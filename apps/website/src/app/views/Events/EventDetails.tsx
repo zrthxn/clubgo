@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Button, Banner, Recommender, Event } from '@clubgo/website/components'
+import { Button, Banner, Recommender, Event, EventPlaceholder } from '@clubgo/website/components'
 import { Grid } from '@material-ui/core'
 
 import './Events.scss'
@@ -284,17 +284,24 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                   </Grid>  
                 ) : null
               }
+
+              <Grid item md={8} xs={12} style={{ display: 'none' }}>
+                {
+                  JSON.stringify(this.event)
+                }
+              </Grid>
             </Grid>
           </section>
 
           <section className="container">
             <h2 className="scroll-title">Similar Events</h2>
-            <Recommender path="/event" maxItemCount={10}
+            <Recommender path="/event" maxItemCount={10} shuffle
               query={{
                 venue: {
                   city: this.props.city
                 }
               }}
+              placeholder={EventPlaceholder}
               render={(eventProps:IEventModel)=>(
                 <Event key={eventProps._id} data={eventProps} />
               )}
