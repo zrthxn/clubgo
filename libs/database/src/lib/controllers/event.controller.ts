@@ -28,6 +28,31 @@ export class EventController extends ModelController {
       return false
     })
 
+    // Filter out past events
+    searchResult = searchResult.filter((item:IEventModel)=>{
+      if(options)
+        if(options.includePastEvents) 
+          return true
+
+      if(item.scheduling.isRecurring)
+        return true
+      else {
+        for (let customDate of item.scheduling.customDates) {
+          customDate = new Date(customDate)
+          if(customDate.getFullYear()>=date.getFullYear())
+            if(customDate.getMonth()>=date.getMonth())
+              if(customDate.getDate()>=date.getDate())
+                return true
+              else
+                return false
+            else
+              return false
+          else
+            return false
+        }
+      }
+    })
+
     searchResult.sort((a, b)=>{
       return a.settings.eventPriority - b.settings.eventPriority
     })
@@ -44,9 +69,8 @@ export class EventController extends ModelController {
   recommend = async (req, res) => {
     const { query, options } = req.body
     
-    let when
     if(options)
-      when = options.when
+      var when = options.when
 
     let date = new Date()
     if(when==='tomorrow')
@@ -68,6 +92,14 @@ export class EventController extends ModelController {
 
     // Filter out past events
     recommendations = recommendations.filter((item:IEventModel)=>{
+      if(when)
+        if(when==='past')
+          return true
+          
+      if(options)
+        if(options.includePastEvents) 
+          return true
+          
       if(item.scheduling.isRecurring)
         return true
       else {
@@ -91,6 +123,10 @@ export class EventController extends ModelController {
     recommendations = recommendations.filter((item:IEventModel)=>{
       if(when===undefined)        
         return true
+
+      if(when)
+        if(when==='past')
+          return true
 
       if(when==='later') {
         // TODO later in this week

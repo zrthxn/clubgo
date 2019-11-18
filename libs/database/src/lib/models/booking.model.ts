@@ -51,13 +51,10 @@ export const bookingSchema = new mongoose.Schema(
       }
     ],
     people: {
-      type: {
-        couple: Number,
-        single: Number,
-        female: Number,
-        male: Number
-      },
-      required: true
+      couple: { type: Number, default: 0 },
+      single: { type: Number, default: 0 },
+      female: { type: Number, default: 0 },
+      male: { type: Number, default: 0 }
     },
     payment: {
       transactionId: String,
