@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { stringify, parse } from 'querystring'
+import { SMS_TXTLCL_APIKEY as APIKEY } from '@clubgo/env'
 
 require('dotenv').config()
 
 const SENDER = 'CLUBGO'
-const APIKEY = process.env.SMS_TXTLCL_APIKEY
 
 /**
  * Send an SMS
