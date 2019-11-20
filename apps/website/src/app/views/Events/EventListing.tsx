@@ -199,7 +199,9 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
               <h2>
                 {
                   this.state.listing.length===0 ? '' : this.state.listing.length
-                } Upcoming Events {
+                } {
+                  this.props.match.params.when==='past' ? 'Past' : 'Upcoming'
+                } Events {
                   this.props.match.params.search ? (
                     'for ' + this.toCapitalizeCase(this.props.match.params.search.replace(/-/g, ' '))
                   ) : ''
@@ -264,7 +266,9 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
           <FlexScroll>
             <Context.Consumer>
               { context => (
-                context.store.categories.map((category:ICategoryModel)=>(
+                context.store.categories
+                .filter((category:ICategoryModel)=> category.categoryType==='event')
+                .map((category:ICategoryModel)=>(
                   <span className="filter-category-item" 
                     style={ this.state.filters['categories']===category.name ? {
                       background: '#fff', color: '#dd0000', fontWeight: 600

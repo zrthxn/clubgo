@@ -5,6 +5,12 @@ import { DatabaseService } from '@clubgo/api'
 
 const categoryService = new DatabaseService('/category')
 
+/**
+ * @todo
+ * 
+ * For some reason the MobX oberserver classes are not working
+ * They do not re-render when the store changes, fix this
+ */
 // export class Store {
 //   @observable city:string
 //   @observable locality:string

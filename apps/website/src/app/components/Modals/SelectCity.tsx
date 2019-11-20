@@ -6,6 +6,7 @@ import ContextStore from '../../ContextStore'
 import { RootContext } from '../../RootContext'
 
 import { Lightbox, FullscreenModal } from './Lightbox'
+import { ILocationModel } from '@clubgo/database'
 
 interface ComponentProps {
   onComplete?: Function
@@ -49,18 +50,25 @@ export class SelectCity extends Component<ComponentProps> {
                 <section className="modal-content-city">
                   <h2 className="modal-title">Select your City</h2>
                   {
-                    this.state.cities.map((item, index)=>(
+                    this.state.cities.map((item:ILocationModel, index)=>(
                       <div
-                        style={{
-                          padding: '1.5em 0', margin: '0.5em', width: '100%',
-                          border: '1px solid #1c1c1c80',
-                          borderRadius: '10px',
-                          textAlign: 'center'
-                        }}
+                        style={
+                          appContext.state.city===item.city ? {
+                            padding: '1.5em 0', margin: '0.5em', width: '100%',
+                            border: '2px solid #0000ff', backgroundColor: '#0000ff10',
+                            borderRadius: '10px',
+                            textAlign: 'center'
+                          } : {
+                            padding: '1.5em 0', margin: '0.5em', width: '100%',
+                            border: '1px solid #1c1c1c80',
+                            borderRadius: '10px',
+                            textAlign: 'center'
+                          }
+                        }
                         onClick={()=>{
                           this.setState({ openLightbox: false })
                           appContext.actions.toggleCityLightbox()
-                          // appContext.router('/in/' + item.city.toLowerCase())
+                          appContext.router('/in/' + item.city.toLowerCase())
                           window.location.reload()
                           appContext.actions.setUserContext({
                             city: item.city
@@ -71,7 +79,7 @@ export class SelectCity extends Component<ComponentProps> {
                           onClick={()=>{
                             this.setState({ openLightbox: false })
                             appContext.actions.toggleCityLightbox()
-                            // appContext.router('/in/' + item.city.toLowerCase())
+                            appContext.router('/in/' + item.city.toLowerCase())
                             window.location.reload()
                             appContext.actions.setUserContext({
                               city: item.city

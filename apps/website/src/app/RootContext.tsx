@@ -27,6 +27,12 @@ const _istate = {
 
 var _iactions = Object()
 
+/**
+ * @deprecated
+ * This context is to be phased out from wherever it is being
+ * used in the website and replaced with the Context.tsx context
+ */
+
 export class RootContextProvider extends Component {
   state = _istate
 

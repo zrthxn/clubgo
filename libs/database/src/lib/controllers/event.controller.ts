@@ -53,9 +53,7 @@ export class EventController extends ModelController {
       }
     })
 
-    searchResult.sort((a, b)=>{
-      return a.settings.eventPriority - b.settings.eventPriority
-    })
+    searchResult.sort((a, b) => a.settings.eventPriority - b.settings.eventPriority )
 
     res.send({ 
       message: `Found ${searchResult.length} events`,
@@ -121,12 +119,25 @@ export class EventController extends ModelController {
 
     // Filter acc to when
     recommendations = recommendations.filter((item:IEventModel)=>{
-      if(when===undefined)        
+      if(when===undefined)
         return true
 
       if(when)
-        if(when==='past')
-          return true
+        if(when==='past') {
+          for (let customDate of item.scheduling.customDates) {
+            customDate = new Date(customDate)
+            if(customDate.getFullYear()<=date.getFullYear())
+              if(customDate.getMonth()<=date.getMonth())
+                if(customDate.getDate()<date.getDate())
+                  return true
+                else
+                  return false
+              else
+                return false
+            else
+              return false
+          }
+        }
 
       if(when==='later') {
         // TODO later in this week
@@ -161,8 +172,13 @@ export class EventController extends ModelController {
       }
     })
 
-    recommendations.sort((a, b)=>{
-      return a.settings.eventPriority - b.settings.eventPriority
+    recommendations.sort((a, b) => a.settings.eventPriority - b.settings.eventPriority )
+
+    // Sort by Date
+    recommendations = recommendations.sort((a, b) => {
+      let activeDateA = a.scheduling.customDates[0].valueOf()
+      let activeDateB = b.scheduling.customDates[0].valueOf()
+      return activeDateA - activeDateB      
     })
 
     res.send({ 

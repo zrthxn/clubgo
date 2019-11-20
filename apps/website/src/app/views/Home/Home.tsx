@@ -45,7 +45,8 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   }
 
   componentDidMount() {
-    let { city } = ContextStore
+    // let { city } = ContextStore
+    let { city } = this.props
     this.setState({ city })
 
     // Categories
