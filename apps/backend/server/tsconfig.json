@@ -3,13 +3,7 @@
   "compilerOptions": {
     "types": ["node", "jest", "express"],
     "jsx": "react",
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "@clubgo/util": ["../../../libs/util/src/index.ts"],
-      "@clubgo/database": ["../../../libs/database/src/index.ts"],
-      "@clubgo/env": ["../../../libs/env.ts"]
-    }
+    "allowSyntheticDefaultImports": true
   },
   "include": ["**/*.ts"]
 }
