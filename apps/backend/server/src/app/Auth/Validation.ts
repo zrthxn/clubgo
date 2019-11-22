@@ -15,7 +15,7 @@ export function requestValidation(req, res, next) {
     if(hash===token)
       next()
     else
-      res.end()
+      res.sendStatus(200)
   } catch (error) {
     res.sendStatus(500)
   }

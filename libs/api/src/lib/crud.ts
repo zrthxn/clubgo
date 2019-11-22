@@ -35,11 +35,14 @@ export class DatabaseService extends Interface {
     })
   }
 
+  
+
   /**
    * Lists all the objects at the given route
    * @todo Make the objects streamable 
    */
   async list() {
+    await this.isAuthenticated()
     try {
       return await this.request.get(
         this.endpoint + '/_list'
@@ -55,6 +58,7 @@ export class DatabaseService extends Interface {
    */
   async findById(id:string) {
     // cRud
+    await this.isAuthenticated()
     try {
       return await this.request.get(
         this.endpoint + '/_get/' + id
@@ -70,6 +74,7 @@ export class DatabaseService extends Interface {
    */
   async searchBy(search:object, options?:object) {
     // cRud
+    await this.isAuthenticated()
     try {
       return await this.request.post(
         this.endpoint + '/_search', {
@@ -88,6 +93,7 @@ export class DatabaseService extends Interface {
    */
   async recommend(search:object, options?:object) {
     // cRud
+    await this.isAuthenticated()
     try {
       return await this.request.post(
         this.endpoint + '/_recommend', {
@@ -105,6 +111,7 @@ export class DatabaseService extends Interface {
    */
   async findGroupById(ids:Array<string>) {
     // cRud
+    await this.isAuthenticated()
     try {
       return await this.request.post(
         this.endpoint + '/_group/', {
@@ -122,6 +129,7 @@ export class DatabaseService extends Interface {
    */
   async create(createBody) {
     // Crud
+    await this.isAuthenticated()
     try {
       return await this.request.post(
         this.endpoint + '/_create', {
@@ -141,6 +149,7 @@ export class DatabaseService extends Interface {
    */
   async update(id:string, updateBody:object, options?) {
     // crUd
+    await this.isAuthenticated()
     try {
       return await this.request.put(
         this.endpoint + '/_update/' + id, {
@@ -161,6 +170,7 @@ export class DatabaseService extends Interface {
    */
   async delete(id:string) {
     // cruD
+    await this.isAuthenticated()
     try {
       return await this.request.delete(
         this.endpoint + '/_delete/' + id

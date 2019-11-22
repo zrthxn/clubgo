@@ -14,15 +14,24 @@ export class SlidingCarousel extends Component<CarouselProps> {
   state = {
     activeIndex: 1,
     translateX: -21,
-    renderQueue: [
-      
-    ]
+    renderQueue: []
   }
 
-  componentDidMount() {   
-    setInterval(()=>{
+  componentDidMount() {
+    let sliding = setInterval(()=>{
       this.slideForward()
     }, 4000)
+    
+    let { renderQueue } = this.state
+    renderQueue = this.props.items
+    if(this.props.items.length<3) {
+      renderQueue.push({ src: '', link: '', text: '' })
+      if(renderQueue.length<3) {
+        renderQueue.unshift({ src: '', link: '', text: '' })
+        clearInterval(sliding)
+      }
+      this.setState({ renderQueue })
+    }
   }
 
   slideForward() {
@@ -60,7 +69,7 @@ export class SlidingCarousel extends Component<CarouselProps> {
           <div className="carousel-forward"></div>
           <div className="carousel-slider" style={{ transform: `translateX(${this.state.translateX}em)` }}>
             {
-              this.props.items.map((item, index)=>(
+              this.state.renderQueue.map((item, index)=>(
                 <div className={ this.state.activeIndex === index ? "active" : "" }>
                   <a href={item.link}>
                     <Banner image={item.src} link={item.link} />

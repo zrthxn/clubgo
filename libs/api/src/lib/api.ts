@@ -26,6 +26,7 @@ export class Interface {
   protected endpoint = APIEndpoints.api.url
 
   protected auth = {
+    isAuth: false,
     csrf: null,
     headers: null
   }
@@ -122,10 +123,48 @@ export class Interface {
       
       let { token } = authResponse.data
       localStorage.setItem('X-Request-Validation', token)
+      this.auth.isAuth = true
     } catch (error) {
       console.error(error)
     } finally {
       return
+    }
+  }
+
+  async isAuthenticated() {
+    function checkAuth() {
+      return new Promise((resolve, reject) => {
+        if(this.auth.isAuth)
+          resolve()
+        else {
+          if(localStorage.getItem('X-Request-Validation')) {
+            this.auth.isAuth = true
+            resolve()
+          }
+          else
+            setTimeout(()=>{
+              if(this.auth.isAuth)
+                resolve()
+              else {
+                if(localStorage.getItem('X-Request-Validation')) {
+                  this.auth.isAuth = true
+                  resolve()
+                }
+                else
+                  reject()
+              }
+            }, 250)
+        }
+      })
+    }
+
+    for (let i = 0; i < 5; i++) {
+      try {
+        await checkAuth()
+        return
+      } catch (error) {
+        continue
+      }
     }
   }
 }
