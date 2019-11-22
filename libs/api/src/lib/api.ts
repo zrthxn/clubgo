@@ -1,13 +1,12 @@
 import axios from 'axios'
 import * as crypto from 'crypto'
+import { CLIENT_KEY } from '../../../env'
 
 export const APIEndpoints = process.env.NODE_ENV==='production' ? (
-  require('../config.json').test.endpoints
+  require('../config.json').prod.endpoints
 ) : (
   require('../config.json').dev.endpoints
 )
-
-// export const APIEndpoints = require('./config.json').test.endpoints
 
 export interface APIProps {
   endpoint: 'api' | 'cdn' | 'login' | 'auth'
@@ -114,13 +113,10 @@ export class Interface {
    * to get CSRF headers.
    */
   async authenticate() {
-    const APIKEY = 'qWertT2uiOp2lkjhgfD5Sa2zxcvBn831'
-    // const APIKEY = process.env.APIKEY
-
     try {
       let authResponse = await this.request.post(
         APIEndpoints.auth.url, {
-          shared: APIKEY
+          shared: CLIENT_KEY
         }
       )
       

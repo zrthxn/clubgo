@@ -175,11 +175,13 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
 
                     <h3 className="event-price">
                       {
-                        this.state.calculatedLowestPrices===0 ? (
-                          '\u20B9 Free'
-                        ) : (
-                          'Starting from \u20B9' + this.state.calculatedLowestPrices
-                        )
+                        this.event.bookings.isTakingOnsiteBookings ?
+                          this.state.calculatedLowestPrices===0 ? (
+                            '\u20B9 Free'
+                          ) : (
+                            'Starting from \u20B9' + this.state.calculatedLowestPrices
+                          )
+                        : null
                       }
                     </h3>
 
@@ -196,7 +198,11 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                     <div className="button-container">
                       {
                         this.isBookingOpen ? (
-                          <button disabled={!this.isBookingOpen} onClick={this.openBooking}>Book Now</button>
+                          <button disabled={!this.isBookingOpen} onClick={this.openBooking}>
+                            {
+                              this.event.bookings.isTakingOnsiteBookings ? 'Book Now': 'Register'
+                            }
+                          </button>
                         ) : null
                       }                      
                     </div>

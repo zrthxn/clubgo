@@ -3,6 +3,7 @@ import { conf } from '@clubgo/util'
 import { ModelController, EventController, VenueController, Category, Artist, DressCode } from '@clubgo/database'
 import { Venue, User, Offer, Ticket, Location, Advert } from '@clubgo/database'
 import BookingRouter from './BookingRouter'
+import { requestValidation } from '../Auth/Validation'
 
 export const APIRouter = express.Router()
 export default APIRouter
@@ -10,11 +11,7 @@ export default APIRouter
 
 // Security Functions
 // --------------------------------------------------------
-APIRouter.use((req, res, next)=>{
-  // If req has ADMIN level access token, allow and DEL token header
-  // Else, 403
-  next()
-})
+APIRouter.use(requestValidation)
 
 // Admin Functions
 // --------------------------------------------------------

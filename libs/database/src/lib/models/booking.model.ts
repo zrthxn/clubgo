@@ -6,6 +6,7 @@ export const bookingSchema = new mongoose.Schema(
     createdOn: {
       type: Date, required: true
     },
+    validUpto: Date,
     bookingReference: {
       type: String, required: true, unique: true
     },
@@ -103,7 +104,7 @@ export interface IBookingModel extends mongoose.Document {
   }
   schedule: {
     date: Date
-    time: number
+    time: string
   }
   appliedOffers: Array<{
     offerId: ObjectID

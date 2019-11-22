@@ -82,7 +82,6 @@ _Server.use('/_login', LoginRouter)
 
 // Development
 _Server.use(APIRouter)
-// _Server.use(WebRouter)
 
 // Production
 // _Server.use(vhost(ServerConfig.domains.web, WebRouter))

@@ -106,11 +106,13 @@ export class Event extends Component<EventComponentProps> {
 
               <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9em', position: 'absolute', bottom: '1em' }}>
                 {
-                  this.state.calculatedLowestPrices===0 ? (
-                    'Free'    
-                  ) : (
-                    'From \u20B9 ' + this.state.calculatedLowestPrices
-                  )
+                  this.props.data.bookings.isTakingOnsiteBookings ? 
+                    this.state.calculatedLowestPrices===0 ? (
+                      'Free'    
+                    ) : (
+                      'From \u20B9 ' + this.state.calculatedLowestPrices
+                    )
+                  : null
                 }
               </p>
             </div>

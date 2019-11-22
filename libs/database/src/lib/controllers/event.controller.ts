@@ -1,6 +1,6 @@
 import { ModelController, IRouteItem } from './controller'
 import Event, { IEventModel } from '../models/event.model'
-import { getFormattedDate, fromFormattedDate } from '@clubgo/util'
+import { getFormattedDate, fromFormattedDate, compareDates } from '@clubgo/util'
 
 export class EventController extends ModelController {
   constructor() {
@@ -158,16 +158,8 @@ export class EventController extends ModelController {
       else {
         for (let customDate of item.scheduling.customDates) {
           customDate = new Date(customDate)
-          if(customDate.getFullYear()===date.getFullYear())
-            if(customDate.getMonth()===date.getMonth())
-              if(customDate.getDate()===date.getDate())
-                return true
-              else
-                return false
-            else
-              return false
-          else
-            return false
+          if(compareDates(customDate, date)===0)
+            return true
         }
       }
     })

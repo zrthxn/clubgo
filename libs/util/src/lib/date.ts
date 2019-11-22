@@ -109,6 +109,64 @@ export function fromFormattedDate(_date:DateFormat):AntiDateFormat {
   }
 }
 
+/**
+ * Compares the given dates
+ * @returns 0 if equal, 1 if `a` is greater, -1 if `b` is greater
+ */
+export function compareDates(a:Date, b:Date) {
+  function isEqual() {
+    if(a.getFullYear()===b.getFullYear())
+      if(a.getMonth()===b.getMonth())
+        if(a.getDate()===b.getDate())
+          return true
+        else
+          return false
+      else
+        return false
+    else
+      return false
+  }
+
+  function isGreater() {
+    if(a.getFullYear() >= b.getFullYear())
+      if(a.getMonth() >= b.getMonth())
+        if(a.getDate() > b.getDate())
+          return true
+        else
+          return false
+      else
+        return false
+    else
+      return false
+  }
+
+  function isSmaller() {
+    if(a.getFullYear() <= b.getFullYear())
+      if(a.getMonth() <= b.getMonth())
+        if(a.getDate() < b.getDate())
+          return true
+        else
+          return false
+      else
+        return false
+    else
+      return false
+  }
+
+  if(isEqual())
+    return 0
+  else if(isGreater())
+    return 1
+  else if(isSmaller())
+    return -1
+  else
+    return undefined
+}
+
+export function getTime(date:Date) {
+  return (date.getHours() * 60) + date.getMinutes()
+}
+
 export function formatTime(time:number, options?) {
   if(time>=1440) time -= 1440
   if(options) {

@@ -4,6 +4,10 @@ import { Event, Venue, User, Offer } from '@clubgo/database'
 import { conf } from '@clubgo/util'
 // import { ModelledCRUDRouter } from '@clubgo/database'
 
+/**
+ * @description
+ * Server Rendered React Router
+ */
 export const WebRouter = express.Router()
 export default WebRouter
 // ========================================================

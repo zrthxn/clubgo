@@ -22,26 +22,6 @@
       }
     }
   },
-  "test": {
-    "endpoints": {
-      "api": {
-        "url": "https://api.cg.zrthxn.com",
-        "secure": true
-      },
-      "cdn": {
-        "url": "https://cdn.cg.zrthxn.com",
-        "secure": false
-      },
-      "auth": {
-        "url": "https://cg.zrthxn.com/_authenticate",
-        "secure": true
-      },
-      "login": {
-        "url": "https://cg.zrthxn.com/_login",
-        "secure": false
-      }
-    }
-  },  
   "dev": {
     "endpoints": {
       "api": {
@@ -54,12 +34,12 @@
       },
       "auth": {
         "url": "http://localhost:3333/_authenticate",
-        "secure": false
+        "secure": true
       },
       "login": {
         "url": "http://localhost:3333/_login",
-        "secure": true
-      }  
+        "secure": false
+      }
     }
   }
 }
