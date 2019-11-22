@@ -11,7 +11,7 @@ export default APIRouter
 
 // Security Functions
 // --------------------------------------------------------
-APIRouter.use(requestValidation)
+// APIRouter.use(requestValidation)
 
 // Admin Functions
 // --------------------------------------------------------
