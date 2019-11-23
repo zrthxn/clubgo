@@ -189,8 +189,7 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
   render() {
     return (
       <article className="event-listing">
-        {/* <Carousel items={this.state.ads}/> */}
-        <SlidingCarousel items={this.state.ads}/>
+        <Carousel items={this.state.ads}/>
         
         <section className="container center">
           <h1>Where's the Party?</h1>

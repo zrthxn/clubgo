@@ -64,7 +64,7 @@ export default class VenueListing extends Component<RouteComponentProps<URLParam
   render() {
     return (
       <article className="venue-listing">
-        <SlidingCarousel items={this.state.ads}/>
+        <Carousel items={this.state.ads}/>
 
         <section className="container center">
           {

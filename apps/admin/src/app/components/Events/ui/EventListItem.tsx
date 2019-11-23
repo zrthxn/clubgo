@@ -9,6 +9,7 @@ import '../../scss/Listing.scss'
 
 import { EventContext } from '../EventContext'
 import { ConfirmDelete } from '../../Modals/ConfirmDelete'
+import { getFormattedDate } from '@clubgo/util'
 
 interface EventListItemProps {
   data: IEventModel,
@@ -27,11 +28,17 @@ export class EventListItem extends Component<EventListItemProps> {
           eventContext => (
             <div className="list-item">
               <Grid container spacing={1}>
-                <Grid item md={6} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
-                  <div style={{ maxWidth: '200px', overflow: 'hidden' }}>
+                <Grid item md={4} xs={12} style={{ display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ maxWidth: '300px', overflow: 'hidden' }}>
                     <h4>{ this.props.data.eventTitle }</h4>
                     <span>{ this.props.data.venue.title }, { this.props.data.venue.city }</span>
                   </div>
+                </Grid>
+
+                <Grid item md={2} xs={6} style={{ display: 'flex', flexDirection: 'row' }}>
+                  <span style={{ margin:'auto' }}>
+                    { getFormattedDate(this.props.data.scheduling.customDates[0]).shortNaturalDate }
+                  </span>
                 </Grid>
 
                 <Grid item md={2} xs={6} style={{ display: 'flex', flexDirection: 'row' }}>

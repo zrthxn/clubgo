@@ -57,7 +57,7 @@ export default class AdvertPage extends Component {
               <Grid container spacing={3}>
                 <Grid item xs={12} style={{ padding: '1em' }}>
                   <TextField variant="outlined" margin="dense" fullWidth
-                    placeholder="Advert Name"
+                    placeholder="Advert Name" value={this.state.data.advertTitle}
                     onChange={({ target })=>{
                       let { data } = this.state
                       data.advertTitle = target.value
@@ -70,6 +70,7 @@ export default class AdvertPage extends Component {
 
                 <Grid item xs={12} style={{ padding: '1em' }}>
                   <TextField variant="outlined" margin="dense" fullWidth
+                    value={this.state.data.link}
                     placeholder="https://example.com/link"
                     InputProps={{
                       startAdornment: 
@@ -91,7 +92,7 @@ export default class AdvertPage extends Component {
                   <Select
                     inputId="city"
                     placeholder="Select City"
-                    backspaceRemovesValue
+                    value={ this.state.data.city ? { label: this.state.data.city, value: this.state.data.city } : null }
                     options={this.state.cities.map((city, index)=>({
                       label: city.city, value: city.city
                     }))}
@@ -129,10 +130,15 @@ export default class AdvertPage extends Component {
                             this.adService.create(this.state.data).then(()=>{
                               adminContext.actions.openSuccessFeedback("Ad Created")
 
-                              let { ads } = this.state
+                              let { ads, data } = this.state
                               ads.push(this.state.data)
+
+                              data.link = ''
+                              data.city = ''
+                              data.advertTitle = ''
+
                               this.setState({
-                                ads
+                                ads, data
                               })
                             })
                           }, 500)
@@ -157,7 +163,7 @@ export default class AdvertPage extends Component {
                       }}
                     >
                       <img src={advert.imageURL} alt="" 
-                        style={{ position: 'absolute', width: '100%', top: 0, left: 0, objectFit: 'conver', opacity: 0.85 }} />
+                        style={{ position: 'absolute', width: '100%', top: 0, left: 0, objectFit: 'cover', opacity: 0.85 }} />
                       <p style={{
                         position: 'absolute', width: '100%', bottom: '1em', margin: 0, color: '#fff'
                       }}>

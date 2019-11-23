@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Grid, Paper, Switch } from '@material-ui/core'
-
+import Select from 'react-select'
 import '../scss/Listing.scss'
 
 import { DatabaseService } from '@clubgo/api'
@@ -32,6 +32,7 @@ export class EventListing extends Component<EventListingProps> {
       maxRecords: 0,
       lazyLoad: true,
       options: {
+        when: null,
         includePastEvents: false,
         includeUnpublishedEvents: false
       },
@@ -68,7 +69,7 @@ export class EventListing extends Component<EventListingProps> {
     this.setState({ loading: true })
     let { search } = this.state, listing, errorText
     try {
-      let { data } = await this.service.searchBy(query, search.options)
+      let { data } = await this.service.recommend(query, search.options)
       errorText = undefined
       if(data.results.length > 0) 
         listing = data.results
@@ -129,27 +130,52 @@ export class EventListing extends Component<EventListingProps> {
           }}
         />
 
-        <label>Include Past Events</label>
-        <Switch 
-          onChange={({ target })=>{
-            let { search } = this.state
-            search.options.includePastEvents = target.checked
-            this.setState({
-              search
-            })
-          }}
-        />
+        <Grid container spacing={3}>
+          <Grid item xs={3}>
+            <Select 
+              options={[
+                'Today', 'Tomorrow', 'Later'
+              ].map((item)=>({
+                label: item, value: item.toLowerCase()
+              }))}
+              placeholder="Event Day"
+              isClearable
+              onChange={(selected)=>{
+                let { search } = this.state
+                search.options.when = selected.value
+                this.setState({
+                  search
+                })
+              }}
+            />
+          </Grid>
 
-        <label>Include Unpublished Events</label>
-        <Switch 
-          onChange={({ target })=>{
-            let { search } = this.state
-            search.options.includeUnpublishedEvents = target.checked
-            this.setState({
-              search
-            })
-          }}
-        />
+          <Grid item xs={3}>
+            <label>Include Past Events</label>
+            <Switch 
+              onChange={({ target })=>{
+                let { search } = this.state
+                search.options.includePastEvents = target.checked
+                this.setState({
+                  search
+                })
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={3}>
+            <label>Include Unpublished Events</label>
+            <Switch 
+              onChange={({ target })=>{
+                let { search } = this.state
+                search.options.includeUnpublishedEvents = target.checked
+                this.setState({
+                  search
+                })
+              }}
+            />
+          </Grid>
+        </Grid>
 
         { 
           this.state.loading ? (

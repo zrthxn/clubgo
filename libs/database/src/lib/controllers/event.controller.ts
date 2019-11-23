@@ -74,7 +74,7 @@ export class EventController extends ModelController {
     if(when==='tomorrow')
       date = new Date(Date.now() + (24 * 60 * 60 * 1000))
     else if(when==='later')
-      date = new Date(Date.now() + (7 * (24 * 60 * 60 * 1000)))
+      date = new Date(Date.now() + (2 * (24 * 60 * 60 * 1000)))
 
     let recommendations = await Event.find(query)
 
@@ -115,54 +115,42 @@ export class EventController extends ModelController {
             return false
         }
       }
+      return false
     })
 
     // Filter acc to when
-    recommendations = recommendations.filter((item:IEventModel)=>{
-      if(when===undefined)
-        return true
+    if(when)
+      recommendations = recommendations.filter((item:IEventModel)=>{
+        if(when==='later')
+          return true 
 
-      if(when)
         if(when==='past') {
           for (let customDate of item.scheduling.customDates) {
             customDate = new Date(customDate)
-            if(customDate.getFullYear()<=date.getFullYear())
-              if(customDate.getMonth()<=date.getMonth())
-                if(customDate.getDate()<date.getDate())
-                  return true
-                else
-                  return false
-              else
-                return false
-            else
-              return false
+            if(compareDates(customDate, (new Date())) === -1)
+              return true
           }
         }
 
-      if(when==='later') {
-        // TODO later in this week
-        return true
-      }
-
-      if(when==='today')
-        if(item.scheduling.type==="daily")
-          return true
-
-      if(item.scheduling.isRecurring) {
-        if(item.scheduling.recurring.date.includes(date.getDate()))
-          return true
-        if(item.scheduling.recurring.day.includes(getFormattedDate(date.getDay()).dayOfTheWeek))
-          return true
-        return false
-      }
-      else {
-        for (let customDate of item.scheduling.customDates) {
-          customDate = new Date(customDate)
-          if(compareDates(customDate, date)===0)
+        if(when==='today')
+          if(item.scheduling.type==="daily")
             return true
+
+        if(item.scheduling.isRecurring) {
+          if(item.scheduling.recurring.date.includes(date.getDate()))
+            return true
+          if(item.scheduling.recurring.day.includes(getFormattedDate(date.getDay()).dayOfTheWeek))
+            return true
+          return false
         }
-      }
-    })
+        else {
+          for (let customDate of item.scheduling.customDates) {
+            customDate = new Date(customDate)
+            if(compareDates(customDate, date)===0)
+              return true
+          }
+        }
+      })
 
     recommendations.sort((a, b) => a.settings.eventPriority - b.settings.eventPriority )
 
