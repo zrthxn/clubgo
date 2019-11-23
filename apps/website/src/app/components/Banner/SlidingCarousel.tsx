@@ -17,21 +17,26 @@ export class SlidingCarousel extends Component<CarouselProps> {
     renderQueue: []
   }
 
-  componentDidMount() {
-    let sliding = setInterval(()=>{
-      this.slideForward()
-    }, 4000)
-    
+  componentWillReceiveProps() {
     let { renderQueue } = this.state
     renderQueue = this.props.items
     if(this.props.items.length<3) {
       renderQueue.push({ src: '', link: '', text: '' })
       if(renderQueue.length<3) {
         renderQueue.unshift({ src: '', link: '', text: '' })
-        clearInterval(sliding)
       }
-      this.setState({ renderQueue })
     }
+    this.setState({ 
+      renderQueue 
+    })
+  }
+
+  componentDidMount() {
+    let sliding = setInterval(()=>{
+      this.slideForward()
+    }, 4000)
+    if(this.state.renderQueue.length<=3)
+      clearInterval(sliding)
   }
 
   slideForward() {

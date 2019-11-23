@@ -150,11 +150,14 @@ export default class AdvertPage extends Component {
               <Grid container spacing={3}>
                 {
                   this.state.ads.map((advert:IAdvertModel, index)=>(
-                    <Grid key={advert._id} item xs={12} className="clearfix" style={{ 
-                      position: 'relative', padding: '1em', height: '10em', margin: '1em',
-                      borderRadius: '10px', overflow: 'hidden', backgroundColor: '#000'
-                    }}>
-                      <img src={advert.imageURL} alt="" style={{ position: 'absolute', width: '100%', opacity: 0.85 }} />
+                    <Grid key={advert._id} item md={6} xs={12} className="clearfix" 
+                      style={{ 
+                        position: 'relative', padding: '1em', height: '10em', margin: '1em',
+                        borderRadius: '10px', overflow: 'hidden', backgroundColor: '#000'
+                      }}
+                    >
+                      <img src={advert.imageURL} alt="" 
+                        style={{ position: 'absolute', width: '100%', top: 0, left: 0, objectFit: 'conver', opacity: 0.85 }} />
                       <p style={{
                         position: 'absolute', width: '100%', bottom: '1em', margin: 0, color: '#fff'
                       }}>
