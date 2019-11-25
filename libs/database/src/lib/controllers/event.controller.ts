@@ -156,8 +156,8 @@ export class EventController extends ModelController {
 
     // Sort by Date
     recommendations = recommendations.sort((a, b) => {
-      let activeDateA = a.scheduling.customDates[0].valueOf()
-      let activeDateB = b.scheduling.customDates[0].valueOf()
+      let activeDateA = (new Date(a.scheduling.customDates[0])).valueOf()
+      let activeDateB = (new Date(b.scheduling.customDates[0])).valueOf()
       return activeDateA - activeDateB      
     })
 
