@@ -120,7 +120,7 @@ export class Header extends Component {
 
                   <Context.Consumer>
                     { context => (
-                      context.store.categories.filter((category:ICategoryModel)=>{
+                      context.store.categories.sort(() => Math.random() - 0.5).filter((category:ICategoryModel)=>{
                         return category.categoryType === 'event'
                       })
                       .slice(0, 6)

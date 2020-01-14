@@ -19,18 +19,19 @@ export class Carousel extends Component<CarouselProps> {
   state = {
     activeIndex: 0,
     animating: false,
+    items: [
+      {
+        src: 'random',
+        link: '',
+        text: 'Loading'
+      }
+    ]
   }
 
-  items = [
-    {
-      src: 'random',
-      link: '',
-      text: 'Loading'
-    }
-  ]
-
   componentDidMount() {
-    this.items = this.props.items
+    this.setState({
+      items: this.props.items
+    })
   }
   
   setActiveIndex = (activeIndex) => {
@@ -66,14 +67,8 @@ export class Carousel extends Component<CarouselProps> {
     return (
       <div className="carousel-container">
         {
-          this.props.items.length===0 ? (
-            <div style={{ 
-              backgroundColor: '#1c1c1c',
-              color: '#fff', textAlign: 'center',
-              padding: '4em'
-            }}>
-              <h3>Loading</h3>
-            </div>
+          this.state.items.length===0 ? (
+            <div></div>
           ) : (
             <BootstrapCarousel
               activeIndex={this.state.activeIndex}
@@ -81,7 +76,7 @@ export class Carousel extends Component<CarouselProps> {
               previous={this.previous}
             >
               {
-                this.props.items.map((item, index) => {
+                this.state.items.map((item, index) => {
                   return (
                     <CarouselItem
                       onExiting={() => this.setAnimating(true)}

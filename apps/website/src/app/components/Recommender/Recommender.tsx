@@ -74,6 +74,13 @@ export class Recommender extends Component<RecommenderComponentProps> {
   render() {
     return (
       <div className="recommender">
+        {
+          !this.state.loading && this.state.renderQueue.length===0 ? (
+            <div></div>
+          ) : (
+            <h2 className="scroll-title">{ this.props.title }</h2>
+          )
+        }
         <FlexScroll>
           {
             !this.state.loading ? (

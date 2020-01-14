@@ -77,11 +77,15 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
   render() {
     return (
       <article>
-        <Carousel items={this.state.ads}/>
+        {
+          this.state.ads.length!==0 ? (
+            <Carousel items={this.state.ads}/>
+          ) : null
+        }
 
         <section className="container">
-          <h2 className="scroll-title">Featured Events</h2>
           <Recommender path="/event" maxItemCount={6}
+            title="Featured Events"
             query={{
               settings: {
                 isFeatured: true
@@ -98,8 +102,8 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
-          <h2 className="scroll-title">Events Near You</h2>
           <Recommender path="/event" maxItemCount={6} shuffle
+            title="Events Near You"
             query={{
               venue: {
                 city: this.props.city,
@@ -131,8 +135,8 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
-          <h2 className="scroll-title">Recommended</h2>
           <Recommender path="/event" maxItemCount={10} shuffle
+            title="Recommended"
             query={{
               venue: {
                 city: this.props.city
@@ -168,8 +172,8 @@ export default class Home extends Component<HomeProps & RouteComponentProps<URLP
         </section>
 
         <section className="container">
-          <h2 className="scroll-title">Venues</h2>
           <Recommender path="/venue" maxItemCount={6} 
+            title="Venues"
             query={{ city: this.props.city }}
             placeholder={EventPlaceholder}
             render={(venueProps:IVenueModel)=>(

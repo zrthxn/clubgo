@@ -159,13 +159,13 @@ export default class Search extends Component<RouteComponentProps> {
               </section>
 
               <section className="container">
-                <h2>Trending Events</h2>
-                <h4>Selected Events for you</h4>
-                <Recommender path="/event" query={{
-                  venue: {
-                    // city: appContext.actions.getUserContext().city
-                  }
-                }}
+                <Recommender path="/event" 
+                  title="Trending Events"
+                  query={{
+                    venue: {
+                      // city: appContext.actions.getUserContext().city
+                    }
+                  }}
                   render={(eventProps:IEventModel)=>(
                     <Event key={eventProps._id} data={eventProps} />
                   )}
@@ -173,13 +173,13 @@ export default class Search extends Component<RouteComponentProps> {
               </section>
 
               <section className="container">
-                <h2>Recommended Events</h2>
-                <h4>Selected Events for you</h4>
-                <Recommender path="/event" query={{
-                  venue: {
-                    // city: appContext.actions.getUserContext().city
-                  }
-                }}
+                <Recommender path="/event" 
+                  title="Recommended Events"
+                  query={{
+                    venue: {
+                      // city: appContext.actions.getUserContext().city
+                    }
+                  }}
                   render={(eventProps:IEventModel)=>(
                     <Event key={eventProps._id} data={eventProps} />
                   )}

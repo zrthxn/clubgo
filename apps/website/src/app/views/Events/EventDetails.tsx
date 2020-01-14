@@ -89,6 +89,8 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
       this.event = event.data.results
     }
 
+    console.log(event);
+
     let venue = await this.venueService.findById(this.event.venue.venueId)
     this.venue = venue.data.results
     
@@ -96,12 +98,12 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
       venue: this.venue
     })
 
-    let attendees = await this.bookingService.searchBy({ event: { eventId: this.event._id } })
+    //let attendees = await this.bookingService.searchBy({ event: { eventId: this.event._id } })
     
     this.setState({
       loading: false,
       currentEventId: id,
-      attendees: attendees.data.results.length
+      //attendees: attendees.data.results.length
     })
   }
   
@@ -173,39 +175,47 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                       }
                     </h3>
 
-                    <h3 className="event-price">
-                      {
-                        this.event.bookings.isTakingOnsiteBookings ?
-                          this.state.calculatedLowestPrices===0 ? (
-                            '\u20B9 Free'
-                          ) : (
-                            'Starting from \u20B9' + this.state.calculatedLowestPrices
-                          )
-                        : null
-                      }
-                    </h3>
-
-                    <div className="offers">
-                      {
-                        this.event.offers.availableOffers.map((offer, item)=>(
-                          <div className="offer-item">
-                            <img src="assets/icons/offer.png" alt="" className="offer-icon" />
-                            { offer.offerTitle }
-                          </div>
-                        ))
-                      }
-                    </div>
-                    <div className="button-container">
-                      {
-                        this.isBookingOpen ? (
-                          <button disabled={!this.isBookingOpen} onClick={this.openBooking}>
+                    {
+                      this.event.bookings.tickets.length!==0 ? (
+                        <div>
+                          <h3 className="event-price">
                             {
-                              this.event.bookings.isTakingOnsiteBookings ? 'Book Now': 'Register'
+                              this.event.bookings.isTakingOnsiteBookings ?
+                                this.state.calculatedLowestPrices===0 ? (
+                                  '\u20B9 Free'
+                                ) : (
+                                  'Starting from \u20B9' + this.state.calculatedLowestPrices
+                                )
+                              : null
                             }
-                          </button>
-                        ) : null
-                      }                      
-                    </div>
+                          </h3>
+
+                          <div className="offers">
+                            {
+                              this.event.offers.availableOffers.map((offer, item)=>(
+                                <div className="offer-item">
+                                  <img src="assets/icons/offer.png" alt="" className="offer-icon" />
+                                  { offer.offerTitle }
+                                </div>
+                              ))
+                            }
+                          </div>
+                          <div className="button-container">
+                            {
+                              this.isBookingOpen ? (
+                                <button disabled={!this.isBookingOpen} onClick={this.openBooking}>
+                                  {
+                                    this.event.bookings.isTakingOnsiteBookings ? 'Book Now': 'Register'
+                                  }
+                                </button>
+                              ) : null
+                            }                      
+                          </div>
+                        </div>
+                      ) : (
+                        <p><i>Bookings Starting Soon</i></p>
+                      )
+                    }
                   </div>
                 </div>
               </Grid>
@@ -300,8 +310,8 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
           </section>
 
           <section className="container">
-            <h2 className="scroll-title">Similar Events</h2>
             <Recommender path="/event" maxItemCount={10} shuffle
+              title="Similar Events"
               query={{
                 venue: {
                   city: this.props.city
