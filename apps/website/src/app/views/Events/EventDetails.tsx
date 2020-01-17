@@ -110,8 +110,12 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
   openBooking = () => {
     if(this.event.bookings.isTakingOnsiteBookings)
       this.context.router('/bookings/' + this.event._id)
-    else
-      window.location.href = this.event.bookings.registrationURL
+    else {
+      if(this.event.bookings.registrationURL)
+        window.location.href = this.event.bookings.registrationURL
+      else
+        window.location.href = "tel:" + this.event.bookings.registrationPhone
+    }
   }
 
   get isBookingOpen() {
@@ -174,46 +178,47 @@ export default class EventDetails extends Component<RouteComponentProps<URLParam
                         getFormattedDate(new Date(this.event.scheduling.customDates[0])).naturalDate
                       }
                     </h3>
-
+                    
                     {
-                      this.event.bookings.tickets.length!==0 ? (
-                        <div>
-                          <h3 className="event-price">
-                            {
-                              this.event.bookings.isTakingOnsiteBookings ?
+                      this.event.bookings.isTakingOnsiteBookings ? (
+                        this.event.bookings.tickets.length!==0 ? (
+                          <div>
+                            <h3 className="event-price">
+                              {
                                 this.state.calculatedLowestPrices===0 ? (
                                   '\u20B9 Free'
                                 ) : (
                                   'Starting from \u20B9' + this.state.calculatedLowestPrices
                                 )
-                              : null
-                            }
-                          </h3>
+                              }
+                            </h3>
 
-                          <div className="offers">
-                            {
-                              this.event.offers.availableOffers.map((offer, item)=>(
-                                <div className="offer-item">
-                                  <img src="assets/icons/offer.png" alt="" className="offer-icon" />
-                                  { offer.offerTitle }
-                                </div>
-                              ))
-                            }
+                            <div className="offers">
+                              {
+                                this.event.offers.availableOffers.map((offer, item)=>(
+                                  <div className="offer-item">
+                                    <img src="assets/icons/offer.png" alt="" className="offer-icon" />
+                                    { offer.offerTitle }
+                                  </div>
+                                ))
+                              }
+                            </div>
+
+                            <div className="button-container">
+                              {
+                                this.isBookingOpen ? (
+                                  <button disabled={!this.isBookingOpen} onClick={this.openBooking}>Book Now</button>
+                                ) : null
+                              }                      
+                            </div>
                           </div>
-                          <div className="button-container">
-                            {
-                              this.isBookingOpen ? (
-                                <button disabled={!this.isBookingOpen} onClick={this.openBooking}>
-                                  {
-                                    this.event.bookings.isTakingOnsiteBookings ? 'Book Now': 'Register'
-                                  }
-                                </button>
-                              ) : null
-                            }                      
-                          </div>
-                        </div>
+                        ) : (
+                          <p><i>Bookings Starting Soon</i></p>
+                        )
                       ) : (
-                        <p><i>Bookings Starting Soon</i></p>
+                        <div className="button-container">
+                          <button disabled={!this.isBookingOpen} onClick={this.openBooking}>Register</button>
+                        </div>
                       )
                     }
                   </div>

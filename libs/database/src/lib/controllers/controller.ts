@@ -1,6 +1,7 @@
 import express from 'express'
 import { conf } from '@clubgo/util'
 import * as mongoose from 'mongoose'
+import * as Redis from '../cache'
 
 /**
  * @description CRUD Router.
@@ -56,31 +57,63 @@ export class ModelController {
 
   // Read a Object by ID :: /_get/:Objectid
   get = async (req, res) => {
-    const searchResult = await this.Model.findOne({ _id: req.params.objectid })
-    res.send({ message: 'Found', results: searchResult })
+    let data = await Redis.cacheLookup(req.params.objectid) 
+    if(data!==null)
+      res.send({ message: 'Found', results: data })
+    else{
+      const searchResult = await this.Model.findOne({ _id: req.params.objectid })
+      Redis.cacheWrite(searchResult._id, searchResult)
+      res.send({ message: 'Found', results: searchResult })
+    }
   }
 
   // Search for venues :: /_search
   search = async (req, res) => {
     const { query } = req.body
-    const searchResult = await this.Model.find({ ...query })
+    let cacheKey = ''
+    for (const id in query)
+      if (query.hasOwnProperty(id))
+        cacheKey += query[id] + '-'
 
-    res.send({ 
-      message: `Found ${searchResult.length} matching records`,
-      results: searchResult 
-    })
+    let data = await Redis.cacheLookup(cacheKey)
+    if(data)
+      var searchResult = data
+    else{
+      searchResult = await this.Model.find({ ...query })
+      Redis.cacheWrite(cacheKey, searchResult)
+      res.send({ 
+        message: `Found ${searchResult.length} matching records`,
+        results: searchResult 
+      })
+    }    
   }
 
   // Read a group of Objects by ID :: /_group
   group = async (req, res) => {
     const { searchIds } = req.body
+
+    let cachedItems = []
+    for (const key of searchIds) {
+      let data = await Redis.cacheLookup(key)  
+      if(data!==null)
+        cachedItems.push(data)      
+    }
+
+    if(cachedItems.length===searchIds.length)
+      return res.send({ 
+        message: `Found ${cachedItems.length} of ${searchIds.length}`,
+        results: cachedItems 
+      })
+
     for (let id of searchIds) id = mongoose.Types.ObjectId(id)
-    
     const searchResult = await this.Model.find({
       _id: { 
         $in: searchIds
       }
     })
+
+    for (const item of searchResult)
+      Redis.cacheWrite(item._id, item)
 
     res.send({ 
       message: `Found ${searchResult.length} of ${searchIds.length}`,
@@ -100,6 +133,8 @@ export class ModelController {
         message: 'Created',
         results: result._id
       })
+
+      Redis.cacheWrite(result._id, result)
     } catch (err) {
       console.log(conf.Red(err))
       res.status(400).send({ error: err })
@@ -116,10 +151,11 @@ export class ModelController {
       updateBody
     )
 
+    Redis.cacheWrite(req.params.objectid, updateBody)
+
     res.status(200).send({
       message: 'Updated',
-      previous: result,
-      updated: updateBody
+      results: updateBody
     })
   }
 
@@ -130,6 +166,8 @@ export class ModelController {
         _id: req.params.objectid 
       }
     )
+
+    Redis.cacheDelete(req.params.objectid)
 
     res.send({ 
       message: 'Deleted', 

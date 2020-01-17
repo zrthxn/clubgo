@@ -104,23 +104,23 @@ export class Event extends Component<EventComponentProps> {
                 </span>
               </p>
 
-                {
+              {
+                this.props.data.bookings.isTakingOnsiteBookings ? (
                   this.props.data.bookings.tickets.length!==0 ? (
                     <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9em', position: 'absolute', bottom: '1em' }}>
                       {
-                        this.props.data.bookings.isTakingOnsiteBookings ? 
-                          this.state.calculatedLowestPrices===0 ? (
-                            'Free'    
-                          ) : (
-                            'From \u20B9 ' + this.state.calculatedLowestPrices
-                          )
-                        : null
+                        this.state.calculatedLowestPrices===0 ? 'Free' : 'From \u20B9 ' + this.state.calculatedLowestPrices
                       }
                     </p>
                   ) : (
                     <p style={{ margin: 0, fontSize: '0.75em', opacity: 0.75 }}><i>Bookings Starting Soon</i></p>
                   )
-                }
+                ) : (
+                  <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9em', position: 'absolute', bottom: '1em' }}>
+                    Registration
+                  </p>
+                )
+              }
             </div>
           )
         }

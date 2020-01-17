@@ -1,6 +1,7 @@
 import { ModelController, IRouteItem } from './controller'
 import Event, { IEventModel } from '../models/event.model'
 import { getFormattedDate, fromFormattedDate, compareDates } from '@clubgo/util'
+import { cacheWrite, cacheLookup } from '../cache'
 
 export class EventController extends ModelController {
   constructor() {
@@ -12,9 +13,23 @@ export class EventController extends ModelController {
    * @override Default Search
    */
   search = async (req, res) => {
-    const { query, options } = req.body
+    var { query, options } = req.body
+
+    if(!options)
+      options = {}
     
-    let searchResult = await Event.find(query)
+    let cacheKey = ''
+    for (const id in query)
+      if (query.hasOwnProperty(id))
+        cacheKey += query[id] + '-'
+
+    let data = await cacheLookup(cacheKey)
+    if(data && !options.skipCache)
+      var searchResult = data
+    else{
+      searchResult = await Event.find(query)
+      cacheWrite(cacheKey, searchResult)
+    }
 
     let date = new Date()
     
@@ -22,9 +37,8 @@ export class EventController extends ModelController {
     searchResult = searchResult.filter((item:IEventModel)=>{
       if(item.settings.isPublished) 
         return true
-      if(options)
-        if(options.includeUnpublishedEvents) 
-          return true
+      if(options.includeUnpublishedEvents) 
+        return true
       return false
     })
 
@@ -65,10 +79,12 @@ export class EventController extends ModelController {
    * @description Recommendations
    */
   recommend = async (req, res) => {
-    const { query, options } = req.body
+    var { query, options } = req.body
     
     if(options)
       var when = options.when
+    else
+      options = {}
 
     let date = new Date()
     if(when==='tomorrow')
@@ -76,15 +92,25 @@ export class EventController extends ModelController {
     else if(when==='later')
       date = new Date(Date.now() + (2 * (24 * 60 * 60 * 1000)))
 
-    let recommendations = await Event.find(query)
+    let cacheKey = ''
+    for (const id in query)
+      if (query.hasOwnProperty(id))
+        cacheKey += query[id] + '-'
+
+    let data = await cacheLookup(cacheKey)
+    if(data && !options.skipCache)
+      var recommendations = data
+    else{
+      recommendations = await Event.find(query)
+      cacheWrite(cacheKey, recommendations)
+    }
 
     // Filter out Unpublished events
     recommendations = recommendations.filter((item:IEventModel)=>{
       if(item.settings.isPublished) 
         return true
-      if(options)
-        if(options.includeUnpublishedEvents) 
-          return true
+      if(options.includeUnpublishedEvents) 
+        return true
       return false
     })
 
