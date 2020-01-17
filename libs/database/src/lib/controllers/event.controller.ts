@@ -18,19 +18,7 @@ export class EventController extends ModelController {
     if(!options)
       options = {}
     
-    let cacheKey = '--'
-    for (const id in query)
-      if (query.hasOwnProperty(id))
-        cacheKey += query[id] + '-'
-    cacheKey += '-'
-
-    let data = await cacheLookup(cacheKey)
-    if(data && !options.skipCache)
-      var searchResult = data
-    else{
-      searchResult = await Event.find(query)
-      cacheWrite(cacheKey, searchResult)
-    }
+    var searchResult = await Event.find(query)
 
     let date = new Date()
     

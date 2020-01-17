@@ -70,23 +70,11 @@ export class ModelController {
   // Search for venues :: /_search
   search = async (req, res) => {
     const { query } = req.body
-    let cacheKey = '--'
-    for (const id in query)
-      if (query.hasOwnProperty(id))
-        cacheKey += query[id] + '-'
-    cacheKey += '-'
-
-    let data = await Redis.cacheLookup(cacheKey)
-    if(data)
-      var searchResult = data
-    else{
-      searchResult = await this.Model.find({ ...query })
-      Redis.cacheWrite(cacheKey, searchResult)
-      res.send({ 
-        message: `Found ${searchResult.length} matching records`,
-        results: searchResult 
-      })
-    }    
+    const searchResult = await this.Model.find({ ...query })
+    res.send({ 
+      message: `Found ${searchResult.length} matching records`,
+      results: searchResult 
+    })
   }
 
   // Read a group of Objects by ID :: /_group
