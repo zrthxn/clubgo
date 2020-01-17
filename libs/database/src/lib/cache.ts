@@ -27,7 +27,7 @@ export function cacheLookup(key:string):Promise<any> {
  */
 export async function cacheWrite(key:string, value:any, expiry?:number) {
   if(!expiry) expiry = 3600
-  client.setex(key, expiry, JSON.stringify(value))
+  client.setex(key.toString(), expiry, JSON.stringify(value))
   return
 }
 

@@ -18,10 +18,11 @@ export class EventController extends ModelController {
     if(!options)
       options = {}
     
-    let cacheKey = ''
+    let cacheKey = '--'
     for (const id in query)
       if (query.hasOwnProperty(id))
         cacheKey += query[id] + '-'
+    cacheKey += '-'
 
     let data = await cacheLookup(cacheKey)
     if(data && !options.skipCache)
@@ -92,10 +93,11 @@ export class EventController extends ModelController {
     else if(when==='later')
       date = new Date(Date.now() + (2 * (24 * 60 * 60 * 1000)))
 
-    let cacheKey = ''
+    let cacheKey = '--'
     for (const id in query)
       if (query.hasOwnProperty(id))
         cacheKey += query[id] + '-'
+    cacheKey += '-'
 
     let data = await cacheLookup(cacheKey)
     if(data && !options.skipCache)

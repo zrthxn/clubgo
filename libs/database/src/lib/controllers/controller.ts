@@ -70,10 +70,11 @@ export class ModelController {
   // Search for venues :: /_search
   search = async (req, res) => {
     const { query } = req.body
-    let cacheKey = ''
+    let cacheKey = '--'
     for (const id in query)
       if (query.hasOwnProperty(id))
         cacheKey += query[id] + '-'
+    cacheKey += '-'
 
     let data = await Redis.cacheLookup(cacheKey)
     if(data)
