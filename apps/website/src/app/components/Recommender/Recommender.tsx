@@ -72,32 +72,29 @@ export class Recommender extends Component<RecommenderComponentProps> {
   }
 
   render() {
-    return (
-      <div className="recommender">
-        {
-          !this.state.loading && this.state.renderQueue.length===0 ? (
-            <div></div>
-          ) : (
-            <h2 className="scroll-title">{ this.props.title }</h2>
-          )
-        }
-        <FlexScroll>
-          {
-            !this.state.loading ? (
-              this.state.renderQueue
-            ) : (
-              this.props.placeholder ? (
-                [1, 2, 3, 5].map((item, index)=>{
-                  return this.props.placeholder(item)
-                })
+    if(!this.state.loading && this.state.renderQueue.length===0)
+      return <div></div>
+    else
+      return( 
+        <div className="recommender">
+          <h2 className="scroll-title">{ this.props.title }</h2>       
+          <FlexScroll>
+            {
+              !this.state.loading ? (
+                this.state.renderQueue
               ) : (
-                <h3 className="center">Loading</h3>
+                this.props.placeholder ? (
+                  [1, 2, 3, 5].map((item, index)=>{
+                    return this.props.placeholder(item)
+                  })
+                ) : (
+                  <h3 className="center">Loading</h3>
+                )
               )
-            )
-          }
-        </FlexScroll>
-      </div>
-    )
+            }
+          </FlexScroll>      
+        </div>
+      )
   }
 }
 

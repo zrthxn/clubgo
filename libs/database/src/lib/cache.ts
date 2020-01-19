@@ -1,7 +1,7 @@
 import { createClient } from 'redis'
 
 const REDIS_PORT = 6379
-const client = createClient(REDIS_PORT)
+const client = createClient(REDIS_PORT, 'localhost')
 
 /**
  * Perform key lookup on cache
@@ -36,4 +36,5 @@ export async function cacheWrite(key:string, value:any, expiry?:number) {
  */
 export function cacheDelete(key:string) {
   client.expire(key, 1)
+  return
 }

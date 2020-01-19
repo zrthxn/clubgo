@@ -63,11 +63,15 @@ export class Header extends Component {
                           Venues
                         </Link>
 
-                        <span style={{ margin: '1.5em 1em 1em 1em', fontSize: '0.85em', fontWeight: 600 }}>CATEGORIES</span>
+                        {/* <span style={{ margin: '1.5em 1em 1em 1em', fontSize: '0.85em', fontWeight: 600 }}>CATEGORIES</span> */}
 
                         <Context.Consumer>
                           { context => (
-                            context.store.categories.map((category:ICategoryModel, index)=>(
+                            context.store.categories
+                            .filter((category:ICategoryModel)=> category.categoryType === 'event' )
+                            .sort(() => Math.random() - 0.5)
+                            .slice(0, 10)
+                            .map((category:ICategoryModel, index)=>(
                               appContext.state.city!==undefined ? (
                                 <a className="no-decor category-link" 
                                   href={`/events/in/${appContext.state.city.toLowerCase()}/${category.name.toLowerCase().trim().replace(/ /g, '-')}`}>
@@ -120,9 +124,9 @@ export class Header extends Component {
 
                   <Context.Consumer>
                     { context => (
-                      context.store.categories.sort(() => Math.random() - 0.5).filter((category:ICategoryModel)=>{
-                        return category.categoryType === 'event'
-                      })
+                      context.store.categories
+                      .filter((category:ICategoryModel)=> category.categoryType === 'event' )
+                      .sort(() => Math.random() - 0.5)
                       .slice(0, 6)
                       .map((category, index)=>(
                         appContext.state.city!==undefined ? (
@@ -157,9 +161,9 @@ export class Header extends Component {
                     <Search/>
                   </IconButton>
                   
-                  <IconButton onClick={()=>{ appContext.router('/account') }}>
+                  {/* <IconButton onClick={()=>{ appContext.router('/account') }}>
                     <AccountCircle/>
-                  </IconButton>
+                  </IconButton> */}
                 </div>
               </section>
             </header>
