@@ -311,7 +311,7 @@
     },
     "api": {
       "root": "libs/api",
-      "sourceRoot": "libs\\api\\src",
+      "sourceRoot": "libs/api/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
@@ -319,7 +319,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs\\api\\tsconfig.lib.json",
+              "libs/api/tsconfig.lib.json",
               "libs/api/tsconfig.spec.json"
             ],
             "exclude": ["**/node_modules/**"]
@@ -336,7 +336,7 @@
     },
     "util": {
       "root": "libs/util",
-      "sourceRoot": "libs\\util\\src",
+      "sourceRoot": "libs/util/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
@@ -344,7 +344,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs\\util\\tsconfig.lib.json",
+              "libs/util/tsconfig.lib.json",
               "libs/util/tsconfig.spec.json"
             ],
             "exclude": ["**/node_modules/**"]
@@ -361,7 +361,7 @@
     },
     "database": {
       "root": "libs/database",
-      "sourceRoot": "libs\\database\\src",
+      "sourceRoot": "libs/database/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
@@ -369,7 +369,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs\\database\\tsconfig.lib.json",
+              "libs/database/tsconfig.lib.json",
               "libs/database/tsconfig.spec.json"
             ],
             "exclude": ["**/node_modules/**"]

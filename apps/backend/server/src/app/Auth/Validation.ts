@@ -1,30 +1,40 @@
 import * as crypto from 'crypto'
-import { CLIENT_KEY, ENCRYPTOR } from '@clubgo/env'
+import { API_KEY, ENCRYPTOR } from '@clubgo/env'
+import { NextFunction } from 'express'
 
-// const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY
-// const IV = 'IV'
+import { GENERATOR, SECRET } from './Authentication'
 
 /**
- * @todo
  * Validate CSRF
  */
 export function requestValidation(req, res, next) {
+  if(req.method==='OPTIONS') return res.sendStatus(200)
+
+  const random = req.headers['x-request-validation']
+  const token = req.headers['authorization']
+
   try {
-    const token = req.headers['x-request-validation']
-    const hash = crypto.createHmac('sha512', CLIENT_KEY).update(ENCRYPTOR).digest('base64')
-    if(hash===token)
+    const hash = crypto.createHmac('sha512', SECRET).update(GENERATOR).update(random).digest('base64')
+    if (hash === token)
       next()
     else
-      res.sendStatus(200)
+      throw new Error('Request Authentication Failed')
   } catch (error) {
-    res.sendStatus(500)
+    return res.status(401).send(error)
   }
 }
 
-/**
- * @todo
- * Validate access token 
- */
+export function ALLOW(key) {
+  return function (req, res, next:NextFunction) {
+    next()
+  }
+}
+
+export function REJECT(key) {
+  return function (req, res, next:NextFunction) {
+    next()
+  }
+}
 
 /** 
  * @todo

@@ -16,7 +16,7 @@ export function cacheLookup(key:string):Promise<any> {
         else 
           resolve(null)
       } catch (error) {
-        reject(error)
+        resolve(null)
       }
     })
   })

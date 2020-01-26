@@ -1,6 +1,6 @@
 import axios from 'axios'
-import * as crypto from 'crypto'
-import { CLIENT_KEY } from '../../../env'
+// import { encrypt, decrypt } from '@clubgo/util'
+import * as ENV from '../../../env'
 
 export const APIEndpoints = process.env.NODE_ENV==='production' ? (
   require('../config.json').prod.endpoints
@@ -28,7 +28,8 @@ export class Interface {
   protected auth = {
     isAuth: false,
     csrf: null,
-    headers: null
+    headers: null,
+    accessKey: null
   }
 
   request = axios.create({
@@ -45,13 +46,15 @@ export class Interface {
     if(api.path!==undefined)
       this.addPathRoute(api.path)
 
-    let xsrf = localStorage.getItem('X-Request-Validation')
-    if(xsrf!==undefined) this.auth.csrf = xsrf
-
     this.request.interceptors.request.use((config)=>{
+      let key = localStorage.getItem('X-Request-Validation')
+      let token = localStorage.getItem('Authorization')
+      if(key) this.auth.csrf = key
+      if(token) this.auth.headers = token
+
       config.xsrfHeaderName = 'X-Request-Validation'
       config.headers = {
-        [config.xsrfHeaderName] : this.auth.csrf,
+        [config.xsrfHeaderName]: this.auth.csrf,
         Authorization: this.auth.headers
       }
       return config
@@ -59,7 +62,11 @@ export class Interface {
 
     this.request.interceptors.response.use(
       (response) => Promise.resolve(response),
-      (error) => Promise.reject(error.response)
+      (error) => {
+        if(error.response.status===401)
+          this.authenticate()
+        return Promise.reject(error.response)
+      }
     )
   }
 
@@ -117,12 +124,13 @@ export class Interface {
     try {
       let authResponse = await this.request.post(
         APIEndpoints.auth.url, {
-          shared: CLIENT_KEY
+          apiKey: ENV.API_KEY //encrypt(ENV.API_KEY, 'base64')
         }
       )
       
-      let { token } = authResponse.data
-      localStorage.setItem('X-Request-Validation', token)
+      let { key, token } = authResponse.data
+      localStorage.setItem('X-Request-Validation', key)
+      localStorage.setItem('Authorization', token)
       this.auth.isAuth = true
     } catch (error) {
       console.error(error)
@@ -134,35 +142,22 @@ export class Interface {
   async isAuthenticated() {
     function checkAuth() {
       return new Promise((resolve, reject) => {
-        if(this.auth.isAuth)
-          resolve()
-        else {
-          if(localStorage.getItem('X-Request-Validation')) {
-            this.auth.isAuth = true
+        setTimeout(()=>{
+          if(localStorage.getItem('X-Request-Validation'))
             resolve()
-          }
           else
-            setTimeout(()=>{
-              if(this.auth.isAuth)
-                resolve()
-              else {
-                if(localStorage.getItem('X-Request-Validation')) {
-                  this.auth.isAuth = true
-                  resolve()
-                }
-                else
-                  reject()
-              }
-            }, 250)
-        }
+            reject()
+        }, 10)
       })
     }
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 500; i++) {
       try {
         await checkAuth()
+        this.auth.isAuth = true
         return
       } catch (error) {
+        console.log('Checked', i)
         continue
       }
     }

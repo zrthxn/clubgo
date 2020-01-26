@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { RequestHandler } from 'express'
 import { conf } from '@clubgo/util'
 import * as mongoose from 'mongoose'
 import * as Redis from '../cache'
@@ -23,7 +23,20 @@ export class ModelController {
    * Returns the controlled instance of `express.Router()`
    * @returns `express.Router()`
    */
-  router = () => this.addRoutes()
+  router() {
+    this.addRoutes()
+    return this._router
+  }
+
+  /**
+   * Adds security middleware to the given path. The middleware function
+   * decides whether or not the request progresses further.
+   * @param path The path to secure
+   * @param middleware The security middleware
+   */
+  secure(path:string, ...middleware:RequestHandler[]) {
+    this._router.use(path, middleware)
+  }
 
   /**
    * Adds the given routes to 
@@ -43,7 +56,6 @@ export class ModelController {
       this._router.put('/_update/:objectid', this.update)
       this._router.delete('/_delete/:objectid', this.delete)
     }
-    return this._router
   }
 
   // CRUD Functions

@@ -1,24 +1,33 @@
+import { conf } from '@clubgo/util'
 import * as crypto from 'crypto'
-import { CLIENT_KEY, ENCRYPTOR } from '@clubgo/env'
+import * as ENV from '@clubgo/env'
 
-// const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY
-// const IV = 'IV'
+export var GENERATOR, SECRET
 
 /**
  * @todo CSRF token generation from API Key
  */
 export function generateRequestAuthentication(req, res) {
-  const { shared } = req.body
+  const { apiKey } = req.body
+
   try {
-    if(shared===CLIENT_KEY)
-      res.send({ 
-        message: 'AUTHENTICATED',
-        token: crypto.createHmac('sha512', CLIENT_KEY).update(ENCRYPTOR).digest('base64')
-      })
+    if (apiKey !== undefined) {
+      if (apiKey !== ENV.API_KEY) //decrypt(apiKey, 'base64'))
+        return res.status(403).send('ERR_INVALID_APIKEY')
+    }
     else
-      res.send({ message: 'INVALID_KEY' })
+      throw new Error('ERR_NO_APIKEY')
+
+    const random = crypto.randomBytes(32).toString('base64')
+    const authToken = crypto.createHmac('sha512', SECRET).update(GENERATOR).update(random).digest('base64')
+
+    res.send({
+      key: random,
+      token: authToken
+    })
   } catch (error) {
-    res.send({ message: 'ERROR' })
+    console.error(error)
+    res.status(500).send(error)
   }
 }
 
@@ -27,8 +36,10 @@ export function generateRequestAuthentication(req, res) {
  * CSRF Secret generation on server restart
  * using fixed generator and random prime
  */
-export function s() {
-
+export function recalculateSecurityValues() {
+  console.log(conf.Blue('Recalculating Security Values'))
+  GENERATOR = crypto.randomBytes(64).toString('base64')
+  SECRET = crypto.randomBytes(256).toString('base64')
 }
 
 /** 
@@ -43,5 +54,5 @@ export function s() {
 
 /** 
  * @todo
- * Unique Login token generation acc. to access level
+ * Unique Login token generation according to access level
  */

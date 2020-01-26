@@ -20,22 +20,28 @@ export class DatabaseService extends Interface {
       this.model = DatabaseModel
 
     this.request.interceptors.request.use((config)=>{
+      let key = localStorage.getItem('X-Request-Validation')
+      let token = localStorage.getItem('Authorization')
+      if(key) this.auth.csrf = key
+      if(token) this.auth.headers = token
+
       config.xsrfHeaderName = 'X-Request-Validation'
       config.headers = {
-        [config.xsrfHeaderName] : this.auth.csrf,
+        [config.xsrfHeaderName]: this.auth.csrf,
         Authorization: this.auth.headers
       }
-      
-      config.data = {
-        ...config.data,
-        // owner: 'admin'
-      }
-
       return config
     })
-  }
 
-  
+    this.request.interceptors.response.use(
+      (response) => Promise.resolve(response),
+      (error) => {
+        if(error.response.status===401)
+          console.log()
+        return Promise.reject(error.response)
+      }
+    )
+  }
 
   /**
    * Lists all the objects at the given route
@@ -43,6 +49,7 @@ export class DatabaseService extends Interface {
    */
   async list() {
     await this.isAuthenticated()
+    console.log(this.auth)
     try {
       return await this.request.get(
         this.endpoint + '/_list'
@@ -173,7 +180,11 @@ export class DatabaseService extends Interface {
     await this.isAuthenticated()
     try {
       return await this.request.delete(
-        this.endpoint + '/_delete/' + id
+        this.endpoint + '/_delete/' + id, {
+          // headers: {
+          //   Cookie: 'ADMIN_KEY'
+          // }
+        }
       )
     } catch (HTTPError) {
       return Promise.reject(HTTPError)

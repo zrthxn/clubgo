@@ -1,5 +1,6 @@
 import express from 'express'
 import { conf } from '@clubgo/util'
+import * as ENV from '@clubgo/env'
 import * as bodyParser from 'body-parser'
 import * as cookieParser from 'cookie-parser'
 import crypto from 'crypto'
