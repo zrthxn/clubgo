@@ -89,15 +89,10 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
 
   createSearchQuery = (city?, search?) => {
     let query = {}
+
     if(city===undefined)
       city = this.props.match.params.city
     city = city.substr(0, 1).toUpperCase() + city.substr(1)
-    query = {
-      ...query,
-      venue: {
-        city
-      }
-    }
 
     this.setState({ city })
 
@@ -105,9 +100,9 @@ export default class EventListing extends Component<RouteComponentProps<URLParam
       search = search.trim()
       search = search.replace(/-/g, ' ')
       query = {
-        ...query,
-        $text: {
-          $search: search
+        categories: search,
+        venue: {
+          city
         }
       }
     }
