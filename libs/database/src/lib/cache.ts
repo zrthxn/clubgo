@@ -35,6 +35,6 @@ export async function cacheWrite(key:string, value:any, expiry?:number) {
  * Expire a cache item
  */
 export function cacheDelete(key:string) {
-  client.expire(key, 1)
+  client.del(key)
   return
 }
