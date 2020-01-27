@@ -97,9 +97,9 @@ export class EventController extends ModelController {
 
     // Filter out Unpublished events
     recommendations = recommendations.filter((item:IEventModel)=>{
-      if(item.settings.isPublished) 
-        return true
       if(options.includeUnpublishedEvents) 
+        return true
+      if(item.settings.isPublished) 
         return true
       return false
     })
