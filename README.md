@@ -1,6 +1,10 @@
 # ClubGo
 ### Your Nightlife Conciegre
 
+![Lines of code](https://img.shields.io/tokei/lines/github/zrthxn/clubgo)
+![GitHub](https://img.shields.io/github/license/zrthxn/clubgo)
+![GitHub last commit](https://img.shields.io/github/last-commit/zrthxn/clubgo)
+
 This is the remote repository of ClubGo Inc website and online booking app.
 This project was bootstrapped using [Nx](https://nx.dev).
 
