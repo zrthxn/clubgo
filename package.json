@@ -72,7 +72,7 @@
     "date-fns": "^2.0.0-beta.3",
     "dayjs": "^1.8.15",
     "document-register-element": "1.13.1",
-    "express": "4.16.3",
+    "express": "4.17.3",
     "file-loader": "^4.2.0",
     "firebase": "^6.2.2",
     "form-data": "^2.5.0",
